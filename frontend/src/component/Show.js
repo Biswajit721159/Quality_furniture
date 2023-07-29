@@ -456,7 +456,8 @@ function ADD_TO_INCREMENT(id)
         :<div className='loader-container'>
             <h4>Product Not Found</h4>
             <button className='btn btn-primary mx-3' onClick={()=>search("")} >Go Product</button>
-        </div>}
+        </div>
+        }
     </>
   )
 }

@@ -58,7 +58,7 @@ function submit()
       number_of_people_give_rating:product[0].number_of_people_give_rating+1,
     })
    }).then(responce=>responce.json()).then((result)=>{
-       console.log(result)
+       
    })
 
 

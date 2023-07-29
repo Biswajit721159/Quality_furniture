@@ -24,12 +24,14 @@ export default function Profile() {
             <h3>Welcome {user.user.name}</h3>
             <h4>Email : {user.user.email}</h4>
             <h4>Address : {user.user.address}</h4>
-            <Link to={`${user.user._id}`}><button className='btn btn-primary'>update</button></Link>
+            <Link to={`${user.user._id}`}><button className='btn btn-primary'>Update</button></Link>
             <Link to={'/Myorder'}><button className='btn btn-primary mx-5'>Myorder</button></Link>
           </div>
          }
         </div>
-        :<h1>Profile Not Found</h1>
+        :<div className='loader-container'>
+            <h4>Profile Not Found</h4>
+        </div>
       }
     </div>
   )

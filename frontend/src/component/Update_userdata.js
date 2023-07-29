@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { json, useNavigate } from "react-router-dom";
+import loader from "../images/loader.gif"
 
 import {useParams} from 'react-router-dom'
 
@@ -20,8 +21,9 @@ export default function Update_userdata() {
   const [messname,setmessname]=useState("")
   const userinfo=JSON.parse(localStorage.getItem('user'))
 
-  const [button,setbutton]=useState("Submit Feedback")
+  const [button,setbutton]=useState("Submit")
   const [disabled,setdisabled]=useState(false)
+  const [load,setload]=useState(true)
   
 
   useEffect(()=>{
@@ -41,6 +43,7 @@ export default function Update_userdata() {
               setname(res[0].name)
               setemail(res[0].email)
               setaddress(res[0].address)
+              setload(false)
             }
         })
     }
@@ -100,30 +103,36 @@ export default function Update_userdata() {
 
   return (
     <div className="container">
-    <div className="col-md-4 mt-3">
-        <h3>Update User</h3>
-    </div>
-    <div className="col-md-4 mt-2">
-      <div className="form-group">
-          <input type="email" value={email} onChange={(e)=>{setemail(e.target.value)}} disabled className="form-control" placeholder="Enter Email Id"  required/>
-          {wrongemail?<label  style={{color:"red"}}>*Invalid Email address</label>:""}
-      </div>
-    </div>
-    <div className="col-md-4 mt-2">
-      <div className="form-group">
-          <input type="text" value={name} onChange={(e)=>{setname(e.target.value)}}  className="form-control" placeholder="Enter Full Name"  required/>
-          {wrongname?<label  style={{color:"red"}}>{messname}</label>:""}
-      </div>
-    </div>
-    <div className="col-md-4 mt-2">
-      <div className="form-group">
-          <textarea type="text" value={address} onChange={(e)=>{setaddress(e.target.value)}}  className="form-control" placeholder="Enter Full Address"  required/>
-          {wrongaddress?<label  style={{color:"red"}}>{messaddress}</label>:""}
-      </div>
-    </div>
-    <div className="col-md-4 mt-3">
-        <button className="btn btn-primary" disabled={disabled} onClick={update}>{button}</button>
-    </div>
+      {
+        load==false?
+        <>
+        <div className="col-md-4 mt-3">
+            <h3>Update User</h3>
+        </div>
+        <div className="col-md-4 mt-2">
+          <div className="form-group">
+              <input type="email" value={email} onChange={(e)=>{setemail(e.target.value)}} disabled className="form-control" placeholder="Enter Email Id"  required/>
+              {wrongemail?<label  style={{color:"red"}}>*Invalid Email address</label>:""}
+          </div>
+        </div>
+        <div className="col-md-4 mt-2">
+          <div className="form-group">
+              <input type="text" value={name} onChange={(e)=>{setname(e.target.value)}}  className="form-control" placeholder="Enter Full Name"  required/>
+              {wrongname?<label  style={{color:"red"}}>{messname}</label>:""}
+          </div>
+        </div>
+        <div className="col-md-4 mt-2">
+          <div className="form-group">
+              <textarea type="text" value={address} onChange={(e)=>{setaddress(e.target.value)}}  className="form-control" placeholder="Enter Full Address"  required/>
+              {wrongaddress?<label  style={{color:"red"}}>{messaddress}</label>:""}
+          </div>
+        </div>
+        <div className="col-md-4 mt-3">
+            <button className="btn btn-primary" disabled={disabled} onClick={update}>{button}</button>
+        </div>
+        </>
+        :<div className='loader-container'><img src={loader} /></div>
+      }
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import loader from "../images/loader.gif"
-
+import {AiFillStar } from "react-icons/ai";
 export default function WishList() {
 
   let userinfo=JSON.parse(localStorage.getItem('user'))
@@ -111,12 +111,25 @@ export default function WishList() {
                            </div>
                        </div>
                        <div className='row'>
-                           <div className='col'>
-                              <button className='btn btn-primary btn-sm '>{item.rating} Star</button>
-                           </div>
-                           <div className=" col">
-                                  <h5 className="card-text" style={{color:'tomato'}}>₹{(item.price-((item.price*item.offer)/100)).toFixed(2)}</h5>
-                           </div>
+                       <div className='col'>
+                                {
+                                    parseInt(item.rating)==0?<button className='btn btn-secondary btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    :
+                                    parseInt(item.rating)==1?<button className='btn btn-danger btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    :
+                                    parseInt(item.rating)==2?<button className='btn btn-info btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    :
+                                    parseInt(item.rating)==3?<button className='btn btn-warning btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    :
+                                    parseInt(item.rating)==4?<button className='btn btn-primary btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    :
+                                    parseInt(item.rating)==5?<button className='btn btn-success btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    :""
+                                }
+                            </div>
+                            <div className=" col">
+                                    <h5 className="card-text" style={{color:'tomato'}}>₹{(item.price-((item.price*item.offer)/100)).toFixed(2)}</h5>
+                            </div>
                        </div>
                        {
                            item.total_number_of_product==0?
@@ -153,7 +166,12 @@ export default function WishList() {
          }
       </div>
       :
-      product && product.length?<div className='loader-container'><img src={loader} /></div>:"Product Not Found"
+      product && product.length?
+      <div className='loader-container'><img src={loader} /></div>
+      :
+        <div className='loader-container'>
+            <h4>Product Not Found</h4>
+        </div>
     }
   </>
  )

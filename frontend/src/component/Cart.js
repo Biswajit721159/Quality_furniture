@@ -241,7 +241,11 @@ const history=useNavigate()
                         </div>
                     </div>
                 </div>
-            )):cart!=null ?<div className='loader-container'><img src={loader} /></div>:"Product Not Found"
+            )):cart!=null ?<div className='loader-container'><img src={loader} /></div>
+            :
+            <div className='loader-container'>
+                <h4>Product Not Found</h4>
+            </div>
         }
        </div>
     </div>

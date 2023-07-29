@@ -96,7 +96,7 @@ const [disabled,setdisabled]=useState(false)
       setbutton("Please Wait....")
       setdisabled(true)
       fetch(`https://quality-furniture.vercel.app/usermail/${email}`).then(response=>response.json()).then((res)=>{
-      if(res.message==false)
+        if(res.message==false)
         {
             fetch('https://quality-furniture.vercel.app/register',{
                 method:'POST',
@@ -119,6 +119,8 @@ const [disabled,setdisabled]=useState(false)
         }
         else
         {
+          setbutton("Submit")
+          setdisabled(false)
           setwrongemail(true)
           setmessemail("*Email Already present")
         }

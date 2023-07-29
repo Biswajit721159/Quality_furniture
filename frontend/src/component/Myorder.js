@@ -120,7 +120,9 @@ export default function Myorder() {
                                     <th className='text-center' scope="row">{ind}</th>
                                     <td className='text-center'>
                                     <div className="card" style={{width: "18rem"}}>
+                                    <Link to={`/Product/${item.product_id}`}>
                                         <img className="card-img-top" src={item.newImage[0]} alt="Card image cap"/>
+                                    </Link>
                                             <div className="card-body">
                                                 <p className="card-text">{item.product_name}</p>
                                             </div>
@@ -140,7 +142,10 @@ export default function Myorder() {
                     }
                 </table>
                 </>
-                :load?<div className='loader-container'><img src={loader} /></div>:<h5>Product Not Found</h5>
+                :load?<div className='loader-container'><img src={loader} /></div>:
+                <div className='loader-container'>
+                    <h4>Product Not Found</h4>
+                </div>
             }
     </div>
   )
