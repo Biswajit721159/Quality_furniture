@@ -31,7 +31,7 @@ export default function Update_userdata() {
     }
     else
     {
-        fetch(`http://localhost:5000/user/${_id}`,{
+        fetch(`http://quality-furniture.vercel.app/user/${_id}`,{
           headers:{
             auth:`bearer ${userinfo.auth}`
           }
@@ -77,7 +77,7 @@ export default function Update_userdata() {
       {
           setbutton("Please wait...")
           setdisabled(true)
-          fetch(`http://localhost:5000/user/${_id}`,{
+          fetch(`http://quality-furniture.vercel.app/user/${_id}`,{
           method:'PUT',
           headers:{
               'Accept':'application/json',

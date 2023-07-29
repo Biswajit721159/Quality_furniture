@@ -36,7 +36,7 @@ export default function Buy() {
     let year = date.getFullYear();
     let currentDate = `${day}-${month}-${year}`;
 
-    fetch(`http://localhost:5000/product/${cart.product_id}`,{
+    fetch(`http://quality-furniture.vercel.app/product/${cart.product_id}`,{
       headers:{
         auth:`bearer ${userinfo.auth}`
     }
@@ -45,7 +45,7 @@ export default function Buy() {
       {
           if(product_data[0].total_number_of_product>=cart.product_count)
           {
-              fetch(`http://localhost:5000/product/${cart.product_id}`,{
+              fetch(`http://quality-furniture.vercel.app/product/${cart.product_id}`,{
                 method:'PUT',
                 headers:{
                     'Accept':'application/json',
@@ -57,7 +57,7 @@ export default function Buy() {
                   product_count:product_data[0].total_number_of_product-cart.product_count
                 })
               }).then(responce=>responce.json()).then((data)=>{
-                 fetch('http://localhost:5000/order',{
+                 fetch('http://quality-furniture.vercel.app/order',{
                   method:'POST',
                   headers:{
                       'Accept':'application/json',

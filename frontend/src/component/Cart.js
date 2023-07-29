@@ -18,7 +18,7 @@ const history=useNavigate()
     }
     else if(cart)
     {
-        fetch(`http://localhost:5000/product/${cart.product_id}`,{
+        fetch(`http://quality-furniture.vercel.app/product/${cart.product_id}`,{
             headers:{
                 auth:`bearer ${userinfo.auth}`
             }

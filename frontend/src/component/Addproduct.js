@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import avatar from '../images/result.png';
 import  '../App.css';
 import axios from 'axios';
-const url = "http://localhost:5000/uploads";
+const url = "http://quality-furniture.vercel.app/uploads";
 
 
 export default function Addproduct() {
@@ -118,7 +118,7 @@ export default function Addproduct() {
     {
       setbutton("Please wait....")
       setdisable(true)
-      fetch('http://localhost:5000/uploads',{
+      fetch('http://quality-furniture.vercel.app/uploads',{
         method:'POST',
         headers:{
           'Accept':'application/json',

@@ -19,7 +19,7 @@ const [disabled,setdisabled]=useState(false)
 
 
 useEffect(()=>{
-  fetch(`http://localhost:5000/product/${product_id}`,{
+  fetch(`http://quality-furniture.vercel.app/product/${product_id}`,{
     headers:
     {
         auth:`bearer ${userinfo.auth}`
@@ -45,7 +45,7 @@ function submit()
   let x=(a/b).toFixed(1);
   setbutton("Please Wait....")
   setdisabled(true)
-   fetch(`http://localhost:5000/RaingUpdateIntoProduct/${product_id}`,{
+   fetch(`http://quality-furniture.vercel.app/RaingUpdateIntoProduct/${product_id}`,{
     method:'PUT',
     headers:{
         'Accept':'application/json',
@@ -62,7 +62,7 @@ function submit()
    })
 
 
-   fetch('http://localhost:5000/Reviews',{
+   fetch('http://quality-furniture.vercel.app/Reviews',{
       method:'POST',
       headers:{
           'Accept':'application/json',
