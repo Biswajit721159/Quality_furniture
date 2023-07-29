@@ -14,7 +14,7 @@ export default function WishList() {
 
   function loadproduct()
   {
-    fetch('http://quality-furniture.vercel.app/product',{
+    fetch('https://quality-furniture.vercel.app/product',{
         headers:{
             auth:`bearer ${userinfo.auth}`
         }

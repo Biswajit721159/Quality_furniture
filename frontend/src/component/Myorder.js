@@ -19,17 +19,17 @@ export default function Myorder() {
     }
     else
     {
-        fetch(`http://quality-furniture.vercel.app/order/${userinfo.user.email}`,{
+        fetch(`https://quality-furniture.vercel.app/order/${userinfo.user.email}`,{
             headers:{
                 auth:`bearer ${userinfo.auth}`
             }
         }).then(responce=>responce.json()).then((order)=>{
-            fetch('http://quality-furniture.vercel.app/product',{
+            fetch('https://quality-furniture.vercel.app/product',{
                 headers:{
                     auth:`bearer ${userinfo.auth}`
                 }
             }).then(responce=>responce.json()).then((product)=>{
-                fetch('http://quality-furniture.vercel.app/Reviews',{
+                fetch('https://quality-furniture.vercel.app/Reviews',{
                     headers:{
                         auth:`bearer ${userinfo.auth}`
                     }

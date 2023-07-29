@@ -90,7 +90,7 @@ export default function Product_view() {
 
   function loadproduct()
   {
-    fetch(`http://quality-furniture.vercel.app/product/${_id._id}`,{
+    fetch(`https://quality-furniture.vercel.app/product/${_id._id}`,{
         headers:
         {
             auth:`bearer ${userinfo.auth}`
@@ -99,7 +99,7 @@ export default function Product_view() {
     then((data)=>{
         if(data!=undefined)
         {
-            fetch(`http://quality-furniture.vercel.app/Reviews/${_id._id}`,{
+            fetch(`https://quality-furniture.vercel.app/Reviews/${_id._id}`,{
                 headers:
                 {
                     auth:`bearer ${userinfo.auth}`

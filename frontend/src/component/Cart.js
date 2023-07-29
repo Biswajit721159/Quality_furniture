@@ -18,7 +18,7 @@ const history=useNavigate()
     }
     else if(cart)
     {
-        fetch(`http://quality-furniture.vercel.app/product/${cart.product_id}`,{
+        fetch(`https://quality-furniture.vercel.app/product/${cart.product_id}`,{
             headers:{
                 auth:`bearer ${userinfo.auth}`
             }

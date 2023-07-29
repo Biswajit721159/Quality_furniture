@@ -97,12 +97,12 @@ const [disabled,setdisabled]=useState(false)
     
     if(a && b && c && d)
     {
-      fetch(`http://quality-furniture.vercel.app/usermail/${email}`).then(response=>response.json()).then((res)=>{
+      fetch(`https://quality-furniture.vercel.app/usermail/${email}`).then(response=>response.json()).then((res)=>{
       if(res.message==false)
         {
           setbutton("Please Wait....")
           setdisabled(true)
-            fetch('http://quality-furniture.vercel.app/register',{
+            fetch('https://quality-furniture.vercel.app/register',{
                 method:'POST',
                 headers:{
                     'Accept':'application/json',

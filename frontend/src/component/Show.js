@@ -32,7 +32,7 @@ useEffect(()=>{
 
 function loadproduct()
 {
-    fetch('http://quality-furniture.vercel.app/product',{
+    fetch('https://quality-furniture.vercel.app/product',{
         headers:{
             auth:`bearer ${userinfo.auth}`
         }
@@ -135,7 +135,7 @@ function search(searchproduct)
     }
     else
     {
-        fetch(`http://quality-furniture.vercel.app/product/search/${searchproduct}`,{
+        fetch(`https://quality-furniture.vercel.app/product/search/${searchproduct}`,{
             headers:{
                 auth:`bearer ${userinfo.auth}`
             }
