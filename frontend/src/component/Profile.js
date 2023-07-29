@@ -1,0 +1,36 @@
+import React, { useEffect, useState } from 'react'
+import {Link, useNavigate} from 'react-router-dom'
+export default function Profile() {
+
+  const user=JSON.parse(localStorage.getItem('user'));
+  const history=useNavigate()
+
+  useEffect(()=>{
+    if(user==null)
+    {
+      history('/Register')
+    }
+  },[])
+
+
+  return (
+    <div className='container mt-3'>
+      {
+        user?
+        <div className='container shadow-lg p-3 mb-5 bg-white rounded center'>
+         {
+         
+          <div>
+            <h3>Welcome {user.user.name}</h3>
+            <h4>Email : {user.user.email}</h4>
+            <h4>Address : {user.user.address}</h4>
+            <Link to={`${user.user._id}`}><button className='btn btn-primary'>update</button></Link>
+            <Link to={'/Myorder'}><button className='btn btn-primary mx-5'>Myorder</button></Link>
+          </div>
+         }
+        </div>
+        :<h1>Profile Not Found</h1>
+      }
+    </div>
+  )
+}
