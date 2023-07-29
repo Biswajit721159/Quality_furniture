@@ -20,7 +20,7 @@ const [messemail,setmessemail]=useState("")
 const [messpassword,setmesspassword]=useState("");
 const [messaddress,setmessaddress]=useState("")
 
-const [button,setbutton]=useState("Submit Feedback")
+const [button,setbutton]=useState("Submit")
 const [disabled,setdisabled]=useState(false)
 
 
