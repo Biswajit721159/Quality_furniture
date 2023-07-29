@@ -32,6 +32,7 @@ useEffect(()=>{
 
 function loadproduct()
 {
+    setload(true)
     fetch('https://quality-furniture.vercel.app/product',{
         headers:{
             auth:`bearer ${userinfo.auth}`
@@ -168,13 +169,54 @@ function PriceLowToHigh()
     setdata([...data])
 }
 
+function clearallfilter()
+{
+    setdropdown("Search In Catagory")
+    loadproduct()
+}
+
 function PriceHighToLow()
 {
     setdropdown("Price High To Low")
-    setdropdown("Price Low To High")
     data.sort((a, b) => {
         let fa = parseInt(a.price),
             fb = parseInt(b.price);
+    
+        if (fa > fb) {
+            return -1;
+        }
+        if (fa < fb) {
+            return 1;
+        }
+        return 0;
+    });
+    setdata([...data])
+}
+
+function SortOnRating()
+{
+    setdropdown("Sort On Rating")
+    data.sort((a, b) => {
+        let fa = parseFloat(a.rating),
+            fb = parseFloat(b.rating);
+    
+        if (fa > fb) {
+            return -1;
+        }
+        if (fa < fb) {
+            return 1;
+        }
+        return 0;
+    });
+    setdata([...data])
+}
+
+function SortOnOffer()
+{
+    setdropdown("Sort On Offer")
+    data.sort((a, b) => {
+        let fa = parseInt(a.offer),
+            fb = parseInt(b.offer);
     
         if (fa > fb) {
             return -1;
@@ -275,14 +317,17 @@ function ADD_TO_INCREMENT(id)
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <Link className="dropdown-item" onClick={PriceLowToHigh}>Price Low To High</Link>
                         <Link className="dropdown-item" onClick={PriceHighToLow} >Price High To Low</Link>
+                        <Link className="dropdown-item" onClick={SortOnRating} >Sort On Rating</Link>
+                        <Link className="dropdown-item" onClick={SortOnOffer} >Sort Offer</Link>
+                        <Link className="dropdown-item" onClick={clearallfilter} >Clear Filter</Link>
                     </div>
                 </div>
             </div>
         
             <div className='col mt-1'>
                 <div className="form-inline mt-1 my-2 my-lg-0">
-                    <input className="form-control mr-sm-2" value={searchproduct} name='search' onChange={(e)=>{setsearchproduct(e.target.value)}}  type="search" placeholder="Search product , price , product Type" aria-label="Search"/>
-                    <button className="btn btn-success btn-sm my-2 my-sm-0" onClick={()=>search(searchproduct)} type="submit">Search</button>
+                    <input className="form-control mr-sm-2" value={searchproduct} name='search' onChange={(e)=>{setsearchproduct(e.target.value)}}  type="search" placeholder="Search product" aria-label="Search"/>
+                    <button className="btn btn-success my-2 my-sm-0" onClick={()=>search(searchproduct)} type="submit">Search</button>
                 </div>
             </div>
         </div>
@@ -404,10 +449,14 @@ function ADD_TO_INCREMENT(id)
                     </div>
                 </div>
             ))
-          }
+        }
           </div>
         </>
-        :load?<div className='loader-container'><img src={loader} /></div>:<div className='product'><h4>Product Not Found</h4></div>}
+        :load?<div className='loader-container'><img src={loader} /></div>
+        :<div className='loader-container'>
+            <h4>Product Not Found</h4>
+            <button className='btn btn-primary mx-3' onClick={()=>search("")} >Go Product</button>
+        </div>}
     </>
   )
 }

@@ -90,18 +90,14 @@ const [disabled,setdisabled]=useState(false)
     setwrongemail(!b)
     setwrongpasword(!c)
     setwrongaddress(!d)
-    // console.log(a);
-    // console.log(b);
-    // console.log(c);
-    // console.log(d);
     
     if(a && b && c && d)
     {
+      setbutton("Please Wait....")
+      setdisabled(true)
       fetch(`https://quality-furniture.vercel.app/usermail/${email}`).then(response=>response.json()).then((res)=>{
       if(res.message==false)
         {
-          setbutton("Please Wait....")
-          setdisabled(true)
             fetch('https://quality-furniture.vercel.app/register',{
                 method:'POST',
                 headers:{

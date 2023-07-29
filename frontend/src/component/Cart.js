@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, json, useNavigate } from 'react-router-dom'
+import {AiFillStar } from "react-icons/ai";
+import {FaHeart} from 'react-icons/fa';
 import loader from "../images/loader.gif"
 
 export default function Cart() {
@@ -167,10 +169,23 @@ const history=useNavigate()
                         </div>
                         <div className='row'>
                             <div className='col'>
-                               <button className='btn btn-success btn-sm '>{item.rating} Star</button>
+                                {
+                                    parseInt(item.rating)==0?<button className='btn btn-secondary btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    :
+                                    parseInt(item.rating)==1?<button className='btn btn-danger btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    :
+                                    parseInt(item.rating)==2?<button className='btn btn-info btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    :
+                                    parseInt(item.rating)==3?<button className='btn btn-warning btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    :
+                                    parseInt(item.rating)==4?<button className='btn btn-primary btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    :
+                                    parseInt(item.rating)==5?<button className='btn btn-success btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    :""
+                                }
                             </div>
                             <div className=" col">
-                                   <h5 className="card-text" style={{color:'tomato'}}>₹{(item.price-((item.price*item.offer)/100)).toFixed(2)}</h5>
+                                    <h5 className="card-text" style={{color:'tomato'}}>₹{(item.price-((item.price*item.offer)/100)).toFixed(2)}</h5>
                             </div>
                         </div>
                         {
