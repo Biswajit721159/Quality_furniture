@@ -27,7 +27,7 @@ function App() {
             <Route path="/" element={<Product/>}></Route>
             <Route path="/Product" element={<Show/>}></Route>
             <Route path="/Product/:_id" element={<Product_view/>}></Route>
-            <Route path="/addProduct"element={<Addproduct/>}></Route>
+            {/* <Route path="/addProduct"element={<Addproduct/>}></Route> */}
             <Route path="/Profile" element={<Profile/>}></Route>
             <Route path="/Profile/:_id" element={<Update_userdata/>}></Route>
             <Route path="/wishlist" element={<WishList/>}></Route>

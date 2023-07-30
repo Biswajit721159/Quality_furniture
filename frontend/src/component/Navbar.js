@@ -18,7 +18,7 @@ const Navbar=()=>{
                  <div className='container1'>
                     <li><Link to={'/'} style={{textDecoration:"none",color:"black"}}>Quality Furniture</Link></li>
                     <li><Link to={'/Product'} style={{textDecoration:"none",color:"black"}}>Buy Products</Link></li>
-                    <li><Link to={'/addProduct'} style={{textDecoration:"none",color:"black"}}>Add Products</Link></li>
+                    {/* <li><Link to={'/addProduct'} style={{textDecoration:"none",color:"black"}}>Add Products</Link></li> */}
                     <li><Link to={'/Cart'} style={{textDecoration:"none",color:"black"}}>Cart</Link></li>
                     {/* <li><Link to={'/Profile'} style={{textDecoration:"none",color:"black",float:"right"}}>Profile</Link></li>
                     <li><Link onClick={logout} to={'/Register'} style={{textDecoration:"none",color:"black"}}>Logout</Link></li> */}

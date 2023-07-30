@@ -155,8 +155,8 @@ function PriceLowToHigh()
 {
     setdropdown("Price Low To High")
     data.sort((a, b) => {
-        let fa = parseInt(a.price),
-            fb = parseInt(b.price);
+        let fa = parseInt(a.price-((a.price*a.offer)/100))
+        let fb = parseInt(b.price-((b.price*b.offer)/100))
     
         if (fa < fb) {
             return -1;
@@ -179,8 +179,8 @@ function PriceHighToLow()
 {
     setdropdown("Price High To Low")
     data.sort((a, b) => {
-        let fa = parseInt(a.price),
-            fb = parseInt(b.price);
+        let fa = parseInt(a.price-((a.price*a.offer)/100))
+        let fb = parseInt(b.price-((b.price*b.offer)/100))
     
         if (fa > fb) {
             return -1;
