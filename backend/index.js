@@ -60,13 +60,13 @@ app.get("/order", verifytoken, async (req, resp) => {
   }
 });
 
-app.get("/order/:id", verifytoken, async (req, resp) => {
+app.get("/order/order_id/:id", verifytoken, async (req, resp) => {
   try {
     let data = await dbconnect_order();
     let result = await data.find().toArray();
     let ans = [];
     for (let i = 0; i < result.length; i++) {
-      if (result[i]._id == req.params._id) {
+      if (result[i]._id == req.params.id) {
         ans.push(result[i]);
         break;
       }
@@ -76,6 +76,8 @@ app.get("/order/:id", verifytoken, async (req, resp) => {
     console.log(error);
   }
 });
+
+
 
 app.post("/order",verifytoken, async (req, resp) => {
   try {

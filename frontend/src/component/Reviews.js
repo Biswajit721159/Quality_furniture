@@ -26,30 +26,34 @@ const [disabled,setdisabled]=useState(false)
 
 useEffect(()=>{
   fetch(`https://quality-furniture.vercel.app/product/${product_id}`,{
-    headers:
-    {
+    headers:{
         auth:`bearer ${userinfo.auth}`
     }
   }).then(responce=>responce.json()).then((result)=>{
     if(result!=undefined)
     {
-      setproduct(result)
-      setload(false)
+      fetch(`https://quality-furniture.vercel.app/order/order_id/${order_id}`,{
+        headers:{
+            auth:`bearer ${userinfo.auth}`
+          }
+        }).then(responce=>responce.json())
+        .then((res)=>{ 
+          if(res!=undefined)
+          {
+            if(res.length==0)
+            {
+              setproduct([])
+            }
+            else
+            {
+              setproduct(result)
+            }
+            setload(false)
+          }
+      })
     }
   })
 
-  // fetch(`https://quality-furniture.vercel.app/order/${order_id}`,{
-  //   headers:{
-  //       auth:`bearer ${userinfo.auth}`
-  //     }
-  //   }).then(responce=>responce.json())
-  //   .then((res)=>{ 
-  //     if(res!=undefined && res.length==0)
-  //     {
-  //       setproduct([])
-  //       setload(false)
-  //     }
-  // })
  
 },[])
 
