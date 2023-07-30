@@ -7,7 +7,7 @@ const [email,setemail]=useState("")
 const [password,setpassword]=useState("")
 const history=useNavigate();
 const [wronguser,setwronguser]=useState(false)
-const [button,setbutton]=useState("Submit Feedback")
+const [button,setbutton]=useState("Submit")
 const [disabled,setdisabled]=useState(false)
 
 

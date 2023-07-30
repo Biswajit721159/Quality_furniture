@@ -5,7 +5,7 @@ import loader from "../images/loader.gif"
 
 export default function Product_view() {
 
-  const [product,setproduct]=useState()
+  const [product,setproduct]=useState([])
   const [review_data,setreview_data]=useState()
   const _id=useParams()
   const history=useNavigate()
@@ -29,6 +29,7 @@ export default function Product_view() {
   
   const [reviews_data_show,setreviews_data_show]=useState([])
   let [Message,setMessage]=useState(true)
+  let [load,setload]=useState(true)
 
   useEffect(()=>{
     if(userinfo==null)
@@ -97,7 +98,7 @@ export default function Product_view() {
         }
     }).then(response=>response.json()).
     then((data)=>{
-        if(data!=undefined)
+        if(data!=undefined && data.length!=0)
         {
             fetch(`https://quality-furniture.vercel.app/Reviews/${_id._id}`,{
                 headers:
@@ -111,8 +112,13 @@ export default function Product_view() {
                     setproduct(data)
                     Find_Review(res,data)
                     loadmore(res)
+                    setload(false)
                 }
             })
+        }
+        else
+        {
+            setload(false)
         }
     })
 
@@ -150,10 +156,12 @@ export default function Product_view() {
         setMessage(false)
     }
   }
+
+
   return (
      <div className='container mt-3'>
         {
-          product !=undefined?
+         load==false && product.length!=0?
           <div>
            <div className='row'>
               <div className='col'>
@@ -261,7 +269,10 @@ export default function Product_view() {
             }
            </div>
            </div>
-          :<div className='loader-container'><img src={loader} /></div>
+          :load?<div className='loader-container'><img src={loader} /></div>:
+          <div className='loader-container'>
+            <h4>Product Not Found</h4>
+          </div>
         }
     </div>
   )
