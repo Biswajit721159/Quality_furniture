@@ -98,7 +98,7 @@ export default function Myorder() {
             data!=undefined && data.length!=0 ?
             <>
                 {userinfo?<h4>Your order {userinfo.user.name}</h4>:""}
-                <table className="table table-striped shadow-lg p-0 mb-2 bg-white rounded">
+                <table className="table table table-bordered  shadow-lg p-3 mb-5 bg-white rounded">
                     <thead>
                         <tr>
                             <th className='text-center' scope="col">#</th>
@@ -119,7 +119,7 @@ export default function Myorder() {
                                 <tr key={ind}>
                                     <th className='text-center' scope="row">{ind}</th>
                                     <td className='text-center'>
-                                    <div className="card" style={{width: "18rem"}}>
+                                    <div className="card" style={{width: "10rem"}}>
                                     <Link to={`/Product/${item.product_id}`}>
                                         <img className="card-img-top" src={item.newImage[0]} alt="Card image cap"/>
                                     </Link>
