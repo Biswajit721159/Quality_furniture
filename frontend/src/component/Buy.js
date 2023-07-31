@@ -1,19 +1,22 @@
 import React,{useEffect, useState} from 'react'
 import {useParams} from 'react-router-dom'
 import { json, useNavigate } from "react-router-dom";
+import loader from "../images/loader.gif"
+
 
 export default function Buy() {
 
   const userinfo=JSON.parse(localStorage.getItem('user'))
   const cart=JSON.parse(localStorage.getItem('cart'))
-  let cost=useParams().cost
-
   const [address,setaddress]=useState()
   const history=useNavigate();
   const [wrongaddress,setwrongaddress]=useState(false)
   const [messaddress,setmessaddress]=useState("")
   const [button,setbutton]=useState("Submit")
   const [disabled,setdisabled]=useState(false)
+  const [product,setproduct]=useState([])
+  const [load,setload]=useState(true)
+  let [cost,setcost]=useState(0);
 
   useEffect(()=>{
     if(userinfo==null)
@@ -23,6 +26,22 @@ export default function Buy() {
     else
     {
       setaddress(userinfo.user.address)
+      fetch(`https://quality-furniture.vercel.app/product/${cart.product_id}`,{
+        headers:
+        {
+            auth:`bearer ${userinfo.auth}`
+        }
+      }).then(responce=>responce.json()).then((res)=>{
+        if(product!=undefined)
+        {
+          let price=parseInt(res[0].price);
+          let offer=parseInt(res[0].offer)
+          let actualprice=(price)-((price*offer)/100);
+          let x=(actualprice*cart.product_count).toFixed(2);
+          setcost(x)
+          setload(false)
+        }
+      })
     }
   },[])
 
@@ -90,8 +109,9 @@ export default function Buy() {
   
   return (
     <div className='container center'>
-       
-         {
+      {
+        load==false?
+         
           userinfo?
           <div>
             <div className='col-md-4 mt-2' style={{color:"green"}}>*Process to next step</div>
@@ -124,8 +144,8 @@ export default function Buy() {
             </div>
           </div>
           :<h1>Page Not Found</h1>
-         }
-      
+         :<div className='loader-container'><img src={loader} /></div>
+      }
     </div>
   )
 }
