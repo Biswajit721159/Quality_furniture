@@ -96,7 +96,7 @@ export default function WishList() {
        (data && data.length !=0) ?
       <div className='container align-items-center  mx-5 row'>
          { data.map((item,ind)=>(
-               <div key={ind} className="card mx-4 mt-4" style={{width: "18rem", height:"26rem"}}>
+               <div key={ind} className="card mx-4 mt-4" style={{width: "18rem", height:"26rem",backgroundColor:"#D6DBDF"}}>
                    <Link to={`/Product/${item._id}`}>
                        <img className="card-img-top" src={item.newImage[0]} style={{height:"200px",width:"287px"}} alt="Card image cap"/>
                    </Link>

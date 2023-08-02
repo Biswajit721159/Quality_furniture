@@ -93,60 +93,61 @@ export default function Myorder() {
   }
   
   return (
-    <div className='container'>
+    <>
         {
             data!=undefined && data.length!=0 ?
-            <>
-                {userinfo?<h4>Your order {userinfo.user.name}</h4>:""}
-                <table className="table table table-bordered  shadow-lg p-3 mb-5 bg-white rounded">
-                    <thead>
-                        <tr>
-                            <th className='text-center' scope="col">#</th>
-                            <th className='text-center' scope="col">Product Name</th>
-                            <th className='text-center' scope="col">Product Count</th>
-                            <th className='text-center' scope="col">Payment Method</th>
-                            <th className='text-center' scope="col">Total_rupess</th>
-                            <th className='text-center' scope="col">Date</th>
-                            <th className='text-center' scope="col">Address</th>
-                            <th className='text-center' scope="col">Feedback</th>
-                        </tr>
-                    </thead>
-                    {
-                        
-                        <tbody>
-                            {
-                            data.map((item,ind)=>(
-                                <tr key={ind}>
-                                    <th className='text-center' scope="row">{ind}</th>
-                                    <td className='text-center'>
-                                    <div className="card" style={{width: "10rem"}}>
-                                    <Link to={`/Product/${item.product_id}`}>
-                                        <img className="card-img-top" src={item.newImage[0]} alt="Card image cap"/>
-                                    </Link>
-                                            <div className="card-body">
-                                                <p className="card-text">{item.product_name}</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className='text-center'>{item.product_count}</td>
-                                    <td className='text-center'>{item.payment_method}</td>
-                                    <td className='text-center'>{item.Total_rupess}</td>
-                                    <td className='text-center'>{item.Date}</td>
-                                    <td onClick={()=>{showaddress(item.address)}}><button type="button" className="btn btn-default">Show Address</button></td>
-                                    {item.isfeedback?<td><Link to={`/${item.id}/${item.product_id}/Reviews`}><button className='btn btn-warning' disabled>Already Given</button></Link></td>:
-                                    <td><Link to={`/${item.id}/${item.product_id}/Reviews`}><button className='btn btn-primary'>Give Feedback</button></Link></td>}
-                                </tr>
-                            ))
-                            }
-                        </tbody>
-                    }
-                </table>
-                </>
-                :load?<div className='loader-container'><img src={loader} /></div>:
-                <div className='loader-container'>
-                    <h4>Product Not Found</h4>
+                <div className='container'>
+                            {userinfo?<h4>Your order {userinfo.user.name}</h4>:""}
+                            <table className="table table table-bordered  shadow-lg p-3 mb-5 bg-white rounded">
+                                <thead>
+                                    <tr>
+                                        <th className='text-center' scope="col">#</th>
+                                        <th className='text-center' scope="col">Product Name</th>
+                                        <th className='text-center' scope="col">Product Count</th>
+                                        <th className='text-center' scope="col">Payment Method</th>
+                                        <th className='text-center' scope="col">Total_rupess</th>
+                                        <th className='text-center' scope="col">Date</th>
+                                        <th className='text-center' scope="col">Address</th>
+                                        <th className='text-center' scope="col">Feedback</th>
+                                    </tr>
+                                </thead>
+                                {
+                                    
+                                    <tbody>
+                                        {
+                                        data.map((item,ind)=>(
+                                            <tr key={ind}>
+                                                <th className='text-center' scope="row">{ind}</th>
+                                                <td className='text-center'>
+                                                <div className="card" style={{width: "10rem",backgroundColor:"#D6DBDF"}}>
+                                                <Link to={`/Product/${item.product_id}`}>
+                                                    <img className="card-img-top" src={item.newImage[0]} alt="Card image cap"/>
+                                                </Link>
+                                                        <div className="card-body">
+                                                            <p className="card-text">{item.product_name}</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td className='text-center'>{item.product_count}</td>
+                                                <td className='text-center'>{item.payment_method}</td>
+                                                <td className='text-center'>{item.Total_rupess}</td>
+                                                <td className='text-center'>{item.Date}</td>
+                                                <td onClick={()=>{showaddress(item.address)}}><button type="button" className="btn btn-default">Show Address</button></td>
+                                                {item.isfeedback?<td><Link to={`/${item.id}/${item.product_id}/Reviews`}><button className='btn btn-warning' disabled>Already Given</button></Link></td>:
+                                                <td><Link to={`/${item.id}/${item.product_id}/Reviews`}><button className='btn btn-primary'>Give Feedback</button></Link></td>}
+                                            </tr>
+                                        ))
+                                        }
+                                    </tbody>
+                                }
+                            </table>
+
                 </div>
-            }
-    </div>
+            :load?<div className='loader-container'><img src={loader} /></div>:
+            <div className='loader-container'>
+                <h4>Product Not Found</h4>
+            </div>
+        }    
+    </>
   )
 }

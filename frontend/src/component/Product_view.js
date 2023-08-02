@@ -159,121 +159,126 @@ export default function Product_view() {
 
 
   return (
-     <div className='container mt-3'>
-        {
-         load==false && product.length!=0?
-          <div>
-           <div className='row'>
-              <div className='col'>
-                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                  <div class="carousel-inner">
-                      <div class="carousel-item active">
-                          <img class="d-block w-100" src={product[0].newImage[0]} style={{height:"350px", width:"100px"}} alt="First slide"/>
-                      </div>
-                      <div class="carousel-item">
-                          <img class="d-block w-100" src={product[0].newImage[1]} style={{height:"350px", width:"100px"}}  alt="Second slide"/>
-                      </div>
-                      <div class="carousel-item">
-                          <img class="d-block w-100" src={product[0].newImage[2]} style={{height:"350px", width:"100px"}}  alt="Third slide"/>
-                      </div>
-                  </div>
-                  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                      <span class="carousel-control-prev-icon" style={{backgroundColor:"black"}}  aria-hidden="true"></span>
-                      <span class="sr-only">Previous</span>
-                  </a>
-                  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                      <span class="carousel-control-next-icon" style={{backgroundColor:"black"}}  aria-hidden="true"></span>
-                      <span class="sr-only">Next</span>
-                  </a>
-                </div>
-                </div>
-                <div className='col mx-3'>
-                    <p className='mt-4'>{overall_rating} <AiFillStar /> average based on {total} reviews.</p>
-                    <div class="row">
-                        <div class="side">
-                            <div>5 <AiFillStar /></div>
+    <>
+    {
+        load==false && product.length!=0?
+    
+        <div className='container mt-3'>
+            <div>
+            <div className='row'>
+                <div className='col'>
+                    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img class="d-block w-100" src={product[0].newImage[0]} style={{height:"350px", width:"100px"}} alt="First slide"/>
                         </div>
-                        <div class="middle">
-                            <div class="bar-container">
-                            <div class="bar-5" style={{width:`${persentage_5_star}%` , height: "18px",backgroundColor: "#04AA6D"}}></div>
-                            </div>
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src={product[0].newImage[1]} style={{height:"350px", width:"100px"}}  alt="Second slide"/>
                         </div>
-                        <div class="side right">
-                            <div>{number_5_star}</div>
-                        </div>
-                        <div class="side">
-                            <div>4 <AiFillStar /></div>
-                        </div>
-                        <div class="middle">
-                            <div class="bar-container">
-                            <div class="bar-4"  style={{width:`${persentage_4_star}%` , height: "18px",backgroundColor: "#2196F3"}}></div>
-                            </div>
-                        </div>
-                        <div class="side right">
-                            <div>{number_4_star}</div>
-                        </div>
-                        <div class="side">
-                            <div>3 <AiFillStar /></div>
-                        </div>
-                        <div class="middle">
-                            <div class="bar-container">
-                            <div class="bar-3" style={{width:`${persentage_3_star}%` , height: "18px",backgroundColor: "#00bcd4"}}></div>
-                            </div>
-                        </div>
-                        <div class="side right">
-                            <div>{number_3_star}</div>
-                        </div>
-                        <div class="side">
-                            <div>2 <AiFillStar /></div>
-                        </div>
-                        <div class="middle">
-                            <div class="bar-container">
-                            <div class="bar-2" style={{width:`${persentage_2_star}%` , height: "18px",backgroundColor: "#ff9800"}}></div>
-                            </div>
-                        </div>
-                        <div class="side right">
-                            <div>{number_2_star}</div>
-                        </div>
-                        <div class="side">
-                            <div>1 <AiFillStar /></div>
-                        </div>
-                        <div class="middle">
-                            <div class="bar-container">
-                            <div class="bar-1" style={{width:`${persentage_1_star}%` , height: "18px",backgroundColor: "#f44336"}}></div>
-                            </div>
-                        </div>
-                        <div class="side right">
-                            <div>{number_1_star}</div>
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src={product[0].newImage[2]} style={{height:"350px", width:"100px"}}  alt="Third slide"/>
                         </div>
                     </div>
-                </div>
-           </div>
-           <div className='col mt-5 mx-5'>
-           {
-                reviews_data_show!=undefined && reviews_data_show.length!=0?
-                    <div>
-                        {
-                            reviews_data_show.map((data,ind)=>(
-                            <ui>
-                                <li>
-                                    {data.review!=undefined?<span>Message : {data.review}</span>:""}
-                                    {data.rating!=undefined?<li style={{color:"green"}}>Over All Rating : {data.rating} <AiFillStar /></li>:""}
-                                    <br></br>
-                                </li>
-                            </ui>
-                            ))
-                         }
-                         {Message?<button className='btn btn-primary my-4' onClick={()=>{loadmorenow(review_data)}}>Load More</button>:""}
+                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" style={{backgroundColor:"black"}}  aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" style={{backgroundColor:"black"}}  aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
                     </div>
-                :<h2  className="col-md-12 text-center"  style={{marginTop:"100px",color: "#F1C8CE" }}>Review is not Posted</h2>
-            }
-           </div>
-           </div>
-          :load?<div className='loader-container'><img src={loader} /></div>:
-          <div className='loader-container'>
-            <h4>Product Not Found</h4>
-          </div>
-        }
-    </div>
+                    </div>
+                    <div className='col mx-3'>
+                        <p className='mt-4'>{overall_rating} <AiFillStar /> average based on {total} reviews.</p>
+                        <div class="row">
+                            <div class="side">
+                                <div>5 <AiFillStar /></div>
+                            </div>
+                            <div class="middle">
+                                <div class="bar-container">
+                                <div class="bar-5" style={{width:`${persentage_5_star}%` , height: "18px",backgroundColor: "#04AA6D"}}></div>
+                                </div>
+                            </div>
+                            <div class="side right">
+                                <div>{number_5_star}</div>
+                            </div>
+                            <div class="side">
+                                <div>4 <AiFillStar /></div>
+                            </div>
+                            <div class="middle">
+                                <div class="bar-container">
+                                <div class="bar-4"  style={{width:`${persentage_4_star}%` , height: "18px",backgroundColor: "#2196F3"}}></div>
+                                </div>
+                            </div>
+                            <div class="side right">
+                                <div>{number_4_star}</div>
+                            </div>
+                            <div class="side">
+                                <div>3 <AiFillStar /></div>
+                            </div>
+                            <div class="middle">
+                                <div class="bar-container">
+                                <div class="bar-3" style={{width:`${persentage_3_star}%` , height: "18px",backgroundColor: "#00bcd4"}}></div>
+                                </div>
+                            </div>
+                            <div class="side right">
+                                <div>{number_3_star}</div>
+                            </div>
+                            <div class="side">
+                                <div>2 <AiFillStar /></div>
+                            </div>
+                            <div class="middle">
+                                <div class="bar-container">
+                                <div class="bar-2" style={{width:`${persentage_2_star}%` , height: "18px",backgroundColor: "#ff9800"}}></div>
+                                </div>
+                            </div>
+                            <div class="side right">
+                                <div>{number_2_star}</div>
+                            </div>
+                            <div class="side">
+                                <div>1 <AiFillStar /></div>
+                            </div>
+                            <div class="middle">
+                                <div class="bar-container">
+                                <div class="bar-1" style={{width:`${persentage_1_star}%` , height: "18px",backgroundColor: "#f44336"}}></div>
+                                </div>
+                            </div>
+                            <div class="side right">
+                                <div>{number_1_star}</div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div className='col mt-5 mx-5'>
+            {
+                    reviews_data_show!=undefined && reviews_data_show.length!=0?
+                        <div>
+                            {
+                                reviews_data_show.map((data,ind)=>(
+                                <ui>
+                                    <li>
+                                        {data.review!=undefined?<span>Message : {data.review}</span>:""}
+                                        {data.rating!=undefined?<li style={{color:"green"}}>Over All Rating : {data.rating} <AiFillStar /></li>:""}
+                                        <br></br>
+                                    </li>
+                                </ui>
+                                ))
+                            }
+                            {Message?<button className='btn btn-primary my-4' onClick={()=>{loadmorenow(review_data)}}>Load More</button>:""}
+                        </div>
+                    :<h2  className="col-md-12 text-center"  style={{marginTop:"100px",color: "#F1C8CE" }}>Review is not Posted</h2>
+                }
+            </div>
+            </div>
+        </div>
+        :load?
+            <div className='loader-container'><img src={loader} /></div>
+            :
+            <div className='loader-container'>
+                <h4>Product Not Found</h4>
+            </div>
+    }
+    </>
   )
 }

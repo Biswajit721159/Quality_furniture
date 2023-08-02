@@ -17,6 +17,7 @@ const [searchproduct,setsearchproduct]=useState("")
 let userinfo=JSON.parse(localStorage.getItem('user'))
 let wishlist=JSON.parse(localStorage.getItem('Wishlist'))
 let [load,setload]=useState(true)
+let [priceRange,setpriceRange]=useState("Price Range")
 
 useEffect(()=>{
     if(userinfo==null)
@@ -172,6 +173,7 @@ function PriceLowToHigh()
 function clearallfilter()
 {
     setdropdown("Search In Catagory")
+    setpriceRange("Price Range")
     loadproduct()
 }
 
@@ -303,6 +305,31 @@ function ADD_TO_INCREMENT(id)
     setToproduct(product,cart)
 }
 
+function findPriceRange(low,high)
+{
+    if(low==0)
+    {
+        setpriceRange(`UNDER ₹ ${high}`)
+    }
+    else if(high==Math.pow(2,31))
+    {
+        setpriceRange(`Over ₹ ${low}`)
+    }
+    else
+    {
+        setpriceRange(`₹ ${low} - ₹ ${high}`)
+    }
+    let ans=[]
+    for(let i=0;i<data.length;i++)
+    {
+        let price=parseInt(data[i].price-((data[i].price*data[i].offer)/100));
+        if(price>=low && price<=high)
+        {
+            ans.push(data[i]);
+        }
+    }
+    setdata([...ans])
+}
 
   return (
     <>
@@ -323,7 +350,21 @@ function ADD_TO_INCREMENT(id)
                     </div>
                 </div>
             </div>
-        
+            <div className='col'>
+                <div className="dropdown mt-1">
+                    <button className="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     {priceRange}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <Link className="dropdown-item" onClick={()=>{findPriceRange(0,1000)}}>UNDER ₹ 1000</Link>
+                        <Link className="dropdown-item" onClick={()=>{findPriceRange(1000,2000)}} >₹ 1000 - ₹ 2000</Link>
+                        <Link className="dropdown-item" onClick={()=>{findPriceRange(2000,3000)}} >₹ 2000 - ₹ 3000</Link>
+                        <Link className="dropdown-item" onClick={()=>{findPriceRange(3000,4000)}} >₹ 3000 - ₹ 4000</Link>
+                        <Link className="dropdown-item" onClick={()=>{findPriceRange(4000,Math.pow(2,31))}} >Over ₹ 4000</Link>
+                        <Link className="dropdown-item" onClick={clearallfilter} >Clear Filter</Link>
+                    </div>
+                </div>
+            </div>
             <div className='col mt-1'>
                 <div className="form-inline mt-1 my-2 my-lg-0">
                     <input className="form-control mr-sm-2" value={searchproduct} name='search' onChange={(e)=>{setsearchproduct(e.target.value)}}  type="search" placeholder="Search product" aria-label="Search"/>
@@ -334,7 +375,7 @@ function ADD_TO_INCREMENT(id)
 
         <div className='container align-items-center  mx-5 row'>
         { data.map((item,ind)=>(
-                <div key={ind} className="card mx-4 mt-4" style={{width: "18rem", height:"auto"}}>
+                <div key={ind} className="card mx-4 mt-4" style={{width: "18rem", height:"auto",backgroundColor:"#D6DBDF"}}>
                     <Link to={`/Product/${item._id}`}>
                         <img className="card-img-top" src={item.newImage[0]} style={{height:"200px",width:"287px"}} alt="Card image cap"/>
                     </Link>
@@ -455,7 +496,7 @@ function ADD_TO_INCREMENT(id)
         :load?<div className='loader-container'><img src={loader} /></div>
         :<div className='loader-container'>
             <h4>Product Not Found</h4>
-            <button className='btn btn-primary mx-3' onClick={()=>search("")} >Go Product</button>
+            <button className='btn btn-primary mx-3' onClick={()=>search("")} >Get Product</button>
         </div>
         }
     </>
