@@ -108,44 +108,46 @@ export default function Buy() {
   }
   
   return (
-    <div className='container center'>
-      {
-        load==false?
-         
-          userinfo?
-          <div>
-            <div className='col-md-4 mt-2' style={{color:"green"}}>*Process to next step</div>
-            <div className="col-md-4 mt-4">
-                <div className="form-group">
-                    <input type="email" value={userinfo.user.email} disabled className="form-control" placeholder="Enter Email Id"  required/>
+    <>
+    { load==false?
+        <div className='container center'>
+          {
+              userinfo?
+              <div>
+                <div className='col-md-4 mt-2' style={{color:"green"}}>*Process to next step</div>
+                <div className="col-md-4 mt-4">
+                    <div className="form-group">
+                        <input type="email" value={userinfo.user.email} disabled className="form-control" placeholder="Enter Email Id"  required/>
+                    </div>
                 </div>
-            </div>
-            <div className="col-md-4 mt-4">
-                <div className="form-group">
-                    <input type="number" value={cost} disabled className="form-control"   required/>
+                <div className="col-md-4 mt-4">
+                    <div className="form-group">
+                        <input type="number" value={cost} disabled className="form-control"   required/>
+                    </div>
                 </div>
-            </div>
-            <div className="col-md-4 mt-2">
-              <div className="form-group">
-                  <textarea type="text" value={address} disabled onChange={(e)=>{setaddress(e.target.value)}}  className="form-control" placeholder="Enter Full Address"  required/>
-                  {wrongaddress?<label  style={{color:"red"}}>{messaddress}</label>:""}
+                <div className="col-md-4 mt-2">
+                  <div className="form-group">
+                      <textarea type="text" value={address} disabled onChange={(e)=>{setaddress(e.target.value)}}  className="form-control" placeholder="Enter Full Address"  required/>
+                      {wrongaddress?<label  style={{color:"red"}}>{messaddress}</label>:""}
+                  </div>
+                </div>
+                <div className="col-md-4 mt-2">
+                  <div className="form-group">
+                    <select className="form-control" disabled aria-label="Default select example">
+                      <option selected>Cash on Delivary</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div className="col-md-4 mt-2">
+                  <button className='btn btn-primary' disabled={disabled} onClick={submit}>{button}</button>
+                </div>
               </div>
-            </div>
-            <div className="col-md-4 mt-2">
-              <div className="form-group">
-                <select className="form-control" disabled aria-label="Default select example">
-                  <option selected>Cash on Delivary</option>
-                </select>
-              </div>
-            </div>
-            
-            <div className="col-md-4 mt-2">
-              <button className='btn btn-primary' disabled={disabled} onClick={submit}>{button}</button>
-            </div>
-          </div>
-          :<h1>Page Not Found</h1>
-         :<div className='loader-container'><img src={loader} /></div>
-      }
-    </div>
+              :<h1>Page Not Found</h1>
+          }
+        </div>
+        :<div className='loader-container'><img src={loader} /></div>
+    }
+    </>
   )
 }

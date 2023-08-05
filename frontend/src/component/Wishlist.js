@@ -59,7 +59,7 @@ export default function WishList() {
       product=JSON.parse(localStorage.getItem('Wishlist'))
       loadproduct();
     }
-  },[update])
+  },[])
 
   function checkIdPresent(nums,id)
   {

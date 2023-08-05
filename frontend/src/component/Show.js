@@ -11,7 +11,7 @@ export default function Show() {
 const history =useNavigate()    
 const [dropdown,setdropdown]=useState("Search In Catagory")   
 const [data,setdata]=useState([])
-const [cart,setcart]=useState(JSON.parse(localStorage.getItem('cart')))
+let [cart,setcart]=useState(JSON.parse(localStorage.getItem('cart')))
 const [product,setproduct]=useState([])
 const [searchproduct,setsearchproduct]=useState("")
 let userinfo=JSON.parse(localStorage.getItem('user'))
@@ -104,7 +104,7 @@ function checkIdPresent(nums,id)
 
 function addToWishlist(id)
 {
-    let data=[]
+    let arr=[]
     let itemsList = JSON.parse(localStorage.getItem('Wishlist'))
     if(itemsList)
     {
@@ -122,14 +122,17 @@ function addToWishlist(id)
     }
     else
     {
-        data.push(id)
-        localStorage.setItem('Wishlist',JSON.stringify(data))
+        arr.push(id)
+        localStorage.setItem('Wishlist',JSON.stringify(arr))
     }
-    setToproduct(product,cart)
+    cart=JSON.parse(localStorage.getItem('cart'));
+    setToproduct(data,cart)
 }
 
 function search(searchproduct)
-{    
+{  
+    setdropdown("Search In Catagory")
+    setpriceRange("Price Range")  
     setload(true)
     if(searchproduct.length==0)
     {
@@ -255,7 +258,7 @@ function ADD_TO_DECREMENT(id)
     }
     localStorage.setItem('cart',JSON.stringify(obj))
     setcart(JSON.parse(localStorage.getItem('cart')))
-    setToproduct(product,cart)
+    setToproduct(data,cart)
 }
 
 function checkTheProductCount(id)
@@ -302,7 +305,7 @@ function ADD_TO_INCREMENT(id)
     }
     localStorage.setItem('cart',JSON.stringify(obj))
     setcart(JSON.parse(localStorage.getItem('cart')))
-    setToproduct(product,cart)
+    setToproduct(data,cart)
 }
 
 function findPriceRange(low,high)
@@ -373,8 +376,7 @@ function findPriceRange(low,high)
             </div>
         </div>
 
-        <div className='container align-items-center  mx-5 row'>
-        { data.map((item,ind)=>(
+        <div className='container align-items-center  mx-5 row'>          {   data.map((item,ind)=>(
                 <div key={ind} className="card mx-4 mt-4" style={{width: "18rem", height:"auto",backgroundColor:"#D6DBDF"}}>
                     <Link to={`/Product/${item._id}`}>
                         <img className="card-img-top" src={item.newImage[0]} style={{height:"200px",width:"287px"}} alt="Card image cap"/>
@@ -491,7 +493,11 @@ function findPriceRange(low,high)
                 </div>
             ))
         }
-          </div>
+        </div>
+        {/* <div class="d-flex container mt-5 my-5">
+            <div class="mr-auto p-2"><button className='btn btn-dark'>Previous</button></div>
+            <div class="p-2"><button className='btn btn-dark'>Next</button></div>
+        </div> */}
         </>
         :load?<div className='loader-container'><img src={loader} /></div>
         :<div className='loader-container'>
