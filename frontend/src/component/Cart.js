@@ -236,7 +236,7 @@ const history=useNavigate()
                                         </div>
                                         <div  className="row card-body">
                                             <div className='col'>
-                                            <button className='btn btn-warning'>₹ {cost}</button>
+                                            <button className='btn btn-warning' disabled>₹ {cost}</button>
                                             </div>
                                             <div className='col'>
                                                 <Link to={`/${cost}/Buy`}><button className='btn btn-warning'>Buy</button></Link>

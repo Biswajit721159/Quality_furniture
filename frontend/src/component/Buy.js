@@ -47,6 +47,11 @@ export default function Buy() {
 
   function submit()
   {
+    if(cart.product_count==0)
+    {
+      alert("Please Select Atleast One Product .")
+      return ;
+    }
     setdisabled(true)
     setbutton("Please Wait....")
     const date = new Date();
