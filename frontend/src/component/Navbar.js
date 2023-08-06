@@ -71,8 +71,9 @@ const Navbar=()=>{
                   </>    
                 :
                 <>
-                  <li><Link to={'/Signin'} style={{textDecoration:"none"}}>Signin</Link></li>
-                  <li><Link to={'/Register'}style={{textDecoration:"none"}}>Register</Link></li>
+                  <li><Link to={'/'} style={{textDecoration:"none",color:"black"}}>Quality Furniture</Link></li>
+                  <li><Link to={'/Signin'} style={{textDecoration:"none",color:"black"}}>Signin</Link></li>
+                  <li><Link to={'/Register'}style={{textDecoration:"none",color:"black"}}>Register</Link></li>
                   </>
                 }
                 {
