@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {Link, useNavigate} from 'react-router-dom'
 import swal from "sweetalert";
 import loader from "../images/loader.gif"
+import {MdOutlineDarkMode} from 'react-icons/md';
 
 
 export default function Myorder() {
@@ -11,8 +12,14 @@ export default function Myorder() {
   const [data,setdata]=useState([])
   const history=useNavigate()
   const [load,setload]=useState(true)
-
+  const [colormode,setcolormode]=useState(localStorage.getItem('colormode'));
+ 
   useEffect(()=>{
+    if(colormode==null)
+    {
+        setcolormode('white');
+        localStorage.setItem('colormode','white');
+    }
     if(userinfo==null)
     {
         history('/Register')
@@ -91,6 +98,19 @@ export default function Myorder() {
   {
     swal(data)
   }
+
+  function changecolor(){
+     if(colormode=='white')
+     {
+        setcolormode('#BFC9CA')
+        localStorage.setItem('colormode','#BFC9CA');
+     }
+     else
+     {
+        setcolormode('white');
+        localStorage.setItem('colormode','white');
+     }
+  }
   
   return (
     <>
@@ -98,7 +118,7 @@ export default function Myorder() {
             data!=undefined && data.length!=0 ?
                 <div className='container'>
                             {userinfo?<h4>Your order {userinfo.user.name}</h4>:""}
-                            <table className="table table table-bordered  shadow-lg p-3 mb-5 bg-white rounded">
+                            <table className="table table-bordered" style={{backgroundColor:colormode}}>
                                 <thead>
                                     <tr>
                                         <th className='text-center' scope="col">#</th>
@@ -108,11 +128,16 @@ export default function Myorder() {
                                         <th className='text-center' scope="col">Total_rupess</th>
                                         <th className='text-center' scope="col">Date</th>
                                         <th className='text-center' scope="col">Address</th>
-                                        <th className='text-center' scope="col">Feedback</th>
+                                        <th className='text-center' scope="col">
+                                          Feedback
+                                          {
+                                            colormode=='white'?<button className='btn btn-light rounded-circle mx-2' onClick={changecolor}><MdOutlineDarkMode/></button>
+                                            :<button className='btn btn-dark rounded-circle mx-2' onClick={changecolor}><MdOutlineDarkMode/></button>
+                                          }
+                                        </th>
                                     </tr>
                                 </thead>
                                 {
-                                    
                                     <tbody>
                                         {
                                         data.map((item,ind)=>(
