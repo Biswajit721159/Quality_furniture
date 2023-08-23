@@ -19,7 +19,14 @@ const Navbar=()=>{
 
   function givecolor(color)
   {
-    if(color=='light')
+    console.log(color);
+    if(color==null)
+    {
+      localStorage.setItem('mode','light')
+      setmode('light')
+      givecolor('light')
+    }
+    else if(color=='light')
     {
       document.body.style.backgroundColor = "white";
     }
@@ -31,7 +38,13 @@ const Navbar=()=>{
 
   function changecolor()
   {
-    if(mode=='light')
+    if(mode==null)
+    {
+      localStorage.setItem('mode','light')
+      setmode('light')
+      givecolor('light')
+    }
+    else if(mode=='light')
     {
       localStorage.setItem('mode','dark')
       setmode('dark')
