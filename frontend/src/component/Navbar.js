@@ -19,7 +19,6 @@ const Navbar=()=>{
 
   function givecolor(color)
   {
-    console.log(color);
     if(color==null)
     {
       localStorage.setItem('mode','light')
