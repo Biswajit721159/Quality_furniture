@@ -108,7 +108,7 @@ app.get("/order/:email", verifytoken, async (req, resp) => {
 
 //product data
 
-app.get("/product", verifytoken, async (req, resp) => {
+app.get("/product", async (req, resp) => {
   try {
     let data = await dbconnect_product();
     let result = await data.find().toArray();
