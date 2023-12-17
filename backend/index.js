@@ -16,6 +16,10 @@ let connectDB =require("./db/connection.js");
 
 connectDB()
 
+app.get('/',async=(req,res)=>{
+    res.send("Server is is Runing")
+})
+
 app.use("/user", userRouter)
 app.use('/product',productRouter)
 app.use('/Reviews',ReviewsRouter)
