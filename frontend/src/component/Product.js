@@ -9,17 +9,17 @@ export default function Product() {
 
 
   return (
-    <div className='container mt-3'>
+    <div className='container-xxl mt-3'>
         <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
             <div className="carousel-inner">
+               <div className="carousel-item">
+                    <img className="d-block w-100" src={Table2} style={{height:"600px", width:"140px"}}  alt="Third slide"/>
+                </div>
                 <div className="carousel-item active">
-                    <img className="d-block w-100" src={Table3} style={{height:"400px", width:"140px"}} alt="First slide"/>
+                    <img className="d-block w-100" src={Table3} style={{height:"600px", width:"140px"}} alt="second slide"/>
                 </div>
                 <div className="carousel-item">
-                    <img className="d-block w-100" src={Table1} style={{height:"400px", width:"140px"}}  alt="Second slide"/>
-                </div>
-                <div className="carousel-item">
-                    <img className="d-block w-100" src={Table2} style={{height:"400px", width:"140px"}}  alt="Third slide"/>
+                    <img className="d-block w-100" src={Table1} style={{height:"600px", width:"140px"}}  alt="first slide"/>
                 </div>
                 <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
                 <span className="carousel-control-prev-icon" style={{backgroundColor:"black"}}  aria-hidden="true"></span>

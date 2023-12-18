@@ -24,7 +24,7 @@ useEffect(()=>{
 function submit(){
     setbutton("Please Wait ...")
     setdisabled(true)
-    fetch('https://quality-furniture.vercel.app/login',{
+    fetch('https://backend-quality-furniture.vercel.app/user/login',{
         method:'PATCH',
         headers:{
             'Accept':'application/json',
@@ -36,6 +36,7 @@ function submit(){
     })
     .then(response=>response.json())
     .then((result)=>{
+        console.log(result)
         if(result.auth)
         {
             localStorage.setItem("user",JSON.stringify(result))
@@ -47,6 +48,7 @@ function submit(){
             setwronguser(true)
         }
     },(error)=>{
+        console.log("helel")
         setbutton("Submit")
         setdisabled(false)
         setwronguser(true)
