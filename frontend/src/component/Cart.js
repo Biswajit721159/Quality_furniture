@@ -3,7 +3,7 @@ import { Link, json, useNavigate } from 'react-router-dom'
 import {AiFillStar } from "react-icons/ai";
 import {FaHeart} from 'react-icons/fa';
 import loader from "../images/loader.gif"
-
+const api='http://localhost:5000'
 export default function Cart() {
 
 const userinfo=JSON.parse(localStorage.getItem('user'))
@@ -20,13 +20,14 @@ const history=useNavigate()
     }
     else if(cart)
     {
-        fetch(`https://quality-furniture.vercel.app/product/${cart.product_id}`,{
+        fetch(`${api}/product/${cart.product_id}`,{
             headers:{
-                auth:`bearer ${userinfo.auth}`
+                auth:`bearer ${userinfo.accessToken}`
             }
         }).then(responce=>responce.json())
         .then((res)=>{
-            setToproduct(res,cart)
+            // console.log(res.data)
+            setToproduct(res.data,cart)
         })
     }
  },[])
@@ -35,38 +36,32 @@ const history=useNavigate()
  {
      res=JSON.parse(localStorage.getItem('cart'))
      if(data==undefined || res==null) return
-     else
-     {
-         let ans=[]
-         for(let i=0;i<data.length;i++)
-         {
-             let obj={
-                 _id:data[i]._id,
-                 product_name:data[i].product_name,
-                 rating:data[i].rating,
-                 newImage:data[i].newImage,
-                 price:data[i].price,
-                 offer:data[i].offer,
-                 product_type:data[i].product_type,
-                 total_number_of_product:data[i].total_number_of_product,
-                 number_of_people_give_rating:data[i].number_of_people_give_rating,
-                 product_count:0,
-                 isdeleted:false,
-             }
-             if(res && res.length!=0 && res.product_id==obj._id)
-             {
-                 obj.product_count=res.product_count;
-             }
-             ans.push(obj)
-         }
-         if(ans.length==0)
-         {
-            return 
-         }
-         setdata([...ans])
-         let x=((ans[0].price-((ans[0].price*ans[0].offer)/100))*(res.product_count)).toFixed(2);
-         setcost(x)
-     }
+        let ans=[]
+        let obj={
+            _id:data._id,
+            product_name:data.product_name,
+            rating:data.rating,
+            newImage:data.newImage,
+            price:data.price,
+            offer:data.offer,
+            product_type:data.product_type,
+            total_number_of_product:data.total_number_of_product,
+            number_of_people_give_rating:data.number_of_people_give_rating,
+            product_count:0,
+            isdeleted:false,
+        }
+        if(res && res.length!=0 && res.product_id==obj._id)
+        {
+            obj.product_count=res.product_count;
+        }
+        ans.push(obj)
+        if(ans.length==0)
+        {
+           return 
+        }
+        setdata([...ans])
+        let x=((ans[0].price-((ans[0].price*ans[0].offer)/100))*(res.product_count)).toFixed(2);
+        setcost(x)
  }
 
  function ADD_TO_DECREMENT(id)

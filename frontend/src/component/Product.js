@@ -9,14 +9,14 @@ export default function Product() {
 
 
   return (
-    <div className='container-xxl mt-3'>
+    <div className='container-xxl'>
         <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
             <div className="carousel-inner">
                <div className="carousel-item">
                     <img className="d-block w-100" src={Table2} style={{height:"600px", width:"140px"}}  alt="Third slide"/>
                 </div>
                 <div className="carousel-item active">
-                    <img className="d-block w-100" src={Table3} style={{height:"600px", width:"140px"}} alt="second slide"/>
+                    <img className="d-block w-100" src={chair} style={{height:"600px", width:"140px"}} alt="second slide"/>
                 </div>
                 <div className="carousel-item">
                     <img className="d-block w-100" src={Table1} style={{height:"600px", width:"140px"}}  alt="first slide"/>
@@ -35,11 +35,11 @@ export default function Product() {
 
 
             <div className=' mt-1 shadow-none p-3 mb-5 bg-light rounded'>
-                <h3 className='d-flex justify-content-center' style={{color:"green"}}>about us</h3>
+                <h3 className='d-flex justify-content-center' style={{color:"green"}}>About us</h3>
                 <h1 className='d-flex justify-content-center'> WHY CHOOSE US? </h1>
                 <div > 
                     <div class="image">
-                        <img src={chair} alt="" style={{width: "100%",height:"500px"}}/>
+                        <img src={Table3} alt="" style={{width: "100%",height:"500px"}}/>
                     </div>
                     <div >
                         <h3>Best Quality Furniture in the country</h3>
@@ -100,9 +100,11 @@ export default function Product() {
                 </div>
             </div>
             <hr/>
-            <div className="credit"> Copyright @ 2023 by <span>Mr Biswajit Ghosh</span> </div>
+            <div className="credit p-2"> Copyright @ 2023 by <span>Mr Biswajit Ghosh</span> </div>
         </section>
     </div>
 </div>
+
+
   )
 }

@@ -18,6 +18,9 @@ let userinfo=JSON.parse(localStorage.getItem('user'))
 let wishlist=JSON.parse(localStorage.getItem('Wishlist'))
 let [load,setload]=useState(true)
 let [priceRange,setpriceRange]=useState("Price Range")
+let api="http://localhost:5000"
+
+
 
 useEffect(()=>{
     if(userinfo==null)
@@ -34,15 +37,15 @@ useEffect(()=>{
 function loadproduct()
 {
     setload(true)
-    fetch('https://quality-furniture.vercel.app/product',{
+    fetch(`${api}/product`,{
         headers:{
-            auth:`bearer ${userinfo.auth}`
+            auth:`bearer ${userinfo.accessToken}`
         }
     }).then(response=>response.json()).then((data)=>{
        if(data!=undefined)
        {
-            setproduct(data)
-            setToproduct(data,cart)
+            setproduct(data.data)
+            setToproduct(data.data,cart)
             setload(false);
        }
     })
@@ -376,10 +379,11 @@ function findPriceRange(low,high)
             </div>
         </div>
 
-        <div className='container align-items-center  mx-5 row'>          {   data.map((item,ind)=>(
-                <div key={ind} className="card mx-4 mt-4" style={{width: "18rem", height:"auto",backgroundColor:"#D6DBDF"}}>
+        <div className='container align-items-center  mx-5 row'>        
+          {   data.map((item,ind)=>(
+                <div key={ind} className="card mx-2 mt-4" style={{width: "15.7rem", height:"auto",backgroundColor:"#D6DBDF"}}>
                     <Link to={`/Product/${item._id}`}>
-                        <img className="card-img-top" src={item.newImage[0]} style={{height:"200px",width:"287px"}} alt="Card image cap"/>
+                        <img className="card-img-top" src={item.newImage[0]} style={{height:"150px",width:"250px"}} alt="Card image cap"/>
                     </Link>
                     <div className="card-body">
                         <div className='row'>

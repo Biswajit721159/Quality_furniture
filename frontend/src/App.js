@@ -21,24 +21,25 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Navbar />
+        <h1>Sorry We are working on this project</h1>
+        {/* <Navbar /> */}
         <Routes>
           {/* <Route element={<Privatecomponent/>}> */}
-            <Route path="/" element={<Product/>}></Route>
+            {/* <Route path="/" element={<Product/>}></Route>
             <Route path="/Product" element={<Show/>}></Route>
             <Route path="/Product/:_id" element={<Product_view/>}></Route>
-            {/* <Route path="/addProduct"element={<Addproduct/>}></Route> */}
+            <Route path="/addProduct"element={<Addproduct/>}></Route>
             <Route path="/Profile" element={<Profile/>}></Route>
             <Route path="/Profile/:_id" element={<Update_userdata/>}></Route>
             <Route path="/wishlist" element={<WishList/>}></Route>
             <Route path="/Cart" element={<Cart/>}></Route>
             <Route path=":cost/Buy" element={<Buy/>}></Route>
             <Route path="Myorder" element={<Myorder/>}></Route>
-            <Route path="/:id/:product_id/Reviews" element={<Reviews/>}></Route>
+            <Route path="/:id/:product_id/Reviews" element={<Reviews/>}></Route> */}
           {/* </Route> */}
-          <Route path="/Signin" element={<Login/>}></Route>
+          {/* <Route path="/Signin" element={<Login/>}></Route>
           <Route path="/Register" element={<Register />}></Route>
-          <Route path="*" element={<Error />}></Route>
+          <Route path="*" element={<Error />}></Route> */}
         </Routes>
         {/* <Footer /> */}
       </Router>

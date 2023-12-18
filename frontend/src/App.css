@@ -1,10 +1,10 @@
 
-
-
 .box-container{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  flex-wrap: wrap;
+  margin: 10px;
 }
 .credit{
   display: flex;

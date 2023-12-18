@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import avatar from '../images/result.png';
 import  '../App.css';
 import axios from 'axios';
-const url = "https://quality-furniture.vercel.app/uploads";
+const api = "http://localhost:5000/product/uploads";
 
 
 export default function Addproduct() {
@@ -100,7 +100,7 @@ export default function Addproduct() {
     }
     return true;
   }
-
+  
   const createPost = async (postImage) => {
     if(postImage.length>3)
     {
@@ -118,12 +118,12 @@ export default function Addproduct() {
     {
       setbutton("Please wait....")
       setdisable(true)
-      fetch('https://quality-furniture.vercel.app/uploads',{
+      fetch(`${api}`,{
         method:'POST',
         headers:{
           'Accept':'application/json',
           'Content-Type':'application/json',
-          auth:`bearer ${userinfo.auth}`
+          auth:`bearer ${userinfo.accessToken}`
         },
         body:JSON.stringify({
           newImage:postImage,
@@ -137,6 +137,7 @@ export default function Addproduct() {
           isdeleted:false
         })
       }).then(responce=>responce.json()).then((res)=>{
+
         history('/Product')
       })
     }

@@ -10,8 +10,7 @@ const [wronguser,setwronguser]=useState(false)
 const [button,setbutton]=useState("Submit")
 const [disabled,setdisabled]=useState(false)
 
-
-
+const api="http://localhost:5000"
 
 useEffect(()=>{
     const auth =localStorage.getItem('user')
@@ -24,7 +23,7 @@ useEffect(()=>{
 function submit(){
     setbutton("Please Wait ...")
     setdisabled(true)
-    fetch('https://backend-quality-furniture.vercel.app/user/login',{
+    fetch(`${api}/user/login`,{
         method:'PATCH',
         headers:{
             'Accept':'application/json',
@@ -37,9 +36,9 @@ function submit(){
     .then(response=>response.json())
     .then((result)=>{
         console.log(result)
-        if(result.auth)
+        if(result.data && result.data.accessToken)
         {
-            localStorage.setItem("user",JSON.stringify(result))
+            localStorage.setItem("user",JSON.stringify(result.data))
             history('/')
         }
         else{
@@ -48,7 +47,6 @@ function submit(){
             setwronguser(true)
         }
     },(error)=>{
-        console.log("helel")
         setbutton("Submit")
         setdisabled(false)
         setwronguser(true)

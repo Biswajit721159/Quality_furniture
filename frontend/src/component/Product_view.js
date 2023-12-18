@@ -3,6 +3,8 @@ import {useNavigate, useParams} from 'react-router-dom'
 import {AiFillStar } from "react-icons/ai";
 import loader from "../images/loader.gif"
 
+const api='http://localhost:5000'
+
 export default function Product_view() {
 
   const [product,setproduct]=useState([])
@@ -32,6 +34,7 @@ export default function Product_view() {
   let [load,setload]=useState(true)
 
   useEffect(()=>{
+    // console.log(userinfo.accessToken)
     if(userinfo==null)
     {
         history('/Register')
@@ -91,27 +94,27 @@ export default function Product_view() {
 
   function loadproduct()
   {
-    fetch(`https://quality-furniture.vercel.app/product/${_id._id}`,{
+    fetch(`${api}/product/${_id._id}`,{
         headers:
         {
-            auth:`bearer ${userinfo.auth}`
+            auth:`bearer ${userinfo.accessToken}`
         }
     }).then(response=>response.json()).
     then((data)=>{
-        if(data!=undefined && data.length!=0)
+        if(data.data!=undefined)
         {
-            fetch(`https://quality-furniture.vercel.app/Reviews/${_id._id}`,{
+            fetch(`${api}/Reviews/${_id._id}`,{
                 headers:
                 {
-                    auth:`bearer ${userinfo.auth}`
+                    auth:`bearer ${userinfo.accessToken}`
                 }
             }).then((responce=>responce.json())).then((res)=>{
-                if(res!=undefined)
+                if(res.data!=undefined)
                 {
-                    setreview_data(res)
-                    setproduct(data)
-                    Find_Review(res,data)
-                    loadmore(res)
+                    setreview_data(res.data)
+                    setproduct(data.data)
+                    Find_Review(res.data,data.data)
+                    loadmore(res.data)
                     setload(false)
                 }
             })
