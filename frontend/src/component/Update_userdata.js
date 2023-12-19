@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { json, useNavigate } from "react-router-dom";
 import loader from "../images/loader.gif"
-
 import {useParams} from 'react-router-dom'
-
+let api="http://localhost:5000"
 export default function Update_userdata() {
   const _id=useParams()._id
   //console.log(_id)
@@ -33,9 +32,9 @@ export default function Update_userdata() {
     }
     else
     {
-        fetch(`https://quality-furniture.vercel.app/user/${_id}`,{
+        fetch(`${api}/user/${_id}`,{
           headers:{
-            auth:`bearer ${userinfo.auth}`
+            Authorization:`Bearer ${userinfo.accessToken}`
           }
         }).then(responce=>responce.json()).then((res)=>{
             if(res!=undefined && res.length!=0 && res.status!=498 && res.status!=401)

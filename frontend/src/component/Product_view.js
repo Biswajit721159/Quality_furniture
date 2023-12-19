@@ -52,8 +52,9 @@ export default function Product_view() {
     {
         return;
     }
-    setoverall_rating(product_data[0].rating)
-    settotal(product_data[0].number_of_people_give_rating)
+    console.log()
+    setoverall_rating(product_data.rating)
+    settotal(product_data.number_of_people_give_rating)
 
     let a=0,b=0,c=0,d=0,e=0;
     for(let i=0;i<review_data.length;i++)
@@ -97,7 +98,7 @@ export default function Product_view() {
     fetch(`${api}/product/${_id._id}`,{
         headers:
         {
-            auth:`bearer ${userinfo.accessToken}`
+            Authorization:`Bearer ${userinfo.accessToken}`
         }
     }).then(response=>response.json()).
     then((data)=>{
@@ -106,7 +107,7 @@ export default function Product_view() {
             fetch(`${api}/Reviews/${_id._id}`,{
                 headers:
                 {
-                    auth:`bearer ${userinfo.accessToken}`
+                    Authorization:`Bearer ${userinfo.accessToken}`
                 }
             }).then((responce=>responce.json())).then((res)=>{
                 if(res.data!=undefined)
@@ -173,13 +174,13 @@ export default function Product_view() {
                     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <img class="d-block w-100" src={product[0].newImage[0]} style={{height:"350px", width:"100px"}} alt="First slide"/>
+                            <img class="d-block w-100" src={product.newImage[0]} style={{height:"350px", width:"100px"}} alt="First slide"/>
                         </div>
                         <div class="carousel-item">
-                            <img class="d-block w-100" src={product[0].newImage[1]} style={{height:"350px", width:"100px"}}  alt="Second slide"/>
+                            <img class="d-block w-100" src={product.newImage[1]} style={{height:"350px", width:"100px"}}  alt="Second slide"/>
                         </div>
                         <div class="carousel-item">
-                            <img class="d-block w-100" src={product[0].newImage[2]} style={{height:"350px", width:"100px"}}  alt="Third slide"/>
+                            <img class="d-block w-100" src={product.newImage[2]} style={{height:"350px", width:"100px"}}  alt="Third slide"/>
                         </div>
                     </div>
                     <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">

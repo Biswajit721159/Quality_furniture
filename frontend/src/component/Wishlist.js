@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import loader from "../images/loader.gif"
 import {AiFillStar } from "react-icons/ai";
+
+let api="http://localhost:5000"
+
 export default function WishList() {
 
   let userinfo=JSON.parse(localStorage.getItem('user'))
@@ -14,16 +17,22 @@ export default function WishList() {
 
   function loadproduct()
   {
-    fetch('https://quality-furniture.vercel.app/product',{
-        headers:{
-            auth:`bearer ${userinfo.auth}`
-        }
+    fetch(`${api}/product/get_product_by_ids`,{
+      method:'PATCH',
+      headers:{
+        'Accept':'application/json',
+        'Content-Type':'application/json',
+        Authorization:`Bearer ${userinfo.accessToken}`
+      },
+      body:JSON.stringify({
+        product:product
+      })
     }).then(responce=>responce.json()).then((res)=>{
        if(res!=undefined)
        {
-          // console.log(res)
-          setnums(res);
-          settoproduct(res);
+          console.log(res)
+          setnums(res.data);
+          settoproduct(res.data);
        }
      })
   }

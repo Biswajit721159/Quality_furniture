@@ -39,7 +39,7 @@ function loadproduct()
     setload(true)
     fetch(`${api}/product`,{
         headers:{
-            auth:`bearer ${userinfo.accessToken}`
+            Authorization:`Bearer ${userinfo.accessToken}`
         }
     }).then(response=>response.json()).then((data)=>{
        if(data!=undefined)
@@ -337,9 +337,11 @@ function findPriceRange(low,high)
     setdata([...ans])
 }
 
+console.log(data)
+
   return (
     <>
-    {load==false && data && data.length!=0?
+    {load==false && data!=undefined && data && data.length!=0?
       <>
         <div className='container d-flex justify-content-center'>
             <div className='col'>
@@ -380,7 +382,7 @@ function findPriceRange(low,high)
         </div>
 
         <div className='container align-items-center  mx-5 row'>        
-          {   data.map((item,ind)=>(
+          {   data && data.map((item,ind)=>(
                 <div key={ind} className="card mx-2 mt-4" style={{width: "15.7rem", height:"auto",backgroundColor:"#D6DBDF"}}>
                     <Link to={`/Product/${item._id}`}>
                         <img className="card-img-top" src={item.newImage[0]} style={{height:"150px",width:"250px"}} alt="Card image cap"/>
@@ -496,7 +498,7 @@ function findPriceRange(low,high)
                     </div>
                 </div>
             ))
-        }
+          }
         </div>
         {/* <div class="d-flex container mt-5 my-5">
             <div class="mr-auto p-2"><button className='btn btn-dark'>Previous</button></div>

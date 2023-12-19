@@ -30,6 +30,7 @@ export default function Addproduct() {
   const [errorproduct_typemess,seterrorproduct_typemess]=useState("")
   const [errorNumberOfProduct,seterrorNumberOfProduct]=useState(false)
   const [errorNumberOfProductmess,seterrorNumberOfProductmess]=useState("")
+  const [Description,setDescription]=useState('')
   const [button,setbutton]=useState("Submit")
   const [disable,setdisable]=useState(false);
 
@@ -123,7 +124,7 @@ export default function Addproduct() {
         headers:{
           'Accept':'application/json',
           'Content-Type':'application/json',
-          auth:`bearer ${userinfo.accessToken}`
+          Authorization:`Bearer ${userinfo.accessToken}`
         },
         body:JSON.stringify({
           newImage:postImage,
@@ -134,7 +135,8 @@ export default function Addproduct() {
           total_number_of_product:total_number_of_product,
           rating:0,
           number_of_people_give_rating:0,
-          isdeleted:false
+          isdeleted:false,
+          Description:Description
         })
       }).then(responce=>responce.json()).then((res)=>{
 
@@ -171,8 +173,8 @@ export default function Addproduct() {
 
 
   return (
-    <div className='container center'>
-       <form onSubmit={handleSubmit}>
+    <div className='container'>
+       <form onSubmit={handleSubmit} className='grid'>
           {/* <div className="col mt-3">
             <img className='file' src={postImage.myFile || avatar} alt="" />
           </div> */}
@@ -180,47 +182,57 @@ export default function Addproduct() {
             <label htmlFor="formFile" className="form-label">Home Image</label>
             <input type="file" className="form-control"  name="myFile"  accept='.jpeg, .png, .jpg' required onChange={(e) => handleFileUpload(e)} />
           </div>
-          <div className="col-md-4">
+          <div className="col-md-4 mt-3">
             <label htmlFor="formFile" className="form-label">First Image</label>
             <input type="file" className="form-control"  name="myFile"  accept='.jpeg, .png, .jpg' required onChange={(e) => handleFileUpload(e)} />
           </div>
-          <div className="col-md-4">
+          <div className="col-md-4 mt-3">
           <label htmlFor="formFile" className="form-label">Second Image</label>
             <input className="form-control" type="file" name="myFile"  accept='.jpeg, .png, .jpg' required onChange={(e) => handleFileUpload(e)} />
           </div>
-          
           <div className="col-md-4 mt-3">
               <div className="form-group">
                   <input type="text" value={product_name} onChange={(e)=>{setproduct_name(e.target.value)}} name="product_name" className="form-control" placeholder="Enter Product Name"  required/>
                   {errorproduct_name?<label  style={{color:"red"}}>{errorproduct_namemess}</label>:""}
               </div>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-4 mt-3">
               <div className="form-group">
                   <input type="number" value={price} onChange={(e)=>{setprice(e.target.value)}} name="Price" className="form-control" placeholder="Enter Price"  required/>
                   {errorprice?<label  style={{color:"red"}}>{errorpricemess}</label>:""}
               </div>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-4 mt-3">
               <div className="form-group">
                   <input type="number" value={offer} onChange={(e)=>{setoffer(e.target.value)}} name="Offer" className="form-control" placeholder="Enter Offer"  required/>
                   {erroroffer?<label  style={{color:"red"}}>{erroroffermess}</label>:""}
               </div>
           </div>
-          <div className="col-md-4">
-              <div className="form-group">
-                  <input type="text"  value={product_type} onChange={(e)=>{setproduct_type(e.target.value)}} name="product_Type" className="form-control" placeholder="Enter Product Type"  required/>
-                  {errorproduct_type?<label  style={{color:"red"}}>{errorproduct_typemess}</label>:""}
-              </div>
+          <div className="col-md-4 mt-3">
+            <select class="custom-select" id="inputGroupSelect01">
+              <option >Chair</option>
+              <option value="1">Window</option>
+              <option value="2">Table</option>
+              <option value="3">Almari</option>
+            </select>
+              {/* <div className="form-group"> */}
+              
+                  {/* <input type="text"  value={product_type} onChange={(e)=>{setproduct_type(e.target.value)}} name="product_Type" className="form-control" placeholder="Enter Product Type"  required/> */}
+                  {/* {errorproduct_type?<label  style={{color:"red"}}>{errorproduct_typemess}</label>:""} */}
+              {/* </div> */}
           </div>
-          <div className="col-md-4">
+          <div className="col-md-4 mt-3">
               <div className="form-group">
                   <input type="number" value={total_number_of_product} onChange={(e)=>{settotal_number_of_product(e.target.value)}} name="product_name" className="form-control" placeholder="Total Number Of Product"  required/>
                   {errorNumberOfProduct?<label  style={{color:"red"}}>{errorNumberOfProductmess}</label>:""}
               </div>
           </div> 
-          <div className="col"><button type='submit' disabled={disable} className='btn btn-primary'>{button}</button></div>
-
+          <div className="col-md-4 mt-3">
+               <div className='form-group'>
+                   <textarea class="form-control" placeholder='Product Description' onChange={(e)=>{setDescription(e.target.value)}} id="exampleFormControlTextarea1" rows="3"></textarea>
+               </div>
+          </div>
+          <div className="col-md-4 mt-3"><button type='submit' disabled={disable} className='btn btn-primary'>{button}</button></div>
         </form>
     </div>
   )

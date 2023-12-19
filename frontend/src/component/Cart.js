@@ -4,6 +4,9 @@ import {AiFillStar } from "react-icons/ai";
 import {FaHeart} from 'react-icons/fa';
 import loader from "../images/loader.gif"
 const api='http://localhost:5000'
+
+console.log(process.env.REACT_APP_API)
+
 export default function Cart() {
 
 const userinfo=JSON.parse(localStorage.getItem('user'))
@@ -22,12 +25,17 @@ const history=useNavigate()
     {
         fetch(`${api}/product/${cart.product_id}`,{
             headers:{
-                auth:`bearer ${userinfo.accessToken}`
+                Authorization:`Bearer ${userinfo.accessToken}`
             }
         }).then(responce=>responce.json())
         .then((res)=>{
-            // console.log(res.data)
-            setToproduct(res.data,cart)
+            let arr=[]
+            if(res.data && res.data.length!=0)
+            {
+                console.log(res.data)
+                arr.push(res.data)
+            }
+            setToproduct(arr,cart)
         })
     }
  },[])
@@ -36,17 +44,19 @@ const history=useNavigate()
  {
      res=JSON.parse(localStorage.getItem('cart'))
      if(data==undefined || res==null) return
-        let ans=[]
+     let ans=[]
+    for(let i=0;i<data.length;i++)
+    {
         let obj={
-            _id:data._id,
-            product_name:data.product_name,
-            rating:data.rating,
-            newImage:data.newImage,
-            price:data.price,
-            offer:data.offer,
-            product_type:data.product_type,
-            total_number_of_product:data.total_number_of_product,
-            number_of_people_give_rating:data.number_of_people_give_rating,
+            _id:data[0]._id,
+            product_name:data[0].product_name,
+            rating:data[0].rating,
+            newImage:data[0].newImage,
+            price:data[0].price,
+            offer:data[0].offer,
+            product_type:data[0].product_type,
+            total_number_of_product:data[0].total_number_of_product,
+            number_of_people_give_rating:data[0].number_of_people_give_rating,
             product_count:0,
             isdeleted:false,
         }
@@ -55,13 +65,14 @@ const history=useNavigate()
             obj.product_count=res.product_count;
         }
         ans.push(obj)
-        if(ans.length==0)
-        {
-           return 
-        }
-        setdata([...ans])
-        let x=((ans[0].price-((ans[0].price*ans[0].offer)/100))*(res.product_count)).toFixed(2);
-        setcost(x)
+    }
+    if(ans.length==0)
+    {
+        return 
+    }
+    setdata([...ans])
+    let x=((ans[0].price-((ans[0].price*ans[0].offer)/100))*(res.product_count)).toFixed(2);
+    setcost(x)
  }
 
  function ADD_TO_DECREMENT(id)

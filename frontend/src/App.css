@@ -1,4 +1,11 @@
 
+.grid{
+  display: flex;
+  justify-content:center;
+  flex-wrap: wrap;
+}
+
+
 .box-container{
   display: flex;
   flex-direction: row;

@@ -21,11 +21,10 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <h1>Sorry We are working on this project</h1>
-        {/* <Navbar /> */}
+        <Navbar />
         <Routes>
           {/* <Route element={<Privatecomponent/>}> */}
-            {/* <Route path="/" element={<Product/>}></Route>
+            <Route path="/" element={<Product/>}></Route>
             <Route path="/Product" element={<Show/>}></Route>
             <Route path="/Product/:_id" element={<Product_view/>}></Route>
             <Route path="/addProduct"element={<Addproduct/>}></Route>
@@ -35,11 +34,11 @@ function App() {
             <Route path="/Cart" element={<Cart/>}></Route>
             <Route path=":cost/Buy" element={<Buy/>}></Route>
             <Route path="Myorder" element={<Myorder/>}></Route>
-            <Route path="/:id/:product_id/Reviews" element={<Reviews/>}></Route> */}
+            <Route path="/:id/:product_id/Reviews" element={<Reviews/>}></Route>
           {/* </Route> */}
-          {/* <Route path="/Signin" element={<Login/>}></Route>
+          <Route path="/Signin" element={<Login/>}></Route>
           <Route path="/Register" element={<Register />}></Route>
-          <Route path="*" element={<Error />}></Route> */}
+          <Route path="*" element={<Error />}></Route>
         </Routes>
         {/* <Footer /> */}
       </Router>
