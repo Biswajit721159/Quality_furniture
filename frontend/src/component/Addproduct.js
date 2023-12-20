@@ -5,13 +5,13 @@ import avatar from '../images/result.png';
 import  '../App.css';
 import axios from 'axios';
 const api = process.env.REACT_APP_API
-
+// const api="http://localhost:5000"
 export default function Addproduct() {
 
   const history=useNavigate();
   const [product_name,setproduct_name]=useState("")
-  const [price,setprice]=useState()
-  const [offer,setoffer]=useState()
+  const [price,setprice]=useState("")
+  const [offer,setoffer]=useState("")
   const [product_type,setproduct_type]=useState("")
   const [total_number_of_product,settotal_number_of_product]=useState()
   const userinfo=JSON.parse(localStorage.getItem('user'))
