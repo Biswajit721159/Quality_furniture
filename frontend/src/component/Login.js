@@ -10,7 +10,7 @@ const [wronguser,setwronguser]=useState(false)
 const [button,setbutton]=useState("Submit")
 const [disabled,setdisabled]=useState(false)
 
-const api="http://localhost:5000"
+const api = process.env.REACT_APP_API
 
 useEffect(()=>{
     const auth =localStorage.getItem('user')

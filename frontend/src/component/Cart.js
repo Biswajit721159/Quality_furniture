@@ -3,10 +3,7 @@ import { Link, json, useNavigate } from 'react-router-dom'
 import {AiFillStar } from "react-icons/ai";
 import {FaHeart} from 'react-icons/fa';
 import loader from "../images/loader.gif"
-const api='http://localhost:5000'
-
-console.log(process.env.REACT_APP_API)
-
+const api = process.env.REACT_APP_API
 export default function Cart() {
 
 const userinfo=JSON.parse(localStorage.getItem('user'))

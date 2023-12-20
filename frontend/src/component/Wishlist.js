@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import loader from "../images/loader.gif"
 import {AiFillStar } from "react-icons/ai";
 
-let api="http://localhost:5000"
+const api = process.env.REACT_APP_API
 
 export default function WishList() {
 
@@ -28,12 +28,13 @@ export default function WishList() {
         product:product
       })
     }).then(responce=>responce.json()).then((res)=>{
-       if(res!=undefined)
-       {
-          console.log(res)
+      try{
           setnums(res.data);
           settoproduct(res.data);
-       }
+      }
+      catch{
+        alert("we are find Some Error")
+      }
      })
   }
 

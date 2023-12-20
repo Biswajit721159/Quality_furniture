@@ -15,8 +15,6 @@ import Cart from "./component/Cart";
 import Buy from "./component/Buy";
 import Myorder from "./component/Myorder";
 import Reviews from "./component/Reviews";
-
-
 function App() {
   return (
     <div className="App">

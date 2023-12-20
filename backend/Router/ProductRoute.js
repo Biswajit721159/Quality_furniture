@@ -1,5 +1,6 @@
 let Router = require("express");
 let verifytoken = require("../middlewares/verifiedToken");
+let upload = require("../middlewares/multermiddlemare");
 let {
   getFullProduct,
   productInsert,
@@ -13,12 +14,25 @@ let {
 const router = Router();
 
 router.route("/").get(verifytoken, getFullProduct);
-router.route("/uploads").post(verifytoken, productInsert);
 router.route("/:_id").get(verifytoken,informationById);
 router.route("/search/:key").get(verifytoken,searchProduct);
 router.route("/total_number_of_product/:_id").get(verifytoken,Update_total_number_of_product);
 router.route("/RaingUpdateIntoProduct/:_id").get(verifytoken,Update_RaingUpdateIntoProduct);
-router.route("/get_product_by_ids").patch(verifytoken,find_get_product_by_ids)
+router.route("/get_product_by_ids").patch(verifytoken,find_get_product_by_ids);
+router.route("/uploads").post(verifytoken,upload.fields([
+  {
+      name: "firstimg",
+      maxCount: 1
+  },
+  {
+      name: "secondimg",
+      maxCount: 1
+  },
+  {
+      name: "thirdimg",
+      maxCount: 1
+  },
+]), productInsert);
 
 
 module.exports = router;

@@ -18,7 +18,7 @@ let userinfo=JSON.parse(localStorage.getItem('user'))
 let wishlist=JSON.parse(localStorage.getItem('Wishlist'))
 let [load,setload]=useState(true)
 let [priceRange,setpriceRange]=useState("Price Range")
-let api="http://localhost:5000"
+const api = process.env.REACT_APP_API
 
 
 

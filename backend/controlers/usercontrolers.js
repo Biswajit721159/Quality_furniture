@@ -12,7 +12,7 @@ let register = async (req, res) => {
   ) {
     return res
       .status(400)
-      .json(new ApiResponse(400,null, "All fields are required"));
+      .json(new ApiResponse(400, null, "All fields are required"));
   }
 
   const existedUser = await User.findOne({
@@ -88,7 +88,9 @@ const loginUser = async (req, res) => {
   const isPasswordValid = await user.isPasswordCorrect(password);
 
   if (!isPasswordValid) {
-    res.status(401).json(new ApiResponse(401, null, "Invalid user credentials"));
+    res
+      .status(401)
+      .json(new ApiResponse(401, null, "Invalid user credentials"));
     return;
   }
 

@@ -3,7 +3,8 @@ import {useNavigate, useParams} from 'react-router-dom'
 import {AiFillStar } from "react-icons/ai";
 import loader from "../images/loader.gif"
 
-const api='http://localhost:5000'
+const api = process.env.REACT_APP_API
+
 
 export default function Product_view() {
 

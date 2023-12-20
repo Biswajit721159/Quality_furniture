@@ -3,7 +3,8 @@ import {Link, useNavigate} from 'react-router-dom'
 import swal from "sweetalert";
 import loader from "../images/loader.gif"
 import {MdOutlineDarkMode} from 'react-icons/md';
-const api='http://localhost:5000'
+const api = process.env.REACT_APP_API
+
 
 export default function Myorder() {
 

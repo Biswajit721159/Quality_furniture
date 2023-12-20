@@ -1,6 +1,8 @@
 let product = require("../models/product_models");
 const mongoose = require("mongoose");
 let { ApiResponse } = require("../utils/ApiResponse.js");
+let {uploadOnCloudinary} = require("../utils/cloudenary")
+
 
 let get_product_by_ids = async (product_id_arr) => {
   try {
@@ -38,14 +40,40 @@ let getFullProduct = async (req, res) => {
 };
 
 let productInsert = async (req, res) => {
+  let firstimg= req.files?.firstimg[0]?.path
+  let secondimg= req.files?.secondimg[0]?.path
+  let thirdimg= req.files?.thirdimg[0]?.path
+  firstimg=await uploadOnCloudinary(firstimg)
+  secondimg=await uploadOnCloudinary(secondimg)
+  thirdimg=await uploadOnCloudinary(thirdimg)
+  firstimg=firstimg.url;
+  secondimg=secondimg.url;
+  thirdimg=thirdimg.url;
+  let arr=[];
+  arr.push(firstimg)
+  arr.push(secondimg)
+  arr.push(thirdimg)
+  let jsondata={
+    newImage:arr,
+    product_name:req.body.product_name,
+    price:req.body.price,
+    offer:req.body.offer,
+    product_type:req.body.product_type,
+    total_number_of_product:req.body.total_number_of_product,
+    rating:req.body.rating,
+    number_of_people_give_rating:req.body.number_of_people_give_rating,
+    Description:req.body.Description,
+    isdeleted:req.body.isdeleted
+  }
   try {
-    let data = await product.create(req.body);
+    let data = await product.create(jsondata);
     res
-      .status(201)
+      .status(200)
       .json(new ApiResponse(200, data, "Product Added Successfully"));
   } catch {
     res.status(500).json(new ApiResponse(500,null, "Some Error is Found"));
   }
+
 };
 
 let informationById = async (req, res) => {

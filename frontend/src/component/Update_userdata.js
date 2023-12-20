@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { json, useNavigate } from "react-router-dom";
 import loader from "../images/loader.gif"
 import {useParams} from 'react-router-dom'
-let api="http://localhost:5000"
+
+const api = process.env.REACT_APP_API
+
 export default function Update_userdata() {
   const _id=useParams()._id
   //console.log(_id)
