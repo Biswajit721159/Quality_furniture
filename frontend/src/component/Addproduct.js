@@ -115,8 +115,8 @@ export default function Addproduct() {
     let e=forTotalNoProduct(total_number_of_product)
     if(a && b && c && d && e)
     {
-      setbutton("Please wait....")
-      setdisable(true)
+      // setbutton("Please wait....")
+      // setdisable(true)
 
 
       formData.append('firstimg', file1);
