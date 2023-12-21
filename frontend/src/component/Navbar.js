@@ -123,13 +123,13 @@ const Navbar=()=>{
                     
                     <div className="form-inline">
                         <input className="form-control mr-sm-2" value={searchproduct} name='search' onChange={(e)=>{setsearchproduct(e.target.value)}}  type="search" placeholder="Search product" aria-label="Search"/>
-                        <button className="btn btn-success btn-sm my-2 my-sm-0" onClick={()=>search(searchproduct)} type="submit">Search</button>
+                        <button className="btn btn-outline-success  my-2 my-sm-0" onClick={()=>search(searchproduct)} type="submit">Search</button>
                     </div>
 
                     <li>
                       <Link to={'/Cart'} style={{textDecoration:"none",color:"white"}} >
                         <div className='cartdata'>
-                          <p style={{fontSize:15,color:"green"}}>{cartdata}</p> 
+                          <p style={{fontSize:15,color:"yellow"}}>{cartdata}</p> 
                           <p><FaShoppingCart/></p>
                         </div>
                       </Link>
