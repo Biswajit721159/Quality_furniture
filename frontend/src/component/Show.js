@@ -5,6 +5,7 @@ import {AiFillStar } from "react-icons/ai";
 import {FaHeart} from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import loader from "../images/loader.gif"
+import Footer from './Footer';
 
 export default function Show() {
 
@@ -337,12 +338,10 @@ function findPriceRange(low,high)
     setdata([...ans])
 }
 
-console.log(data)
-
   return (
     <>
     {load==false && data!=undefined && data && data.length!=0?
-      <>
+        <>
         <div className='container d-flex justify-content-center'>
             <div className='col'>
                 <div className="dropdown mt-1">
@@ -360,7 +359,7 @@ console.log(data)
             </div>
             <div className='col'>
                 <div className="dropdown mt-1">
-                    <button className="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button className="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                      {priceRange}
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -373,17 +372,17 @@ console.log(data)
                     </div>
                 </div>
             </div>
-            <div className='col mt-1'>
+            {/* <div className='col mt-1'>
                 <div className="form-inline mt-1 my-2 my-lg-0">
                     <input className="form-control mr-sm-2" value={searchproduct} name='search' onChange={(e)=>{setsearchproduct(e.target.value)}}  type="search" placeholder="Search product" aria-label="Search"/>
                     <button className="btn btn-success my-2 my-sm-0" onClick={()=>search(searchproduct)} type="submit">Search</button>
                 </div>
-            </div>
+            </div> */}
         </div>
 
-        <div className='container align-items-center  mx-5 row'>        
+        <div className='product'>        
           {   data && data.map((item,ind)=>(
-                <div key={ind} className="card mx-2 mt-4" style={{width: "15.7rem", height:"auto",backgroundColor:"#D6DBDF"}}>
+                <div key={ind} className=" mx-2 mt-2" style={{width: "15.7rem", height:"auto",backgroundColor:"#D6DBDF"}}>
                     <Link to={`/Product/${item._id}`}>
                         <img className="card-img-top" src={item.newImage[0]} style={{height:"150px",width:"250px"}} alt="Card image cap"/>
                     </Link>
@@ -394,33 +393,33 @@ console.log(data)
                             </div>
                             <div className='col'>
                                 {
-                                item.islove==false?<button className='btn btn-secondary btn-sm' onClick={()=>addToWishlist(item._id)}> <FaHeart /></button>
+                                item.islove==false?<button className='btn btn-light btn-sm' onClick={()=>addToWishlist(item._id)}> <FaHeart /></button>
                                 :<button className='btn btn-danger btn-sm' onClick={()=>addToWishlist(item._id)}> <FaHeart /></button>
                                 }
                             </div>
                         </div>
                         <div className="row">
                             <div className="container col">
-                                <h5 className="card-text" style={{color:'orange'}}>{item.offer}% OFF</h5>
+                                <h6 className="card-text" style={{color:'orange'}}>{item.offer}% OFF</h6>
                             </div>
                             <div className="container col">
-                                <h5 className="card-text" style={{color:'gray'}}><s>₹{item.price}</s></h5> 
+                                <h7 className="card-text" style={{color:'gray'}}><s>₹{item.price}</s></h7> 
                             </div>
                         </div>
                         <div className='row'>
                             <div className='col'>
                                 {
-                                    parseInt(item.rating)==0?<button className='btn btn-secondary btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    parseInt(item.rating)==0?<div style={{color:"black"}}>{item.rating}<AiFillStar /></div>
                                     :
-                                    parseInt(item.rating)==1?<button className='btn btn-danger btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    parseInt(item.rating)==1?<div style={{color:"tomato"}}>{item.rating}<AiFillStar /></div>
                                     :
-                                    parseInt(item.rating)==2?<button className='btn btn-info btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    parseInt(item.rating)==2?<div style={{color:"red"}}>{item.rating}<AiFillStar /></div>
                                     :
-                                    parseInt(item.rating)==3?<button className='btn btn-warning btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    parseInt(item.rating)==3?<div style={{color:"#DC7633"}}>{item.rating}<AiFillStar /></div>
                                     :
-                                    parseInt(item.rating)==4?<button className='btn btn-primary btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    parseInt(item.rating)==4?<div style={{color:"#28B463"}}>{item.rating}<AiFillStar /></div>
                                     :
-                                    parseInt(item.rating)==5?<button className='btn btn-success btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    parseInt(item.rating)==5?<div style={{color:"green"}}>{item.rating}<AiFillStar /></div>
                                     :""
                                 }
                             </div>
@@ -432,39 +431,38 @@ console.log(data)
                             item.total_number_of_product==0?
                             <div className=" row">
                                 <div className="col">
-                                    <h5 className="card-text" style={{color:'lightgray'}}>Closed</h5>
+                                    <h6 className="card-text" style={{color:'lightgray'}}>Closed</h6>
                                 </div>
                                 <div className='col'>
                                     {
-                                        item.total_number_of_product!=0?<strong>{item.total_number_of_product} Left</strong>:<strong style={{color:"#E2E2F4"}}>{item.total_number_of_product} Left</strong>
+                                        item.total_number_of_product!=0?<label>{item.total_number_of_product} Left</label>:<label style={{color:"#E2E2F4"}}>{item.total_number_of_product} Left</label>
                                     }
                                 </div>
                             </div>
                             :
                             <div className="row">
                                 <div className=" col">
-                                    <h5 className="card-text" style={{color:'green'}}>Available</h5>
+                                    <h6 className="card-text" style={{color:'green'}}>Available</h6>
                                 </div>
                                 <div className='col'>
                                     {
-                                    item.total_number_of_product!=0?<strong>{item.total_number_of_product} Left</strong>:<strong style={{color:"#E2E2F4"}}>{item.total_number_of_product} Left</strong>
+                                    item.total_number_of_product!=0?<label>{item.total_number_of_product} Left</label>:<label style={{color:"#E2E2F4"}}>{item.total_number_of_product} Left</label>
                                     }
                                 </div>
                             </div>
                         }
-                        <div className="card-body">
                             <div className='row'>
                                 <div className='col'>
                                     {
                                         item.product_count==0
                                         ?
                                         item.total_number_of_product==0?
-                                        <button className="btn btn-primary rounded-pill btn-sm mt-2" disabled>
+                                        <button className="btn btn-primary rounded-pill btn-sm mt-0" disabled>
                                             <button className="btn btn-primary rounded-circle btn-sm mx-3" disabled onClick={()=>ADD_TO_DECREMENT(item._id)}> - </button>
                                                 ADD
                                             <button className="btn btn-primary rounded-circle btn-sm mx-3" disabled onClick={()=>ADD_TO_INCREMENT(item._id)}> + </button>
                                        </button>:
-                                        <button className="btn btn-primary rounded-pill btn-sm mt-2" >
+                                        <button className="btn btn-primary rounded-pill btn-sm mt-1" >
                                             <button className="btn btn-primary rounded-circle btn-sm mx-3" onClick={()=>ADD_TO_DECREMENT(item._id)}> - </button>
                                                 ADD
                                             <button className="btn btn-primary rounded-circle btn-sm mx-3" onClick={()=>ADD_TO_INCREMENT(item._id)}> + </button>
@@ -473,7 +471,7 @@ console.log(data)
                                         item.total_number_of_product==0?
                                         <div className='row'>
                                             <div className='col'>
-                                                <button className="btn btn-primary rounded-pill btn-sm mt-2" disabled>
+                                                <button className="btn btn-primary rounded-pill btn-sm mt-0" disabled>
                                                     <button className="btn btn-primary rounded-circle btn-sm mx-3"disabled onClick={()=>ADD_TO_DECREMENT(item._id)}> - </button>
                                                         {item.product_count}
                                                     <button className="btn btn-primary rounded-circle btn-sm mx-3"disabled onClick={()=>ADD_TO_INCREMENT(item._id)}> + </button>
@@ -483,7 +481,7 @@ console.log(data)
                                        </div>:
                                         <div className='row'>
                                             <div className='col'>
-                                                <button className="btn btn-primary rounded-pill btn-sm mt-2" >
+                                                <button className="btn btn-primary rounded-pill btn-sm mt-0" >
                                                     <button className="btn btn-primary rounded-circle btn-sm mx-3" onClick={()=>ADD_TO_DECREMENT(item._id)}> - </button>
                                                         {item.product_count}
                                                     <button className="btn btn-primary rounded-circle btn-sm mx-3" onClick={()=>ADD_TO_INCREMENT(item._id)}> + </button>
@@ -494,22 +492,19 @@ console.log(data)
                                     }
                                 </div>
                             </div>
-                        </div>
                     </div>
                 </div>
             ))
           }
         </div>
-        {/* <div class="d-flex container mt-5 my-5">
-            <div class="mr-auto p-2"><button className='btn btn-dark'>Previous</button></div>
-            <div class="p-2"><button className='btn btn-dark'>Next</button></div>
-        </div> */}
+        <Footer/>
         </>
         :load?<div className='loader-container'><img src={loader} /></div>
         :<div className='loader-container'>
             <h4>Product Not Found</h4>
             <button className='btn btn-primary mx-3' onClick={()=>search("")} >Get Product</button>
         </div>
+        
         }
     </>
   )

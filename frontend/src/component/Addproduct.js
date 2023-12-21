@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import avatar from '../images/result.png';
 import  '../App.css';
 import axios from 'axios';
-const api = process.env.REACT_APP_API
-// const api="http://localhost:5000"
+// const api = process.env.REACT_APP_API
+const api="http://localhost:5000"
 export default function Addproduct() {
 
   const history=useNavigate();
@@ -131,6 +131,8 @@ export default function Addproduct() {
       formData.append('number_of_people_give_rating', 0);
       formData.append('isdeleted', false);
       formData.append('Description', Description);
+
+      console.log(formData)
 
 
       fetch(`${api}/product/uploads`,{

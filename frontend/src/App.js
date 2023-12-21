@@ -15,6 +15,7 @@ import Cart from "./component/Cart";
 import Buy from "./component/Buy";
 import Myorder from "./component/Myorder";
 import Reviews from "./component/Reviews";
+import Footer from "./component/Footer";
 function App() {
   return (
     <div className="App">
@@ -33,6 +34,7 @@ function App() {
             <Route path=":cost/Buy" element={<Buy/>}></Route>
             <Route path="Myorder" element={<Myorder/>}></Route>
             <Route path="/:id/:product_id/Reviews" element={<Reviews/>}></Route>
+            <Route path="/Footer" element={<Footer/>}></Route>
           {/* </Route> */}
           <Route path="/Signin" element={<Login/>}></Route>
           <Route path="/Register" element={<Register />}></Route>

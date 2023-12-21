@@ -6,6 +6,7 @@ import chair from '../images/chair.avif'
 import {Link} from 'react-router-dom'
 import {AiFillCar,AiFillPhone,AiOutlineCheckCircle } from "react-icons/ai";
 import data from '../constant/carousel'
+import Footer from '../component/Footer'
 export default function Product() {
 
 
@@ -15,10 +16,12 @@ export default function Product() {
     {
         setindex((index+1)%data.length)
     }
+
     function prev()
     {
         setindex((index+1)%data.length)
     }
+
     useEffect(()=>{
         let x=setTimeout(() => {
             next()
@@ -115,46 +118,7 @@ export default function Product() {
         </div> 
     </div>
 
-
-    <div className="container footer">
-        <section className="mainfooter">
-            <div className="box-container">
-                <div className="box">
-                    <h3>Locations</h3>
-                    <li>India</li>
-                    <li>Japan</li>
-                    <li>Russia</li>
-                    <li>USA</li>
-                    <li>France</li>
-                </div>
-                <div class="box">
-                    <h3>Quick Links</h3>
-                    <li><Link to="/Product">Buy Product</Link></li>
-                    <li><Link to="/addproduct">Add Product</Link></li>
-                    <li><Link to="/wishList">wishList</Link></li>
-                    <li><Link to="/Cart">Cart</Link></li>
-                    <li><Link to="/Myorder">Myorder</Link></li>
-                </div>
-                <div class="box">
-                  <h3>Contact Info</h3>
-                  <li>+123-456-7890</li>
-                  <li>+111-222-3333</li>
-                  <li>biswajit2329@gmail.com</li>
-                  <li>biswajit@riktamtech.com</li>
-                  <li>Hyderabad , india - 500016</li>
-                </div>
-                <div class="box">
-                    <h3>Follow us</h3>
-                    <li><a href="#">facebook</a></li>
-                    <li><a href="#">twitter</a></li>
-                    <li><a href="#">instagram</a></li>
-                    <li><a href="#">linkedin</a></li>
-                </div>
-            </div>
-            <hr/>
-            <div className="credit p-2"> Copyright @ 2023 by <span>Mr Biswajit Ghosh</span> </div>
-        </section>
-    </div>
+    <Footer/>
 </div>
 
 
