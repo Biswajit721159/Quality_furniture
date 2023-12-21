@@ -29,9 +29,9 @@ const Navbar=()=>{
   {
     if(color==null)
     {
-      localStorage.setItem('mode','light')
-      setmode('light')
-      givecolor('light')
+      localStorage.setItem('mode','dark')
+      setmode('dark')
+      givecolor('dark')
     }
     else if(color=='light')
     {
