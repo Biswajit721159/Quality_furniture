@@ -238,33 +238,6 @@ function SortOnOffer()
     setdata([...data])
 }
 
-function ADD_TO_DECREMENT(id)
-{
-    let obj=cart
-    if(cart==null || cart.length==0)
-    {
-        alert("Sorry You are not allow !")
-    }
-    else
-    {
-        if(cart.product_id==id && cart.product_count==0)
-        {
-            alert("Sorry You are not allow !")
-        }
-        else if(cart.product_id==id)
-        {
-            obj={product_id:id,product_count:cart.product_count-1}
-        }
-        else
-        { 
-            alert("Sorry You are not allow !")
-        }
-    }
-    localStorage.setItem('cart',JSON.stringify(obj))
-    setcart(JSON.parse(localStorage.getItem('cart')))
-    setToproduct(data,cart)
-}
-
 function checkTheProductCount(id)
 {
     if(data==undefined) return 0;
@@ -276,40 +249,6 @@ function checkTheProductCount(id)
         }
     }
     return 0;
-}
-
-function ADD_TO_INCREMENT(id)
-{
-    let obj=cart
-    if(cart==null || cart.length==0)
-    {
-        obj={product_id:id,product_count:1}
-    }
-    else
-    {
-        if(cart.product_id==id)
-        {
-            let x=checkTheProductCount(id);
-            if(x<=cart.product_count)
-            {
-                alert("You are Not Allow ! ")
-            }
-            else
-            {
-                obj={product_id:id,product_count:1+cart.product_count}
-            }
-        }
-        else
-        { 
-            if(window.confirm('Are you sure to replace this product ?'))
-            {
-                obj={product_id:id,product_count:1}
-            }
-        }
-    }
-    localStorage.setItem('cart',JSON.stringify(obj))
-    setcart(JSON.parse(localStorage.getItem('cart')))
-    setToproduct(data,cart)
 }
 
 function findPriceRange(low,high)
@@ -431,12 +370,10 @@ function findPriceRange(low,high)
                             item.total_number_of_product==0?
                             <div className=" row">
                                 <div className="col">
-                                    <h6 className="card-text" style={{color:'lightgray'}}>Closed</h6>
+                                    <h6 className="card-text" style={{color:'tomato'}}>Closed</h6>
                                 </div>
                                 <div className='col'>
-                                    {
-                                        item.total_number_of_product!=0?<label>{item.total_number_of_product} Left</label>:<label style={{color:"#E2E2F4"}}>{item.total_number_of_product} Left</label>
-                                    }
+                                    <label>{item.total_number_of_product} Left</label>
                                 </div>
                             </div>
                             :
@@ -451,47 +388,24 @@ function findPriceRange(low,high)
                                 </div>
                             </div>
                         }
-                            <div className='row'>
-                                <div className='col'>
-                                    {
-                                        item.product_count==0
-                                        ?
-                                        item.total_number_of_product==0?
-                                        <button className="btn btn-primary rounded-pill btn-sm mt-0" disabled>
-                                            <button className="btn btn-primary rounded-circle btn-sm mx-3" disabled onClick={()=>ADD_TO_DECREMENT(item._id)}> - </button>
-                                                ADD
-                                            <button className="btn btn-primary rounded-circle btn-sm mx-3" disabled onClick={()=>ADD_TO_INCREMENT(item._id)}> + </button>
-                                       </button>:
-                                        <button className="btn btn-primary rounded-pill btn-sm mt-1" >
-                                            <button className="btn btn-primary rounded-circle btn-sm mx-3" onClick={()=>ADD_TO_DECREMENT(item._id)}> - </button>
-                                                ADD
-                                            <button className="btn btn-primary rounded-circle btn-sm mx-3" onClick={()=>ADD_TO_INCREMENT(item._id)}> + </button>
-                                        </button>
-                                        :
-                                        item.total_number_of_product==0?
-                                        <div className='row'>
-                                            <div className='col'>
-                                                <button className="btn btn-primary rounded-pill btn-sm mt-0" disabled>
-                                                    <button className="btn btn-primary rounded-circle btn-sm mx-3"disabled onClick={()=>ADD_TO_DECREMENT(item._id)}> - </button>
-                                                        {item.product_count}
-                                                    <button className="btn btn-primary rounded-circle btn-sm mx-3"disabled onClick={()=>ADD_TO_INCREMENT(item._id)}> + </button>
-                                                    <Link to={'/Cart'}><button className='btn btn-info btn-sm' disabled>Cart</button></Link>
-                                                </button>
-                                            </div>
-                                       </div>:
-                                        <div className='row'>
-                                            <div className='col'>
-                                                <button className="btn btn-primary rounded-pill btn-sm mt-0" >
-                                                    <button className="btn btn-primary rounded-circle btn-sm mx-3" onClick={()=>ADD_TO_DECREMENT(item._id)}> - </button>
-                                                        {item.product_count}
-                                                    <button className="btn btn-primary rounded-circle btn-sm mx-3" onClick={()=>ADD_TO_INCREMENT(item._id)}> + </button>
-                                                    <Link to={'/Cart'}><button className='btn btn-info btn-sm'>Cart</button></Link>
-                                                </button>
-                                            </div>
+                        <div className='row'>
+                                {
+                                    item.total_number_of_product==0?
+                                        <div className='col'>
+                                            <button className="btn btn-primary rounded-pill btn-sm mt-0" disabled>
+                                                ADD TO CART
+                                            </button>
                                         </div>
-                                    }
-                                </div>
-                            </div>
+                                    :
+                                    <Link to={`/product/${item._id}`}>
+                                        <div className='col'>
+                                            <button className="btn btn-primary rounded-pill btn-sm mt-0" >
+                                                ADD TO CART
+                                            </button>
+                                        </div>
+                                    </Link>
+                                }
+                        </div>
                     </div>
                 </div>
             ))

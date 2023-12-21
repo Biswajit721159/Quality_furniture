@@ -16,6 +16,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { GiRoyalLove } from "react-icons/gi";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { MdOutlineSell } from "react-icons/md";
+import { FaYoutube } from "react-icons/fa";
 import { IoMdReorder } from "react-icons/io";
 const Footer=()=>{
     return(
@@ -51,13 +52,15 @@ const Footer=()=>{
                     <li><a href="#"><FaTwitter /> Twitter</a></li>
                     <li><a href="#"><FaInstagram /> Instagram</a></li>
                     <li><a href="#"><FaLinkedinIn /> Linkedin</a></li>
+                    <li><a href="#"><FaYoutube /> Youtube</a></li>
                 </div>
                 <div class="box">
                     <h4>Follow us</h4>
-                    <li><a href="#"><FaFacebook /> Facebook</a></li>
-                    <li><a href="#"><FaTwitter /> Twitter</a></li>
-                    <li><a href="#"><FaInstagram /> Instagram</a></li>
-                    <li><a href="#"><FaLinkedinIn /> Linkedin</a></li>
+                    <div>
+                        <input className="form-control mr-sm-2" name='search' type="search" placeholder="Enter Message" aria-label="Search"/>
+                    </div>
+                    <li></li>
+                    <li><button className="btn btn-primary btn-sm mt-1">Send</button></li>
                 </div>
             </div>
             <hr/>

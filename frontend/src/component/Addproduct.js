@@ -225,6 +225,8 @@ export default function Addproduct() {
               <option >Window</option>
               <option >Table</option>
               <option >Almari</option>
+              <option >Door</option>
+              <option >Other</option>
             </select>
             {/* <div className="form-group">
                 <input type="text"  value={product_type} onChange={(e)=>{setproduct_type(e.target.value)}} name="product_Type" className="form-control" placeholder="Enter Product Type"  required/>
