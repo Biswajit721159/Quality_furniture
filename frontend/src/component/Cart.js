@@ -2,14 +2,29 @@ import React, { useEffect, useState } from 'react'
 import { Link, json, useNavigate } from 'react-router-dom'
 import {AiFillStar } from "react-icons/ai";
 import {FaHeart} from 'react-icons/fa';
-import loader from "../images/loader.gif"
+import { PulseLoader } from 'react-spinners';
+import Error from '../component/Error'
+import {cartmethod} from '../redux/CartSlice'
+import {useDispatch,useSelector} from 'react-redux'
+import { GrAdd } from "react-icons/gr";
+import { GrSubtract } from "react-icons/gr";
+import '../css/cart.css'
 const api = process.env.REACT_APP_API
 export default function Cart() {
 
+const dispatch=useDispatch();
 const userinfo=JSON.parse(localStorage.getItem('user'))
+let cartdata = useSelector((state) => state.cartdata.product_count);
 const [data,setdata]=useState([])
 const [cart,setcart]=useState(JSON.parse(localStorage.getItem('cart')))
 const [cost,setcost]=useState(0)
+const [address,setaddress]=useState()
+const [wrongaddress,setwrongaddress]=useState(false)
+const [messaddress,setmessaddress]=useState("")
+const [button,setbutton]=useState("Submit")
+const [disabled,setdisabled]=useState(false)
+const [load,setload]=useState(false)
+const [product,setproduct]=useState(null)
 
 const history=useNavigate()
 
@@ -20,22 +35,29 @@ const history=useNavigate()
     }
     else if(cart)
     {
-        fetch(`${api}/product/${cart.product_id}`,{
-            headers:{
-                Authorization:`Bearer ${userinfo.accessToken}`
-            }
-        }).then(responce=>responce.json())
-        .then((res)=>{
-            let arr=[]
-            if(res.data && res.data.length!=0)
-            {
-                console.log(res.data)
-                arr.push(res.data)
-            }
-            setToproduct(arr,cart)
-        })
+        setaddress(userinfo.user.address)
+        loadproduct()
     }
  },[])
+
+ function loadproduct()
+ {
+    setload(true)
+    fetch(`${api}/product/${cart.product_id}`,{
+        headers:{
+            Authorization:`Bearer ${userinfo.accessToken}`
+        }
+    }).then(responce=>responce.json())
+    .then((res)=>{
+        let arr=[]
+        if(res.data && res.data.length!=0)
+        {
+            arr.push(res.data)
+        }
+        setToproduct(arr,cart)
+        setload(false)
+    })
+ }
 
  function setToproduct(data,res)// data mean product and res mean cart
  {
@@ -70,193 +92,196 @@ const history=useNavigate()
     setdata([...ans])
     let x=((ans[0].price-((ans[0].price*ans[0].offer)/100))*(res.product_count)).toFixed(2);
     setcost(x)
+    if(ans.length)setproduct(ans[0])
  }
 
- function ADD_TO_DECREMENT(id)
+ function Add_TO_CART()
  {
-     let obj=cart
-     if(cart==null || cart.length==0)
-     {
-         alert("Sorry You are not allow !")
-     }
-     else
-     {
-         if(cart.product_id==id && cart.product_count==0)
-         {
-             alert("Sorry You are not allow !")
-         }
-         else if(cart.product_id==id)
-         {
-             obj={product_id:id,product_count:cart.product_count-1}
-         }
-         else
-         { 
-             alert("Sorry You are not allow !")
-         }
-     }
-     localStorage.setItem('cart',JSON.stringify(obj))
-     setcart(JSON.parse(localStorage.getItem('cart')))
-     setToproduct(data,cart)
+   dispatch(cartmethod.ADD_TO_CART(product._id))
  }
- 
- function checkTheProductCount(id)
+
+ function SUB_TO_CART()
  {
-     if(data==undefined) return 0;
-     for(let i=0;i<data.length;i++)
-     {
-         if(data[i]._id==id)
-         {
-             return (data[i].total_number_of_product)
-         }
-     }
-     return 0;
+   dispatch(cartmethod.SUB_TO_CART(product._id))
  }
- 
- function ADD_TO_INCREMENT(id)
- {
-     let obj=cart
-     if(cart==null || cart.length==0)
-     {
-         obj={product_id:id,product_count:1}
-     }
-     else
-     {
-         if(cart.product_id==id)
-         {
-             let x=checkTheProductCount(id);
-             if(x<=cart.product_count)
-             {
-                 alert("You are Not Allow ! ")
-             }
-             else
-             {
-                 obj={product_id:id,product_count:1+cart.product_count}
-             }
-         }
-         else
-         { 
-             if(window.confirm('Are you sure to replace this product ?'))
-             {
-                 obj={product_id:id,product_count:1}
-             }
-         }
-     }
-     localStorage.setItem('cart',JSON.stringify(obj))
-     setcart(JSON.parse(localStorage.getItem('cart')))
-     setToproduct(data,cart)
- }
+
+ function submit()
+  {
+    if(cart !=null && cart.product_count==0)
+    {
+      alert("Please Select Atleast One Product .")
+      return ;
+    }
+    setdisabled(true)
+    setbutton("Please Wait....")
+    const date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let currentDate = `${day}-${month}-${year}`;
+
+    fetch(`${api}/product/${cart.product_id}`,{
+      headers:{
+        Authorization:`Bearer ${userinfo.accessToken}`
+    }
+    }).then(responce=>responce.json()).then((result)=>{
+      let product_data=result.data
+      if(product_data!=undefined && product_data.length!=0)
+      {
+          if(product_data.total_number_of_product>=cart.product_count)
+          {
+              fetch(`${api}/product/${cart.product_id}`,{
+                method:'PUT',
+                headers:{
+                    'Accept':'application/json',
+                    'Content-Type':'application/json',
+                    Authorization:`Bearer ${userinfo.accessToken}`
+                },
+                body:JSON.stringify({
+                  product_id:cart.product_id,
+                  product_count:product_data.total_number_of_product-cart.product_count
+                })
+              }).then(responce=>responce.json()).then((data)=>{
+                 fetch(`${api}/order`,{
+                  method:'POST',
+                  headers:{
+                      'Accept':'application/json',
+                      'Content-Type':'application/json',
+                      Authorization:`Bearer ${userinfo.accessToken}`
+                  },
+                  body:JSON.stringify({
+                    email:userinfo.user.email,
+                    address:address,
+                    product_id:cart.product_id,
+                    product_count:cart.product_count,
+                    payment_method:"Cash on Delivary",
+                    Total_rupess:cost,
+                    Date:currentDate,
+                  })
+                }).then(responce=>responce.json())
+                .then((res)=>{
+                  console.log(res)
+                  history('/Myorder')
+                })
+              })
+          }
+          else
+          {
+            alert(`Acctually We Have Total${product_data.total_number_of_product} Product Available`)
+          }
+      }
+    })    
+  }
+
 
 
   return (
     <>
     {
-         data!=undefined && data.length!=0?
-            <div className='container'>
-                <div className='container align-items-center  mx-5 row'>
-                    { 
-                            data.map((item,ind)=>(
-                                <div key={ind} className="card mx-4 mt-4" style={{width: "18rem", height:"auto",backgroundColor:"#D6DBDF"}}>
-                                    <Link to={`/Product/${item._id}`}>
-                                        <img className="card-img-top" src={item.newImage[0]} style={{height:"200px",width:"287px"}} alt="Card image cap"/>
-                                    </Link>
-                                    <div className="card-body">
-                                        <div className='row'>
-                                            <div className='col'>
-                                            <h6 className="card-title d-flex">{item.product_name}</h6>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="container col">
-                                            <h5 className="card-text" style={{color:'orange'}}>{item.offer}% OFF</h5>
-                                            </div>
-                                            <div className="container col">
-                                            <h5 className="card-text" style={{color:'gray'}}><s>₹{item.price}</s></h5> 
-                                            </div>
-                                        </div>
-                                        <div className='row'>
-                                            <div className='col'>
-                                                {
-                                                    parseInt(item.rating)==0?<button className='btn btn-secondary btn-sm '>{item.rating}  <AiFillStar /></button>
-                                                    :
-                                                    parseInt(item.rating)==1?<button className='btn btn-danger btn-sm '>{item.rating}  <AiFillStar /></button>
-                                                    :
-                                                    parseInt(item.rating)==2?<button className='btn btn-info btn-sm '>{item.rating}  <AiFillStar /></button>
-                                                    :
-                                                    parseInt(item.rating)==3?<button className='btn btn-warning btn-sm '>{item.rating}  <AiFillStar /></button>
-                                                    :
-                                                    parseInt(item.rating)==4?<button className='btn btn-primary btn-sm '>{item.rating}  <AiFillStar /></button>
-                                                    :
-                                                    parseInt(item.rating)==5?<button className='btn btn-success btn-sm '>{item.rating}  <AiFillStar /></button>
-                                                    :""
-                                                }
-                                            </div>
-                                            <div className=" col">
-                                                    <h5 className="card-text" style={{color:'tomato'}}>₹{(item.price-((item.price*item.offer)/100)).toFixed(2)}</h5>
-                                            </div>
-                                        </div>
-                                        {
-                                            item.total_number_of_product==0?
-                                            <div className=" row">
-                                                <div className="col">
-                                                <h5 className="card-text" style={{color:'lightgray'}}>Closed</h5>
-                                                </div>
-                                                <div className='col'>
-                                                    {
-                                                    item.total_number_of_product!=0?<strong>{item.total_number_of_product} Left</strong>:<strong style={{color:"#E2E2F4"}}>{item.total_number_of_product} Left</strong>
-                                                    }
-                                                </div>
-                                            </div>
-                                            :
-                                            <div className="row">
-                                                <div className=" col">
-                                                <h5 className="card-text" style={{color:'green'}}>Available</h5>
-                                                </div>
-                                                <div className='col'>
-                                                    {
-                                                    item.total_number_of_product!=0?<strong>{item.total_number_of_product} Left</strong>:<strong style={{color:"#E2E2F4"}}>{item.total_number_of_product} Left</strong>
-                                                    }
-                                                </div>
-                                            </div>
-                                        }
-                                        <div className="card-body">
-                                            <div className='row'>
-                                                <div className='col'>
-                                                {
-                                                    item.product_count==0
-                                                    ?<button className="btn btn-primary rounded-pill btn-sm mt-2" >
-                                                        <button className="btn btn-primary rounded-circle btn-sm mx-3" onClick={()=>ADD_TO_DECREMENT(item._id)}> - </button>
-                                                            ADD
-                                                        <button className="btn btn-primary rounded-circle btn-sm mx-3" onClick={()=>ADD_TO_INCREMENT(item._id)}> + </button>
-                                                    </button>
-                                                    :<button className="btn btn-primary rounded-pill btn-sm mt-2" >
-                                                        <button className="btn btn-primary rounded-circle btn-sm mx-3" onClick={()=>ADD_TO_DECREMENT(item._id)}> - </button>
-                                                            {item.product_count}
-                                                        <button className="btn btn-primary rounded-circle btn-sm mx-3" onClick={()=>ADD_TO_INCREMENT(item._id)}> + </button>
-                                                    </button>
-                                                }
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div  className="row card-body">
-                                            <div className='col'>
-                                            <button className='btn btn-warning' disabled>₹ {cost}</button>
-                                            </div>
-                                            <div className='col'>
-                                                <Link to={`/${cost}/Buy`}><button className='btn btn-warning'>Buy</button></Link>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))
-                    }
+        load==true?
+        <div className="Loaderitem">
+            <PulseLoader color="#16A085"  />
+        </div>:
+         product!=null?
+         <>
+            <div className='cartitem'>
+                <div className='item1'>
+                    <div className='insideritem'>
+                        <Link to={`/Product/${product._id}`}><img src={product.newImage[0]} style={{height:280,widows:150,border:'2px solid green' ,borderRadius:10}} alt='Error'/></Link>
+                    </div>
+                </div>
+                <div className='item1item2'>
+                    <h5 >{product.product_name}</h5>
+                    <p style={{color:"orange"}}>{product.offer}%OFF</p>
+                    <h6 style={{color:'gray'}}>Original - <s>₹{product.price}</s></h6> 
+                    <h5 style={{color:'tomato'}}>Price - ₹{(product.price-((product.price*product.offer)/100)).toFixed(2)}</h5>
+                    {/* <h5>{product.total_number_of_product} Left Only </h5> */}
+               </div>
+               <div>
+                    <div className='insidecol'>
+                        <button style={{borderRadius:'40%'}} onClick={Add_TO_CART}><GrAdd /></button>
+                        <h4 style={{marginLeft:20 ,marginRight:20,marginTop:5}}>{cartdata}</h4>
+                        <button style={{borderRadius:'40%'}} onClick={SUB_TO_CART}><GrSubtract /></button>
+                    </div>
+                </div>
+                <div className='item2'>
+                <h4 style={{textAlign:'center'}}>PRICE DETAILS</h4>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>Price ({product.product_count} item)</td>
+                                <td>₹{product.price*product.product_count}</td>
+                            </tr>
+                            <tr>
+                                <td>Discount</td>
+                                <td>-₹{product.price*product.product_count-cost}</td>
+                            </tr>
+                            <tr>
+                                <td>Delivery Charges</td>
+                                <td><s>80</s> Free</td>
+                            </tr>
+                            <tr>
+                                <td><h5>Total Amount</h5></td>
+                                <td>₹{cost}</td>
+                            </tr>
+                            <tr>
+                                <td style={{color:'green'}}>You will save ₹{product.price*product.product_count-cost} on this order</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            :cart!=null ?
-            <div className='loader-container'><img src={loader} /></div>
-            :
-                <div className='loader-container'>
-                    <Link to={'/Product'}><button className='btn btn-info'>  <h4>ADD PRODUCTS</h4>  </button></Link>
-                </div>
+            <div className='buttonitem'>
+                <button className='btn btn-danger' data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" >PLACE ORDER</button>
+            </div>
+
+
+        {/* model box */}
+
+        {
+            userinfo && 
+            <div>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                               <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div  style={{color:"green"}}>*Process to next step</div>
+                                <div className="form-group">
+                                    <input type="email" value={userinfo.user.email} disabled className="form-control" placeholder="Enter Email Id"  required/>
+                                </div>
+                                <div className="form-group">
+                                    <input type="number" value={cost} disabled className="form-control"   required/>
+                                </div>
+                                <div className="form-group">
+                                    <textarea type="text" value={address}  onChange={(e)=>{setaddress(e.target.value)}}  className="form-control" placeholder="Enter Full Address"  required/>
+                                    {wrongaddress?<label  style={{color:"red"}}>{messaddress}</label>:""}
+                                </div>
+                                <div className="form-group">
+                                    <select className="form-control" disabled aria-label="Default select example">
+                                       <option selected>Cash on Delivary</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary"  disabled={disabled} onClick={submit}>{button}</button>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+            
+            </div>
+        }
+        </>    
+        :<Error/>
     }
     </>
   )

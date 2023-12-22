@@ -16,6 +16,7 @@ import Buy from "./component/Buy";
 import Myorder from "./component/Myorder";
 import Reviews from "./component/Reviews";
 import Footer from "./component/Footer";
+import './css/Loader.css'
 function App() {
   return (
     <div className="App">

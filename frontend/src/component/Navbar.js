@@ -68,29 +68,6 @@ const Navbar=()=>{
     }
   }
 
-  function search(searchproduct)
-  {  
-      if(searchproduct.length==0)
-      {
-          // loadproduct()
-      }
-      else
-      {
-          fetch(`https://quality-furniture.vercel.app/product/search/${searchproduct}`,{
-              headers:{
-                  // auth:`bearer ${userinfo.auth}`
-              }
-          }).then(response=>response.json()).then((res)=>{
-              if(res!=undefined)
-              {
-                  // setproduct(res)
-                  // setToproduct(res,cart)
-                  // setload(false)
-              }
-          })
-      }
-  }
-
   function search(s)
   {
     dispatch(searchmethod.SET_SEARCH(s))

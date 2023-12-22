@@ -6,7 +6,7 @@ import {FaHeart} from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import loader from "../images/loader.gif"
 import Footer from './Footer';
-
+import {useSelector} from 'react-redux'
 export default function Show() {
 
 const history =useNavigate()    
@@ -19,6 +19,8 @@ let userinfo=JSON.parse(localStorage.getItem('user'))
 let wishlist=JSON.parse(localStorage.getItem('Wishlist'))
 let [load,setload]=useState(true)
 let [priceRange,setpriceRange]=useState("Price Range")
+let searchvalue=useSelector((state)=>state.Search_Name.search_Name)
+console.log(searchvalue)
 const api = process.env.REACT_APP_API
 
 
@@ -33,6 +35,10 @@ useEffect(()=>{
         loadproduct();
     }
 },[])
+
+useEffect(()=>{
+    search(searchvalue)
+},[searchvalue])
 
 
 function loadproduct()
@@ -144,15 +150,15 @@ function search(searchproduct)
     }
     else
     {
-        fetch(`https://quality-furniture.vercel.app/product/search/${searchproduct}`,{
+        fetch(`${api}/product/search/${searchproduct}`,{
             headers:{
-                auth:`bearer ${userinfo.auth}`
+                Authorization:`Bearer ${userinfo.accessToken}`
             }
         }).then(response=>response.json()).then((res)=>{
             if(res!=undefined)
             {
-                setproduct(res)
-                setToproduct(res,cart)
+                setproduct(res.data)
+                setToproduct(res.data,cart)
                 setload(false)
             }
         })
@@ -238,19 +244,6 @@ function SortOnOffer()
     setdata([...data])
 }
 
-function checkTheProductCount(id)
-{
-    if(data==undefined) return 0;
-    for(let i=0;i<data.length;i++)
-    {
-        if(data[i]._id==id)
-        {
-            return (data[i].total_number_of_product)
-        }
-    }
-    return 0;
-}
-
 function findPriceRange(low,high)
 {
     if(low==0)
@@ -311,12 +304,6 @@ function findPriceRange(low,high)
                     </div>
                 </div>
             </div>
-            {/* <div className='col mt-1'>
-                <div className="form-inline mt-1 my-2 my-lg-0">
-                    <input className="form-control mr-sm-2" value={searchproduct} name='search' onChange={(e)=>{setsearchproduct(e.target.value)}}  type="search" placeholder="Search product" aria-label="Search"/>
-                    <button className="btn btn-success my-2 my-sm-0" onClick={()=>search(searchproduct)} type="submit">Search</button>
-                </div>
-            </div> */}
         </div>
 
         <div className='product'>        
@@ -342,7 +329,7 @@ function findPriceRange(low,high)
                                 <h6 className="card-text" style={{color:'orange'}}>{item.offer}% OFF</h6>
                             </div>
                             <div className="container col">
-                                <h7 className="card-text" style={{color:'gray'}}><s>₹{item.price}</s></h7> 
+                                <h6 className="card-text" style={{color:'gray'}}><s>₹{item.price}</s></h6> 
                             </div>
                         </div>
                         <div className='row'>

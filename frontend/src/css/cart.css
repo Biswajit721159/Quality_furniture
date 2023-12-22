@@ -1,0 +1,36 @@
+.buttonitem{
+  display: flex;
+  margin-top: 20vh;
+  justify-content: center;
+}
+.cartitem{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center; 
+  flex-wrap: wrap;
+}
+
+.item1{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+}
+.item2{
+  border-radius: 2px solid red;
+  border-radius: 20px;
+  height: 300;
+  width: 200;
+}
+.item1item2{
+  display: flex;
+  /* justify-content: ; */
+  flex-direction: column;
+}
+.insideritem{
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 10;
+  flex-wrap: wrap;
+}
