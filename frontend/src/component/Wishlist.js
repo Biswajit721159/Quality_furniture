@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import loader from "../images/loader.gif"
 import {AiFillStar } from "react-icons/ai";
-
+import { PulseLoader } from 'react-spinners';
 const api = process.env.REACT_APP_API
 
 export default function WishList() {
@@ -177,7 +177,9 @@ export default function WishList() {
       </div>
       :
       product && product.length?
-      <div className='loader-container'><img src={loader} /></div>
+      <div className="Loaderitem">
+          <PulseLoader color="#16A085"  />
+      </div>
       :
         <div className='loader-container'>
             <Link to={'/Product'}><button className='btn btn-info'>  <h4>ADD PRODUCTS</h4>  </button></Link>
