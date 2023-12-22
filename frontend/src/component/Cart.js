@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, json, useNavigate } from 'react-router-dom'
 import {AiFillStar } from "react-icons/ai";
 import {FaHeart} from 'react-icons/fa';
-import { PulseLoader } from 'react-spinners';
+import { PulseLoader ,BeatLoader } from 'react-spinners';
 import Error from '../component/Error'
 import {cartmethod} from '../redux/CartSlice'
 import {useDispatch,useSelector} from 'react-redux'
@@ -21,10 +21,11 @@ const [cost,setcost]=useState(0)
 const [address,setaddress]=useState()
 const [wrongaddress,setwrongaddress]=useState(false)
 const [messaddress,setmessaddress]=useState("")
-const [button,setbutton]=useState("Submit")
+const [button,setbutton]=useState("PLACE ORDER")
 const [disabled,setdisabled]=useState(false)
 const [load,setload]=useState(false)
 const [product,setproduct]=useState(null)
+const [model,setmodel]=useState()
 
 const history=useNavigate()
 
@@ -105,6 +106,54 @@ const history=useNavigate()
    dispatch(cartmethod.SUB_TO_CART(product._id))
  }
 
+ function submit_order()
+ {
+    const date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let currentDate = `${day}-${month}-${year}`;
+    fetch(`${api}/order`,{
+        method:'POST',
+        headers:{
+            'Accept':'application/json',
+            'Content-Type':'application/json',
+            Authorization:`Bearer ${userinfo.accessToken}`
+        },
+        body:JSON.stringify({
+          email:userinfo.user.email,
+          address:address,
+          product_id:cart.product_id,
+          product_count:cart.product_count,
+          payment_method:"Cash on Delivary",
+          Total_rupess:cost,
+          Date:currentDate,
+        })
+      }).then(responce=>responce.json())
+      .then((res)=>{
+        console.log(res)
+        history('/Myorder')
+      })
+ }
+
+ function submit_in_product(product_data)
+ {
+    fetch(`${api}/product/total_number_of_product/${cart.product_id}`,{
+        method:'PUT',
+        headers:{
+            'Accept':'application/json',
+            'Content-Type':'application/json',
+            Authorization:`Bearer ${userinfo.accessToken}`
+        },
+        body:JSON.stringify({
+          product_id:cart.product_id,
+          product_count:product_data.total_number_of_product-cart.product_count
+        })
+      }).then(responce=>responce.json()).then((data)=>{
+          submit_order()
+      })
+ }
+
  function submit()
   {
     if(cart !=null && cart.product_count==0)
@@ -113,12 +162,7 @@ const history=useNavigate()
       return ;
     }
     setdisabled(true)
-    setbutton("Please Wait....")
-    const date = new Date();
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
-    let currentDate = `${day}-${month}-${year}`;
+    setbutton(<BeatLoader color="#36d7b7" />)
 
     fetch(`${api}/product/${cart.product_id}`,{
       headers:{
@@ -130,44 +174,13 @@ const history=useNavigate()
       {
           if(product_data.total_number_of_product>=cart.product_count)
           {
-              fetch(`${api}/product/${cart.product_id}`,{
-                method:'PUT',
-                headers:{
-                    'Accept':'application/json',
-                    'Content-Type':'application/json',
-                    Authorization:`Bearer ${userinfo.accessToken}`
-                },
-                body:JSON.stringify({
-                  product_id:cart.product_id,
-                  product_count:product_data.total_number_of_product-cart.product_count
-                })
-              }).then(responce=>responce.json()).then((data)=>{
-                 fetch(`${api}/order`,{
-                  method:'POST',
-                  headers:{
-                      'Accept':'application/json',
-                      'Content-Type':'application/json',
-                      Authorization:`Bearer ${userinfo.accessToken}`
-                  },
-                  body:JSON.stringify({
-                    email:userinfo.user.email,
-                    address:address,
-                    product_id:cart.product_id,
-                    product_count:cart.product_count,
-                    payment_method:"Cash on Delivary",
-                    Total_rupess:cost,
-                    Date:currentDate,
-                  })
-                }).then(responce=>responce.json())
-                .then((res)=>{
-                  console.log(res)
-                  history('/Myorder')
-                })
-              })
+            submit_in_product(product_data)
           }
           else
           {
             alert(`Acctually We Have Total${product_data.total_number_of_product} Product Available`)
+            setbutton("PLACE ORDER")
+            setdisabled(false)
           }
       }
     })    
@@ -184,26 +197,30 @@ const history=useNavigate()
         </div>:
          product!=null?
          <>
+            <h6 style={{textAlign:'center',fontFamily:'cursive',color:"red"}}>*If You Want to Change Your Address Go to Your Profile Section </h6>
             <div className='cartitem'>
                 <div className='item1'>
                     <div className='insideritem'>
                         <Link to={`/Product/${product._id}`}><img src={product.newImage[0]} style={{height:280,widows:150,border:'2px solid green' ,borderRadius:10}} alt='Error'/></Link>
                     </div>
                 </div>
+
                 <div className='item1item2'>
                     <h5 >{product.product_name}</h5>
                     <p style={{color:"orange"}}>{product.offer}%OFF</p>
                     <h6 style={{color:'gray'}}>Original - <s>₹{product.price}</s></h6> 
                     <h5 style={{color:'tomato'}}>Price - ₹{(product.price-((product.price*product.offer)/100)).toFixed(2)}</h5>
                     {/* <h5>{product.total_number_of_product} Left Only </h5> */}
-               </div>
-               <div>
+                </div>
+
+                <div>
                     <div className='insidecol'>
                         <button style={{borderRadius:'40%'}} onClick={Add_TO_CART}><GrAdd /></button>
                         <h4 style={{marginLeft:20 ,marginRight:20,marginTop:5}}>{cartdata}</h4>
                         <button style={{borderRadius:'40%'}} onClick={SUB_TO_CART}><GrSubtract /></button>
                     </div>
                 </div>
+                
                 <div className='item2'>
                 <h4 style={{textAlign:'center'}}>PRICE DETAILS</h4>
                     <table class="table">
@@ -232,27 +249,26 @@ const history=useNavigate()
                 </div>
             </div>
             <div className='buttonitem'>
-                <button className='btn btn-danger' data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" >PLACE ORDER</button>
+                <button className='btn btn-danger' disabled={disabled}onClick={submit} >{button}</button>
             </div>
 
 
         {/* model box */}
 
-        {
+        {/* {
             userinfo && 
             <div>
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">GO</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                               <span aria-hidden="true">&times;</span>
+                            <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
                             <form>
-                                <div  style={{color:"green"}}>*Process to next step</div>
                                 <div className="form-group">
                                     <input type="email" value={userinfo.user.email} disabled className="form-control" placeholder="Enter Email Id"  required/>
                                 </div>
@@ -265,21 +281,21 @@ const history=useNavigate()
                                 </div>
                                 <div className="form-group">
                                     <select className="form-control" disabled aria-label="Default select example">
-                                       <option selected>Cash on Delivary</option>
+                                    <option selected>Cash on Delivary</option>
                                     </select>
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary"  disabled={disabled} onClick={submit}>{button}</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" disabled={disabled}  >{button}</button>
                         </div>
                         </div>
                     </div>
-                    </div>
-            
-            </div>
-        }
+                </div>
+            </div> 
+        }*/}
+
         </>    
         :<Error/>
     }

@@ -4,6 +4,7 @@ import '../css/Main_page.css'
 import {AiFillStar } from "react-icons/ai";
 import {FaHeart} from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { PulseLoader } from 'react-spinners';
 import loader from "../images/loader.gif"
 import Footer from './Footer';
 import {useSelector} from 'react-redux'
@@ -20,7 +21,7 @@ let wishlist=JSON.parse(localStorage.getItem('Wishlist'))
 let [load,setload]=useState(true)
 let [priceRange,setpriceRange]=useState("Price Range")
 let searchvalue=useSelector((state)=>state.Search_Name.search_Name)
-console.log(searchvalue)
+
 const api = process.env.REACT_APP_API
 
 
@@ -400,7 +401,9 @@ function findPriceRange(low,high)
         </div>
         <Footer/>
         </>
-        :load?<div className='loader-container'><img src={loader} /></div>
+        :load?<div className="Loaderitem">
+                <PulseLoader color="#16A085"  />
+              </div>
         :<div className='loader-container'>
             <h4>Product Not Found</h4>
             <button className='btn btn-primary mx-3' onClick={()=>search("")} >Get Product</button>

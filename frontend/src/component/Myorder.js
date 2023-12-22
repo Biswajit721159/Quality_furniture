@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {Link, useNavigate} from 'react-router-dom'
 import swal from "sweetalert";
 import loader from "../images/loader.gif"
+import { PulseLoader } from 'react-spinners';
 import {MdOutlineDarkMode} from 'react-icons/md';
 const api = process.env.REACT_APP_API
 
@@ -153,7 +154,9 @@ export default function Myorder() {
                             </table>
 
                 </div>
-            :load?<div className='loader-container'><img src={loader} /></div>:
+            :load?<div className="Loaderitem">
+                <PulseLoader color="#16A085"  />
+            </div>:
             <div className='loader-container'>
                 <Link to={'/Product'}><button className='btn btn-info'>  <h4>ORDER PRODUCTS</h4>  </button></Link>
             </div>

@@ -4,6 +4,7 @@ import {AiFillStar } from "react-icons/ai";
 import { GrAdd } from "react-icons/gr";
 import { GrSubtract } from "react-icons/gr";
 import loader from "../images/loader.gif"
+import { PulseLoader } from 'react-spinners';
 import '../css/Product_view.css'
 import {useDispatch,useSelector} from 'react-redux'
 import {cartmethod} from '../redux/CartSlice'
@@ -184,7 +185,7 @@ export default function Product_view() {
                 <div className='item'>
                     <div className='col1'>
                         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                        <div class="carousel-inner">
+                        <div class="carousel-inner" style={{border:'2px solid green' ,borderRadius:10}}>
                             <div class="carousel-item active">
                                 <img class="d-block" src={product.newImage[0]} style={{height:"250px", width:"450px"}} alt="First slide"/>
                             </div>
@@ -309,7 +310,9 @@ export default function Product_view() {
             
         </div>
         :load?
-            <div className='loader-container'><img src={loader} /></div>
+        <div className="Loaderitem">
+            <PulseLoader color="#16A085"  />
+        </div>
             :
             <div className='loader-container'>
                 <h4>Product Not Found</h4>
