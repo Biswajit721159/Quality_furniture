@@ -207,11 +207,9 @@ export default function Product_view() {
                     </div>
                     </div>
                     <div className='col2'>
-                       <div className='insidecol'>
-                            <button style={{borderRadius:'40%'}} onClick={Add_TO_CART}><GrAdd /></button>
-                            {cart!=undefined && _id==cart.product_id?<h4 style={{marginLeft:20 ,marginRight:20,marginTop:5}}>{cartdata}</h4>:<h4 style={{marginLeft:20 ,marginRight:20,marginTop:5}}>0</h4>}
-                            <button style={{borderRadius:'40%'}} onClick={SUB_TO_CART}><GrSubtract /></button>
-                       </div>
+                        <button style={{borderRadius:'40%'}} onClick={Add_TO_CART}><GrAdd /></button>
+                        {cart!=undefined && _id==cart.product_id?<h4 style={{marginLeft:20 ,marginRight:20,marginTop:5}}>{cartdata}</h4>:<h4 style={{marginLeft:20 ,marginRight:20,marginTop:5}}>0</h4>}
+                        <button style={{borderRadius:'40%'}} onClick={SUB_TO_CART}><GrSubtract /></button>
                     </div>
                     <div className='col3'>
                         <div class="card" style={{width: "18rem"}}>
@@ -225,6 +223,7 @@ export default function Product_view() {
                         </div>
                     </div>
                 </div>
+                <hr/>
                <div className='item'>
                    <div className='col1 mx-3'>
                             <p className='mt-4'>{overall_rating} <AiFillStar /> average based on {total} reviews.</p>

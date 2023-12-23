@@ -2,6 +2,8 @@ import React,{useEffect, useState} from 'react'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
 import loader from "../images/loader.gif"
+import { PulseLoader } from 'react-spinners';
+const api = process.env.REACT_APP_API
 
 
 export default function Reviews() {
@@ -12,7 +14,8 @@ export default function Reviews() {
 let history=useNavigate()
 const [reviews,setreviews]=useState("");
 const[rating,setrating]=useState("Over All Rating Out of 5");
-const [product,setproduct]=useState([])
+const [product,setproduct]=useState()
+const [order,setorder]=useState()
 
 const [errorreviews,seterrorreviews]=useState(false)
 const [errorrating,seterrorrating]=useState(false)
@@ -25,37 +28,34 @@ const [disabled,setdisabled]=useState(false)
 
 
 useEffect(()=>{
-  fetch(`https://quality-furniture.vercel.app/product/${product_id}`,{
-    headers:{
-        auth:`bearer ${userinfo.auth}`
-    }
-  }).then(responce=>responce.json()).then((result)=>{
-    if(result!=undefined)
-    {
-      fetch(`https://quality-furniture.vercel.app/order/order_id/${order_id}`,{
-        headers:{
-            auth:`bearer ${userinfo.auth}`
-          }
-        }).then(responce=>responce.json())
-        .then((res)=>{ 
-          if(res!=undefined)
-          {
-            if(res.length==0)
-            {
-              setproduct([])
-            }
-            else
-            {
-              setproduct(result)
-            }
-            setload(false)
-          }
-      })
-    }
-  })
-
- 
+  loadproduct()
 },[])
+
+function loadproduct()
+{
+    fetch(`${api}/product/${product_id}`,{
+      headers:{
+        Authorization:`Bearer ${userinfo.accessToken}`
+      }
+    }).then(responce=>responce.json()).then((result)=>{
+      if(result!=undefined)
+      {
+        fetch(`${api}/order/getById/${order_id}`,{
+          headers:{
+              Authorization:`Bearer ${userinfo.accessToken}`
+            }
+          }).then(responce=>responce.json())
+          .then((res)=>{ 
+            if(res!=undefined)
+            {
+              setproduct(result.data)
+              setorder(res.data)
+              setload(false)
+            }
+        })
+      }
+    })
+}
 
 function checkreviews()
 {
@@ -89,55 +89,81 @@ function checkrating()
     }
 }
 
+
+function PushReviews()
+{
+    fetch(`${api}/Reviews`,{
+      method:'POST',
+      headers:{
+          'Accept':'application/json',
+          'Content-Type':'application/json',
+          Authorization:`Bearer ${userinfo.accessToken}`
+      },
+      body:JSON.stringify({
+        email:userinfo.user.email,
+        product_id:product_id,
+        order_id:order_id,
+        rating:rating,
+        review:reviews,
+      })
+  }).then(response=>response.json()).then((data)=>{
+    console.log(data)
+    history('/Myorder')
+  })
+}
+
+function UpdateIntoOrder()
+{
+  fetch(`http://localhost:5000/order/updateFeedback/${order_id}`,{
+    method:'PUT',
+    headers:{
+        'Accept':'application/json',
+        'Content-Type':'application/json',
+        Authorization:`Bearer ${userinfo.accessToken}`
+    },
+    body:JSON.stringify({
+      isfeedback:true
+    })
+  }).then(responce=>responce.json()).then((result)=>{
+      console.log(result)
+      PushReviews()
+  })
+}
+
 function submit()
 {
-  if(product  && product.length==0)
+  if(product==null || order==null)
   {
     return 
   }
   
   let rat_ing=checkrating()
   let rev_iew=checkreviews()
-  let a=parseInt(product[0].rating)* parseInt(product[0].number_of_people_give_rating)+parseInt(rating);
-  let b=(product[0].number_of_people_give_rating+1);
+  let a=parseInt(product.rating)* parseInt(product.number_of_people_give_rating)+parseInt(rating);
+  let b=(product.number_of_people_give_rating+1);
   let x=(a/b).toFixed(1);
+
+
   if(rat_ing && rev_iew)
   {
         setbutton("Please Wait....")
         setdisabled(true)
-        fetch(`https://quality-furniture.vercel.app/RaingUpdateIntoProduct/${product_id}`,{
+
+        fetch(`${api}/product/RaingUpdateIntoProduct/${product_id}`,{
           method:'PUT',
           headers:{
               'Accept':'application/json',
               'Content-Type':'application/json',
-              auth:`bearer ${userinfo.auth}`
+              Authorization:`Bearer ${userinfo.accessToken}`
           },
           body:JSON.stringify({
             product_id:product_id,
             rating:x,
-            number_of_people_give_rating:product[0].number_of_people_give_rating+1,
+            number_of_people_give_rating:product.number_of_people_give_rating+1,
           })
         }).then(responce=>responce.json()).then((result)=>{
-            
-        })
-
-
-        fetch('https://quality-furniture.vercel.app/Reviews',{
-            method:'POST',
-            headers:{
-                'Accept':'application/json',
-                'Content-Type':'application/json',
-                auth:`bearer ${userinfo.auth}`
-            },
-            body:JSON.stringify({
-              email:userinfo.user.email,
-              product_id:product_id,
-              order_id:order_id,
-              rating:rating,
-              review:reviews,
-            })
-        }).then(response=>response.json()).then((data)=>{
-          history('/Myorder')
+            console.log(result)
+            UpdateIntoOrder()
         })
    }
 }
@@ -182,7 +208,9 @@ function submit()
       <div className='loader-container'>
         <h4>Page Not Found</h4>
       </div>
-    :<div className='loader-container'><img src={loader} /></div>}
+    :<div className="Loaderitem">
+        <PulseLoader color="#16A085"/>
+    </div>}
     </>
   )
 }

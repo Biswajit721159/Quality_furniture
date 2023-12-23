@@ -214,7 +214,7 @@ const history=useNavigate()
                 </div>
 
                 <div>
-                    <div className='insidecol'>
+                    <div className='col2'>
                         <button style={{borderRadius:'40%'}} onClick={Add_TO_CART}><GrAdd /></button>
                         <h4 style={{marginLeft:20 ,marginRight:20,marginTop:5}}>{cartdata}</h4>
                         <button style={{borderRadius:'40%'}} onClick={SUB_TO_CART}><GrSubtract /></button>

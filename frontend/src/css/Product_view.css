@@ -1,8 +1,10 @@
-.insidecol{
-    display: flex;
+
+.col2{
+  display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
     flex-direction: row;
+    align-items: center;
 }
 .item{
     display: flex;

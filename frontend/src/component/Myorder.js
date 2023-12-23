@@ -38,47 +38,6 @@ export default function Myorder() {
     }
   },[])
 
-//   function setToproduct(order,product,Reviews)
-//   {
-//     if(product==undefined ||order ==undefined || Reviews==undefined) return
-//     else
-//     {
-//         let ans=[]
-//         for(let i=0;i<order.length;i++)
-//         {
-//             let obj={
-//                 id:order[i]._id,
-//                 address:order[i].address,
-//                 product_id:order[i].product_id,
-//                 product_count:order[i].product_count,
-//                 payment_method:order[i].payment_method,
-//                 Total_rupess:order[i].Total_rupess,
-//                 Date:order[i].Date,
-//                 product_name:"",
-//                 newImage:[],
-//                 isfeedback:false,
-//             }
-//             for(let j=0;j<product.length;j++)
-//             {
-//                 if(product[j]._id==obj.product_id)
-//                 {
-//                     obj.newImage=product[j].newImage
-//                     obj.product_name=product[j].product_name
-//                 }
-//             }
-//             for(let j=0;j<Reviews.length;j++)
-//             {
-//                 if(Reviews[j].email==userinfo.user.email && Reviews[j].order_id==order[i]._id)
-//                 {
-//                     obj.isfeedback=true
-//                 }
-//             }
-//             ans.push(obj)
-//         }
-//         let arr=ans.reverse()
-//         setdata([...arr])
-//     }
-//   }
 
   function showaddress(data)
   {
@@ -103,8 +62,7 @@ export default function Myorder() {
         {
             data!=undefined && data.length!=0 ?
                 <div className='container'>
-                            {userinfo?<h4>Your order {userinfo.user.name}</h4>:""}
-                            <table className="table table-bordered" style={{backgroundColor:colormode}}>
+                            <table className="table" style={{backgroundColor:colormode}}>
                                 <thead>
                                     <tr>
                                         <th className='text-center' scope="col">#</th>
@@ -126,28 +84,25 @@ export default function Myorder() {
                                 {
                                     <tbody>
                                         {
-                                        data.map((item,ind)=>(
-                                            <tr key={ind}>
-                                                <th className='text-center' scope="row">{ind}</th>
-                                                <td className='text-center'>
-                                                <div className="card" style={{width: "10rem",backgroundColor:"#D6DBDF"}}>
-                                                <Link to={`/Product/${item.product_id}`}>
-                                                    <img className="card-img-top" src={item.newImage[0]} alt="Card image cap"/>
-                                                </Link>
-                                                        <div className="card-body">
-                                                            <p className="card-text">{item.product_name}</p>
-                                                        </div>
+                                            data.map((item,ind)=>(
+                                                <tr key={ind}>
+                                                    <th className='text-center' scope="row">{ind}</th>
+                                                    <td className='text-center'>
+                                                    <div className="card" style={{width: "5rem",height:"5rem"}}>
+                                                        <Link to={`/Product/${item.product_id}`}>
+                                                            <img className="card-img-top" src={item.newImage[0]} alt="Card image cap"/>
+                                                        </Link>
                                                     </div>
-                                                </td>
-                                                <td className='text-center'>{item.product_count}</td>
-                                                <td className='text-center'>{item.payment_method}</td>
-                                                <td className='text-center'>{item.Total_rupess}</td>
-                                                <td className='text-center'>{item.Date}</td>
-                                                <td onClick={()=>{showaddress(item.address)}}><button type="button" className="btn btn-default">Show Address</button></td>
-                                                {item.isfeedback?<td><Link to={`/${item.id}/${item.product_id}/Reviews`}><button className='btn btn-warning' disabled>Already Given</button></Link></td>:
-                                                <td><Link to={`/${item.id}/${item.product_id}/Reviews`}><button className='btn btn-primary'>Give Feedback</button></Link></td>}
-                                            </tr>
-                                        ))
+                                                    </td>
+                                                    <td className='text-center'>{item.product_name} X {item.product_count}</td>
+                                                    <td className='text-center'>{item.payment_method}</td>
+                                                    <td className='text-center'>{item.Total_rupess}</td>
+                                                    <td className='text-center'>{item.Date}</td>
+                                                    <td onClick={()=>{showaddress(item.address)}}><button type="button" className="btn btn-default">Show Address</button></td>
+                                                    {item.isfeedback?<td><Link to={`/${item.id}/${item.product_id}/Reviews`}><button className='btn btn-warning' disabled>Already Given</button></Link></td>:
+                                                    <td><Link to={`/${item.id}/${item.product_id}/Reviews`}><button className='btn btn-primary'>Give Feedback</button></Link></td>}
+                                                </tr>
+                                            ))
                                         }
                                     </tbody>
                                 }

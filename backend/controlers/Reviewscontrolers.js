@@ -22,7 +22,7 @@ let ReviewInsert = async (req, res) => {
     let result = await Review.create(req.body);
     res
       .status(201)
-      .json(new ApiResponse(200, result, null, "Product Added Successfully"));
+      .json(new ApiResponse(200, result, "Product Added Successfully"));
   } catch (error) {
     res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
   }

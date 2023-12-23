@@ -79,8 +79,29 @@ let informationById = async (req, res) => {
   }
 };
 
+let updateFeedback=async(req,res)=>{
+  try {
+    let result = await order.updateOne(
+      { _id: new mongoose.mongo.BSON.ObjectId(req.params._id) },
+      {
+        $set: {
+          isfeedback:req.body.isfeedback
+        },
+      }
+    );
+    if (result.acknowledged) {
+      res.status(201).json(new ApiResponse(201, result, "success"));
+    } else {
+      res.status(500).json(new ApiResponse(500,null, "Some Error is Found"));
+    }
+  } catch {
+    res.status(500).json(new ApiResponse(500,null, "Some Error is Found"));
+  }
+}
+
 module.exports = {
   orderInsert,
   orderGetByEmail,
   informationById,
+  updateFeedback,
 };
