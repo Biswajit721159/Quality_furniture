@@ -28,16 +28,53 @@ export default function Myorder() {
     }
     else
     {
+       loadproduct()
+    }
+  },[])
+
+
+  function HandalError(order)
+  {
+    if(order.statusCode==201)
+    {
+        setdata(order.data)
+    }
+    else if(order.statusCode==498)
+    {
+        localStorage.removeItem('user');
+        history('/Login')
+    }
+    else if(order.statusCode==404)
+    {
+        setdata([])
+    }
+    else if(order.statusCode==500)
+    {
+        history('*');
+    }
+    else
+    {
+        history("*")
+    }
+    setload(false)
+  }
+
+    function loadproduct()
+    {
+        setload(true)
         fetch(`${api}/order/getByEmail/${userinfo.user.email}`,{
             headers:{
                 Authorization:`Bearer ${userinfo.accessToken}`
             }
         }).then(responce=>responce.json()).then((order)=>{
-           setdata(order.data)
+            try{
+                HandalError(order)
+            }
+            catch{
+                history('*')
+            }
         })
     }
-  },[])
-
 
   function showaddress(data)
   {

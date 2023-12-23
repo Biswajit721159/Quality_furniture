@@ -11,9 +11,8 @@ const [button,setbutton]=useState("Submit")
 const [disabled,setdisabled]=useState(false)
 
 const api = process.env.REACT_APP_API
-
 useEffect(()=>{
-    const auth =localStorage.getItem('user')
+    const auth =JSON.parse(localStorage.getItem('user'));
     if(auth)
     {
         history('/')

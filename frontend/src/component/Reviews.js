@@ -31,6 +31,62 @@ useEffect(()=>{
   loadproduct()
 },[])
 
+
+function findOrder_id()
+{
+    fetch(`${api}/order/getById/${order_id}`,{
+        headers:{
+            Authorization:`Bearer ${userinfo.accessToken}`
+          }
+        }).then(responce=>responce.json())
+        .then((res)=>{ 
+            try{
+                if(res.statusCode==201)
+                {
+                  setorder(res.data)
+                }
+                else if(res.statusCode==498)
+                {
+                    localStorage.removeItem('user');
+                    history('/Login')
+                }
+                else if(res.statusCode==404 || res.statusCode==500)
+                {
+                    history('*');
+                }
+                else
+                {
+                    history("*")
+                }
+                setload(false)
+            }catch{
+              history('*')
+            }
+      })
+}
+
+function HandaleError(result)
+{
+  if(result.statusCode==201)
+  {
+    setproduct(result.data)
+    findOrder_id()
+  }
+  else if(result.statusCode==498)
+  {
+      localStorage.removeItem('user');
+      history('/Login')
+  }
+  else if(result.statusCode==404 || result.statusCode==500)
+  {
+      history('*');
+  }
+  else
+  {
+      history("*")
+  }
+}
+
 function loadproduct()
 {
     fetch(`${api}/product/${product_id}`,{
@@ -38,22 +94,12 @@ function loadproduct()
         Authorization:`Bearer ${userinfo.accessToken}`
       }
     }).then(responce=>responce.json()).then((result)=>{
-      if(result!=undefined)
-      {
-        fetch(`${api}/order/getById/${order_id}`,{
-          headers:{
-              Authorization:`Bearer ${userinfo.accessToken}`
-            }
-          }).then(responce=>responce.json())
-          .then((res)=>{ 
-            if(res!=undefined)
-            {
-              setproduct(result.data)
-              setorder(res.data)
-              setload(false)
-            }
-        })
-      }
+          try{
+            HandaleError(result)
+          }
+          catch{
+            history('*')
+          }
     })
 }
 
@@ -89,7 +135,6 @@ function checkrating()
     }
 }
 
-
 function PushReviews()
 {
     fetch(`${api}/Reviews`,{
@@ -107,8 +152,7 @@ function PushReviews()
         review:reviews,
       })
   }).then(response=>response.json()).then((data)=>{
-    console.log(data)
-    history('/Myorder')
+       history('/Myorder')
   })
 }
 
@@ -125,7 +169,6 @@ function UpdateIntoOrder()
       isfeedback:true
     })
   }).then(responce=>responce.json()).then((result)=>{
-      console.log(result)
       PushReviews()
   })
 }
@@ -162,7 +205,6 @@ function submit()
             number_of_people_give_rating:product.number_of_people_give_rating+1,
           })
         }).then(responce=>responce.json()).then((result)=>{
-            console.log(result)
             UpdateIntoOrder()
         })
    }
@@ -171,46 +213,44 @@ function submit()
   return (
     <>
     {
-    load==false && product && product.length!=0?
-    <div>
-        <div className="container mt-3">
-        <div className="col-md-4 mt-3"><h3>Reviews Form</h3></div>
-        <div className="col-md-4 mt-3">
-          <textarea
-            type="textarea"
-            className="form-control"
-            placeholder="Write Your Reviews"
-            value={reviews}
-            onChange={(e)=>setreviews(e.target.value)}
-            required
-          />
-           {errorreviews?<label  style={{color:"red"}}>{errormessreviews}</label>:""}
+      load==true?
+        <div className="Loaderitem">
+            <PulseLoader color="#16A085"/>
         </div>
-        <div className="col-md-4 mt-3">
-          <select className="form-control" value={rating} onChange={(e)=>setrating(e.target.value)}  >
-           <option>Over All Rating out of 5</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-          </select>
-          {errorrating?<label  style={{color:"red"}}>{errormessrating}</label>:""}
-        </div>
-        <div className="col-md-3 mt-4">
-          <button className="btn btn-primary" disabled={disabled} type="submit" onClick={submit}>
-            {button}
-          </button>
-        </div>
-       </div>
-    </div>:
-     load==false && product && product.length==0?
-      <div className='loader-container'>
-        <h4>Page Not Found</h4>
+      :
+        <div>
+            <div className="container mt-3">
+            <div className="col-md-4 mt-3"><h3>Reviews Form</h3></div>
+            <div className="col-md-4 mt-3">
+              <textarea
+                type="textarea"
+                className="form-control"
+                placeholder="Write Your Reviews"
+                value={reviews}
+                onChange={(e)=>setreviews(e.target.value)}
+                required
+              />
+              {errorreviews?<label  style={{color:"red"}}>{errormessreviews}</label>:""}
+            </div>
+            <div className="col-md-4 mt-3">
+              <select className="form-control" value={rating} onChange={(e)=>setrating(e.target.value)}  >
+              <option>Over All Rating out of 5</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+              {errorrating?<label  style={{color:"red"}}>{errormessrating}</label>:""}
+            </div>
+            <div className="col-md-3 mt-4">
+              <button className="btn btn-primary" disabled={disabled} type="submit" onClick={submit}>
+                {button}
+              </button>
+            </div>
+            </div>
       </div>
-    :<div className="Loaderitem">
-        <PulseLoader color="#16A085"/>
-    </div>}
+      }
     </>
   )
 }
