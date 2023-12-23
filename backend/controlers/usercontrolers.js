@@ -171,4 +171,5 @@ module.exports = {
   loginUser,
   getinfromationByEmail,
   getinfromationById,
+  updateNameAddress,
 };
