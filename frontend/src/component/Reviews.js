@@ -114,7 +114,7 @@ function PushReviews()
 
 function UpdateIntoOrder()
 {
-  fetch(`http://localhost:5000/order/updateFeedback/${order_id}`,{
+  fetch(`${api}/order/updateFeedback/${order_id}`,{
     method:'PUT',
     headers:{
         'Accept':'application/json',
