@@ -145,6 +145,27 @@ const getinfromationById = async (req, res) => {
   }
 };
 
+const updateNameAddress=async(req,res)=>{
+  try {
+    let result = await User.updateOne(
+      { _id: new mongoose.mongo.BSON.ObjectId(req.params._id) },
+      {
+        $set: {
+          name:req.body.name,
+          address:req.body.address,
+        },
+      }
+    );
+    if (result.acknowledged) {
+      res.status(201).json(new ApiResponse(201, result, "success"));
+    } else {
+      res.status(500).json(new ApiResponse(500,null, "Some Error is Found"));
+    }
+  } catch {
+    res.status(500).json(new ApiResponse(500,null, "Some Error is Found"));
+  }
+}
+
 module.exports = {
   register,
   loginUser,
