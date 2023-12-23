@@ -117,8 +117,6 @@ export default function Product() {
             </div>
         </div> 
     </div>
-
-    <Footer/>
 </div>
 
 

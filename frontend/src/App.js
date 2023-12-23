@@ -39,7 +39,7 @@ function App() {
           <Route path="/Register" element={<Register />}></Route>
           <Route path="*" element={<Error />}></Route>
         </Routes>
-        {/* <Footer /> */}
+        <Footer />
       </Router>
     </div>
   );

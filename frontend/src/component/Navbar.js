@@ -86,6 +86,20 @@ const Navbar=()=>{
                 }
                     <li><Link to={'/'} style={{textDecoration:"none",color:"white"}}>QualityFurniture</Link></li>
                     <li><Link to={'/Product'} style={{textDecoration:"none",color:"white"}}>Home</Link></li>
+                    
+                    <div className="form-inline">
+                        <input className="form-control mr-sm-2" value={searchproduct} name='search' onChange={(e)=>{setsearchproduct(e.target.value)}}  type="search" placeholder="Search product" aria-label="Search"/>
+                        <button className="btn btn-outline-success btn-sm  my-2 my-sm-0" onClick={()=>search(searchproduct)} type="submit">Search</button>
+                    </div>
+
+                    <li>
+                      <Link to={'/Cart'} style={{textDecoration:"none",color:"white"}} >
+                        <div className='cartdata'>
+                          <p style={{fontSize:15,color:"yellow"}}>{cartdata}</p> 
+                          <p><FaShoppingCart/></p>
+                        </div>
+                      </Link>
+                    </li>
                     <div class="dropdown mt-1">
                       <button class="btn btn-light btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Welcome {user.user.name}
@@ -97,20 +111,6 @@ const Navbar=()=>{
                         <Link class="dropdown-item" to={'/Register'} onClick={logout}><IoIosLogOut /> Logout</Link>
                       </div>
                     </div>
-                    
-                    <div className="form-inline">
-                        <input className="form-control mr-sm-2" value={searchproduct} name='search' onChange={(e)=>{setsearchproduct(e.target.value)}}  type="search" placeholder="Search product" aria-label="Search"/>
-                        <button className="btn btn-outline-success  my-2 my-sm-0" onClick={()=>search(searchproduct)} type="submit">Search</button>
-                    </div>
-
-                    <li>
-                      <Link to={'/Cart'} style={{textDecoration:"none",color:"white"}} >
-                        <div className='cartdata'>
-                          <p style={{fontSize:15,color:"yellow"}}>{cartdata}</p> 
-                          <p><FaShoppingCart/></p>
-                        </div>
-                      </Link>
-                    </li>
                 </>    
                 :
                 <>

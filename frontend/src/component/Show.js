@@ -50,12 +50,21 @@ function loadproduct()
             Authorization:`Bearer ${userinfo.accessToken}`
         }
     }).then(response=>response.json()).then((data)=>{
-       if(data!=undefined)
-       {
-            setproduct(data.data)
-            setToproduct(data.data,cart)
+        if(data.statusCode==201)
+        {
+            setproduct(data.data);
+            setToproduct(data.data,cart);
             setload(false);
-       }
+        }
+        else if(data.statusCode==498)
+        {
+            localStorage.removeItem('user');
+            history('/Login');
+        }
+        else
+        {
+            history('*');
+        }
     })
 }
 
@@ -155,17 +164,28 @@ function search(searchproduct)
             headers:{
                 Authorization:`Bearer ${userinfo.accessToken}`
             }
-        }).then(response=>response.json()).then((res)=>{
-            if(res!=undefined)
+        }).then(response=>response.json()).then((data)=>{
+            if(data.statusCode==201)
             {
-                setproduct(res.data)
-                setToproduct(res.data,cart)
-                setload(false)
+                setproduct(data.data);
+                setToproduct(data.data,cart);
+                setload(false);
+            }
+            else if(data.statusCode==498)
+            {
+                localStorage.removeItem('user');
+                history('/Login');
+            }
+            else
+            {
+                history('*');
             }
         })
     }
 }
 
+
+//data handeling part 
 function PriceLowToHigh()
 {
     setdropdown("Price Low To High")
@@ -273,138 +293,139 @@ function findPriceRange(low,high)
 
   return (
     <>
-    {load==false && data!=undefined && data && data.length!=0?
-        <>
-        <div className='container d-flex justify-content-center'>
-            <div className='col'>
-                <div className="dropdown mt-1">
-                    <button className="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {dropdown}
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <Link className="dropdown-item" onClick={PriceLowToHigh}>Price Low To High</Link>
-                        <Link className="dropdown-item" onClick={PriceHighToLow} >Price High To Low</Link>
-                        <Link className="dropdown-item" onClick={SortOnRating} >Sort On Rating</Link>
-                        <Link className="dropdown-item" onClick={SortOnOffer} >Sort Offer</Link>
-                        <Link className="dropdown-item" onClick={clearallfilter} >Clear Filter</Link>
+    {  load==true?
+            <div className="Loaderitem">
+                <PulseLoader color="#16A085"  />
+            </div>
+        :
+        data.length!=0?
+            <>
+                <div className='container d-flex justify-content-center'>
+                    <div className='col'>
+                        <div className="dropdown mt-1">
+                            <button className="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {dropdown}
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <Link className="dropdown-item" onClick={PriceLowToHigh}>Price Low To High</Link>
+                                <Link className="dropdown-item" onClick={PriceHighToLow} >Price High To Low</Link>
+                                <Link className="dropdown-item" onClick={SortOnRating} >Sort On Rating</Link>
+                                <Link className="dropdown-item" onClick={SortOnOffer} >Sort Offer</Link>
+                                <Link className="dropdown-item" onClick={clearallfilter} >Clear Filter</Link>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='col'>
+                        <div className="dropdown mt-1">
+                            <button className="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {priceRange}
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <Link className="dropdown-item" onClick={()=>{findPriceRange(0,1000)}}>UNDER ₹ 1000</Link>
+                                <Link className="dropdown-item" onClick={()=>{findPriceRange(1000,2000)}} >₹ 1000 - ₹ 2000</Link>
+                                <Link className="dropdown-item" onClick={()=>{findPriceRange(2000,3000)}} >₹ 2000 - ₹ 3000</Link>
+                                <Link className="dropdown-item" onClick={()=>{findPriceRange(3000,4000)}} >₹ 3000 - ₹ 4000</Link>
+                                <Link className="dropdown-item" onClick={()=>{findPriceRange(4000,Math.pow(2,31))}} >Over ₹ 4000</Link>
+                                <Link className="dropdown-item" onClick={clearallfilter} >Clear Filter</Link>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className='col'>
-                <div className="dropdown mt-1">
-                    <button className="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                     {priceRange}
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <Link className="dropdown-item" onClick={()=>{findPriceRange(0,1000)}}>UNDER ₹ 1000</Link>
-                        <Link className="dropdown-item" onClick={()=>{findPriceRange(1000,2000)}} >₹ 1000 - ₹ 2000</Link>
-                        <Link className="dropdown-item" onClick={()=>{findPriceRange(2000,3000)}} >₹ 2000 - ₹ 3000</Link>
-                        <Link className="dropdown-item" onClick={()=>{findPriceRange(3000,4000)}} >₹ 3000 - ₹ 4000</Link>
-                        <Link className="dropdown-item" onClick={()=>{findPriceRange(4000,Math.pow(2,31))}} >Over ₹ 4000</Link>
-                        <Link className="dropdown-item" onClick={clearallfilter} >Clear Filter</Link>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div className='product'>        
-          {   data && data.map((item,ind)=>(
-                <div key={ind} className=" mx-2 mt-2" style={{width: "15.7rem", height:"auto",backgroundColor:"#D6DBDF"}}>
-                    <Link to={`/Product/${item._id}`}>
-                        <img className="card-img-top" src={item.newImage[0]} style={{height:"150px",width:"250px"}} alt="Card image cap"/>
-                    </Link>
-                    <div className="card-body">
-                        <div className='row'>
-                            <div className='col'>
-                                <h6 className="card-title d-flex">{item.product_name}</h6>
-                            </div>
-                            <div className='col'>
-                                {
-                                item.islove==false?<button className='btn btn-light btn-sm' onClick={()=>addToWishlist(item._id)}> <FaHeart /></button>
-                                :<button className='btn btn-danger btn-sm' onClick={()=>addToWishlist(item._id)}> <FaHeart /></button>
-                                }
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="container col">
-                                <h6 className="card-text" style={{color:'orange'}}>{item.offer}% OFF</h6>
-                            </div>
-                            <div className="container col">
-                                <h6 className="card-text" style={{color:'gray'}}><s>₹{item.price}</s></h6> 
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col'>
-                                {
-                                    parseInt(item.rating)==0?<div style={{color:"black"}}>{item.rating}<AiFillStar /></div>
-                                    :
-                                    parseInt(item.rating)==1?<div style={{color:"tomato"}}>{item.rating}<AiFillStar /></div>
-                                    :
-                                    parseInt(item.rating)==2?<div style={{color:"red"}}>{item.rating}<AiFillStar /></div>
-                                    :
-                                    parseInt(item.rating)==3?<div style={{color:"#DC7633"}}>{item.rating}<AiFillStar /></div>
-                                    :
-                                    parseInt(item.rating)==4?<div style={{color:"#28B463"}}>{item.rating}<AiFillStar /></div>
-                                    :
-                                    parseInt(item.rating)==5?<div style={{color:"green"}}>{item.rating}<AiFillStar /></div>
-                                    :""
-                                }
-                            </div>
-                            <div className=" col">
-                                    <h5 className="card-text" style={{color:'tomato'}}>₹{(item.price-((item.price*item.offer)/100)).toFixed(2)}</h5>
-                            </div>
-                        </div>
-                        {
-                            item.total_number_of_product==0?
-                            <div className=" row">
-                                <div className="col">
-                                    <h6 className="card-text" style={{color:'tomato'}}>Closed</h6>
+                <div className='product'>        
+                {   data && data.map((item,ind)=>(
+                        <div key={ind} className=" mx-2 mt-2" style={{width: "15.7rem", height:"auto",backgroundColor:"#D6DBDF"}}>
+                            <Link to={`/Product/${item._id}`}>
+                                <img className="card-img-top" src={item.newImage[0]} style={{height:"150px",width:"250px"}} alt="Card image cap"/>
+                            </Link>
+                            <div className="card-body">
+                                <div className='row'>
+                                    <div className='col'>
+                                        <h6 className="card-title d-flex">{item.product_name}</h6>
+                                    </div>
+                                    <div className='col'>
+                                        {
+                                        item.islove==false?<button className='btn btn-light btn-sm' onClick={()=>addToWishlist(item._id)}> <FaHeart /></button>
+                                        :<button className='btn btn-danger btn-sm' onClick={()=>addToWishlist(item._id)}> <FaHeart /></button>
+                                        }
+                                    </div>
                                 </div>
-                                <div className='col'>
-                                    <label>{item.total_number_of_product} Left</label>
+                                <div className="row">
+                                    <div className="container col">
+                                        <h6 className="card-text" style={{color:'orange'}}>{item.offer}% OFF</h6>
+                                    </div>
+                                    <div className="container col">
+                                        <h6 className="card-text" style={{color:'gray'}}><s>₹{item.price}</s></h6> 
+                                    </div>
                                 </div>
-                            </div>
-                            :
-                            <div className="row">
-                                <div className=" col">
-                                    <h6 className="card-text" style={{color:'green'}}>Available</h6>
+                                <div className='row'>
+                                    <div className='col'>
+                                        {
+                                            parseInt(item.rating)==0?<div style={{color:"black"}}>{item.rating}<AiFillStar /></div>
+                                            :
+                                            parseInt(item.rating)==1?<div style={{color:"tomato"}}>{item.rating}<AiFillStar /></div>
+                                            :
+                                            parseInt(item.rating)==2?<div style={{color:"red"}}>{item.rating}<AiFillStar /></div>
+                                            :
+                                            parseInt(item.rating)==3?<div style={{color:"#DC7633"}}>{item.rating}<AiFillStar /></div>
+                                            :
+                                            parseInt(item.rating)==4?<div style={{color:"#28B463"}}>{item.rating}<AiFillStar /></div>
+                                            :
+                                            parseInt(item.rating)==5?<div style={{color:"green"}}>{item.rating}<AiFillStar /></div>
+                                            :""
+                                        }
+                                    </div>
+                                    <div className=" col">
+                                            <h5 className="card-text" style={{color:'tomato'}}>₹{(item.price-((item.price*item.offer)/100)).toFixed(2)}</h5>
+                                    </div>
                                 </div>
-                                <div className='col'>
-                                    {
-                                    item.total_number_of_product!=0?<label>{item.total_number_of_product} Left</label>:<label style={{color:"#E2E2F4"}}>{item.total_number_of_product} Left</label>
-                                    }
-                                </div>
-                            </div>
-                        }
-                        <div className='row'>
                                 {
                                     item.total_number_of_product==0?
-                                        <div className='col'>
-                                            <button className="btn btn-primary rounded-pill btn-sm mt-0" disabled>
-                                                ADD TO CART
-                                            </button>
+                                    <div className=" row">
+                                        <div className="col">
+                                            <h6 className="card-text" style={{color:'tomato'}}>Closed</h6>
                                         </div>
+                                        <div className='col'>
+                                            <label>{item.total_number_of_product} Left</label>
+                                        </div>
+                                    </div>
                                     :
-                                    <Link to={`/product/${item._id}`}>
-                                        <div className='col'>
-                                            <button className="btn btn-primary rounded-pill btn-sm mt-0" >
-                                                ADD TO CART
-                                            </button>
+                                    <div className="row">
+                                        <div className=" col">
+                                            <h6 className="card-text" style={{color:'green'}}>Available</h6>
                                         </div>
-                                    </Link>
+                                        <div className='col'>
+                                            {
+                                            item.total_number_of_product!=0?<label>{item.total_number_of_product} Left</label>:<label style={{color:"#E2E2F4"}}>{item.total_number_of_product} Left</label>
+                                            }
+                                        </div>
+                                    </div>
                                 }
+                                <div className='row'>
+                                        {
+                                            item.total_number_of_product==0?
+                                                <div className='col'>
+                                                    <button className="btn btn-primary rounded-pill btn-sm mt-0" disabled>
+                                                        ADD TO CART
+                                                    </button>
+                                                </div>
+                                            :
+                                            <Link to={`/product/${item._id}`}>
+                                                <div className='col'>
+                                                    <button className="btn btn-primary rounded-pill btn-sm mt-0" >
+                                                        ADD TO CART
+                                                    </button>
+                                                </div>
+                                            </Link>
+                                        }
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    ))
+                }
                 </div>
-            ))
-          }
-        </div>
-        <Footer/>
-        </>
-        :load?<div className="Loaderitem">
-                <PulseLoader color="#16A085"  />
-              </div>
-        :<div className='loader-container'>
+            </>
+        :
+        <div className='loader-container'>
             <h4>Product Not Found</h4>
             <button className='btn btn-primary mx-3' onClick={()=>search("")} >Get Product</button>
         </div>

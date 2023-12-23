@@ -178,7 +178,7 @@ const history=useNavigate()
           }
           else
           {
-            alert(`Acctually We Have Total${product_data.total_number_of_product} Product Available`)
+            alert(`Acctually We Have Total ${product_data.total_number_of_product} Product Available`)
             setbutton("PLACE ORDER")
             setdisabled(false)
           }

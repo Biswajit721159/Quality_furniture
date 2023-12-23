@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { json, useNavigate } from "react-router-dom";
 import loader from "../images/loader.gif"
 import {useParams} from 'react-router-dom'
+import { PulseLoader } from 'react-spinners';
 
 const api = process.env.REACT_APP_API
 
@@ -34,22 +35,35 @@ export default function Update_userdata() {
     }
     else
     {
-        fetch(`${api}/user/${_id}`,{
-          headers:{
-            Authorization:`Bearer ${userinfo.accessToken}`
-          }
-        }).then(responce=>responce.json()).then((res)=>{
-            if(res!=undefined && res.length!=0 && res.status!=498 && res.status!=401)
-            {
-              setname(res[0].name)
-              setemail(res[0].email)
-              setaddress(res[0].address)
-              setload(false)
-            }
-        })
+        loaduser()
     }
   },[])
 
+  function loaduser()
+  {
+      fetch(`${api}/user/informationbyID/${_id}`,{
+        headers:{
+          Authorization:`Bearer ${userinfo.accessToken}`
+        }
+      }).then(responce=>responce.json()).then((res)=>{
+          if(res.statusCode==201)
+          {
+            setname(res.data.name)
+            setemail(res.data.email)
+            setaddress(res.data.address)
+            setload(false)
+          }
+          else if(res.statusCode==498)
+          {
+            localStorage.removeItem('user');
+            history('/Login');
+          }
+          else
+          {
+            history('*');
+          }
+      })
+  }
   function checkforname(s)
   {
     var regex = /^[a-zA-Z ]{2,30}$/;
@@ -81,12 +95,12 @@ export default function Update_userdata() {
       {
           setbutton("Please wait...")
           setdisabled(true)
-          fetch(`https://quality-furniture.vercel.app/user/${_id}`,{
+          fetch(`${api}/user/updateAddressAndName/${_id}`,{
           method:'PUT',
           headers:{
               'Accept':'application/json',
               'Content-Type':'application/json',
-              auth:`bearer ${userinfo.auth}`
+              Authorization:`Bearer ${userinfo.accessToken}`
           },
           body:JSON.stringify({
             _id:_id,
@@ -96,10 +110,25 @@ export default function Update_userdata() {
           }) 
         })
         .then(responce=>responce.json()).then((res)=>{
-          localStorage.setItem('user',JSON.stringify(res))
-          history('/Profile')
+          if(res.statusCode==201)
+          {
+             let cart=JSON.parse(localStorage.getItem('user'))
+             cart.user.name=name;
+             cart.user.address=address;
+             localStorage.setItem('user',JSON.stringify(cart))
+             history('/Profile')
+          }
+          else if(res.statusCode==498)
+          {
+            localStorage.removeItem('user');
+            history('/Login');
+          }
+          else
+          {
+            history('*')
+          }
         })
-    }
+      }
   }
 
   return (
@@ -131,7 +160,9 @@ export default function Update_userdata() {
                 <button className="btn btn-primary" disabled={disabled} onClick={update}>{button}</button>
             </div>
         </div>
-      :<div className='loader-container'><img src={loader} /></div>
+      :<div className="Loaderitem">
+          <PulseLoader color="#16A085"  />
+       </div>
     
   )
 }
