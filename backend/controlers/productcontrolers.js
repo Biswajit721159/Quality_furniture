@@ -142,6 +142,21 @@ let Update_RaingUpdateIntoProduct = async (req, res) => {
   }
 };
 
+let getproductUponPrice=async(req,res)=>{
+  try{
+    let low=req.params.low;
+    let high=req.params.high;
+    let result=await product.find({price: { $gte: low, $lte: high }})
+    if(result)
+        res.status(201).json(new ApiResponse(201, result, "success"));
+    else
+        res.status(404).json(new ApiResponse(404,null, "product does not exist"));   
+  }
+  catch{
+    res.status(500).json(new ApiResponse(500,null, "Some Error is Found"));
+  }
+}
+
 module.exports = {
   get_product_by_ids,
   getFullProduct,
@@ -151,4 +166,5 @@ module.exports = {
   Update_total_number_of_product,
   Update_RaingUpdateIntoProduct,
   find_get_product_by_ids,
+  getproductUponPrice,
 };
