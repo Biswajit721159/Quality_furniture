@@ -38,11 +38,11 @@ const Navbar=()=>{
     }
     else if(color=='light')
     {
-      document.body.style.backgroundColor = "white";
+      document.body.style.backgroundColor = "#D0D3D4 ";
     }
     else
     {
-      document.body.style.backgroundColor = "#BFC9CA";
+      document.body.style.backgroundColor = "#85929E";
     }
   }
 
