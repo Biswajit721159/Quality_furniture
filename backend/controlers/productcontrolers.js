@@ -146,7 +146,10 @@ let getproductUponPrice=async(req,res)=>{
   try{
     let low=req.params.low;
     let high=req.params.high;
-    let result=await product.find({price: { $gte: low, $lte: high }})
+    let catagory=req.params.catagory
+    let result=null;
+    if(catagory=="ALL") result=await product.find({price: { $gte: low, $lte: high }})
+    else result=await product.find({price: { $gte: low, $lte: high },product_type: catagory})
     if(result)
         res.status(201).json(new ApiResponse(201, result, "success"));
     else
