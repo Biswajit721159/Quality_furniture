@@ -87,10 +87,7 @@ const Navbar=()=>{
                     <li><Link to={'/'} style={{textDecoration:"none",color:"white"}}>QualityFurniture</Link></li>
                     <li><Link to={'/Product'} style={{textDecoration:"none",color:"white"}}>Home</Link></li>
                     
-                    <div className="form-inline">
-                        <input className="form-control mr-sm-2" value={searchproduct} name='search' onChange={(e)=>{setsearchproduct(e.target.value)}}  type="search" placeholder="Search product" aria-label="Search"/>
-                        <button className="btn btn-outline-success btn-sm  my-2 my-sm-0" onClick={()=>search(searchproduct)} type="submit">Search</button>
-                    </div>
+                    
 
                     <li>
                       <Link to={'/Cart'} style={{textDecoration:"none",color:"white"}} >

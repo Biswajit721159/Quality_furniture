@@ -5,8 +5,6 @@ import {AiFillStar } from "react-icons/ai";
 import {FaHeart} from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { PulseLoader } from 'react-spinners';
-import loader from "../images/loader.gif"
-import Footer from './Footer';
 import {useSelector} from 'react-redux'
 export default function Show() {
 
@@ -55,12 +53,12 @@ useEffect(()=>{
     }
     else
     {
-        loadproduct();
+        // loadproduct();
     }
-},[])
+},[],[selectcatagory])
 
 useEffect(()=>{
-    console.log("filter data ",lowprice,highprice,selectcatagory)
+    console.log("filter karar janno data ",lowprice,highprice,selectcatagory)
     if(lowprice!=null && highprice!=null && selectcatagory!=null)
     {
         markvisited(lowprice,highprice,selectcatagory);
@@ -68,9 +66,10 @@ useEffect(()=>{
     }
 },[lowprice],[highprice],[selectcatagory])
 
-useEffect(()=>{
-    search(searchvalue)
-},[searchvalue])
+// useEffect(()=>{
+//     console.log("Searching karara janno ")
+//     search(searchvalue)
+// },[searchvalue])
 
 function loadCatagory()
 {
@@ -224,6 +223,7 @@ function search(searchproduct)
                 Authorization:`Bearer ${userinfo.accessToken}`
             }
         }).then(response=>response.json()).then((data)=>{
+            console.log("Search data is ",data.data)
             if(data.statusCode==201)
             {
                 setproduct(data.data);
@@ -355,12 +355,12 @@ function findPriceRange(low,high)
 function Filterdata(lowprice,highprice,selectcatagory)
 {
     setload(true)
-    console.log(lowprice,highprice,selectcatagory)
     fetch(`${api}/product/getProductUponPrice/${lowprice}/${highprice}/${selectcatagory}`,{
         headers:{
             Authorization:`Bearer ${userinfo.accessToken}`
         }
     }).then(response=>response.json()).then((data)=>{
+        console.log("Filter data is ",data.data)
         if(data.statusCode==201)
         {
             setproduct(data.data);
@@ -390,9 +390,9 @@ function cametocheck(lowprice,highprice)
 
 function cametocatagory(selectcatagory)
 {
-    console.log(selectcatagory)
     setselectcatagory(selectcatagory)
     history(`?lowprice=${lowprice}&highprice=${highprice}&selectcatagory=${selectcatagory}`)
+    Filterdata(lowprice,highprice,selectcatagory)
 }
 
 function markvisited(lowprice,highprice,selectcatagory)
@@ -447,11 +447,12 @@ function markvisited(lowprice,highprice,selectcatagory)
 
                     <div  className='subproduct'>
                         <div className='subproductone'>
-                            {/* <form>
-                                <input value={'Biswajit'} name='india'/>
-                                <input value={'saroj'} name='pakistan'/>
-                                <button>Submit</button>
-                            </form> */}
+                            <from>
+                                <input className="form-control" style={{width:"180px"}} value={searchproduct} name='search' onChange={(e)=>{setsearchproduct(e.target.value)}}  type="search" placeholder="Search product" aria-label="Search"/>
+                                <button className="btn btn-outline-success btn-sm mt-2" onClick={()=>search(searchproduct)} type="submit">Search</button>
+                            </from>
+                        </div>
+                        <div className='subproductone'>
                             <div className='subproductform'>
                                 <h6>Price</h6>
                                 <h6><Link style={{textDecoration:'none'}}>Clear</Link></h6>

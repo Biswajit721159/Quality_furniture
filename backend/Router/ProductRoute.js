@@ -11,6 +11,7 @@ let {
   find_get_product_by_ids,
   getproductUponPrice,
   getallProductType,
+  getproductUponPriceProductTypeAndProductName,
 } = require("../controlers/productcontrolers");
 
 const router = Router();
@@ -21,7 +22,8 @@ router.route("/search/:key").get(verifytoken,searchProduct);
 router.route("/total_number_of_product/:_id").put(verifytoken,Update_total_number_of_product);
 router.route("/RaingUpdateIntoProduct/:_id").put(verifytoken,Update_RaingUpdateIntoProduct);
 router.route("/get_product_by_ids").patch(verifytoken,find_get_product_by_ids);
-router.route('/getProductUponPrice/:low/:high/:catagory').get(getproductUponPrice);
+router.route('/getProductUponPrice/:low/:high/:catagory').get(verifytoken,getproductUponPrice);
+router.route('/getproductUponPriceProductTypeAndProductName/:low/:high/:catagory/:product_name').get(verifytoken,getproductUponPriceProductTypeAndProductName);
 router.route('/Catagory/getallCatagory').get(verifytoken,getallProductType);
 
 router.route("/uploads").post(verifytoken,upload.fields([
