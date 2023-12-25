@@ -10,28 +10,6 @@ body{
 
 
 
-.box-container{
-  /* margin-top: 100px; */
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  margin: 10px;
-}
-.credit{
-  display: flex;
-  justify-content: center;
-}
-.mainfooter{
-  /* position:static; */
-  /* left: 0; */
-  /* height: 400px; */
-  bottom: 0;
-  width: 100%;
-  background-color: #34495E;
-  color: white;
-}
-
 
 /* show.js */
 .product{
@@ -52,8 +30,6 @@ body{
   top:0; left:0;
   height:100vh; 
   width:100%;
-  /* z-index: 10000; */
-  background:white;
   display: flex;
   align-items: center;
   justify-content: center;

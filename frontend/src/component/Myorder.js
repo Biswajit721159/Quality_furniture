@@ -59,7 +59,7 @@ export default function Myorder() {
     setload(false)
   }
 
-    function loadproduct()
+  function loadproduct()
     {
         setload(true)
         fetch(`${api}/order/getByEmail/${userinfo.user.email}`,{
@@ -74,7 +74,7 @@ export default function Myorder() {
                 history('*')
             }
         })
-    }
+  }
 
   function showaddress(data)
   {

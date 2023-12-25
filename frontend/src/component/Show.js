@@ -5,20 +5,15 @@ import {AiFillStar } from "react-icons/ai";
 import {FaHeart} from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { PulseLoader } from 'react-spinners';
-import {useSelector} from 'react-redux'
 export default function Show() {
 
-const history =useNavigate()    
-const [dropdown,setdropdown]=useState("Search In Catagory")   
+const history =useNavigate()     
 const [data,setdata]=useState([])
 let [cart,setcart]=useState(JSON.parse(localStorage.getItem('cart')))
 const [product,setproduct]=useState([])
-const [searchproduct,setsearchproduct]=useState("")
 let userinfo=JSON.parse(localStorage.getItem('user'))
 let wishlist=JSON.parse(localStorage.getItem('Wishlist'))
 let [load,setload]=useState(true)
-let [priceRange,setpriceRange]=useState("Price Range")
-let searchvalue=useSelector((state)=>state.Search_Name.search_Name)
 const [Catagory,setCatagoty]=useState()
 
 const [queryParameters] = useSearchParams()
@@ -32,19 +27,26 @@ const [pricerange4000toUp,setpricerange4000toUp]=useState(false)
 const [lowprice,setlowprice]=useState(0)
 const [highprice,sethighprice]=useState(10000000)
 const [selectcatagory,setselectcatagory]=useState('ALL')
+const [searchproduct,setsearchproduct]=useState("")
 
 const api = process.env.REACT_APP_API
 
-
+ 
 
 useEffect(()=>{
+    loadCatagory();
     let lowprice=queryParameters.get('lowprice');
     let highprice=queryParameters.get('highprice');
     let selectcatagory=queryParameters.get('selectcatagory');
-
+    let searchproduct=queryParameters.get('product_name');
+    console.log(lowprice,highprice,selectcatagory,searchproduct);
     if(userinfo==null)
     {
         history('/Register')
+    }
+    else if(lowprice!=null && highprice!=null && selectcatagory!=null && searchproduct!=null)
+    {
+        findsearchData(lowprice,highprice,selectcatagory,searchproduct)
     }
     else if(lowprice!=null && highprice!=null && selectcatagory!=null)
     {
@@ -53,23 +55,53 @@ useEffect(()=>{
     }
     else
     {
-        // loadproduct();
+        Filterdata(0,10000000,'ALL');
     }
-},[],[selectcatagory])
+},[])
 
-useEffect(()=>{
-    console.log("filter karar janno data ",lowprice,highprice,selectcatagory)
-    if(lowprice!=null && highprice!=null && selectcatagory!=null)
-    {
-        markvisited(lowprice,highprice,selectcatagory);
-        Filterdata(lowprice,highprice,selectcatagory)
-    }
-},[lowprice],[highprice],[selectcatagory])
+// useEffect(()=>{
+//     // console.log("filter karar janno data ",lowprice,highprice,selectcatagory)
+//     if(lowprice!=null && highprice!=null && selectcatagory!=null)
+//     {
+//         markvisited(lowprice,highprice,selectcatagory);
+//         Filterdata(lowprice,highprice,selectcatagory)
+//     }
+// },[lowprice],[highprice],[selectcatagory])
 
 // useEffect(()=>{
 //     console.log("Searching karara janno ")
 //     search(searchvalue)
 // },[searchvalue])
+
+
+function findsearchData(lowprice,highprice,selectcatagory,searchproduct)
+{
+    setload(true);
+    fetch(`${api}/product/getproductUponPriceProductTypeAndProductName/${lowprice}/${highprice}/${selectcatagory}/${searchproduct}`,{
+        headers:{
+            Authorization:`Bearer ${userinfo.accessToken}` 
+        }
+    }).then(response=>response.json()).then((data)=>{
+        console.log(data)
+        if(data.statusCode==201)
+        {
+            setproduct(data.data);
+            setToproduct(data.data,cart);
+            setload(false);
+        }
+        else if(data.statusCode==498)
+        {
+            localStorage.removeItem('user');
+            history('/Signin');
+        }
+        else
+        {
+            history('*');
+        }
+       },(error)=>{        
+        history('*')
+       })
+}
 
 function loadCatagory()
 {
@@ -81,7 +113,6 @@ function loadCatagory()
         if(data.statusCode==201)
         {
             setCatagoty(data.data)
-            setload(false)
         }
         else if(data.statusCode==498)
         {
@@ -97,34 +128,34 @@ function loadCatagory()
     })
 }
 
-function loadproduct()
-{
-    setload(true)
-    fetch(`${api}/product`,{
-        headers:{
-            Authorization:`Bearer ${userinfo.accessToken}`
-        }
-    }).then(response=>response.json()).then((data)=>{
-        console.log("main data ",data)
-        if(data.statusCode==201)
-        {
-            setproduct(data.data);
-            setToproduct(data.data,cart);
-            loadCatagory()
-        }
-        else if(data.statusCode==498)
-        {
-            localStorage.removeItem('user');
-            history('/Signin');
-        }
-        else
-        {
-            history('*');
-        }
-    },(error)=>{
-        history('*')
-    })
-}
+// function loadproduct()
+// {
+//     setload(true)
+//     fetch(`${api}/product`,{
+//         headers:{
+//             Authorization:`Bearer ${userinfo.accessToken}`
+//         }
+//     }).then(response=>response.json()).then((data)=>{
+//         console.log("main data ",data)
+//         if(data.statusCode==201)
+//         {
+//             setproduct(data.data);
+//             setToproduct(data.data,cart);
+//             loadCatagory()
+//         }
+//         else if(data.statusCode==498)
+//         {
+//             localStorage.removeItem('user');
+//             history('/Signin');
+//         }
+//         else
+//         {
+//             history('*');
+//         }
+//     },(error)=>{
+//         history('*')
+//     })
+// }
 
 function setToproduct(data,res)// data mean product and res mean cart
 {
@@ -208,149 +239,118 @@ function addToWishlist(id)
 }
 
 function search(searchproduct)
-{  
-    setdropdown("Search In Catagory")
-    setpriceRange("Price Range")  
-    setload(true)
-    if(searchproduct.length==0)
+{ 
+    if(searchproduct.length!=0)
     {
-        loadproduct()
-    }
-    else
-    {
-        fetch(`${api}/product/search/${searchproduct}`,{
-            headers:{
-                Authorization:`Bearer ${userinfo.accessToken}`
-            }
-        }).then(response=>response.json()).then((data)=>{
-            console.log("Search data is ",data.data)
-            if(data.statusCode==201)
-            {
-                setproduct(data.data);
-                setToproduct(data.data,cart);
-                setload(false);
-            }
-            else if(data.statusCode==498)
-            {
-                localStorage.removeItem('user');
-                history('/Signin');
-            }
-            else
-            {
-                history('*');
-            }
-        },(error)=>{
-            history('*')
-        })
+        history(`?lowprice=${lowprice}&highprice=${highprice}&selectcatagory=${selectcatagory}&product_name=${searchproduct}`)
     }
 }
-
 
 //data handeling part 
-function PriceLowToHigh()
-{
-    setdropdown("Price Low To High")
-    data.sort((a, b) => {
-        let fa = parseInt(a.price-((a.price*a.offer)/100))
-        let fb = parseInt(b.price-((b.price*b.offer)/100))
+// function PriceLowToHigh()
+// {
+//     setdropdown("Price Low To High")
+//     data.sort((a, b) => {
+//         let fa = parseInt(a.price-((a.price*a.offer)/100))
+//         let fb = parseInt(b.price-((b.price*b.offer)/100))
     
-        if (fa < fb) {
-            return -1;
-        }
-        if (fa > fb) {
-            return 1;
-        }
-        return 0;
-    });
-    setdata([...data])
-}
+//         if (fa < fb) {
+//             return -1;
+//         }
+//         if (fa > fb) {
+//             return 1;
+//         }
+//         return 0;
+//     });
+//     setdata([...data])
+// }
 
-function clearallfilter()
-{
-    setdropdown("Search In Catagory")
-    setpriceRange("Price Range")
-    loadproduct()
-}
+// function clearallfilter()
+// {
+//     setdropdown("Search In Catagory")
+//     setpriceRange("Price Range")
+//     loadproduct()
+// }
 
-function PriceHighToLow()
-{
-    setdropdown("Price High To Low")
-    data.sort((a, b) => {
-        let fa = parseInt(a.price-((a.price*a.offer)/100))
-        let fb = parseInt(b.price-((b.price*b.offer)/100))
+// function PriceHighToLow()
+// {
+//     setdropdown("Price High To Low")
+//     data.sort((a, b) => {
+//         let fa = parseInt(a.price-((a.price*a.offer)/100))
+//         let fb = parseInt(b.price-((b.price*b.offer)/100))
     
-        if (fa > fb) {
-            return -1;
-        }
-        if (fa < fb) {
-            return 1;
-        }
-        return 0;
-    });
-    setdata([...data])
-}
+//         if (fa > fb) {
+//             return -1;
+//         }
+//         if (fa < fb) {
+//             return 1;
+//         }
+//         return 0;
+//     });
+//     setdata([...data])
+// }
 
-function SortOnRating()
-{
-    setdropdown("Sort On Rating")
-    data.sort((a, b) => {
-        let fa = parseFloat(a.rating),
-            fb = parseFloat(b.rating);
+// function SortOnRating()
+// {
+//     setdropdown("Sort On Rating")
+//     data.sort((a, b) => {
+//         let fa = parseFloat(a.rating),
+//             fb = parseFloat(b.rating);
     
-        if (fa > fb) {
-            return -1;
-        }
-        if (fa < fb) {
-            return 1;
-        }
-        return 0;
-    });
-    setdata([...data])
-}
+//         if (fa > fb) {
+//             return -1;
+//         }
+//         if (fa < fb) {
+//             return 1;
+//         }
+//         return 0;
+//     });
+//     setdata([...data])
+// }
 
-function SortOnOffer()
-{
-    setdropdown("Sort On Offer")
-    data.sort((a, b) => {
-        let fa = parseInt(a.offer),
-            fb = parseInt(b.offer);
+// function SortOnOffer()
+// {
+//     setdropdown("Sort On Offer")
+//     data.sort((a, b) => {
+//         let fa = parseInt(a.offer),
+//             fb = parseInt(b.offer);
     
-        if (fa > fb) {
-            return -1;
-        }
-        if (fa < fb) {
-            return 1;
-        }
-        return 0;
-    });
-    setdata([...data])
-}
+//         if (fa > fb) {
+//             return -1;
+//         }
+//         if (fa < fb) {
+//             return 1;
+//         }
+//         return 0;
+//     });
+//     setdata([...data])
+// }
 
-function findPriceRange(low,high)
-{
-    if(low==0)
-    {
-        setpriceRange(`UNDER ₹ ${high}`)
-    }
-    else if(high==Math.pow(2,31))
-    {
-        setpriceRange(`Over ₹ ${low}`)
-    }
-    else
-    {
-        setpriceRange(`₹ ${low} - ₹ ${high}`)
-    }
-    let ans=[]
-    for(let i=0;i<data.length;i++)
-    {
-        let price=parseInt(data[i].price-((data[i].price*data[i].offer)/100));
-        if(price>=low && price<=high)
-        {
-            ans.push(data[i]);
-        }
-    }
-    setdata([...ans])
-}
+// function findPriceRange(low,high)
+// {
+//     if(low==0)
+//     {
+//         setpriceRange(`UNDER ₹ ${high}`)
+//     }
+//     else if(high==Math.pow(2,31))
+//     {
+//         setpriceRange(`Over ₹ ${low}`)
+//     }
+//     else
+//     {
+//         setpriceRange(`₹ ${low} - ₹ ${high}`)
+//     }
+//     let ans=[]
+//     for(let i=0;i<data.length;i++)
+//     {
+//         let price=parseInt(data[i].price-((data[i].price*data[i].offer)/100));
+//         if(price>=low && price<=high)
+//         {
+//             ans.push(data[i]);
+//         }
+//     }
+//     setdata([...ans])
+// }
 
 function Filterdata(lowprice,highprice,selectcatagory)
 {
@@ -386,6 +386,7 @@ function cametocheck(lowprice,highprice)
     setlowprice(lowprice);
     sethighprice(highprice);
     history(`?lowprice=${lowprice}&highprice=${highprice}&selectcatagory=${selectcatagory}`)
+    Filterdata(lowprice,highprice,selectcatagory)
 }
 
 function cametocatagory(selectcatagory)
@@ -447,10 +448,8 @@ function markvisited(lowprice,highprice,selectcatagory)
 
                     <div  className='subproduct'>
                         <div className='subproductone'>
-                            <from>
-                                <input className="form-control" style={{width:"180px"}} value={searchproduct} name='search' onChange={(e)=>{setsearchproduct(e.target.value)}}  type="search" placeholder="Search product" aria-label="Search"/>
-                                <button className="btn btn-outline-success btn-sm mt-2" onClick={()=>search(searchproduct)} type="submit">Search</button>
-                            </from>
+                            <input className="form-control" style={{width:"180px"}} value={searchproduct} name='search' onChange={(e)=>{setsearchproduct(e.target.value)}}  type="search" placeholder="Search product" aria-label="Search"/>
+                            <button className="btn btn-success btn-sm mt-2" onClick={()=>search(searchproduct)} type="submit">Search</button>
                         </div>
                         <div className='subproductone'>
                             <div className='subproductform'>
@@ -640,7 +639,7 @@ function markvisited(lowprice,highprice,selectcatagory)
         :
         <div className='loader-container'>
             <h4>Product Not Found</h4>
-            <button className='btn btn-primary mx-3' onClick={()=>search("")} >Get Product</button>
+            {/* <button className='btn btn-primary mx-3' onClick={()=>search("")} >Get Product</button> */}
         </div>
         
         }

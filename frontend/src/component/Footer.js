@@ -18,6 +18,7 @@ import { IoMdAddCircleOutline } from "react-icons/io";
 import { MdOutlineSell } from "react-icons/md";
 import { FaYoutube } from "react-icons/fa";
 import { IoMdReorder } from "react-icons/io";
+import '../css/Footer.css'
 const Footer=()=>{
     return(
         <footer className="mainfooter">
