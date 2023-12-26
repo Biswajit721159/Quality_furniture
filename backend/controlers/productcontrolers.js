@@ -176,21 +176,38 @@ let getproductUponPriceProductTypeAndProductName = async (req, res) => {
     let catagory = req.params.catagory;
     let product_name = req.params.product_name;
     let result = null;
-    if (catagory == "ALL")
-      result = await product.find({ price: { $gte: low, $lte: high },
-      $or: [
-          { product_type: { $regex: product_name } },
-          { product_name: { $regex: product_name } },
-        ] });
-    else
-      result = await product.find({
-        price: { $gte: low, $lte: high },
-        product_type: catagory,
-        $or: [
-          { product_type: { $regex: product_name } },
-          { product_name: { $regex: product_name } },
-        ],
-      });
+    if (product_name == "none") {
+      if (catagory == "ALL") {
+        result = await product.find({
+          price: { $gte: low, $lte: high },
+        });
+      } else {
+        result = await product.find({
+          price: { $gte: low, $lte: high },
+          product_type: catagory,
+        });
+      }
+    } else {
+      if (catagory == "ALL") {
+        result = await product.find({
+          price: { $gte: low, $lte: high },
+          $or: [
+            { product_type: { $regex: product_name } },
+            { product_name: { $regex: product_name } },
+          ],
+        });
+      } else {
+        result = await product.find({
+          price: { $gte: low, $lte: high },
+          product_type: catagory,
+          $or: [
+            { product_type: { $regex: product_name } },
+            { product_name: { $regex: product_name } },
+          ],
+        });
+      }
+    }
+    
     if (result) res.status(201).json(new ApiResponse(201, result, "success"));
     else
       res
