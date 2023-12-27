@@ -1,56 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PulseLoader } from 'react-spinners';
 import '../css/Carousel.css'
 import { FaAngleLeft } from "react-icons/fa";
 import { FaAngleRight } from "react-icons/fa";
 const api=process.env.REACT_APP_API
-const Carousel=()=>{
-    const history=useNavigate()
-    const [data,setdata]=useState([])
-    let userinfo=JSON.parse(localStorage.getItem('user'))
-    const [load,setload]=useState(false)
-
+const Carousel=(props)=>{
+    
+    let data=props.data;
+    let message=props.message;
     const [low,setlow]=useState(0);
     const [high,sethigh]=useState(4);
-
-    useEffect(()=>{
-       if(userinfo==null)
-       {
-          history('Signin')
-       }
-       else
-       {
-           loadproduct()
-       }
-    },[])
-
-    function loadproduct()
-    {
-        setload(true)
-        fetch(`${api}/product/getproductByType/Door`,{
-            headers:{
-                Authorization:`Bearer ${userinfo.accessToken}`
-            }
-        }).then(responce=>responce.json()).then((res)=>{
-            if(res.statusCode==201)
-            {
-                setdata(res.data)
-                setload(false)
-            }
-            else if(res.statusCode==498)
-            {
-                localStorage.removeItem('user')
-                history('/Signin')
-            }
-            else
-            {
-                history('*');
-            }
-        },(error)=>{
-            console.log(error)
-        })
-    }
 
     function Increment()
     {
@@ -68,33 +28,24 @@ const Carousel=()=>{
 
     return(
     <>
-        {
-            load==true?
-            <div className="Loaderitem">
-                <PulseLoader color="#16A085"  />
+        {data && <h3 className="product_name">{message}</h3>}
+            <div className="carousel">
+                {data && data.map((item,ind)=>(
+                    <>
+                    { ind>=low && ind<=high && high-low==4 && 
+                        <div key={ind} >
+                            <Link to={`/product/${item._id}`}><img  src={item.newImage[0]} className="imgs" alt="Error"/></Link>
+                        </div>
+                    }
+                    </>
+                ))}
             </div>
-            :
-            <>
-                
-                    <div className="carousel">
-                        {data && data.map((item,ind)=>(
-                            <>
-                            { ind>=low && ind<=high && high-low==4 && 
-                                <div  key={ind} >
-                                    
-                                    <img  src={item.newImage[0]} className="imgs" alt="Error"/>
-                                    
-                                </div>}
-                            </>
-                        ))}
-                    </div>
-                    <div className="Arrowleftright">
-                    <FaAngleLeft className="Decrement" onClick={Decrement} />
-                    {(high-low)==4 &&<FaAngleRight  className="Increment"  onClick={Increment}/>}
-                    </div>
-                
-            </>
-        }
+        {data && 
+            <div className="Arrowleftright">
+                <FaAngleLeft className="Decrement" onClick={Decrement} />
+                {(high-low)==4 &&<FaAngleRight  className="Increment"  onClick={Increment}/>}
+            </div>
+        }    
     </>
     )
 }

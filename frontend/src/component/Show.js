@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { PulseLoader } from 'react-spinners';
 import {useDispatch,useSelector} from 'react-redux'
 import {cartmethod} from '../redux/CartSlice'
+import Footer from '../component/Footer'
 export default function Show() {
 
 const dispatch=useDispatch()
@@ -629,6 +630,7 @@ function AddToCart(product_id)
                     }
                     </div>
                 </div>
+                <Footer/>
             </>
         :
         <div className='loader-container'>

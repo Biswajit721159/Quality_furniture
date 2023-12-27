@@ -1,3 +1,8 @@
+
+.product_name{
+    text-align: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
 .carousel{
     display: flex;
     justify-content: center;
@@ -18,7 +23,7 @@
 
 .Arrowleftright{
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
 }
 
@@ -55,6 +60,9 @@
         width:150px;
         margin: 6px;
     }
+    .product_name{
+        font-size: 20px;
+    }
     .Increment{
         font-size: 35px;
     }
@@ -67,6 +75,9 @@
         height:180px;
         width:120px;
         margin: 5px;
+    }
+    .product_name{
+        font-size: 18px;
     }
     .Increment{
         font-size: 30px;
@@ -82,6 +93,9 @@
         width:100px;
         margin: 4px;
     }
+    .product_name{
+        font-size: 16px;
+    }
     .Increment{
         font-size: 25px;
     }
@@ -96,6 +110,9 @@
         width:80px;
         margin: 2px;
     }
+    .product_name{
+        font-size: 14px;
+    }
     .Increment{
         font-size: 20px;
     }
@@ -108,6 +125,9 @@
         height:100px;
         width:70px;
         margin: 2px;
+    }
+    .product_name{
+        font-size: 12px;
     }
     .Increment{
         font-size: 15px;
@@ -122,6 +142,9 @@
         height:90px;
         width:60px;
         margin: 2px;
+    }
+    .product_name{
+        font-size: 10px;
     }
     .Increment{
         font-size: 15px;

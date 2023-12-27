@@ -76,7 +76,7 @@ const Navbar=()=>{
                   <li><button className='btn btn-light rounded-circle' onClick={changecolor}><MdOutlineDarkMode/></button></li>
                   :<li><button className='btn btn-dark rounded-circle' onClick={changecolor}><MdOutlineDarkMode/></button></li>
                 }
-                    <li><Link to={'/'} style={{textDecoration:"none",color:"white"}}>QualityFurniture</Link></li>
+                    <li><Link to={'/'} style={{textDecoration:"none",color:"white"}}>QQFurniture</Link></li>
                     <li><Link to={'/Product'} style={{textDecoration:"none",color:"white"}}>Home</Link></li>
                     
                     

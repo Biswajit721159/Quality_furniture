@@ -7,6 +7,8 @@ import {Link} from 'react-router-dom'
 import {AiFillCar,AiFillPhone,AiOutlineCheckCircle } from "react-icons/ai";
 import data from '../constant/carousel'
 import Footer from '../component/Footer'
+import Carousel from '../component/Carousel'
+import SubComponent from './SubComponent';
 export default function Product() {
 
 
@@ -25,7 +27,7 @@ export default function Product() {
     useEffect(()=>{
         let x=setTimeout(() => {
             next()
-        }, 1500);
+        }, 2000);
         return()=>{
             clearInterval(x);
         }
@@ -35,7 +37,7 @@ export default function Product() {
     <div className='container-sm'>
 
 
-        <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
+    <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
             <div className="carousel-inner">
                 {
                     data.map((item,ind)=>(
@@ -54,40 +56,10 @@ export default function Product() {
                         :""
                     ))
                 }
-               {/* <div className="carousel-item">
-                    <img className="d-block w-100" src={Table2} style={{height:"600px", width:"140px"}}  alt="Third slide"/>
-                </div>
-                <div className="carousel-item active">
-                    <img className="d-block w-100" src={chair} style={{height:"600px", width:"140px"}} alt="second slide"/>
-                </div>
-                <div className="carousel-item">
-                    <img className="d-block w-100" src={Table1} style={{height:"600px", width:"140px"}}  alt="first slide"/>
-                </div> */}
             </div>
     </div>
 
-
-    {/* <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
-            <div className="carousel-inner">
-               <div className="carousel-item">
-                    <img className="d-block w-100" src={Table2} style={{height:"600px", width:"140px"}}  alt="Third slide"/>
-                </div>
-                <div className="carousel-item active">
-                    <img className="d-block w-100" src={chair} style={{height:"600px", width:"140px"}} alt="second slide"/>
-                </div>
-                <div className="carousel-item">
-                    <img className="d-block w-100" src={Table1} style={{height:"600px", width:"140px"}}  alt="first slide"/>
-                </div>
-                <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                <span className="carousel-control-prev-icon" style={{backgroundColor:"black"}}  aria-hidden="true"></span>
-                <span className="sr-only">Previous</span>
-            </a>
-            <a className="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                <span className="carousel-control-next-icon" style={{backgroundColor:"black"}}  aria-hidden="true"></span>
-                <span className="sr-only">Next</span>
-            </a>
-            </div>
-    </div> */}
+    <SubComponent/>
 
     <div className=' mt-1 shadow-none p-3 mb-5 bg-light rounded'>
         <h3 className='d-flex justify-content-center' style={{color:"green"}}>About us</h3>
@@ -117,6 +89,7 @@ export default function Product() {
             </div>
         </div> 
     </div>
+    <Footer/>
 </div>
 
 

@@ -35,7 +35,7 @@ function App() {
             <Route path="Myorder" element={<Myorder/>}></Route>
             <Route path="/:id/:product_id/Reviews" element={<Reviews/>}></Route>
             <Route path="/Footer" element={<Footer/>}></Route>
-            <Route path="/Carousel" element={<Carousel/>}></Route>
+            {/* <Route path="/Carousel" element={<Carousel/>}></Route> */}
           {/* </Route> */}
           <Route path="/Signin" element={<Login/>}></Route>
           <Route path="/Register" element={<Register />}></Route>
