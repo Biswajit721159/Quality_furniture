@@ -231,6 +231,18 @@ let getallProductType = async (req, res) => {
   }
 };
 
+let getproductByType=async(req,res)=>{
+  try
+  {
+    let result = await product.find({ product_type:req.params.product_type  });
+    if (result) res.status(201).json(new ApiResponse(201, result, "success"));
+    else
+       res.status(404).json(new ApiResponse(404, null, "product does not exist"));
+  }catch{
+    res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
+  }
+}
+
 module.exports = {
   get_product_by_ids,
   getFullProduct,
@@ -243,4 +255,5 @@ module.exports = {
   getproductUponPrice,
   getallProductType,
   getproductUponPriceProductTypeAndProductName,
+  getproductByType
 };
