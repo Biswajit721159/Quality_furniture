@@ -104,12 +104,22 @@ const history=useNavigate()
 
  function Add_TO_CART()
  {
-   dispatch(cartmethod.ADD_TO_CART(product._id))
+    if(cartdata>=product.total_number_of_product || cartdata>=5)
+    {
+        alert("Sorry You are not Allow ")
+    } 
+    else
+        dispatch(cartmethod.ADD_TO_CART(product._id))
  }
 
  function SUB_TO_CART()
  {
-   dispatch(cartmethod.SUB_TO_CART(product._id))
+    if(cartdata<=1)
+    {
+        alert("Sorry You are not Allow ")
+    } 
+    else
+       dispatch(cartmethod.SUB_TO_CART(product._id))
  }
 
  function removeTocart()
@@ -136,7 +146,7 @@ const history=useNavigate()
           email:userinfo.user.email,
           address:address,
           product_id:cart.product_id,
-          product_count:cart.product_count,
+          product_count:cartdata,
           payment_method:"Cash on Delivary",
           Total_rupess:cost,
           Date:currentDate,
@@ -159,7 +169,7 @@ const history=useNavigate()
         },
         body:JSON.stringify({
           product_id:cart.product_id,
-          product_count:product_data.total_number_of_product-cart.product_count
+          product_count:product_data.total_number_of_product-cartdata
         })
       }).then(responce=>responce.json()).then((data)=>{
           submit_order()
@@ -167,8 +177,8 @@ const history=useNavigate()
  }
 
  function submit()
-  {
-    if(cart !=null && cart.product_count==0)
+ {
+    if(cartdata==0)
     {
       alert("Please Select Atleast One Product .")
       return ;
@@ -179,12 +189,12 @@ const history=useNavigate()
     fetch(`${api}/product/${cart.product_id}`,{
       headers:{
         Authorization:`Bearer ${userinfo.accessToken}`
-    }
+      }
     }).then(responce=>responce.json()).then((result)=>{
       let product_data=result.data
       if(product_data!=undefined && product_data.length!=0)
       {
-          if(product_data.total_number_of_product>=cart.product_count)
+          if(product_data.total_number_of_product>=cartdata)
           {
             submit_in_product(product_data)
           }
@@ -196,7 +206,7 @@ const history=useNavigate()
           }
       }
     })    
-  }
+ }
 
 
 
@@ -220,7 +230,7 @@ const history=useNavigate()
 
                 <div className='item1item2'>
                     <h5 >{product.product_name}</h5>
-                    <p style={{color:"orange"}}>{product.offer}%OFF</p>
+                    <p style={{color:"orange"}}>{product.offer}%OFF ({product.total_number_of_product} left)</p>
                     <h6 style={{color:'gray'}}>Original - <s>₹{product.price}</s></h6> 
                     <h5 style={{color:'tomato'}}>Price - ₹{(product.price-((product.price*product.offer)/100)).toFixed(2)}</h5>
                     <button className='btn btn-secondary btn-sm' onClick={removeTocart}>Remove To Cart</button>

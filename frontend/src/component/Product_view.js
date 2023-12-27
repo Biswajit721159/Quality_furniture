@@ -211,9 +211,9 @@ export default function Product_view() {
                     </div>
                     </div>
                     <div className='col2'>
-                        <button style={{borderRadius:'40%'}} onClick={Add_TO_CART}><GrAdd /></button>
+                        {/* <button style={{borderRadius:'40%'}} onClick={Add_TO_CART}><GrAdd /></button>
                         {cart!=undefined && _id==cart.product_id?<h4 style={{marginLeft:20 ,marginRight:20,marginTop:5}}>{cartdata}</h4>:<h4 style={{marginLeft:20 ,marginRight:20,marginTop:5}}>0</h4>}
-                        <button style={{borderRadius:'40%'}} onClick={SUB_TO_CART}><GrSubtract /></button>
+                        <button style={{borderRadius:'40%'}} onClick={SUB_TO_CART}><GrSubtract /></button> */}
                     </div>
                     <div className='col3'>
                         <div class="card" style={{width: "18rem"}}>
@@ -306,7 +306,7 @@ export default function Product_view() {
                                     }
                                     {Message?<button className='btn btn-primary my-4' onClick={()=>{loadmorenow(review_data)}}>Load More</button>:""}
                                 </div>
-                            :<h4  className="col-md-12 text-center"  style={{marginTop:"100px",color: "#F1C8CE" }}>Review is not Posted</h4>
+                            :<h4  className="col-md-12 text-center"  style={{marginTop:"100px",color: "#808B96" }}>Review is not Posted</h4>
                         }
                     </div>
                </div>

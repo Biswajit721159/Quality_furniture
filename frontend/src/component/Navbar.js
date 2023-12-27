@@ -7,16 +7,12 @@ import { IoIosLogOut } from "react-icons/io";
 import { GiLoveHowl } from "react-icons/gi";
 import { IoReorderFourOutline } from "react-icons/io5";
 import {useSelector} from 'react-redux'
-import {searchmethod} from '../redux/SearchSlice'
-import { useDispatch } from 'react-redux';
 import '../css/Navbar.css'
 const Navbar=()=>{
 
   const history=useNavigate();
   const user=JSON.parse(localStorage.getItem('user'));
   const [mode,setmode]=useState(localStorage.getItem('mode'))
-  const [searchproduct,setsearchproduct]=useState("")
-  const dispatch=useDispatch()
   let cartdata = useSelector((state) => state.cartdata.product_count);
 
   function logout(){
@@ -68,10 +64,6 @@ const Navbar=()=>{
     }
   }
 
-  function search(s)
-  {
-    dispatch(searchmethod.SET_SEARCH(s))
-  }
   
     return(
         <>

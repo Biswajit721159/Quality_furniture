@@ -5,8 +5,11 @@ import {AiFillStar } from "react-icons/ai";
 import {FaHeart, FaSketch} from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { PulseLoader } from 'react-spinners';
+import {useDispatch,useSelector} from 'react-redux'
+import {cartmethod} from '../redux/CartSlice'
 export default function Show() {
 
+const dispatch=useDispatch()
 const history =useNavigate()     
 const [data,setdata]=useState([])
 let [cart,setcart]=useState(JSON.parse(localStorage.getItem('cart')))
@@ -404,6 +407,12 @@ function backTOHome()
     findsearchData(0,1000000,'ALL','')
 }
 
+function AddToCart(product_id)
+{
+    dispatch(cartmethod.ADD_TO_CART(product_id))
+    history('/Cart')
+}
+
 
   return (
     <>
@@ -607,13 +616,11 @@ function backTOHome()
                                                         </button>
                                                     </div>
                                                 :
-                                                <Link to={`/product/${item._id}`}>
-                                                    <div className='col'>
-                                                        <button className="btn btn-primary rounded-pill btn-sm mt-0" >
-                                                            ADD TO CART
-                                                        </button>
-                                                    </div>
-                                                </Link>
+                                                <div className='col'>
+                                                    <button className="btn btn-primary rounded-pill btn-sm mt-0" onClick={()=>AddToCart(item._id)} >
+                                                        ADD TO CART
+                                                    </button>
+                                                </div>
                                             }
                                     </div>
                                 </div>

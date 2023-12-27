@@ -1,0 +1,29 @@
+.carousel{
+    position: sticky;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.Arrowleftright{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imgs {
+    height:270px;
+    width:220px;
+    margin: 10px;
+}
+
+@media screen and (min-width: 480px ) and (max-width: 780px) {
+    .carousel {
+      height: 70%;
+      width: 70%;
+    }
+    .imgs {
+        height:170px;
+        width:150px;
+    }
+  }
