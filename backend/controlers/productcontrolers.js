@@ -243,6 +243,20 @@ let getproductByType=async(req,res)=>{
   }
 }
 
+let TopOfferProduct=async(req,res)=>{
+  try{
+    const result = await product.aggregate([
+      { $sort: { offer: -1 } },
+      { $limit: parseInt(req.params.numberofProduct) }
+    ]);
+    if (result) res.status(201).json(new ApiResponse(201, result, "success"));
+    else
+       res.status(404).json(new ApiResponse(404, null, "product does not exist"));
+  }catch{
+     res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
+  }
+}
+
 module.exports = {
   get_product_by_ids,
   getFullProduct,
@@ -255,5 +269,6 @@ module.exports = {
   getproductUponPrice,
   getallProductType,
   getproductUponPriceProductTypeAndProductName,
-  getproductByType
+  getproductByType,
+  TopOfferProduct
 };
