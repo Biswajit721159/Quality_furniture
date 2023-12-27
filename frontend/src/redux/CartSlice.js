@@ -15,10 +15,12 @@ const cartSlice = createSlice({
       return (state = solve_Sub_To_Cart_Product(state, action.payload));
     },
     REMOVE_TO_CART: (state) => {
+      localStorage.removeItem('cart')
       state = {
         product: null,
         product_count: 0,
       };
+      return state
     },
   },
 });

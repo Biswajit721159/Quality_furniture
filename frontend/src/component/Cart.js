@@ -19,13 +19,10 @@ const [data,setdata]=useState([])
 const [cart,setcart]=useState(JSON.parse(localStorage.getItem('cart')))
 const [cost,setcost]=useState(0)
 const [address,setaddress]=useState()
-const [wrongaddress,setwrongaddress]=useState(false)
-const [messaddress,setmessaddress]=useState("")
 const [button,setbutton]=useState("PLACE ORDER")
 const [disabled,setdisabled]=useState(false)
 const [load,setload]=useState(false)
 const [product,setproduct]=useState(null)
-const [model,setmodel]=useState()
 
 const history=useNavigate()
 
@@ -41,6 +38,22 @@ const history=useNavigate()
     }
  },[])
 
+
+ useEffect(()=>{
+    findCost(data);
+ },[cartdata])
+ 
+ function findCost(ans)
+ {
+    if(ans==undefined || ans.length==0)
+    {
+        setcost(0);
+        return;
+    }
+    let x=((ans[0].price-((ans[0].price*ans[0].offer)/100))*(cartdata)).toFixed(2);
+    setcost(x)
+ }
+
  function loadproduct()
  {
     setload(true)
@@ -50,49 +63,42 @@ const history=useNavigate()
         }
     }).then(responce=>responce.json())
     .then((res)=>{
-        let arr=[]
-        if(res.data && res.data.length!=0)
-        {
-            arr.push(res.data)
-        }
-        setToproduct(arr,cart)
+        setToproduct(res.data,cart)
         setload(false)
     })
  }
 
- function setToproduct(data,res)// data mean product and res mean cart
+ function setToproduct(data,res)
  {
-     res=JSON.parse(localStorage.getItem('cart'))
-     if(data==undefined || res==null) return
-     let ans=[]
-    for(let i=0;i<data.length;i++)
-    {
-        let obj={
-            _id:data[0]._id,
-            product_name:data[0].product_name,
-            rating:data[0].rating,
-            newImage:data[0].newImage,
-            price:data[0].price,
-            offer:data[0].offer,
-            product_type:data[0].product_type,
-            total_number_of_product:data[0].total_number_of_product,
-            number_of_people_give_rating:data[0].number_of_people_give_rating,
-            product_count:0,
-            isdeleted:false,
-        }
-        if(res && res.length!=0 && res.product_id==obj._id)
-        {
-            obj.product_count=res.product_count;
-        }
-        ans.push(obj)
+    res=JSON.parse(localStorage.getItem('cart'))
+    if(data==undefined || res==null) return
+    let ans=[]
+    
+    let obj={
+        _id:data._id,
+        product_name:data.product_name,
+        rating:data.rating,
+        newImage:data.newImage,
+        price:data.price,
+        offer:data.offer,
+        product_type:data.product_type,
+        total_number_of_product:data.total_number_of_product,
+        number_of_people_give_rating:data.number_of_people_give_rating,
+        product_count:0,
+        isdeleted:false,
     }
+    if(res && res.length!=0 && res.product_id==obj._id)
+    {
+        obj.product_count=res.product_count;
+    }
+    ans.push(obj)
+    
     if(ans.length==0)
     {
         return 
     }
     setdata([...ans])
-    let x=((ans[0].price-((ans[0].price*ans[0].offer)/100))*(res.product_count)).toFixed(2);
-    setcost(x)
+    findCost(ans)
     if(ans.length)setproduct(ans[0])
  }
 
@@ -104,6 +110,12 @@ const history=useNavigate()
  function SUB_TO_CART()
  {
    dispatch(cartmethod.SUB_TO_CART(product._id))
+ }
+
+ function removeTocart()
+ {
+    dispatch(cartmethod.REMOVE_TO_CART())
+    setproduct(null)
  }
 
  function submit_order()
@@ -199,6 +211,7 @@ const history=useNavigate()
          <>
             <h6 style={{textAlign:'center',fontFamily:'cursive',color:"red"}}>*If You Want to Change Your Address Go to Your Profile Section </h6>
             <div className='cartitem'>
+
                 <div className='item1'>
                     <div className='insideritem'>
                         <Link to={`/Product/${product._id}`}><img src={product.newImage[0]} style={{height:280,widows:150,border:'2px solid green' ,borderRadius:10}} alt='Error'/></Link>
@@ -210,6 +223,7 @@ const history=useNavigate()
                     <p style={{color:"orange"}}>{product.offer}%OFF</p>
                     <h6 style={{color:'gray'}}>Original - <s>₹{product.price}</s></h6> 
                     <h5 style={{color:'tomato'}}>Price - ₹{(product.price-((product.price*product.offer)/100)).toFixed(2)}</h5>
+                    <button className='btn btn-secondary btn-sm' onClick={removeTocart}>Remove To Cart</button>
                     {/* <h5>{product.total_number_of_product} Left Only </h5> */}
                 </div>
 
@@ -222,16 +236,16 @@ const history=useNavigate()
                 </div>
                 
                 <div className='item2'>
-                <h4 style={{textAlign:'center'}}>PRICE DETAILS</h4>
+                   <h4 style={{textAlign:'center'}}>PRICE DETAILS</h4>
                     <table class="table">
                         <tbody>
                             <tr>
-                                <td>Price ({product.product_count} item)</td>
-                                <td>₹{product.price*product.product_count}</td>
+                                <td>Price ({cartdata} item)</td>
+                                <td>₹{product.price*cartdata}</td>
                             </tr>
                             <tr>
                                 <td>Discount</td>
-                                <td>-₹{product.price*product.product_count-cost}</td>
+                                <td>-₹{product.price*cartdata-cost}</td>
                             </tr>
                             <tr>
                                 <td>Delivery Charges</td>
@@ -242,62 +256,20 @@ const history=useNavigate()
                                 <td>₹{cost}</td>
                             </tr>
                             <tr>
-                                <td style={{color:'green'}}>You will save ₹{product.price*product.product_count-cost} on this order</td>
+                                <td style={{color:'green'}}>You will save ₹{product.price*cartdata-cost} on this order</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+
             </div>
             <div className='buttonitem'>
                 <button className='btn btn-danger' disabled={disabled}onClick={submit} >{button}</button>
             </div>
-
-
-        {/* model box */}
-
-        {/* {
-            userinfo && 
-            <div>
-                <div class="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">GO</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                                <div className="form-group">
-                                    <input type="email" value={userinfo.user.email} disabled className="form-control" placeholder="Enter Email Id"  required/>
-                                </div>
-                                <div className="form-group">
-                                    <input type="number" value={cost} disabled className="form-control"   required/>
-                                </div>
-                                <div className="form-group">
-                                    <textarea type="text" value={address}  onChange={(e)=>{setaddress(e.target.value)}}  className="form-control" placeholder="Enter Full Address"  required/>
-                                    {wrongaddress?<label  style={{color:"red"}}>{messaddress}</label>:""}
-                                </div>
-                                <div className="form-group">
-                                    <select className="form-control" disabled aria-label="Default select example">
-                                    <option selected>Cash on Delivary</option>
-                                    </select>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" disabled={disabled}  >{button}</button>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-            </div> 
-        }*/}
-
         </>    
-        :<Error/>
+        :<div className='loader-container'>
+        <Link to={'/Product'}><button className='btn btn-info'>  <h4>ADD PRODUCTS</h4>  </button></Link>
+         </div>
     }
     </>
   )

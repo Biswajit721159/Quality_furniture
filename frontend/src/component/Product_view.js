@@ -18,7 +18,7 @@ export default function Product_view() {
   const _id=useParams()._id
   const history=useNavigate()
   const dispatch=useDispatch();
-  
+
   let cartdata = useSelector((state) => state.cartdata.product_count);
   let userinfo=JSON.parse(localStorage.getItem('user'))
 
@@ -42,7 +42,6 @@ export default function Product_view() {
   let cart=JSON.parse(localStorage.getItem('cart'));
 
   useEffect(()=>{
-    // console.log(userinfo.accessToken)
     if(userinfo==null)
     {
         history('/Register')
@@ -108,23 +107,9 @@ export default function Product_view() {
         }
     }).then(response=>response.json()).
     then((data)=>{
-        if(data.data!=undefined)
+        if(data)
         {
-            fetch(`${api}/Reviews/${_id}`,{
-                headers:
-                {
-                    Authorization:`Bearer ${userinfo.accessToken}`
-                }
-            }).then((responce=>responce.json())).then((res)=>{
-                if(res.data!=undefined)
-                {
-                    setreview_data(res.data)
-                    setproduct(data.data)
-                    Find_Review(res.data,data.data)
-                    loadmore(res.data)
-                    setload(false)
-                }
-            })
+            loadreview(data)
         }
         else
         {
@@ -132,6 +117,25 @@ export default function Product_view() {
         }
     })
 
+  }
+
+  function loadreview(data)
+  {
+    fetch(`${api}/Reviews/${_id}`,{
+        headers:
+        {
+            Authorization:`Bearer ${userinfo.accessToken}`
+        }
+    }).then((responce=>responce.json())).then((res)=>{
+        if(res.data!=undefined)
+        {
+            setreview_data(res.data)
+            setproduct(data.data)
+            Find_Review(res.data,data.data)
+            loadmore(res.data)
+            setload(false)
+        }
+    })
   }
 
   function loadmore(review_data)

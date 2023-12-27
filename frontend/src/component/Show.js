@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { BrowserRouter as Router, Route, Link, useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, useLocation, useParams, useSearchParams, useAsyncError } from 'react-router-dom';
 import '../css/Main_page.css'
 import {AiFillStar } from "react-icons/ai";
-import {FaHeart} from 'react-icons/fa';
+import {FaHeart, FaSketch} from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { PulseLoader } from 'react-spinners';
 export default function Show() {
@@ -24,10 +24,17 @@ const [pricerange2000to3000,setpricerange2000to3000]=useState(false)
 const [pricerange3000to4000,setpricerange3000to4000]=useState(false)
 const [pricerange4000toUp,setpricerange4000toUp]=useState(false)
 
+const [ALL,setALL]=useState(false)
+
 const [lowprice,setlowprice]=useState(0)
 const [highprice,sethighprice]=useState(10000000)
 const [selectcatagory,setselectcatagory]=useState('ALL')
-const [searchproduct,setsearchproduct]=useState("")
+const [searchproduct,setsearchproduct]=useState("none")
+
+const [priceLowTOHigh,setpriceLowTOHigh]=useState(false)
+const [priceHighTOLow,setpriceHighTOLow]=useState(false)
+const [SortOnRating,setSortOnRating]=useState(false)
+const [SortOffer,setSortOffer]=useState(false)
 
 const api = process.env.REACT_APP_API
 
@@ -39,50 +46,32 @@ useEffect(()=>{
     let highprice=queryParameters.get('highprice');
     let selectcatagory=queryParameters.get('selectcatagory');
     let searchproduct=queryParameters.get('product_name');
-    console.log(lowprice,highprice,selectcatagory,searchproduct);
+    // console.log(lowprice,highprice,selectcatagory,searchproduct);
     if(userinfo==null)
     {
         history('/Register')
     }
-    else if(lowprice!=null && highprice!=null && selectcatagory!=null && searchproduct!=null)
+    else 
     {
-        findsearchData(lowprice,highprice,selectcatagory,searchproduct)
-    }
-    else if(lowprice!=null && highprice!=null && selectcatagory!=null)
-    {
-        markvisited(lowprice,highprice,selectcatagory);
-        Filterdata(lowprice,highprice,selectcatagory);
-    }
-    else
-    {
-        Filterdata(0,10000000,'ALL');
+        findsearchData(lowprice,highprice,selectcatagory,searchproduct);
     }
 },[])
-
-// useEffect(()=>{
-//     // console.log("filter karar janno data ",lowprice,highprice,selectcatagory)
-//     if(lowprice!=null && highprice!=null && selectcatagory!=null)
-//     {
-//         markvisited(lowprice,highprice,selectcatagory);
-//         Filterdata(lowprice,highprice,selectcatagory)
-//     }
-// },[lowprice],[highprice],[selectcatagory])
-
-// useEffect(()=>{
-//     console.log("Searching karara janno ")
-//     search(searchvalue)
-// },[searchvalue])
 
 
 function findsearchData(lowprice,highprice,selectcatagory,searchproduct)
 {
+    if(lowprice==null) lowprice=0;
+    if(highprice==null) highprice=1000000;
+    if(selectcatagory==null) selectcatagory="ALL";
+    if(searchproduct==null) searchproduct="";
+    markvisited(lowprice,highprice,selectcatagory,searchproduct)
+    if(searchproduct==null || searchproduct.length==0) searchproduct="none";
     setload(true);
     fetch(`${api}/product/getproductUponPriceProductTypeAndProductName/${lowprice}/${highprice}/${selectcatagory}/${searchproduct}`,{
         headers:{
             Authorization:`Bearer ${userinfo.accessToken}` 
         }
     }).then(response=>response.json()).then((data)=>{
-        console.log(data)
         if(data.statusCode==201)
         {
             setproduct(data.data);
@@ -128,36 +117,7 @@ function loadCatagory()
     })
 }
 
-// function loadproduct()
-// {
-//     setload(true)
-//     fetch(`${api}/product`,{
-//         headers:{
-//             Authorization:`Bearer ${userinfo.accessToken}`
-//         }
-//     }).then(response=>response.json()).then((data)=>{
-//         console.log("main data ",data)
-//         if(data.statusCode==201)
-//         {
-//             setproduct(data.data);
-//             setToproduct(data.data,cart);
-//             loadCatagory()
-//         }
-//         else if(data.statusCode==498)
-//         {
-//             localStorage.removeItem('user');
-//             history('/Signin');
-//         }
-//         else
-//         {
-//             history('*');
-//         }
-//     },(error)=>{
-//         history('*')
-//     })
-// }
-
-function setToproduct(data,res)// data mean product and res mean cart
+function setToproduct(data,res)
 {
     if(data==undefined) return
     else
@@ -238,169 +198,210 @@ function addToWishlist(id)
     setToproduct(data,cart)
 }
 
-function search(searchproduct)
-{ 
-    if(searchproduct.length!=0)
-    {
-        history(`?lowprice=${lowprice}&highprice=${highprice}&selectcatagory=${selectcatagory}&product_name=${searchproduct}`)
-    }
+// data handeling part 
+
+function clearallfilter()
+{
+    setdata(product);
+    setToproduct(product,cart)
+    setpriceLowTOHigh(false);
+    setpriceHighTOLow(false);
+    setSortOnRating(false);
+    setSortOffer(false);
 }
 
-//data handeling part 
-// function PriceLowToHigh()
-// {
-//     setdropdown("Price Low To High")
-//     data.sort((a, b) => {
-//         let fa = parseInt(a.price-((a.price*a.offer)/100))
-//         let fb = parseInt(b.price-((b.price*b.offer)/100))
-    
-//         if (fa < fb) {
-//             return -1;
-//         }
-//         if (fa > fb) {
-//             return 1;
-//         }
-//         return 0;
-//     });
-//     setdata([...data])
-// }
-
-// function clearallfilter()
-// {
-//     setdropdown("Search In Catagory")
-//     setpriceRange("Price Range")
-//     loadproduct()
-// }
-
-// function PriceHighToLow()
-// {
-//     setdropdown("Price High To Low")
-//     data.sort((a, b) => {
-//         let fa = parseInt(a.price-((a.price*a.offer)/100))
-//         let fb = parseInt(b.price-((b.price*b.offer)/100))
-    
-//         if (fa > fb) {
-//             return -1;
-//         }
-//         if (fa < fb) {
-//             return 1;
-//         }
-//         return 0;
-//     });
-//     setdata([...data])
-// }
-
-// function SortOnRating()
-// {
-//     setdropdown("Sort On Rating")
-//     data.sort((a, b) => {
-//         let fa = parseFloat(a.rating),
-//             fb = parseFloat(b.rating);
-    
-//         if (fa > fb) {
-//             return -1;
-//         }
-//         if (fa < fb) {
-//             return 1;
-//         }
-//         return 0;
-//     });
-//     setdata([...data])
-// }
-
-// function SortOnOffer()
-// {
-//     setdropdown("Sort On Offer")
-//     data.sort((a, b) => {
-//         let fa = parseInt(a.offer),
-//             fb = parseInt(b.offer);
-    
-//         if (fa > fb) {
-//             return -1;
-//         }
-//         if (fa < fb) {
-//             return 1;
-//         }
-//         return 0;
-//     });
-//     setdata([...data])
-// }
-
-// function findPriceRange(low,high)
-// {
-//     if(low==0)
-//     {
-//         setpriceRange(`UNDER ₹ ${high}`)
-//     }
-//     else if(high==Math.pow(2,31))
-//     {
-//         setpriceRange(`Over ₹ ${low}`)
-//     }
-//     else
-//     {
-//         setpriceRange(`₹ ${low} - ₹ ${high}`)
-//     }
-//     let ans=[]
-//     for(let i=0;i<data.length;i++)
-//     {
-//         let price=parseInt(data[i].price-((data[i].price*data[i].offer)/100));
-//         if(price>=low && price<=high)
-//         {
-//             ans.push(data[i]);
-//         }
-//     }
-//     setdata([...ans])
-// }
-
-function Filterdata(lowprice,highprice,selectcatagory)
+function PriceLowToHighfunction()
 {
-    setload(true)
-    fetch(`${api}/product/getProductUponPrice/${lowprice}/${highprice}/${selectcatagory}`,{
-        headers:{
-            Authorization:`Bearer ${userinfo.accessToken}`
+    setpriceLowTOHigh(true);
+    setpriceHighTOLow(false);
+    setSortOnRating(false);
+    setSortOffer(false);
+    data.sort((a, b) => {
+        let fa = parseInt(a.price-((a.price*a.offer)/100))
+        let fb = parseInt(b.price-((b.price*b.offer)/100))
+    
+        if (fa < fb) {
+            return -1;
         }
-    }).then(response=>response.json()).then((data)=>{
-        console.log("Filter data is ",data.data)
-        if(data.statusCode==201)
-        {
-            setproduct(data.data);
-            setToproduct(data.data,cart);
-            setload(false)
+        if (fa > fb) {
+            return 1;
         }
-        else if(data.statusCode==498)
-        {
-            localStorage.removeItem('user');
-            history('/Signin');
+        return 0;
+    });
+    setdata([...data])
+}
+
+function PriceHighToLowfunction()
+{
+    setpriceLowTOHigh(false);
+    setpriceHighTOLow(true);
+    setSortOnRating(false);
+    setSortOffer(false);
+    data.sort((a, b) => {
+        let fa = parseInt(a.price-((a.price*a.offer)/100))
+        let fb = parseInt(b.price-((b.price*b.offer)/100))
+    
+        if (fa > fb) {
+            return -1;
         }
-        else
-        {
-            history('*');
+        if (fa < fb) {
+            return 1;
         }
-    },(error)=>{
-        history('*')
-    })
+        return 0;
+    });
+    setdata([...data])
+}
+
+function SortOnRatingfunction()
+{
+    setpriceLowTOHigh(false);
+    setpriceHighTOLow(false);
+    setSortOnRating(true);
+    setSortOffer(false);
+    data.sort((a, b) => {
+        let fa = parseFloat(a.rating),
+            fb = parseFloat(b.rating);
+    
+        if (fa > fb) {
+            return -1;
+        }
+        if (fa < fb) {
+            return 1;
+        }
+        return 0;
+    });
+    setdata([...data])
+}
+
+function SortOnOfferfunction()
+{
+    setpriceLowTOHigh(false);
+    setpriceHighTOLow(false);
+    setSortOnRating(false);
+    setSortOffer(true);
+    data.sort((a, b) => {
+        let fa = parseInt(a.offer),
+            fb = parseInt(b.offer);
+    
+        if (fa > fb) {
+            return -1;
+        }
+        if (fa < fb) {
+            return 1;
+        }
+        return 0;
+    });
+    setdata([...data])
+}
+
+function search(searchproduct)
+{ 
+    setsearchproduct(searchproduct)
+    history(`?lowprice=${lowprice}&highprice=${highprice}&selectcatagory=${selectcatagory}&product_name=${searchproduct}`)
+    findsearchData(lowprice,highprice,selectcatagory,searchproduct)
+}
+
+function clearsearch()
+{
+    setsearchproduct("");
+    history(`?lowprice=${lowprice}&highprice=${highprice}&selectcatagory=${selectcatagory}&product_name=${''}`)
+    findsearchData(lowprice,highprice,selectcatagory,'')
 }
 
 function cametocheck(lowprice,highprice)
 {
-    setlowprice(lowprice);
-    sethighprice(highprice);
-    history(`?lowprice=${lowprice}&highprice=${highprice}&selectcatagory=${selectcatagory}`)
-    Filterdata(lowprice,highprice,selectcatagory)
+    history(`?lowprice=${lowprice}&highprice=${highprice}&selectcatagory=${selectcatagory}&product_name=${searchproduct}`)
+    findsearchData(lowprice,highprice,selectcatagory,searchproduct)
 }
 
 function cametocatagory(selectcatagory)
 {
-    setselectcatagory(selectcatagory)
-    history(`?lowprice=${lowprice}&highprice=${highprice}&selectcatagory=${selectcatagory}`)
-    Filterdata(lowprice,highprice,selectcatagory)
+    history(`?lowprice=${lowprice}&highprice=${highprice}&selectcatagory=${selectcatagory}&product_name=${searchproduct}`)
+    findsearchData(lowprice,highprice,selectcatagory,searchproduct)
 }
 
-function markvisited(lowprice,highprice,selectcatagory)
+function markvisited(lowprice,highprice,selectcatagory,searchproduct)
 {
     setlowprice(lowprice);
     sethighprice(highprice);
     setselectcatagory(selectcatagory)
+    setsearchproduct(searchproduct)
+
+    setpriceLowTOHigh(false);
+    setpriceHighTOLow(false);
+    setSortOnRating(false);
+    setSortOffer(false);
+
+    if(selectcatagory=="ALL")
+    {
+        setALL(true)
+    }
+    if(lowprice>=0 && highprice<=1000)
+    {
+        setpricerange0to1000(true)
+        setpricerange1000to2000(false)
+        setpricerange2000to3000(false)
+        setpricerange3000to4000(false)
+        setpricerange4000toUp(false)
+    }
+    else if(lowprice>=1000 && highprice<=2000)
+    {
+        setpricerange0to1000(false)
+        setpricerange1000to2000(true)
+        setpricerange2000to3000(false)
+        setpricerange3000to4000(false)
+        setpricerange4000toUp(false)
+    }
+    else if(lowprice>=2000 && highprice<=3000)
+    {
+        setpricerange0to1000(false)
+        setpricerange1000to2000(false)
+        setpricerange2000to3000(true)
+        setpricerange3000to4000(false)
+        setpricerange4000toUp(false)
+    }
+    else if(lowprice>=3000 && highprice<=4000)
+    {
+        setpricerange0to1000(false)
+        setpricerange1000to2000(false)
+        setpricerange2000to3000(false)
+        setpricerange3000to4000(true)
+        setpricerange4000toUp(false)
+    }
+    else if(lowprice>=4000 && highprice<=10000000)
+    {
+        setpricerange0to1000(false)
+        setpricerange1000to2000(false)
+        setpricerange2000to3000(false)
+        setpricerange3000to4000(false)
+        setpricerange4000toUp(true)
+    }
+    else
+    {
+        setpricerange0to1000(false)
+        setpricerange1000to2000(false)
+        setpricerange2000to3000(false)
+        setpricerange3000to4000(false)
+        setpricerange4000toUp(false)
+    }
+}
+
+function clearPrice()
+{
+    history(`?lowprice=${0}&highprice=${1000000}&selectcatagory=${selectcatagory}&product_name=${searchproduct}`)
+    findsearchData(0,1000000,selectcatagory,searchproduct)
+}
+
+function clearcatagory()
+{
+    history(`?lowprice=${lowprice}&highprice=${highprice}&selectcatagory=${'ALL'}&product_name=${searchproduct}`)
+    findsearchData(lowprice,highprice,'ALL',searchproduct)
+}
+
+function backTOHome()
+{
+    history(`?lowprice=${0}&highprice=${1000000}&selectcatagory=${'ALL'}&product_name=${''}`)
+    findsearchData(0,1000000,'ALL','')
 }
 
 
@@ -413,75 +414,52 @@ function markvisited(lowprice,highprice,selectcatagory)
         :
         data.length!=0?
             <>
-                {/* <div className='container d-flex justify-content-center'>
-                    <div className='col'>
-                        <div className="dropdown mt-1">
-                            <button className="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {dropdown}
-                            </button>
-                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <Link className="dropdown-item" onClick={PriceLowToHigh}>Price Low To High</Link>
-                                <Link className="dropdown-item" onClick={PriceHighToLow} >Price High To Low</Link>
-                                <Link className="dropdown-item" onClick={SortOnRating} >Sort On Rating</Link>
-                                <Link className="dropdown-item" onClick={SortOnOffer} >Sort Offer</Link>
-                                <Link className="dropdown-item" onClick={clearallfilter} >Clear Filter</Link>
-                            </div>
-                        </div>
-                    </div>
-                    <div className='col'>
-                        <div className="dropdown mt-1">
-                            <button className="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {priceRange}
-                            </button>
-                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <Link className="dropdown-item" onClick={()=>{findPriceRange(0,1000)}}>UNDER ₹ 1000</Link>
-                                <Link className="dropdown-item" onClick={()=>{findPriceRange(1000,2000)}} >₹ 1000 - ₹ 2000</Link>
-                                <Link className="dropdown-item" onClick={()=>{findPriceRange(2000,3000)}} >₹ 2000 - ₹ 3000</Link>
-                                <Link className="dropdown-item" onClick={()=>{findPriceRange(3000,4000)}} >₹ 3000 - ₹ 4000</Link>
-                                <Link className="dropdown-item" onClick={()=>{findPriceRange(4000,Math.pow(2,31))}} >Over ₹ 4000</Link>
-                                <Link className="dropdown-item" onClick={clearallfilter} >Clear Filter</Link>
-                            </div>
-                        </div>
-                    </div>
-                </div> */}
                 <div className='allproduct'> 
 
                     <div  className='subproduct'>
                         <div className='subproductone'>
                             <input className="form-control" style={{width:"180px"}} value={searchproduct} name='search' onChange={(e)=>{setsearchproduct(e.target.value)}}  type="search" placeholder="Search product" aria-label="Search"/>
-                            <button className="btn btn-success btn-sm mt-2" onClick={()=>search(searchproduct)} type="submit">Search</button>
+                            <div className='subproductform'>
+                               <button className="btn btn-success btn-sm mt-2" onClick={()=>search(searchproduct)} type="submit">Search</button>
+                               {
+                                 searchproduct.length==0?<button className="btn btn-secondary btn-sm mt-2"  disabled={true} type="submit">Clear</button>
+                                 :<button className="btn btn-secondary btn-sm mt-2" onClick={clearsearch}  type="submit">Clear</button>
+                               }
+                            </div>
                         </div>
                         <div className='subproductone'>
                             <div className='subproductform'>
                                 <h6>Price</h6>
-                                <h6><Link style={{textDecoration:'none'}}>Clear</Link></h6>
+                                <h6>
+                                    {pricerange0to1000|| pricerange1000to2000|| pricerange2000to3000||pricerange3000to4000||pricerange4000toUp? <p onClick={clearPrice} style={{color:"#48C9B0",cursor:'pointer'}}>Clear</p>:<p>Clear</p>}
+                                </h6>
                             </div>
                            <div className="form-check">
-                                <input className="form-check-input" onClick={()=>cametocheck(0,1000)} type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
+                                <input className="form-check-input" onClick={()=>cametocheck(0,1000)} checked={pricerange0to1000} onChange={(e)=>setpricerange0to1000(e.target.checked)} type="radio"  />
                                 <label className="form-check-label" htmlFor="flexRadioDefault2">
                                     Under ₹ 1000
                                 </label>
                             </div>
                             <div className="form-check">
-                                <input className="form-check-input" onClick={()=>cametocheck(1000,2000)} type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
+                                <input className="form-check-input" onClick={()=>cametocheck(1000,2000)} checked={pricerange1000to2000} onChange={(e)=>setpricerange1000to2000(e.target.checked)}   type="radio"  />
                                 <label className="form-check-label" htmlFor="flexRadioDefault2">
                                 ₹ 1000 - ₹ 2000
                                 </label>
                             </div>
                             <div className="form-check">
-                                <input className="form-check-input" onClick={()=>cametocheck(2000,3000)} type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
+                                <input className="form-check-input" onClick={()=>cametocheck(2000,3000)} checked={pricerange2000to3000} onChange={(e)=>setpricerange2000to3000(e.target.checked)}  type="radio"  />
                                 <label className="form-check-label" htmlFor="flexRadioDefault2">
                                 ₹ 2000 - ₹ 3000
                                 </label>
                             </div>
                             <div className="form-check">
-                                <input className="form-check-input" onClick={()=>cametocheck(3000,4000)} type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
+                                <input className="form-check-input" onClick={()=>cametocheck(3000,4000)} checked={pricerange3000to4000} onChange={(e)=>setpricerange3000to4000(e.target.checked)}  type="radio"  />
                                 <label className="form-check-label" htmlFor="flexRadioDefault2">
                                 ₹ 3000 - ₹ 4000
                                 </label>
                             </div>
                             <div className="form-check">
-                                <input className="form-check-input" onClick={()=>cametocheck(4000,1000000)} type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
+                                <input className="form-check-input" onClick={()=>cametocheck(4000,1000000)} checked={pricerange4000toUp} onChange={(e)=>setpricerange4000toUp(e.target.checked)}  type="radio"  />
                                 <label className="form-check-label" htmlFor="flexRadioDefault2">
                                 Over ₹ 4000
                                 </label>
@@ -489,29 +467,33 @@ function markvisited(lowprice,highprice,selectcatagory)
                         </div>
                         <div className='subproductone mt-3'>
                            <div className='subproductform'>
-                                <h6>Soring</h6>
-                                <h6 ><Link style={{textDecoration:'none'}}>Clear</Link></h6>
+                                <h6>Sorting</h6>
+                                <h6>
+                                {
+                                    priceLowTOHigh||priceHighTOLow||SortOnRating||SortOffer ? <p onClick={clearallfilter} style={{color:"#48C9B0",cursor:'pointer'}}>Clear</p>:<p>Clear</p>
+                                }
+                                </h6>
                             </div>
                             <div className="form-check mt-2">
-                                <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
+                                <input className="form-check-input" onClick={PriceLowToHighfunction} checked={priceLowTOHigh}  type="radio"  />
                                 <label className="form-check-label" htmlFor="flexRadioDefault2">
                                 Price Low To High
                                 </label>
                             </div>
                             <div className="form-check">
-                                <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
+                                <input className="form-check-input" onClick={PriceHighToLowfunction} checked={priceHighTOLow}  type="radio"  />
                                 <label className="form-check-label" htmlFor="flexRadioDefault2">
                                 Price High To Low
                                 </label>
                             </div>
                             <div className="form-check">
-                                <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
+                                <input className="form-check-input" onClick={SortOnRatingfunction} checked={SortOnRating} type="radio"  />
                                 <label className="form-check-label" htmlFor="flexRadioDefault2">
                                 Sort On Rating
                                 </label>
                             </div>
                             <div className="form-check">
-                                <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
+                                <input className="form-check-input" onClick={SortOnOfferfunction} checked={SortOffer}  type="radio"  />
                                 <label className="form-check-label" htmlFor="flexRadioDefault2">
                                 Sort Offer
                                 </label>
@@ -520,10 +502,12 @@ function markvisited(lowprice,highprice,selectcatagory)
                         <div className='subproductone mt-3'>
                            <div className='subproductform'>
                                 <h6>Catagory</h6>
-                                <h6 ><Link style={{textDecoration:'none'}}>Clear</Link></h6>
+                                {
+                                    selectcatagory!="ALL" ? <h6><p onClick={clearcatagory} style={{color:"#48C9B0",cursor:'pointer'}}>Clear</p></h6>:<h6><p>Clear</p></h6>
+                                }
                             </div>
                             <div className="form-check mt-2">
-                                <input className="form-check-input" onClick={()=>cametocatagory('ALL')} type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
+                                <input className="form-check-input" onClick={()=>cametocatagory('ALL')} checked={ALL} onChange={(e)=>setALL(e.target.checked)} type="radio"  />
                                 <label className="form-check-label" htmlFor="flexRadioDefault2">
                                  ALL
                                 </label>
@@ -531,7 +515,10 @@ function markvisited(lowprice,highprice,selectcatagory)
                             {
                                 Catagory&&Catagory.map((item,ind)=>(
                                     <div className="form-check mt-2" key={ind}>
-                                        <input className="form-check-input" onClick={()=>cametocatagory(item)} type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
+                                        {
+                                            item==selectcatagory?<input className="form-check-input" onClick={()=>cametocatagory(item)} checked={true} type="radio" />
+                                            :<input className="form-check-input" onClick={()=>cametocatagory(item)} type="radio"  />
+                                        }
                                         <label className="form-check-label" htmlFor="flexRadioDefault2">
                                             {item}
                                         </label>
@@ -639,7 +626,7 @@ function markvisited(lowprice,highprice,selectcatagory)
         :
         <div className='loader-container'>
             <h4>Product Not Found</h4>
-            {/* <button className='btn btn-primary mx-3' onClick={()=>search("")} >Get Product</button> */}
+            <button className='btn btn-primary mx-3' onClick={backTOHome}>Back</button>
         </div>
         
         }
