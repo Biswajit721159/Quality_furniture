@@ -106,8 +106,22 @@
 @media only screen and (max-width: 435px ) {
     .imgs {
         height:100px;
-        width:55px;
-        margin: 1px;
+        width:70px;
+        margin: 2px;
+    }
+    .Increment{
+        font-size: 15px;
+    }
+    .Decrement{
+        font-size: 15px;
+    }
+}
+
+@media only screen and (max-width: 377px ) {
+    .imgs {
+        height:90px;
+        width:60px;
+        margin: 2px;
     }
     .Increment{
         font-size: 15px;
