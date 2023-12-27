@@ -89,8 +89,8 @@ const Carousel=()=>{
                         ))}
                     </div>
                     <div className="Arrowleftright">
-                    <FaAngleLeft style={{fontSize:40,borderRadius:20,border:'1px solid black',marginRight:10}} onClick={Decrement} />
-                    {(high-low)==4 &&<FaAngleRight  style={{fontSize:40,borderRadius:20,border:'1px solid black',marginLeft:10}}  onClick={Increment}/>}
+                    <FaAngleLeft className="Decrement" onClick={Decrement} />
+                    {(high-low)==4 &&<FaAngleRight  className="Increment"  onClick={Increment}/>}
                     </div>
                 
             </>

@@ -1,8 +1,19 @@
 .carousel{
-    position: sticky;
     display: flex;
     justify-content: center;
     flex-direction: row;
+}
+.Increment{
+    font-size:40px;
+    border-radius:20px;
+    border:1px solid black;
+    margin: 5px;
+}
+.Decrement{
+    font-size: 40px;
+    border-radius:20px;
+    border:1px solid black;
+    margin: 5px;
 }
 
 .Arrowleftright{
@@ -13,17 +24,95 @@
 
 .imgs {
     height:270px;
-    width:220px;
+    width:240px;
     margin: 10px;
 }
 
-@media screen and (min-width: 480px ) and (max-width: 780px) {
-    .carousel {
-      height: 70%;
-      width: 70%;
-    }
+@media only screen and (max-width: 1300px ) {
     .imgs {
-        height:170px;
-        width:150px;
+        height:250px;
+        width:220px;
+        margin: 8px;
     }
-  }
+}
+@media only screen and (max-width: 1190px ) {
+    .imgs {
+        height:240px;
+        width:200px;
+        margin: 7px;
+    }
+}
+@media only screen and (max-width: 1090px ) {
+    .imgs {
+        height:220px;
+        width:180px;
+        margin: 7px;
+    }
+}
+@media only screen and (max-width: 990px ) {
+    .imgs {
+        height:200px;
+        width:150px;
+        margin: 6px;
+    }
+    .Increment{
+        font-size: 35px;
+    }
+    .Decrement{
+        font-size: 35px;
+    }
+}
+@media only screen and (max-width: 830px ) {
+    .imgs {
+        height:180px;
+        width:120px;
+        margin: 5px;
+    }
+    .Increment{
+        font-size: 30px;
+    }
+    .Decrement{
+        font-size: 30px;
+    }
+}
+
+@media only screen and (max-width: 675px ) {
+    .imgs {
+        height:150px;
+        width:100px;
+        margin: 4px;
+    }
+    .Increment{
+        font-size: 25px;
+    }
+    .Decrement{
+        font-size: 25px;
+    }
+}
+
+@media only screen and (max-width: 552px ) {
+    .imgs {
+        height:130px;
+        width:80px;
+        margin: 2px;
+    }
+    .Increment{
+        font-size: 20px;
+    }
+    .Decrement{
+        font-size: 20px;
+    }
+}
+@media only screen and (max-width: 435px ) {
+    .imgs {
+        height:100px;
+        width:55px;
+        margin: 1px;
+    }
+    .Increment{
+        font-size: 15px;
+    }
+    .Decrement{
+        font-size: 15px;
+    }
+}
