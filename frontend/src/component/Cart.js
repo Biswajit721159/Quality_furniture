@@ -219,54 +219,58 @@ const history=useNavigate()
         </div>:
          product!=null?
          <>
-            <h6 style={{textAlign:'center',fontFamily:'cursive',color:"red"}}>*If You Want to Change Your Address Go to Your Profile Section </h6>
+            <h6 className='pricedetail' style={{textAlign:'center',fontFamily:'monospace',color:"red"}}>*If You Want to Change Your Address Go to Your Profile Section </h6>
             <div className='cartitem'>
 
                 <div className='item1'>
                     <div className='insideritem'>
-                        <Link to={`/Product/${product._id}`}><img src={product.newImage[0]} style={{height:280,widows:150,border:'2px solid green' ,borderRadius:10}} alt='Error'/></Link>
+                        <Link to={`/Product/${product._id}`}><img className='styleimage' src={product.newImage[0]}  alt='Error'/></Link>
+                    </div>
+                    <div className='col2'>
+                        <button style={{borderRadius:'50%'}} onClick={Add_TO_CART}><GrAdd /></button>
+                        <h4 className='cartcount'>{cartdata}</h4>
+                        <button style={{borderRadius:'50%'}} onClick={SUB_TO_CART}><GrSubtract /></button>
                     </div>
                 </div>
 
                 <div className='item1item2'>
-                    <h5 >{product.product_name}</h5>
-                    <p style={{color:"orange"}}>{product.offer}%OFF ({product.total_number_of_product} left)</p>
-                    <h6 style={{color:'gray'}}>Original - <s>₹{product.price}</s></h6> 
-                    <h5 style={{color:'tomato'}}>Price - ₹{(product.price-((product.price*product.offer)/100)).toFixed(2)}</h5>
-                    <button className='btn btn-secondary btn-sm' onClick={removeTocart}>Remove To Cart</button>
-                    {/* <h5>{product.total_number_of_product} Left Only </h5> */}
+                    <h5 className='pricedetailmain' >{product.product_name}</h5>
+                    <p className='pricedetail' style={{color:"orange"}}>{product.offer}%OFF ({product.total_number_of_product} left)</p>
+                    <h6 className='pricedetail' style={{color:'gray'}}>Original - <s>₹{product.price}</s></h6> 
+                    <h5 className='pricedetailmain' style={{color:'tomato'}}>Price - ₹{(product.price-((product.price*product.offer)/100)).toFixed(2)}</h5>
+                    <button className='btn btn-secondary btn-sm removebutton' onClick={removeTocart}>Remove To Cart</button>
                 </div>
 
-                <div>
+                {/* <div>
                     <div className='col2'>
-                        <button style={{borderRadius:'40%'}} onClick={Add_TO_CART}><GrAdd /></button>
-                        <h4 style={{marginLeft:20 ,marginRight:20,marginTop:5}}>{cartdata}</h4>
-                        <button style={{borderRadius:'40%'}} onClick={SUB_TO_CART}><GrSubtract /></button>
+                        <button style={{borderRadius:'50%'}} onClick={Add_TO_CART}><GrAdd /></button>
+                        <h4 className='cartcount'>{cartdata}</h4>
+                        <button style={{borderRadius:'50%'}} onClick={SUB_TO_CART}><GrSubtract /></button>
                     </div>
-                </div>
+                </div> */}
                 
                 <div className='item2'>
-                   <h4 style={{textAlign:'center'}}>PRICE DETAILS</h4>
+                   <h4 className='pricedetailmain' style={{textAlign:'center'}}>PRICE DETAILS</h4>
                     <table class="table">
                         <tbody>
                             <tr>
-                                <td>Price ({cartdata} item)</td>
-                                <td>₹{product.price*cartdata}</td>
+                                <td className='pricedetail'>Price ({cartdata} item)</td>
+                                <td className='pricedetail'>₹{product.price*cartdata}</td>
                             </tr>
                             <tr>
-                                <td>Discount</td>
-                                <td>-₹{product.price*cartdata-cost}</td>
+                                <td className='pricedetail'>Discount</td>
+                                <td className='pricedetail'>-₹{product.price*cartdata-cost}</td>
                             </tr>
                             <tr>
-                                <td>Delivery Charges</td>
-                                <td><s>80</s> Free</td>
+                                <td className='pricedetail'>Delivery Charges</td>
+                                <td className='pricedetail'><s>80</s> Free</td>
                             </tr>
                             <tr>
-                                <td><h5>Total Amount</h5></td>
-                                <td>₹{cost}</td>
+                                <td className='pricedetailmain'>Total Amount</td>
+                                <td className='pricedetail'>₹{cost}</td>
                             </tr>
                             <tr>
-                                <td style={{color:'green'}}>You will save ₹{product.price*cartdata-cost} on this order</td>
+                                <td className='pricedetail' style={{color:'green'}}>You will save ₹{product.price*cartdata-cost} on this order</td>
                             </tr>
                         </tbody>
                     </table>
@@ -274,7 +278,7 @@ const history=useNavigate()
 
             </div>
             <div className='buttonitem'>
-                <button className='btn btn-danger' disabled={disabled}onClick={submit} >{button}</button>
+                <button className='btn btn-danger submitbutton' disabled={disabled}onClick={submit} >{button}</button>
             </div>
         </>    
         :<div className='loader-container'>

@@ -1,36 +1,134 @@
-.buttonitem{
+.buttonitem {
   display: flex;
-  margin-top: 20vh;
+  margin-top: 15vh;
   justify-content: center;
 }
-.cartitem{
+.cartitem {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  align-items: center; 
+  align-items: center;
   flex-wrap: wrap;
 }
 
-.item1{
+.item1 {
   display: flex;
   justify-content: space-between;
   flex-direction: column;
   align-items: center;
 }
-.item2{
-  border-radius: 2px solid red;
-  border-radius: 20px;
-  height: 300;
-  width: 200;
-}
-.item1item2{
+.item1item2 {
   display: flex;
-  /* justify-content: ; */
   flex-direction: column;
 }
-.insideritem{
+.insideritem {
   display: flex;
   flex-direction: row;
   flex-shrink: 10;
   flex-wrap: wrap;
+}
+
+.cartcount {
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 5px;
+}
+
+.styleimage {
+  height: 280px;
+  widows: 150px;
+  border: 2px solid green;
+  border-radius: 10px;
+}
+
+@media only screen and (max-width: 1000px) {
+  .pricedetail {
+    font-size: 14px;
+  }
+  .pricedetailmain {
+    font-size: 17px;
+  }
+  .styleimage {
+    height: 220px;
+    widows: 120px;
+  }
+  .removebutton {
+    font-size: 12px;
+  }
+  .submitbutton {
+    font-size: 12px;
+  }
+}
+
+@media only screen and (max-width: 830px) {
+  .pricedetail {
+    font-size: 10px;
+  }
+  .pricedetailmain {
+    font-size: 13px;
+  }
+  .styleimage {
+    height: 180px;
+    widows: 90px;
+  }
+  .removebutton {
+    font-size: 10px;
+  }
+  .submitbutton {
+    font-size: 12px;
+  }
+  .cartcount {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+  }
+}
+
+
+@media only screen and (max-width: 640px) {
+  .pricedetail {
+    font-size: 8px;
+  }
+  .pricedetailmain {
+    font-size: 10px;
+  }
+  .styleimage {
+    height: 150px;
+    widows: 80px;
+  }
+  .removebutton {
+    font-size: 9px;
+  }
+  .submitbutton {
+    font-size: 12px;
+  }
+  .cartcount {
+    margin-left: 8px;
+    margin-right: 8px;
+    margin-top: 5px;
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  .pricedetail {
+    font-size: 6px;
+  }
+  .pricedetailmain {
+    font-size: 8px;
+  }
+  .styleimage {
+    height: 100px;
+    widows: 60px;
+  }
+  .removebutton {
+    font-size: 5px;
+  }
+  .submitbutton {
+    font-size: 12px;
+  }
+  .cartcount {
+    margin-left: 8px;
+    margin-right: 8px;
+    margin-top: 5px;
+  }
 }
