@@ -127,7 +127,7 @@ export default function Myorder() {
                                                     <td className='text-center'>
                                                     <div className="card" style={{width: "5rem",height:"5rem"}}>
                                                         <Link to={`/Product/${item.product_id}`}>
-                                                            <img className="card-img-top" src={item.newImage[0]} alt="Card image cap"/>
+                                                            <img className="card-img-top" src={item.newImage[0]} style={{height:'70px',width:'70px'}} alt="Card image cap"/>
                                                         </Link>
                                                     </div>
                                                     </td>

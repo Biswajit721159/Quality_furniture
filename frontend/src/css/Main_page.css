@@ -30,3 +30,256 @@
 .card:hover {
     box-shadow: 0 4px 10px rgba(0,0,0,0.16), 0 4px 10px rgba(0,0,0,0.23);
 }
+.card-img-top{
+    height:150px;
+    width:250px;
+}
+.maincard{
+    width: 15.7rem;
+    height:auto;
+    background-color:#D6DBDF;
+    margin-left:10px;
+}
+
+@media only screen and (max-width: 1290px ) {
+    .card-img-top {
+        height: 120px;
+        width:220px;
+    }
+    .maincard{
+        width: 13.8rem;
+    }
+    .button{
+        font-size: 12px;
+    }
+}
+
+@media only screen and (max-width: 1225px ) {
+    .card-img-top {
+        height: 110px;
+        width:200px;
+    }
+    .maincard{
+        width: 12.5rem;
+    }
+    .button{
+        font-size: 11px;
+    }
+}
+@media only screen and (max-width: 1180px ) {
+    .card-img-top {
+        height: 100px;
+        width:200px;
+    }
+    .maincard{
+        width: 12.5rem;
+    }
+    .button{
+        font-size: 9px;
+    }
+}
+@media only screen and (max-width: 1145px ) {
+    .card-img-top {
+        height: 90px;
+        width:180px;
+    }
+    .maincard{
+        width: 11.3rem;
+    }
+    .card-text{
+        font-size: 14px;
+    }
+    .button{
+        font-size: 8px;
+    }
+}
+@media only screen and (max-width: 1170px ) {
+    .card-img-top {
+        height: 80px;
+        width:160px;
+    }
+    .maincard{
+        width: 10rem;
+    }
+    .card-text{
+        font-size: 13px;
+    }
+    .button{
+        font-size: 7px;
+    }
+}
+@media only screen and (max-width: 1000px ) {
+    .card-img-top {
+        height: 90px;
+        width:150px;
+    }
+    .maincard{
+        width: 9.4rem;
+    }
+    .card-text{
+        font-size: 10px;
+    }
+    .button{
+        font-size: 6px;
+    }
+    #inputform::placeholder{
+        font-size: 8px;
+    }
+    #inputform{
+        height: 30px;
+        width: 130px;
+    }
+}
+
+@media only screen and (max-width: 980px ) {
+    .card-img-top {
+        height: 80px;
+        width:150px;
+    }
+    .maincard{
+        width: 9.4rem;
+        margin-left: 5px;
+    }
+    .card-text{
+        font-size: 5px;
+    }
+    .button{
+        font-size: 5px;
+    }
+    .subproduct{
+        padding: 0px;
+        margin: 0px;
+    }
+    .subproductone{
+        border: 1px solid black;
+        border-radius: 10px;
+        height: auto;
+        width: 150px;
+    }
+    #inputform{
+        height: 25px;
+        width: 110px;
+    }
+}
+@media only screen and (max-width: 860px ) {
+    .card-text{
+        font-size: 4px;
+    }
+    .button{
+        font-size: 4px;
+    }
+    .subproductone{
+        border: 1px solid black;
+        border-radius: 10px;
+        height: auto;
+        width: 130px;
+    }
+    #inputform{
+        height: 20px;
+        width: 105px;
+    }
+}
+
+@media only screen and (max-width: 795px ) {
+    .card-img-top {
+        height: 60px;
+        width:128px;
+    }
+    .maincard{
+        width: 8rem;
+    }
+    .card-text{
+        font-size: 3px;
+    }
+    .button{
+        font-size: 4px;
+    }
+    .subproductone{
+        border: 1px solid black;
+        border-radius: 10px;
+        height: auto;
+        width: 110px;
+    }
+    #inputform{
+        height: 20px;
+        width: 90px;
+    }
+}
+
+@media only screen and (max-width: 550px ) {
+    .card-img-top {
+        height: 50px;
+        width:121px;
+    }
+    .maincard{
+        width: 7.6rem;
+    }
+    .card-text{
+        font-size: 4px;
+    }
+    .button{
+        font-size: 4px;
+    }
+    .subproductone{
+        border: 1px solid black;
+        border-radius: 10px;
+        height: auto;
+        width: 110px;
+    }
+    #inputform{
+        height: 20px;
+        width: 90px;
+    }
+}
+
+@media only screen and (max-width: 410px ) {
+    .card-img-top {
+        height: 50px;
+        width:121px;
+    }
+    .maincard{
+        width: 7.6rem;
+    }
+    .card-text{
+        font-size: 3px;
+    }
+    .button{
+        font-size: 4px;
+    }
+    .subproductone{
+        border: 1px solid black;
+        border-radius: 10px;
+        height: auto;
+        width: 100px;
+    }
+    #inputform{
+        height: 20px;
+        width: 80px;
+    }
+}
+
+@media only screen and (max-width: 395px ) {
+    .card-img-top {
+        height: 45px;
+        width:114px;
+    }
+    .maincard{
+        width: 7.2rem;
+    }
+    .card-text{
+        font-size: 3px;
+    }
+    .button{
+        font-size: 4px;
+    }
+    .subproductone{
+        border: 1px solid black;
+        border-radius: 10px;
+        height: auto;
+        width: 100px;
+    }
+    #inputform{
+        height: 20px;
+        width: 80px;
+    }
+}

@@ -428,97 +428,97 @@ function AddToCart(product_id)
 
                     <div  className='subproduct'>
                         <div className='subproductone'>
-                            <input className="form-control" style={{width:"180px"}} value={searchproduct} name='search' onChange={(e)=>{setsearchproduct(e.target.value)}}  type="search" placeholder="Search product" aria-label="Search"/>
+                            <input className="form-control" id='inputform' value={searchproduct} name='search' onChange={(e)=>{setsearchproduct(e.target.value)}}  type="search" placeholder="Search product" aria-label="Search"/>
                             <div className='subproductform'>
-                               <button className="btn btn-success btn-sm mt-2" onClick={()=>search(searchproduct)} type="submit">Search</button>
+                               <button className="btn btn-success btn-sm mt-2 button" onClick={()=>search(searchproduct)} type="submit">Search</button>
                                {
-                                 searchproduct.length==0?<button className="btn btn-secondary btn-sm mt-2"  disabled={true} type="submit">Clear</button>
-                                 :<button className="btn btn-secondary btn-sm mt-2" onClick={clearsearch}  type="submit">Clear</button>
+                                 searchproduct.length==0?<button className="btn btn-secondary btn-sm mt-2 button"  disabled={true} type="submit">Clear</button>
+                                 :<button className="btn btn-secondary btn-sm mt-2 card-text button" onClick={clearsearch}  type="submit">Clear</button>
                                }
                             </div>
                         </div>
                         <div className='subproductone'>
                             <div className='subproductform'>
-                                <h6>Price</h6>
+                                <h6 className='card-text'>Price</h6>
                                 <h6>
-                                    {pricerange0to1000|| pricerange1000to2000|| pricerange2000to3000||pricerange3000to4000||pricerange4000toUp? <p onClick={clearPrice} style={{color:"#48C9B0",cursor:'pointer'}}>Clear</p>:<p>Clear</p>}
+                                    {pricerange0to1000|| pricerange1000to2000|| pricerange2000to3000||pricerange3000to4000||pricerange4000toUp? <p className='card-text' onClick={clearPrice} style={{color:"#48C9B0",cursor:'pointer'}}>Clear</p>:<p className='card-text'>Clear</p>}
                                 </h6>
                             </div>
                            <div className="form-check">
                                 <input className="form-check-input" onClick={()=>cametocheck(0,1000)} checked={pricerange0to1000} onChange={(e)=>setpricerange0to1000(e.target.checked)} type="radio"  />
-                                <label className="form-check-label" htmlFor="flexRadioDefault2">
+                                <label className="form-check-label card-text" htmlFor="flexRadioDefault2">
                                     Under ₹ 1000
                                 </label>
                             </div>
                             <div className="form-check">
                                 <input className="form-check-input" onClick={()=>cametocheck(1000,2000)} checked={pricerange1000to2000} onChange={(e)=>setpricerange1000to2000(e.target.checked)}   type="radio"  />
-                                <label className="form-check-label" htmlFor="flexRadioDefault2">
+                                <label className="form-check-label card-text" htmlFor="flexRadioDefault2">
                                 ₹ 1000 - ₹ 2000
                                 </label>
                             </div>
                             <div className="form-check">
                                 <input className="form-check-input" onClick={()=>cametocheck(2000,3000)} checked={pricerange2000to3000} onChange={(e)=>setpricerange2000to3000(e.target.checked)}  type="radio"  />
-                                <label className="form-check-label" htmlFor="flexRadioDefault2">
+                                <label className="form-check-label card-text" htmlFor="flexRadioDefault2">
                                 ₹ 2000 - ₹ 3000
                                 </label>
                             </div>
                             <div className="form-check">
                                 <input className="form-check-input" onClick={()=>cametocheck(3000,4000)} checked={pricerange3000to4000} onChange={(e)=>setpricerange3000to4000(e.target.checked)}  type="radio"  />
-                                <label className="form-check-label" htmlFor="flexRadioDefault2">
+                                <label className="form-check-label card-text" htmlFor="flexRadioDefault2">
                                 ₹ 3000 - ₹ 4000
                                 </label>
                             </div>
                             <div className="form-check">
                                 <input className="form-check-input" onClick={()=>cametocheck(4000,1000000)} checked={pricerange4000toUp} onChange={(e)=>setpricerange4000toUp(e.target.checked)}  type="radio"  />
-                                <label className="form-check-label" htmlFor="flexRadioDefault2">
+                                <label className="form-check-label card-text" htmlFor="flexRadioDefault2">
                                 Over ₹ 4000
                                 </label>
                             </div>
                         </div>
                         <div className='subproductone mt-3'>
                            <div className='subproductform'>
-                                <h6>Sorting</h6>
+                                <h6 className='card-text'>Sorting</h6>
                                 <h6>
                                 {
-                                    priceLowTOHigh||priceHighTOLow||SortOnRating||SortOffer ? <p onClick={clearallfilter} style={{color:"#48C9B0",cursor:'pointer'}}>Clear</p>:<p>Clear</p>
+                                    priceLowTOHigh||priceHighTOLow||SortOnRating||SortOffer ? <p className='card-text' onClick={clearallfilter} style={{color:"#48C9B0",cursor:'pointer'}}>Clear</p>:<p className='card-text'>Clear</p>
                                 }
                                 </h6>
                             </div>
                             <div className="form-check mt-2">
                                 <input className="form-check-input" onClick={PriceLowToHighfunction} checked={priceLowTOHigh}  type="radio"  />
-                                <label className="form-check-label" htmlFor="flexRadioDefault2">
+                                <label className="form-check-label card-text" htmlFor="flexRadioDefault2">
                                 Price Low To High
                                 </label>
                             </div>
                             <div className="form-check">
                                 <input className="form-check-input" onClick={PriceHighToLowfunction} checked={priceHighTOLow}  type="radio"  />
-                                <label className="form-check-label" htmlFor="flexRadioDefault2">
+                                <label className="form-check-label card-text" htmlFor="flexRadioDefault2">
                                 Price High To Low
                                 </label>
                             </div>
                             <div className="form-check">
                                 <input className="form-check-input" onClick={SortOnRatingfunction} checked={SortOnRating} type="radio"  />
-                                <label className="form-check-label" htmlFor="flexRadioDefault2">
+                                <label className="form-check-label card-text" htmlFor="flexRadioDefault2">
                                 Sort On Rating
                                 </label>
                             </div>
                             <div className="form-check">
                                 <input className="form-check-input" onClick={SortOnOfferfunction} checked={SortOffer}  type="radio"  />
-                                <label className="form-check-label" htmlFor="flexRadioDefault2">
+                                <label className="form-check-label card-text" htmlFor="flexRadioDefault2">
                                 Sort Offer
                                 </label>
                             </div>
                         </div>
                         <div className='subproductone mt-3'>
                            <div className='subproductform'>
-                                <h6>Catagory</h6>
+                                <h6 className='card-text'>Catagory</h6>
                                 {
-                                    selectcatagory!="ALL" ? <h6><p onClick={clearcatagory} style={{color:"#48C9B0",cursor:'pointer'}}>Clear</p></h6>:<h6><p>Clear</p></h6>
+                                    selectcatagory!="ALL" ? <h6 className='card-text'><p onClick={clearcatagory} style={{color:"#48C9B0",cursor:'pointer'}}>Clear</p></h6>:<h6 className='card-text'><p>Clear</p></h6>
                                 }
                             </div>
                             <div className="form-check mt-2">
-                                <input className="form-check-input" onClick={()=>cametocatagory('ALL')} checked={ALL} onChange={(e)=>setALL(e.target.checked)} type="radio"  />
-                                <label className="form-check-label" htmlFor="flexRadioDefault2">
+                                <input className="form-check-input "  onClick={()=>cametocatagory('ALL')} checked={ALL} onChange={(e)=>setALL(e.target.checked)} type="radio"  />
+                                <label className="form-check-label card-text" htmlFor="flexRadioDefault2">
                                  ALL
                                 </label>
                             </div>
@@ -529,7 +529,7 @@ function AddToCart(product_id)
                                             item==selectcatagory?<input className="form-check-input" onClick={()=>cametocatagory(item)} checked={true} type="radio" />
                                             :<input className="form-check-input" onClick={()=>cametocatagory(item)} type="radio"  />
                                         }
-                                        <label className="form-check-label" htmlFor="flexRadioDefault2">
+                                        <label className="form-check-label card-text" htmlFor="flexRadioDefault2">
                                             {item}
                                         </label>
                                     </div>
@@ -541,19 +541,19 @@ function AddToCart(product_id)
                     <div className='product'>
                     {
                        data && data.map((item,ind)=>(
-                            <div key={ind} className=" mx-2 mt-2" style={{width: "15.7rem", height:"auto",backgroundColor:"#D6DBDF"}}>
+                            <div key={ind} className="maincard mt-2" >
                                 <Link to={`/Product/${item._id}`}>
-                                    <img className="card-img-top" src={item.newImage[0]} style={{height:"150px",width:"250px"}} alt="Card image cap"/>
+                                    <img className="card-img-top" src={item.newImage[0]}  alt="Card image cap"/>
                                 </Link>
                                 <div className="card-body">
                                     <div className='row'>
                                         <div className='col'>
-                                            <h6 className="card-title d-flex">{item.product_name}</h6>
+                                            <h6 className="card-text d-flex">{item.product_name}</h6>
                                         </div>
                                         <div className='col'>
                                             {
-                                            item.islove==false?<button className='btn btn-light btn-sm' onClick={()=>addToWishlist(item._id)}> <FaHeart /></button>
-                                            :<button className='btn btn-danger btn-sm' onClick={()=>addToWishlist(item._id)}> <FaHeart /></button>
+                                                item.islove==false?<FaHeart onClick={()=>addToWishlist(item._id)}/>
+                                                :<FaHeart style={{color:'red'}} onClick={()=>addToWishlist(item._id)} />
                                             }
                                         </div>
                                     </div>
@@ -568,32 +568,32 @@ function AddToCart(product_id)
                                     <div className='row'>
                                         <div className='col'>
                                             {
-                                                parseInt(item.rating)==0?<div style={{color:"black"}}>{item.rating}<AiFillStar /></div>
+                                                parseInt(item.rating)==0?<div className="card-text" style={{color:"black"}}>{item.rating}<AiFillStar /></div>
                                                 :
-                                                parseInt(item.rating)==1?<div style={{color:"tomato"}}>{item.rating}<AiFillStar /></div>
+                                                parseInt(item.rating)==1?<div className="card-text" style={{color:"tomato"}}>{item.rating}<AiFillStar /></div>
                                                 :
-                                                parseInt(item.rating)==2?<div style={{color:"red"}}>{item.rating}<AiFillStar /></div>
+                                                parseInt(item.rating)==2?<div className="card-text" style={{color:"red"}}>{item.rating}<AiFillStar /></div>
                                                 :
-                                                parseInt(item.rating)==3?<div style={{color:"#DC7633"}}>{item.rating}<AiFillStar /></div>
+                                                parseInt(item.rating)==3?<div className="card-text" style={{color:"#DC7633"}}>{item.rating}<AiFillStar /></div>
                                                 :
-                                                parseInt(item.rating)==4?<div style={{color:"#28B463"}}>{item.rating}<AiFillStar /></div>
+                                                parseInt(item.rating)==4?<div className="card-text" style={{color:"#28B463"}}>{item.rating}<AiFillStar /></div>
                                                 :
-                                                parseInt(item.rating)==5?<div style={{color:"green"}}>{item.rating}<AiFillStar /></div>
+                                                parseInt(item.rating)==5?<div className="card-text" style={{color:"green"}}>{item.rating}<AiFillStar /></div>
                                                 :""
                                             }
                                         </div>
                                         <div className=" col">
-                                                <h5 className="card-text" style={{color:'tomato'}}>₹{(item.price-((item.price*item.offer)/100)).toFixed(2)}</h5>
+                                            <h5 className="card-text" style={{color:'tomato'}}>₹{(item.price-((item.price*item.offer)/100)).toFixed(2)}</h5>
                                         </div>
                                     </div>
                                     {
                                         item.total_number_of_product==0?
                                         <div className=" row">
                                             <div className="col">
-                                                <h6 className="card-text" style={{color:'tomato'}}>Closed</h6>
+                                                <h6 className="card-text" style={{color:'tomato'}}>closed</h6>
                                             </div>
                                             <div className='col'>
-                                                <label>{item.total_number_of_product} Left</label>
+                                                <h6 className="card-text">{item.total_number_of_product} left</h6>
                                             </div>
                                         </div>
                                         :
@@ -603,7 +603,7 @@ function AddToCart(product_id)
                                             </div>
                                             <div className='col'>
                                                 {
-                                                item.total_number_of_product!=0?<label>{item.total_number_of_product} Left</label>:<label style={{color:"#E2E2F4"}}>{item.total_number_of_product} Left</label>
+                                                item.total_number_of_product!=0?<h6 className="card-text">{item.total_number_of_product} left</h6>:<h6 className="card-text" style={{color:"#E2E2F4"}}>{item.total_number_of_product} left</h6>
                                                 }
                                             </div>
                                         </div>
@@ -612,13 +612,13 @@ function AddToCart(product_id)
                                             {
                                                 item.total_number_of_product==0?
                                                     <div className='col'>
-                                                        <button className="btn btn-primary rounded-pill btn-sm mt-0" disabled>
+                                                        <button className="btn btn-primary rounded-pill btn-sm mt-0 button" disabled>
                                                             ADD TO CART
                                                         </button>
                                                     </div>
                                                 :
                                                 <div className='col'>
-                                                    <button className="btn btn-primary rounded-pill btn-sm mt-0" onClick={()=>AddToCart(item._id)} >
+                                                    <button className="btn btn-primary rounded-pill btn-sm mt-0 button" onClick={()=>AddToCart(item._id)} >
                                                         ADD TO CART
                                                     </button>
                                                 </div>

@@ -15,12 +15,12 @@ const Homepage1=()=>{
     }
 
     useEffect(()=>{
-        // let x=setTimeout(() => {
-        //     next()
-        // }, 2000);
-        // return()=>{
-        //     clearInterval(x);
-        // }
+        let x=setTimeout(() => {
+            next()
+        }, 2000);
+        return()=>{
+            clearInterval(x);
+        }
     },[index])
     return(
         <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
