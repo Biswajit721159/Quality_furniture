@@ -4,9 +4,8 @@ import { PulseLoader } from 'react-spinners';
 import '../css/Carousel.css'
 import { FaAngleLeft } from "react-icons/fa";
 import { FaAngleRight } from "react-icons/fa";
-const api=process.env.REACT_APP_API
 const Carousel=(props)=>{
-    
+
     let data=props.data;
     let message=props.message;
     const [low,setlow]=useState(0);

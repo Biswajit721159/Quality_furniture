@@ -1,0 +1,60 @@
+#image{
+    height:600px;
+    width:140px;
+}
+
+@media only screen and (max-width: 1160px ) {
+    #image {
+        height:550px;
+        width:130px;
+    }
+}
+
+@media only screen and (max-width: 1000px ) {
+    #image {
+        height:500px;
+        width:120px;
+    }
+}
+@media only screen and (max-width: 850px ) {
+    #image {
+        height:420px;
+        width:105px;
+    }
+}
+@media only screen and (max-width: 750px ) {
+    #image {
+        height: 400px;
+        width:90px;
+    }
+}
+@media only screen and (max-width: 650px ) {
+    #image {
+        height: 350px;
+        width:80px;
+    }
+}
+@media only screen and (max-width: 550px ) {
+    #image {
+        height: 300px;
+        width:70px;
+    }
+}
+@media only screen and (max-width: 450px ) {
+    #image {
+        height: 250px;
+        width:60px;
+    }
+}
+@media only screen and (max-width: 350px ) {
+    #image {
+        height: 200px;
+        width:50px;
+    }
+}
+@media only screen and (max-width: 250px ) {
+    #image {
+        height: 150px;
+        width:40px;
+    }
+}
