@@ -8,8 +8,8 @@ const About=()=>{
         <h3 className='headline1' >About us</h3>
         <h1 className='headline2'  > WHY CHOOSE US? </h1>
         <div > 
-            <div className="image">
-                <img src={Table3} className="image" alt="Error"/>
+            <div className="imageitem">
+                <img src={Table3} className="imageitem" alt="Error"/>
             </div>
             <div >
                 <h3 className='headline2'>Best Quality Furniture in the country</h3>
