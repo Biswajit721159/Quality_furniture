@@ -105,7 +105,6 @@ export default function Myorder() {
                             <table className="table" style={{backgroundColor:colormode}}>
                                 <thead>
                                     <tr>
-                                        <th className='text-center' scope="col">#</th>
                                         <th className='text-center' scope="col">Product Name</th>
                                         <th className='text-center' scope="col">Product Count</th>
                                         <th className='text-center' scope="col">Payment Method</th>
@@ -126,7 +125,7 @@ export default function Myorder() {
                                         {
                                             data.map((item,ind)=>(
                                                 <tr key={ind}>
-                                                    <th className='text-center' scope="row">{ind}</th>
+                                                    {/* <th className='text-center' scope="row">{ind}</th> */}
                                                     <td className='text-center'>
                                                     <div className="card123">
                                                         <Link to={`/Product/${item.product_id}`}>
