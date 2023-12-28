@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import {Link, useNavigate} from 'react-router-dom'
 import swal from "sweetalert";
-import loader from "../images/loader.gif"
 import { PulseLoader } from 'react-spinners';
 import {MdOutlineDarkMode} from 'react-icons/md';
+import '../css/Myorder.css'
 const api = process.env.REACT_APP_API
-
-
 export default function Myorder() {
 
   const userinfo=JSON.parse(localStorage.getItem('user'));
@@ -97,6 +95,11 @@ export default function Myorder() {
   return (
     <>
         {
+            load==true?
+            <div className="Loaderitem">
+                  <PulseLoader color="#16A085"  />
+            </div>
+             :
             data!=undefined && data.length!=0 ?
                 <div className='container'>
                             <table className="table" style={{backgroundColor:colormode}}>
@@ -112,8 +115,8 @@ export default function Myorder() {
                                         <th className='text-center' scope="col">
                                           Feedback
                                           {
-                                            colormode=='white'?<button className='btn btn-light rounded-circle mx-2' onClick={changecolor}><MdOutlineDarkMode/></button>
-                                            :<button className='btn btn-dark rounded-circle mx-2' onClick={changecolor}><MdOutlineDarkMode/></button>
+                                            colormode=='white'?<button className='btn btn-light rounded-circle mx-2 text-center' onClick={changecolor}><MdOutlineDarkMode/></button>
+                                            :<button className='btn btn-dark rounded-circle mx-2 text-center' onClick={changecolor}><MdOutlineDarkMode/></button>
                                           }
                                         </th>
                                     </tr>
@@ -125,9 +128,9 @@ export default function Myorder() {
                                                 <tr key={ind}>
                                                     <th className='text-center' scope="row">{ind}</th>
                                                     <td className='text-center'>
-                                                    <div className="card" style={{width: "5rem",height:"5rem"}}>
+                                                    <div className="card123">
                                                         <Link to={`/Product/${item.product_id}`}>
-                                                            <img className="card-img-top" src={item.newImage[0]} style={{height:'70px',width:'70px'}} alt="Card image cap"/>
+                                                            <img className="card-img-top" src={item.newImage[0]} alt="Card image cap"/>
                                                         </Link>
                                                     </div>
                                                     </td>
@@ -135,9 +138,9 @@ export default function Myorder() {
                                                     <td className='text-center'>{item.payment_method}</td>
                                                     <td className='text-center'>{item.Total_rupess}</td>
                                                     <td className='text-center'>{item.Date}</td>
-                                                    <td onClick={()=>{showaddress(item.address)}}><button type="button" className="btn btn-default">Show Address</button></td>
-                                                    {item.isfeedback?<td><Link to={`/${item.id}/${item.product_id}/Reviews`}><button className='btn btn-warning' disabled>Already Given</button></Link></td>:
-                                                    <td><Link to={`/${item.id}/${item.product_id}/Reviews`}><button className='btn btn-primary'>Give Feedback</button></Link></td>}
+                                                    <td onClick={()=>{showaddress(item.address)}}><button type="button" className="btn btn-default text-center">Show Address</button></td>
+                                                    {item.isfeedback?<td><Link to={`/${item.id}/${item.product_id}/Reviews`}><button className='btn btn-warning text-center' disabled>Already Given</button></Link></td>:
+                                                    <td><Link to={`/${item.id}/${item.product_id}/Reviews`}><button className='btn btn-primary text-center'>Give Feedback</button></Link></td>}
                                                 </tr>
                                             ))
                                         }
@@ -146,11 +149,9 @@ export default function Myorder() {
                             </table>
 
                 </div>
-            :load?<div className="Loaderitem">
-                <PulseLoader color="#16A085"  />
-            </div>:
+            :
             <div className='loader-container'>
-                <Link to={'/Product'}><button className='btn btn-info'>  <h4>ORDER PRODUCTS</h4>  </button></Link>
+                <Link to={'/Product'}><button className='btn btn-info'><h4>ORDER PRODUCTS</h4></button></Link>
             </div>
         }    
     </>
