@@ -16,17 +16,17 @@ const About=()=>{
                 <p className='headline1'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore, sequi corrupti corporis quaerat voluptatem ipsam neque labore modi autem, saepe numquam quod reprehenderit rem? Tempora aut soluta odio corporis nihil!</p>
                 <p className='headline1'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam, nemo. Sit porro illo eos cumque deleniti iste alias, eum natus.</p>
                 <div className="row d-flex justify-content-center-mt-3">
-                    <div className="col shadow p-3 mb-5 bg-white rounded" style={{border:"3px solid green" ,textAlign:"center"}}>
+                    <div className="col shadow p-2 mb-5 bg-white rounded" style={{border:"2px solid green" ,textAlign:"center"}}>
                         <AiFillCar/>
-                        <span>free delivery</span>
+                        <span className='headline1'>free delivery</span>
                     </div>
-                    <div className="col shadow p-3 mb-5 bg-white rounded" style={{border:"3px solid green" ,textAlign:"center"}}>
+                    <div className="col shadow p-2 mb-5 bg-white rounded" style={{border:"2px solid green" ,textAlign:"center"}}>
                         <AiOutlineCheckCircle/>
-                        <span>easy payments</span>
+                        <span className='headline1'>easy payments</span>
                     </div>
-                    <div className="col shadow p-3 mb-5 bg-white rounded" style={{border:"3px solid green" ,textAlign:"center"}}>
+                    <div className="col shadow p-2 mb-5 bg-white rounded" style={{border:"2px solid green" ,textAlign:"center"}}>
                         <AiFillPhone/>
-                        <span>24/7 service</span>
+                        <span className='headline1'>24/7 service</span>
                     </div>
                 </div>    
             </div>

@@ -1,4 +1,7 @@
-
+.image{
+  height: 250px;
+  width: 450px;
+}
 .col2{
   display: flex;
     justify-content: space-around;
@@ -48,3 +51,54 @@
   color: white;
 } 
 
+
+@media only screen and (max-width: 1000px ) {
+  .image {
+      height: 200px;
+      width:400px;
+  }
+ .card-text{
+  font-size: 12px;
+ }
+ .card-title{
+  font-size: 15px;
+ }
+ #button{
+   font-size: 12px;
+ }
+}
+
+@media only screen and (max-width: 800px ) {
+  .image {
+      height: 150px;
+      width:300px;
+  }
+ .card-text{
+  font-size: 9px;
+ }
+ .card-title{
+  font-size: 12px;
+ }
+ #button{
+  font-size: 9px;
+}
+}
+
+@media only screen and (max-width: 560px ) {
+  .image {
+      height: 140px;
+      width:200px;
+  }
+ .card-text{
+  font-size: 8px;
+ }
+ .card-title{
+  font-size: 9px;
+ }
+ #button{
+  font-size: 7px;
+ }
+ .carousel-control-prev-icon{
+  color: aqua;
+ }
+}

@@ -19,7 +19,6 @@ export default function Product_view() {
   const history=useNavigate()
   const dispatch=useDispatch();
 
-  let cartdata = useSelector((state) => state.cartdata.product_count);
   let userinfo=JSON.parse(localStorage.getItem('user'))
 
   let [persentage_5_star,setpersentage_5_star]=useState(0);
@@ -39,7 +38,7 @@ export default function Product_view() {
   const [reviews_data_show,setreviews_data_show]=useState([])
   let [Message,setMessage]=useState(true)
   let [load,setload]=useState(true)
-  let cart=JSON.parse(localStorage.getItem('cart'));
+  let [cart,setcart]=useState(JSON.parse(localStorage.getItem('cart')));
 
   useEffect(()=>{
     if(userinfo==null)
@@ -172,12 +171,14 @@ export default function Product_view() {
   function Add_TO_CART()
   {
     dispatch(cartmethod.ADD_TO_CART(_id))
+    history('/cart')
+  }
+  function removeTocart()
+  {
+     dispatch(cartmethod.REMOVE_TO_CART())
+     setcart(JSON.parse(localStorage.getItem('cart')));
   }
 
-  function SUB_TO_CART()
-  {
-    dispatch(cartmethod.SUB_TO_CART(_id))
-  }
   
   return (
     <>
@@ -191,13 +192,13 @@ export default function Product_view() {
                         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                         <div class="carousel-inner" style={{border:'2px solid green' ,borderRadius:10}}>
                             <div class="carousel-item active">
-                                <img class="d-block" src={product.newImage[0]} style={{height:"250px", width:"450px"}} alt="First slide"/>
+                                <img class="d-block" src={product.newImage[0]} className='image'  alt="First slide"/>
                             </div>
                             <div class="carousel-item">
-                                <img class="d-block" src={product.newImage[1]} style={{height:"250px", width:"450px"}}  alt="Second slide"/>
+                                <img class="d-block" src={product.newImage[1]} className='image'  alt="Second slide"/>
                             </div>
                             <div class="carousel-item">
-                                <img class="d-block" src={product.newImage[2]} style={{height:"250px", width:"450px"}}  alt="Third slide"/>
+                                <img class="d-block" src={product.newImage[2]} className='image'  alt="Third slide"/>
                             </div>
                         </div>
                         <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -210,21 +211,21 @@ export default function Product_view() {
                         </a>
                     </div>
                     </div>
-                    <div className='col2'>
-                        {/* <button style={{borderRadius:'40%'}} onClick={Add_TO_CART}><GrAdd /></button>
-                        {cart!=undefined && _id==cart.product_id?<h4 style={{marginLeft:20 ,marginRight:20,marginTop:5}}>{cartdata}</h4>:<h4 style={{marginLeft:20 ,marginRight:20,marginTop:5}}>0</h4>}
-                        <button style={{borderRadius:'40%'}} onClick={SUB_TO_CART}><GrSubtract /></button> */}
-                    </div>
                     <div className='col3'>
-                        <div class="card" style={{width: "18rem"}}>
+                        <div class="card123" >
                             <div class="card-body">
                                 <h5 class="card-title">{product.product_name}</h5>
                                 <p class="card-text" style={{color:"orange"}}>{product.offer}%OFF</p>
                                 <h6 className="card-text" style={{color:'gray'}}><s>₹{product.price}</s></h6> 
                                 <h5 className="card-text" style={{color:'tomato'}}>Price - ₹{(product.price-((product.price*product.offer)/100)).toFixed(2)}</h5>
-                                <h5>{product.total_number_of_product} Left Only </h5>
+                                <h5 class="card-title">{product.total_number_of_product} Left Only </h5>
                             </div>
                         </div>
+                    </div>
+                    <div className='col2'>
+                       {cart && cart.product_id==_id ?
+                       <button id='button' className='btn btn-danger btn-sm' onClick={removeTocart}> Remove To Cart </button>
+                       :<button id='button' className='btn btn-primary  btn-sm' onClick={Add_TO_CART} >Add To Cart </button>}
                     </div>
                 </div>
                 <hr/>

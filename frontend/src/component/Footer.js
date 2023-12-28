@@ -24,48 +24,48 @@ const Footer=()=>{
         <footer className="mainfooter">
             <div className="box-container">
                 <div className="box">
-                    <h4>Locations</h4>
-                    <li><GiIndiaGate /> India</li>
-                    <li><GiJapaneseBridge /> Japan</li>
-                    <li><LuRussianRuble /> Russia</li>
-                    <li><GiUsaFlag /> USA</li>
-                    <li><SiIledefrancemobilites /> France</li>
+                    <h4 className="head2">Locations</h4>
+                    <li className="head1"><GiIndiaGate /> India</li>
+                    <li className="head1"><GiJapaneseBridge /> Japan</li>
+                    <li className="head1"><LuRussianRuble /> Russia</li>
+                    <li className="head1"><GiUsaFlag /> USA</li>
+                    <li className="head1"><SiIledefrancemobilites /> France</li>
                 </div>
                 <div class="box">
-                    <h4>Quick Links</h4>
-                    <li><Link to="/Product"><MdOutlineSell /> Buy Product</Link></li>
-                    <li><Link to="/addproduct"><IoMdAddCircleOutline /> Add Product</Link></li>
-                    <li><Link to="/wishList"><GiRoyalLove /> WishList</Link></li>
-                    <li><Link to="/Cart"><FaShoppingCart /> Cart</Link></li>
-                    <li><Link to="/Myorder"><IoMdReorder /> MyOrder</Link></li>
+                    <h4 className="head2">Quick Links</h4>
+                    <li className="head1"><Link to="/Product"><MdOutlineSell /> Buy Product</Link></li>
+                    <li className="head1"><Link to="/addproduct"><IoMdAddCircleOutline /> Add Product</Link></li>
+                    <li className="head1"><Link to="/wishList"><GiRoyalLove /> WishList</Link></li>
+                    <li className="head1"><Link to="/Cart"><FaShoppingCart /> Cart</Link></li>
+                    <li className="head1"><Link to="/Myorder"><IoMdReorder /> MyOrder</Link></li>
                 </div>
                 <div class="box">
-                <h4>Contact Info</h4>
-                    <li><CiHeadphones/> +123-456-7890</li>
-                    <li><CiHeadphones/> +111-222-3333</li>
-                    <li><MdEmail /> biswajit2329@gmail.com</li>
-                    <li><MdEmail /> biswajit@riktamtech.com</li>
-                    <li><FaLocationArrow /> Hyderabad , india - 500016</li>
+                <h4 className="head2">Contact Info</h4>
+                    <li className="head1"><CiHeadphones/> +123-456-7890</li>
+                    <li className="head1"><CiHeadphones/> +111-222-3333</li>
+                    <li className="head1"><MdEmail /> biswajit2329@gmail.com</li>
+                    <li className="head1"><MdEmail /> biswajit@riktamtech.com</li>
+                    <li className="head1"><FaLocationArrow /> Hyderabad , india - 500016</li>
                 </div>
                 <div class="box">
-                    <h4>Follow us</h4>
-                    <li><a href="#"><FaFacebook /> Facebook</a></li>
-                    <li><a href="#"><FaTwitter /> Twitter</a></li>
-                    <li><a href="#"><FaInstagram /> Instagram</a></li>
-                    <li><a href="#"><FaLinkedinIn /> Linkedin</a></li>
-                    <li><a href="#"><FaYoutube /> Youtube</a></li>
+                    <h4 className="head2">Follow us</h4>
+                    <li className="head1"><a href="#"><FaFacebook /> Facebook</a></li>
+                    <li className="head1"><a href="#"><FaTwitter /> Twitter</a></li>
+                    <li className="head1"><a href="#"><FaInstagram /> Instagram</a></li>
+                    <li className="head1"><a href="#"><FaLinkedinIn /> Linkedin</a></li>
+                    <li className="head1"><a href="#"><FaYoutube /> Youtube</a></li>
                 </div>
                 <div class="box">
-                    <h4>Follow us</h4>
+                    <h4 className="head2">Message US</h4>
                     <div>
                         <input className="form-control mr-sm-2" name='search' type="search" placeholder="Enter Message" aria-label="Search"/>
                     </div>
                     <li></li>
-                    <li><button className="btn btn-primary btn-sm mt-1">Send</button></li>
+                    <li className="head2"><button className="btn btn-primary btn-sm mt-1">Send</button></li>
                 </div>
             </div>
             <hr/>
-            <div className="credit p-2"> Copyright @ 2023 by <span>Mr Biswajit Ghosh</span> </div>
+            <div className="credit"> Copyright @ 2023 by <span>Mr Biswajit Ghosh</span> </div>
         </footer>
     )
 }
