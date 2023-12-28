@@ -29,16 +29,16 @@
 }
 @media only screen and (max-width: 660px) {
   .text-center {
-    font-size: 5px;
+    font-size: 7px;
   }
   .card-img-top {
     height: 50px;
     width: 50px;
   }
 }
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 550px) {
   .text-center {
-    font-size: 4px;
+    font-size: 6px;
   }
   .card-img-top {
     height: 40px;
@@ -46,9 +46,9 @@
   }
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 510px) {
     .text-center {
-      font-size: 3px;
+      font-size: 5px;
     }
     .card-img-top {
       height: 30px;
@@ -56,9 +56,9 @@
     }
   }
   
-  @media only screen and (max-width: 415px) {
+  @media only screen and (max-width: 470px) {
     .text-center {
-      font-size: 2px;
+      font-size: 4px;
     }
     .card-img-top {
       height: 20px;
@@ -66,12 +66,17 @@
     }
   }
 
-  @media only screen and (max-width: 370px) {
+  @media only screen and (max-width: 420px) {
     .text-center {
-      font-size: 1.5px;
+      font-size: 3px;
     }
     .card-img-top {
       height: 15px;
       width: 15px;
+    }
+  }
+  @media only screen and (max-width: 390px) {
+    .text-center {
+      font-size: 2px;
     }
   }
