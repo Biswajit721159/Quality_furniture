@@ -76,7 +76,7 @@ const Navbar=()=>{
                   <li><button className='btn btn-light rounded-circle' onClick={changecolor}><MdOutlineDarkMode/></button></li>
                   :<li><button className='btn btn-dark rounded-circle' onClick={changecolor}><MdOutlineDarkMode/></button></li>
                 }
-                    <li><Link to={'/'} style={{textDecoration:"none",color:"white"}}>QQFurniture</Link></li>
+                    <li><Link to={'/'} style={{textDecoration:"none",color:"white"}}>QFurniture</Link></li>
                     <li><Link to={'/Product'} style={{textDecoration:"none",color:"white"}}>Home</Link></li>
                     
                     
@@ -103,7 +103,7 @@ const Navbar=()=>{
                 </>    
                 :
                 <>
-                  <li><Link to={'/'} style={{textDecoration:"none",color:"white"}}>Quality Furniture</Link></li>
+                  <li><Link to={'/'} style={{textDecoration:"none",color:"white"}}>QFurniture</Link></li>
                   <li><Link to={'/Signin'} style={{textDecoration:"none",color:"white"}}>Signin</Link></li>
                   <li><Link to={'/Register'}style={{textDecoration:"none",color:"white"}}>Register</Link></li>
                   </>

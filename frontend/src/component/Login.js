@@ -1,6 +1,6 @@
 import React, { useState,useEffect}  from "react";
 import { useNavigate } from "react-router-dom";
-
+import '../css/Auth.css'
 export default function Login() {
 
 const [email,setemail]=useState("")
@@ -53,22 +53,16 @@ function submit(){
 }
 
   return (
-    <div className="container">
-        <div className="col-md-4 mt-2"><h3>Login</h3></div>
-        <div className="col-md-4 mt-2">
-            <div className="form-group">
-                <input type="email" value={email} onChange={(e)=>{setemail(e.target.value)}} className="form-control" placeholder="Enter Email Id"  required/>
-            </div>
+    <div className="authform">
+        <h3 className="reglog">Login</h3>
+        <div className="form-group">
+            <input type="email" value={email} onChange={(e)=>{setemail(e.target.value)}} className="form-control" placeholder="Enter Email Id"  required/>
         </div>
-        <div className="col-md-4 mt-2">
-            <div className="form-group">
-                <input type="password" value={password} onChange={(e)=>{setpassword(e.target.value)}} className="form-control" placeholder="Enter Password"  required/>
-                {wronguser?<label  style={{color:"red"}}>*Invalid User</label>:""}
-            </div>
+        <div className="form-group">
+            <input type="password" value={password} onChange={(e)=>{setpassword(e.target.value)}} className="form-control" placeholder="Enter Password"  required/>
+            {wronguser?<label  style={{color:"red"}}>*Invalid User</label>:""}
         </div>
-        <div className="col-md-4 mt-3">
-            <button className="btn btn-primary" disabled={disabled} onClick={submit}>{button}</button>
-        </div>
+        <button className="btn btn-primary" disabled={disabled} onClick={submit}>{button}</button>
     </div>
   )
 }

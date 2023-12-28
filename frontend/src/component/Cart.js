@@ -241,13 +241,6 @@ const history=useNavigate()
                     <button className='btn btn-secondary btn-sm removebutton' onClick={removeTocart}>Remove To Cart</button>
                 </div>
 
-                {/* <div>
-                    <div className='col2'>
-                        <button style={{borderRadius:'50%'}} onClick={Add_TO_CART}><GrAdd /></button>
-                        <h4 className='cartcount'>{cartdata}</h4>
-                        <button style={{borderRadius:'50%'}} onClick={SUB_TO_CART}><GrSubtract /></button>
-                    </div>
-                </div> */}
                 
                 <div className='item2'>
                    <h4 className='pricedetailmain' style={{textAlign:'center'}}>PRICE DETAILS</h4>

@@ -1,6 +1,6 @@
 import React, { useState,useEffect }  from "react";
 import { json, useNavigate } from "react-router-dom";
-
+import '../css/Auth.css'
 const Register=()=>{
 
 const [name,setname]=useState("")
@@ -129,37 +129,25 @@ const [disabled,setdisabled]=useState(false)
   }
 
     return(
-        <div className="container">
-            <div className="col-md-4 mt-3">
-                <h3>Register</h3>
+        <div className="authform">
+            <h3 className="reglog">Register</h3>
+            <div className="form-group">
+                  <input type="text" value={name} onChange={(e)=>{setname(e.target.value)}}  className="form-control reglog" placeholder="Enter Full Name"  required/>
+                  {wrongname?<label className="reglog" style={{color:"red"}}>{messname}</label>:""}
             </div>
-            <div className="col-md-4 mt-2">
-              <div className="form-group">
-                  <input type="text" value={name} onChange={(e)=>{setname(e.target.value)}}  className="form-control" placeholder="Enter Full Name"  required/>
-                  {wrongname?<label  style={{color:"red"}}>{messname}</label>:""}
-              </div>
+            <div className="form-group">
+                <input type="email" value={email} onChange={(e)=>{setemail(e.target.value)}} className="form-control reglog" placeholder="Enter Email Id"  required/>
+                {wrongemail?<label className="reglog" style={{color:"red"}}>{messemail}</label>:""}
             </div>
-            <div className="col-md-4 mt-2">
-              <div className="form-group">
-                  <input type="email" value={email} onChange={(e)=>{setemail(e.target.value)}} className="form-control" placeholder="Enter Email Id"  required/>
-                  {wrongemail?<label  style={{color:"red"}}>{messemail}</label>:""}
-              </div>
+            <div className="form-group">
+                <input type="password" value={password} onChange={(e)=>{setpassword(e.target.value)}} className="form-control reglog" placeholder="Enter Password"  required/>
+                {wrongpassword?<label className="reglog"  style={{color:"red"}}>{messpassword}</label>:""}
             </div>
-            <div className="col-md-4 mt-2">
-              <div className="form-group">
-                  <input type="password" value={password} onChange={(e)=>{setpassword(e.target.value)}} className="form-control" placeholder="Enter Password"  required/>
-                  {wrongpassword?<label  style={{color:"red"}}>{messpassword}</label>:""}
-              </div>
+            <div className="form-group">
+                <input type="text" value={address} onChange={(e)=>{setaddress(e.target.value)}} rows="1" cols={22} className="form-control reglog" placeholder="Enter Full Address"  required/>
+                {wrongaddress?<label className="reglog" style={{color:"red"}}>{messaddress}</label>:""}
             </div>
-            <div className="col-md-4 mt-2">
-              <div className="form-group">
-                  <textarea type="text" value={address} onChange={(e)=>{setaddress(e.target.value)}}  className="form-control" placeholder="Enter Full Address"  required/>
-                  {wrongaddress?<label  style={{color:"red"}}>{messaddress}</label>:""}
-              </div>
-            </div>
-            <div className="col-md-4 mt-3">
-                <button className="btn btn-primary" disabled={disabled} onClick={submit}>{button}</button>
-            </div>
+                <button className="btn btn-primary registerandloginbutton"  disabled={disabled} onClick={submit}>{button}</button>
         </div>
     )
 }
