@@ -101,50 +101,50 @@ export default function Myorder() {
             </div>
              :
             data!=undefined && data.length!=0 ?
-                <div className='container'>
-                            <table className="table" style={{backgroundColor:colormode}}>
-                                <thead>
-                                    <tr>
-                                        <th className='text-center' scope="col">Product Name</th>
-                                        <th className='text-center' scope="col">Total_rupess</th>
-                                        <th className='text-center' scope="col">Date</th>
-                                        <th className='text-center' scope="col">Address</th>
-                                        <th className='text-center' scope="col">
-                                          Feedback
-                                        </th>
-                                          {
-                                            colormode=='white'?<button className='btn btn-light rounded-circle mx-2 text-center' onClick={changecolor}><MdOutlineDarkMode/></button>
-                                            :<button className='btn btn-dark rounded-circle mx-2 text-center' onClick={changecolor}><MdOutlineDarkMode/></button>
-                                          }
-                                    </tr>
-                                </thead>
+               
+                <table className="table" style={{backgroundColor:colormode}}>
+                    <thead>
+                        <tr>
+                            <th className='text-center' scope="col">Product Name</th>
+                            <th className='text-center' scope="col">Total_rupess</th>
+                            <th className='text-center' scope="col">Date</th>
+                            <th className='text-center' scope="col">Address</th>
+                            <th className='text-center' scope="col">
+                                Feedback
+                            </th>
                                 {
-                                    <tbody>
-                                        {
-                                            data.map((item,ind)=>(
-                                                <tr key={ind}>
-                                                    {/* <th className='text-center' scope="row">{ind}</th> */}
-                                                    <td className='text-center'>
-                                                    <div className="card123">
-                                                        <Link to={`/Product/${item.product_id}`}>
-                                                            <img className="card-img-top" src={item.newImage[0]} alt="Card image cap"/>
-                                                        </Link>
-                                                        <p className='text-center mt-1'>{item.product_name} X {item.product_count}</p>
-                                                    </div>
-                                                    </td>
-                                                    <td className='text-center'>₹{item.Total_rupess}</td>
-                                                    <td className='text-center'>{item.Date}</td>
-                                                    <td onClick={()=>{showaddress(item.address)}}><button type="button" className="btn btn-default text-center btn-sm">Show Address</button></td>
-                                                    {item.isfeedback?<td><Link to={`/${item.id}/${item.product_id}/Reviews`}><button className='btn btn-warning btn-sm text-center' disabled>Already Given</button></Link></td>:
-                                                    <td><Link to={`/${item.id}/${item.product_id}/Reviews`}><button className='btn btn-primary btn-sm text-center'>Give Feedback</button></Link></td>}
-                                                </tr>
-                                            ))
-                                        }
-                                    </tbody>
+                                colormode=='white'?<button className='btn btn-light rounded-circle mx-2 text-center' onClick={changecolor}><MdOutlineDarkMode/></button>
+                                :<button className='btn btn-dark rounded-circle mx-2 text-center' onClick={changecolor}><MdOutlineDarkMode/></button>
                                 }
-                            </table>
+                        </tr>
+                    </thead>
+                    {
+                        <tbody>
+                            {
+                                data.map((item,ind)=>(
+                                    <tr key={ind}>
+                                        {/* <th className='text-center' scope="row">{ind}</th> */}
+                                        <td className='text-center'>
+                                        <div className="card1234">
+                                            <Link to={`/Product/${item.product_id}`}>
+                                                <img className="card-img-top1" src={item.newImage[0]} alt="Card image cap"/>
+                                            </Link>
+                                            <p className='text-center mt-1'>{item.product_name} X {item.product_count}</p>
+                                        </div>
+                                        </td>
+                                        <td className='text-center'>₹{item.Total_rupess}</td>
+                                        <td className='text-center'>{item.Date}</td>
+                                        <td onClick={()=>{showaddress(item.address)}}><button type="button" className="btn btn-default text-center btn-sm">Show Address</button></td>
+                                        {item.isfeedback?<td><Link to={`/${item.id}/${item.product_id}/Reviews`}><button className='btn btn-warning btn-sm text-center' disabled>Already Given</button></Link></td>:
+                                        <td><Link to={`/${item.id}/${item.product_id}/Reviews`}><button className='btn btn-primary btn-sm text-center'>Give Feedback</button></Link></td>}
+                                    </tr>
+                                ))
+                            }
+                        </tbody>
+                    }
+                </table>
 
-                </div>
+               
             :
             <div className='loader-container'>
                 <Link to={'/Product'}><button className='btn btn-info'><h4>ORDER PRODUCTS</h4></button></Link>
