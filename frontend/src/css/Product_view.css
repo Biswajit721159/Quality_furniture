@@ -98,7 +98,49 @@
  #button{
   font-size: 7px;
  }
- .carousel-control-prev-icon{
-  color: aqua;
+}
+@media only screen and (max-width: 430px ) {
+  .image {
+      height: 120px;
+      width:170px;
+  }
+ .card-text{
+  font-size: 7px;
+ }
+ .card-title{
+  font-size: 8px;
+ }
+ #button{
+  font-size: 6px;
+ }
+}
+@media only screen and (max-width: 380px ) {
+  .image {
+      height: 100px;
+      width:150px;
+  }
+ .card-text{
+  font-size: 6px;
+ }
+ .card-title{
+  font-size: 7px;
+ }
+ #button{
+  font-size: 5px;
+ }
+}
+@media only screen and (max-width: 340px ) {
+  .image {
+      height: 90px;
+      width:130px;
+  }
+ .card-text{
+  font-size: 5px;
+ }
+ .card-title{
+  font-size: 6px;
+ }
+ #button{
+  font-size: 4px;
  }
 }
