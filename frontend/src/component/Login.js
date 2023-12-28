@@ -34,7 +34,6 @@ function submit(){
     })
     .then(response=>response.json())
     .then((result)=>{
-        console.log(result)
         if(result.data && result.data.accessToken)
         {
             localStorage.setItem("user",JSON.stringify(result.data))
@@ -54,15 +53,18 @@ function submit(){
 
   return (
     <div className="authform">
-        <h3 className="reglog">Login</h3>
-        <div className="form-group">
-            <input type="email" value={email} onChange={(e)=>{setemail(e.target.value)}} className="form-control" placeholder="Enter Email Id"  required/>
+        <h3>Login</h3>
+        <div className="">
+                <input type="email" value={email} onChange={(e)=>{setemail(e.target.value)}} className="inputreglog" placeholder="Enter Email Id"  required/>
         </div>
-        <div className="form-group">
-            <input type="password" value={password} onChange={(e)=>{setpassword(e.target.value)}} className="form-control" placeholder="Enter Password"  required/>
-            {wronguser?<label  style={{color:"red"}}>*Invalid User</label>:""}
+        <div className="">
+           <input type="password" value={password} onChange={(e)=>{setpassword(e.target.value)}} className="inputreglog" placeholder="Enter Password"  required/>
+            
         </div>
-        <button className="btn btn-primary" disabled={disabled} onClick={submit}>{button}</button>
+        <div>
+         {wronguser?<label className="wrong" style={{color:"red"}}>*Invalid User</label>:""}
+        </div>
+        <button className="btn btn-info btn-sm" disabled={disabled} onClick={submit}>{button}</button>
     </div>
   )
 }

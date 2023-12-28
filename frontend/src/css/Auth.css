@@ -3,4 +3,28 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
+    margin: 10px;
 }
+.inputreglog{
+    width: 300px;
+}
+
+.wrong{
+    width: 300px;
+}
+
+.inputreglog{
+    margin: 10px;
+    border: 1px solid white;
+    border-radius: 5px;
+    height: 35px;
+}
+
+/* @media only screen and (max-width: 720px ) {
+    .inputreglog{
+        width: 300px;
+    }
+    .inputauth{
+        width: 300px;
+    }
+} */

@@ -130,24 +130,32 @@ const [disabled,setdisabled]=useState(false)
 
     return(
         <div className="authform">
-            <h3 className="reglog">Register</h3>
-            <div className="form-group">
-                  <input type="text" value={name} onChange={(e)=>{setname(e.target.value)}}  className="form-control reglog" placeholder="Enter Full Name"  required/>
-                  {wrongname?<label className="reglog" style={{color:"red"}}>{messname}</label>:""}
+            <h3 >Register</h3>
+            <div className="">
+                  <input type="text" value={name} onChange={(e)=>{setname(e.target.value)}}  className="inputreglog" placeholder="Enter Full Name"  required/>
             </div>
-            <div className="form-group">
-                <input type="email" value={email} onChange={(e)=>{setemail(e.target.value)}} className="form-control reglog" placeholder="Enter Email Id"  required/>
-                {wrongemail?<label className="reglog" style={{color:"red"}}>{messemail}</label>:""}
+            <div className="">
+                 {wrongname?<label className="wrong" style={{color:"red"}}>{messname}</label>:""}
             </div>
-            <div className="form-group">
-                <input type="password" value={password} onChange={(e)=>{setpassword(e.target.value)}} className="form-control reglog" placeholder="Enter Password"  required/>
-                {wrongpassword?<label className="reglog"  style={{color:"red"}}>{messpassword}</label>:""}
+            <div className="">
+                <input type="email" value={email} onChange={(e)=>{setemail(e.target.value)}} className="inputreglog" placeholder="Enter Email Id"  required/>
             </div>
-            <div className="form-group">
-                <input type="text" value={address} onChange={(e)=>{setaddress(e.target.value)}} rows="1" cols={22} className="form-control reglog" placeholder="Enter Full Address"  required/>
-                {wrongaddress?<label className="reglog" style={{color:"red"}}>{messaddress}</label>:""}
+            <div>
+                {wrongemail?<label className="wrong" style={{color:"red"}}>{messemail}</label>:""}
             </div>
-                <button className="btn btn-primary registerandloginbutton"  disabled={disabled} onClick={submit}>{button}</button>
+            <div className="">
+                <input type="password" value={password} onChange={(e)=>{setpassword(e.target.value)}} className="inputreglog" placeholder="Enter Password"  required/>
+            </div>
+            <div>
+                {wrongpassword?<label className="wrong"  style={{color:"red"}}>{messpassword}</label>:""}
+            </div>
+            <div className="">
+                <textarea type="text" value={address} onChange={(e)=>{setaddress(e.target.value)}} className="inputreglog" placeholder="Enter Full Address"  required/>
+            </div>
+            <div>
+                {wrongaddress?<label className="wrong" style={{color:"red"}}>{messaddress}</label>:""}
+            </div>
+            <button className="btn btn-info  btn-sm"  disabled={disabled} onClick={submit}>{button}</button>
         </div>
     )
 }
