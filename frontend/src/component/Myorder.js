@@ -106,8 +106,6 @@ export default function Myorder() {
                                 <thead>
                                     <tr>
                                         <th className='text-center' scope="col">Product Name</th>
-                                        <th className='text-center' scope="col">Product Count</th>
-                                        <th className='text-center' scope="col">Payment Method</th>
                                         <th className='text-center' scope="col">Total_rupess</th>
                                         <th className='text-center' scope="col">Date</th>
                                         <th className='text-center' scope="col">Address</th>
@@ -131,11 +129,10 @@ export default function Myorder() {
                                                         <Link to={`/Product/${item.product_id}`}>
                                                             <img className="card-img-top" src={item.newImage[0]} alt="Card image cap"/>
                                                         </Link>
+                                                        <p className='text-center mt-1'>{item.product_name} X {item.product_count}</p>
                                                     </div>
                                                     </td>
-                                                    <td className='text-center'>{item.product_name} X {item.product_count}</td>
-                                                    <td className='text-center'>{item.payment_method}</td>
-                                                    <td className='text-center'>{item.Total_rupess}</td>
+                                                    <td className='text-center'>₹{item.Total_rupess}</td>
                                                     <td className='text-center'>{item.Date}</td>
                                                     <td onClick={()=>{showaddress(item.address)}}><button type="button" className="btn btn-default text-center btn-sm">Show Address</button></td>
                                                     {item.isfeedback?<td><Link to={`/${item.id}/${item.product_id}/Reviews`}><button className='btn btn-warning btn-sm text-center' disabled>Already Given</button></Link></td>:

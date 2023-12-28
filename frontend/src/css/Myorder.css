@@ -3,8 +3,8 @@
   height: 5rem;
 } */
 .card-img-top {
-  height: 70px;
-  width: 70px;
+  height: 100px;
+  width: 100px;
 }
 
 @media only screen and (max-width: 1100px) {
@@ -48,7 +48,7 @@
 
 @media only screen and (max-width: 510px) {
     .text-center {
-      font-size: 5px;
+      font-size: 6px;
     }
     .card-img-top {
       height: 30px;
@@ -58,7 +58,7 @@
   
   @media only screen and (max-width: 470px) {
     .text-center {
-      font-size: 4px;
+      font-size: 5px;
     }
     .card-img-top {
       height: 20px;
@@ -68,7 +68,7 @@
 
   @media only screen and (max-width: 420px) {
     .text-center {
-      font-size: 3px;
+      font-size: 4px;
     }
     .card-img-top {
       height: 15px;
@@ -77,6 +77,6 @@
   }
   @media only screen and (max-width: 390px) {
     .text-center {
-      font-size: 2px;
+      font-size: 4px;
     }
   }
