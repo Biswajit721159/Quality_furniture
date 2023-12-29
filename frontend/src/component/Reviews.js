@@ -117,6 +117,12 @@ function checkreviews()
        seterrormessreviews("*Review is Vary Less")
        return false;
    }
+   else if(reviews.length<40)
+   {
+      seterrorreviews(true)
+      seterrormessreviews("*Review is Vary High")
+      return false;
+   }
    return true;
 }
 

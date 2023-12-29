@@ -1,0 +1,40 @@
+
+.col21{
+    border: 1px solid green;
+    border-radius: 10px;
+    padding: 10px;
+}
+.col21item2{
+    display: flex;
+    justify-content: space-around;
+}
+
+
+.side {
+    float: left;
+    width: 15%;
+    margin-top:10px;
+  }
+  
+  .middle {
+    margin-top:10px;
+    float: left;
+    width: 70%;
+  }
+  
+  .right {
+    text-align: right;
+  }
+  
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+  .bar-container {
+    width: 100%;
+    background-color: #f1f1f1;
+    text-align: center;
+    color: white;
+  } 

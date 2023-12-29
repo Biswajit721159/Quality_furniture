@@ -30,13 +30,13 @@ const Carousel=(props)=>{
         {data && <h3 className="product_name">{message}</h3>}
             <div className="carousel">
                 {data && data.map((item,ind)=>(
-                    <>
+                    <div key={ind} >
                     { ind>=low && ind<=high && high-low==4 && 
                         <div key={ind} >
-                            <Link to={`/product/${item._id}`}><img  src={item.newImage[0]} className="imgs" alt="Error"/></Link>
+                            <Link to={`/Product/${item._id}`}><img  src={item.newImage[0]} className="imgs" alt="Error"/></Link>
                         </div>
                     }
-                    </>
+                    </div>
                 ))}
             </div>
         {data && 

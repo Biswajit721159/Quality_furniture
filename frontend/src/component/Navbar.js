@@ -76,11 +76,8 @@ const Navbar=()=>{
                   <li><button className='btn btn-light rounded-circle' onClick={changecolor}><MdOutlineDarkMode/></button></li>
                   :<li><button className='btn btn-dark rounded-circle' onClick={changecolor}><MdOutlineDarkMode/></button></li>
                 }
-                    <li><Link to={'/'} style={{textDecoration:"none",color:"white"}}>QFurniture</Link></li>
-                    <li><Link to={'/Product'} style={{textDecoration:"none",color:"white"}}>Home</Link></li>
-                    
-                    
-
+                    <li><Link to={'/'} className='navbartext' style={{textDecoration:"none",color:"white"}}>QFurniture</Link></li>
+                    <li><Link to={'/Product'} className='navbartext' style={{textDecoration:"none",color:"white"}}>Home</Link></li>
                     <li>
                       <Link to={'/Cart'} style={{textDecoration:"none",color:"white"}} >
                         <div className='cartdata'>
@@ -90,22 +87,22 @@ const Navbar=()=>{
                       </Link>
                     </li>
                     <div class="dropdown mt-1">
-                      <button class="btn btn-light btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <button class="btn btn-light btn-sm dropdown-toggle navbartext" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Welcome {user.user.name}
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <Link class="dropdown-item" to="/Profile"><CgProfile /> profile</Link>
-                        <Link class="dropdown-item" to="/Myorder"><IoReorderFourOutline /> Myorder</Link>
-                        <Link class="dropdown-item" to="/wishlist"><GiLoveHowl /> WishList</Link>
-                        <Link class="dropdown-item" to={'/Register'} onClick={logout}><IoIosLogOut /> Logout</Link>
+                        <Link class="dropdown-item navbartext" to="/Profile"><CgProfile /> profile</Link>
+                        <Link class="dropdown-item navbartext" to="/Myorder"><IoReorderFourOutline /> Myorder</Link>
+                        <Link class="dropdown-item navbartext" to="/wishlist"><GiLoveHowl /> WishList</Link>
+                        <Link class="dropdown-item navbartext" to={'/Register'} onClick={logout}><IoIosLogOut /> Logout</Link>
                       </div>
                     </div>
                 </>    
                 :
                 <>
-                  <li><Link to={'/'} style={{textDecoration:"none",color:"white"}}>QFurniture</Link></li>
-                  <li><Link to={'/Signin'} style={{textDecoration:"none",color:"white"}}>Signin</Link></li>
-                  <li><Link to={'/Register'}style={{textDecoration:"none",color:"white"}}>Register</Link></li>
+                  <li><Link to={'/'} className='navbartext' style={{textDecoration:"none",color:"white"}}>QFurniture</Link></li>
+                  <li><Link to={'/Signin'} className='navbartext' style={{textDecoration:"none",color:"white"}}>Signin</Link></li>
+                  <li><Link to={'/Register'} className='navbartext'  style={{textDecoration:"none",color:"white"}}>Register</Link></li>
                   </>
                 }
             </div>   
