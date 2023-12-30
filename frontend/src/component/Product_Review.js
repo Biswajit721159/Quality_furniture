@@ -33,7 +33,7 @@ const Product_Review=(id)=>{
     let [low,setlow]=useState(0);
     let [high,sethigh]=useState(5);
     let [prev,setprev]=useState(false);
-    let [next,setnext]=useState(false)
+    let [next,setnext]=useState(false);
 
     useEffect(()=>{
         if(userinfo==null)

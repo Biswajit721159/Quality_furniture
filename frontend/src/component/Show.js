@@ -6,6 +6,7 @@ import {FaHeart, FaSketch} from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { PulseLoader } from 'react-spinners';
 import {useDispatch,useSelector} from 'react-redux'
+import { GrFormPrevious } from "react-icons/gr";
 import {cartmethod} from '../redux/CartSlice'
 import Footer from '../component/Footer'
 export default function Show() {
@@ -40,6 +41,12 @@ const [priceHighTOLow,setpriceHighTOLow]=useState(false)
 const [SortOnRating,setSortOnRating]=useState(false)
 const [SortOffer,setSortOffer]=useState(false)
 
+
+let [low,setlow]=useState(0);
+let [high,sethigh]=useState(12);
+let [prev,setprev]=useState(false);
+let [next,setnext]=useState(false);
+
 const api = process.env.REACT_APP_API
 
  
@@ -50,7 +57,6 @@ useEffect(()=>{
     let highprice=queryParameters.get('highprice');
     let selectcatagory=queryParameters.get('selectcatagory');
     let searchproduct=queryParameters.get('product_name');
-    // console.log(lowprice,highprice,selectcatagory,searchproduct);
     if(userinfo==null)
     {
         history('/Register')
@@ -62,8 +68,9 @@ useEffect(()=>{
 },[])
 
 
-function findsearchData(lowprice,highprice,selectcatagory,searchproduct)
+function findsearchData(lowprice,highprice,selectcatagory,searchproduct,low=0,high=12)
 {
+    console.log(low,high)
     if(lowprice==null) lowprice=0;
     if(highprice==null) highprice=1000000;
     if(selectcatagory==null) selectcatagory="ALL";
@@ -71,15 +78,21 @@ function findsearchData(lowprice,highprice,selectcatagory,searchproduct)
     markvisited(lowprice,highprice,selectcatagory,searchproduct)
     if(searchproduct==null || searchproduct.length==0) searchproduct="none";
     setload(true);
-    fetch(`${api}/product/getproductUponPriceProductTypeAndProductName/${lowprice}/${highprice}/${selectcatagory}/${searchproduct}`,{
+    fetch(`${api}/product/getproductUponPriceProductTypeAndProductName/${lowprice}/${highprice}/${selectcatagory}/${searchproduct}/${low}/${high}`,{
         headers:{
             Authorization:`Bearer ${userinfo.accessToken}` 
         }
     }).then(response=>response.json()).then((data)=>{
         if(data.statusCode==201)
         {
-            setproduct(data.data);
-            setToproduct(data.data,cart);
+            let n=data.data.length;
+            if(n)
+            {
+                setprev(data.data[n-1].prev);
+                setnext(data.data[n-1].next);
+            }
+            setproduct(data.data.slice(0,n-1));
+            setToproduct(data.data.slice(0,n-1),cart);
             setload(false);
         }
         else if(data.statusCode==498)
@@ -298,6 +311,8 @@ function SortOnOfferfunction()
     setdata([...data])
 }
 
+//Searching section 
+
 function search(searchproduct)
 { 
     setsearchproduct(searchproduct)
@@ -412,6 +427,20 @@ function AddToCart(product_id)
 {
     dispatch(cartmethod.ADD_TO_CART(product_id))
     history('/Cart')
+}
+
+function NextPage()
+{
+    findsearchData(lowprice,highprice,selectcatagory,searchproduct,low+12,high+12);
+    setlow(low+12)
+    sethigh(high+12);
+}
+
+function PrevPage()
+{
+    findsearchData(lowprice,highprice,selectcatagory,searchproduct,low-12,high-12)
+    setlow(low-12);
+    sethigh(high-12);
 }
 
 
@@ -629,6 +658,10 @@ function AddToCart(product_id)
                         ))
                     }
                     </div>
+                </div>
+                <div className='PrevNext mt-4 mb-4'>
+                    <button className='btn btn-primary btn-sm' disabled={!prev} onClick={PrevPage}>Prev</button>
+                    <button className='btn btn-primary btn-sm mx-2' disabled={!next} onClick={NextPage}>Next</button>
                 </div>
                 <Footer/>
             </>

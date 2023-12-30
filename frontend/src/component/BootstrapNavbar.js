@@ -68,7 +68,7 @@ const BootstrapNavbar=()=>{
 
     return(
     <nav className="navbar navbar-expand-lg navbar navbar-dark bg-dark">
-        <img src='https://t4.ftcdn.net/jpg/03/71/92/67/360_F_371926762_MdmDMtJbXt7DoaDrxFP0dp9Nq1tSFCnR.jpg' style={{height:'40px',width:'40px' ,borderRadius:'50%'}} alt='Error'/>
+       <Link  to={'/Product'}><img src='https://t4.ftcdn.net/jpg/03/71/92/67/360_F_371926762_MdmDMtJbXt7DoaDrxFP0dp9Nq1tSFCnR.jpg' style={{height:'40px',width:'40px' ,borderRadius:'50%'}} alt='Error'/></Link>
         <Link className="navbar-brand mx-2" to="/">QFurniture</Link>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>

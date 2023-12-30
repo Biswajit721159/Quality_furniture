@@ -96,10 +96,9 @@ export default function WishList() {
         }
     }
     settoproduct(nums)
-    //setupdate(!update)
   }
 
-  // console.log(data)
+
   return (
   <>
      {

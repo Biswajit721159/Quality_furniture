@@ -63,8 +63,19 @@ const history=useNavigate()
         }
     }).then(responce=>responce.json())
     .then((res)=>{
-        setToproduct(res.data,cart)
-        setload(false)
+        if(res.statusCode==201)
+        {
+            setToproduct(res.data,cart)
+            setload(false)
+        }
+        else if(res.statusCode==498)
+        {
+            history('/Signin');
+        }
+        else
+        {
+            history('*');
+        }
     })
  }
 
