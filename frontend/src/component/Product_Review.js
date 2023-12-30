@@ -139,59 +139,59 @@ const Product_Review=(id)=>{
             </div>
             :
             <>
-                <div className='col1 mx-3'>
-                    <p className='reviewtextitem mt-4'><strong>{overall_rating}</strong> <AiFillStar /> Average based on <strong>{total}</strong> reviews.</p>
+                <div className='col1 mt-4'>
+                    <p className='reviewtextitem'><strong>{overall_rating}</strong> <AiFillStar /> Average based on <strong>{total}</strong> reviews.</p>
                     <div class="row">
                         <div class="side">
-                            <div className="reviewtextitem" >5 <AiFillStar /></div>
+                            <div className="reviewtextitem" >5<AiFillStar /></div>
                         </div>
                         <div class="middle">
                             <div class="bar-container">
-                            <div class="bar-5" style={{width:`${persentage_5_star}%` , height: "18px",backgroundColor: "#04AA6D"}}></div>
+                              <div class="bar" style={{width:`${persentage_5_star}%`,backgroundColor: "#04AA6D"}}></div>
                             </div>
                         </div>
                         <div class="side right">
                             <div>{number_5_star}</div>
                         </div>
                         <div class="side">
-                            <div>4 <AiFillStar /></div>
+                            <div>4<AiFillStar /></div>
                         </div>
                         <div class="middle">
                             <div class="bar-container">
-                            <div class="bar-4"  style={{width:`${persentage_4_star}%` , height: "18px",backgroundColor: "#2196F3"}}></div>
+                            <div class="bar"  style={{width:`${persentage_4_star}%` ,backgroundColor: "#2196F3"}}></div>
                             </div>
                         </div>
                         <div class="side right">
                             <div>{number_4_star}</div>
                         </div>
                         <div class="side">
-                            <div>3 <AiFillStar /></div>
+                            <div>3<AiFillStar /></div>
                         </div>
                         <div class="middle">
                             <div class="bar-container">
-                            <div class="bar-3" style={{width:`${persentage_3_star}%` , height: "18px",backgroundColor: "#00bcd4"}}></div>
+                            <div class="bar" style={{width:`${persentage_3_star}%`,backgroundColor: "#00bcd4"}}></div>
                             </div>
                         </div>
                         <div class="side right">
                             <div>{number_3_star}</div>
                         </div>
                         <div class="side">
-                            <div>2 <AiFillStar /></div>
+                            <div>2<AiFillStar /></div>
                         </div>
                         <div class="middle">
                             <div class="bar-container">
-                            <div class="bar-2" style={{width:`${persentage_2_star}%` , height: "18px",backgroundColor: "#ff9800"}}></div>
+                               <div class="bar" style={{width:`${persentage_2_star}%`,backgroundColor: "#ff9800"}}></div>
                             </div>
                         </div>
                         <div class="side right">
                             <div>{number_2_star}</div>
                         </div>
                         <div class="side">
-                            <div>1 <AiFillStar /></div>
+                            <div>1<AiFillStar /></div>
                         </div>
                         <div class="middle">
                             <div class="bar-container">
-                            <div class="bar-1" style={{width:`${persentage_1_star}%` , height: "18px",backgroundColor: "#f44336"}}></div>
+                            <div class="bar" style={{width:`${persentage_1_star}%`,backgroundColor: "#f44336"}}></div>
                             </div>
                         </div>
                         <div class="side right">
@@ -199,7 +199,7 @@ const Product_Review=(id)=>{
                         </div>
                     </div>
                 </div>
-                <div className='col21 mt-5 mx-5'>
+                <div className='col21 mt-4'>
                     <ui className="col21item1">
                         {
                             reviews_data_show!=undefined && reviews_data_show.length!=0?
@@ -214,7 +214,8 @@ const Product_Review=(id)=>{
                         <div className="col21item2">
                             <GrFormPreviousLink />
                             <GrFormNextLink />
-                        </div>}
+                        </div>
+                        }
                     </ui>
                 </div>
             </>

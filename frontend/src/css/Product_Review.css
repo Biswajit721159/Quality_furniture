@@ -9,11 +9,13 @@
     justify-content: space-around;
 }
 
-
-.side {
-    float: left;
-    width: 15%;
-    margin-top:10px;
+  .bar{
+      height: 12px;
+  }
+  .side {
+      float: left;
+      width: 12%;
+      margin-top:5px;
   }
   
   .middle {
@@ -33,7 +35,8 @@
   }
   
   .bar-container {
-    width: 100%;
+    /* width: 200px; */
+    /* border: 1px solid red; */
     background-color: #f1f1f1;
     text-align: center;
     color: white;
