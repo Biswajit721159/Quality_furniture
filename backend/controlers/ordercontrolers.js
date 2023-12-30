@@ -106,17 +106,48 @@ let getorderByLimit=async(req,res)=>{
     let upperLimit=req.params.upperLimit;
     let limit=upperLimit-lowerLimit;
     let result=await order.find({email:req.params.email}).sort({ _id: -1 }).skip(lowerLimit).limit(limit+1).exec();
-    let hasNextPage = result.length > limit;
-    let actualResult=hasNextPage ? result.slice(0, limit) : result;
+   
+    let product_id_arr = [];
+    for (let i = 0; i < result.length; i++) {
+      product_id_arr.push(result[i].product_id);
+    }
+    let nums = await get_product_by_ids(product_id_arr);
+    let actualResult = [];
+    for (let i = 0; i < result.length; i++) {
+      let obj = {
+        id: result[i]._id,
+        address: result[i].address,
+        product_id: result[i].product_id,
+        product_count: result[i].product_count,
+        payment_method: result[i].payment_method,
+        Total_rupess: result[i].Total_rupess,
+        Date: result[i].Date,
+        product_name: "",
+        newImage: [],
+        isfeedback: result[i].isfeedback,
+      };
+      for (let j = 0; j < nums.length; j++) {
+        let product_id = nums[j]._id.toString();
+        let obj_id = obj.product_id.toString();
+        if (product_id === obj_id) {
+          obj.product_name = nums[j].product_name;
+          obj.newImage = nums[j].newImage;
+        }
+      }
+      actualResult.push(obj);
+    }
+    
+    let hasNextPage = actualResult.length > limit;
+    let Result=hasNextPage ? actualResult.slice(0, limit) : actualResult;
     let hasPrevPage = lowerLimit > 0;
     let pagination= {
       'prev': hasPrevPage,
       'next': hasNextPage,
     }
-    if(actualResult.length) actualResult.push(pagination)
-    if (actualResult)
+    if(Result.length) Result.push(pagination)
+    if (Result)
     {
-      res.status(201).json(new ApiResponse(201, actualResult, "success"));
+      res.status(201).json(new ApiResponse(201, Result, "success"));
     } 
     else
     {
