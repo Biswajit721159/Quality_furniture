@@ -199,6 +199,7 @@ const Product_Review=(id)=>{
                         </div>
                     </div>
                 </div>
+                
                 <div className='col21 mt-4'>
                     <ui className="col21item1">
                         {
@@ -212,8 +213,8 @@ const Product_Review=(id)=>{
                         }
                         {reviews_data_show!=undefined && reviews_data_show.length!=0 &&
                         <div className="col21item2">
-                            <GrFormPreviousLink />
-                            <GrFormNextLink />
+                            <button className="btn btn-primary btn-sm">prev</button>
+                            <button className="btn btn-primary btn-sm">next</button>
                         </div>
                         }
                     </ui>

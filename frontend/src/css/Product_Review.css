@@ -5,8 +5,9 @@
     padding: 10px;
 }
 .col21item2{
-    display: flex;
-    justify-content: space-around;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
 }
 
   .bar{
