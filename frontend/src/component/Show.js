@@ -70,7 +70,6 @@ useEffect(()=>{
 
 function findsearchData(lowprice,highprice,selectcatagory,searchproduct,low=0,high=12)
 {
-    console.log(low,high)
     if(lowprice==null) lowprice=0;
     if(highprice==null) highprice=1000000;
     if(selectcatagory==null) selectcatagory="ALL";
