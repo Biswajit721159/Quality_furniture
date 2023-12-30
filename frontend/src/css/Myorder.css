@@ -14,12 +14,12 @@
 }
 @media only screen and (max-width: 900px) {
   .text-center {
-    font-size: 12px;
+    font-size: 15px;
   }
 }
 @media only screen and (max-width: 780px) {
   .text-center {
-    font-size: 12px;
+    font-size: 15px;
   }
   .card-img-top1 {
     height: 60px;
@@ -29,7 +29,7 @@
 }
 @media only screen and (max-width: 660px) {
   .text-center {
-    font-size: 11px;
+    font-size: 12px;
   }
   .card-img-top1 {
     height: 50px;
@@ -58,7 +58,7 @@
   
   @media only screen and (max-width: 470px) {
     .text-center {
-      font-size: 7px;
+      font-size: 8px;
     }
     .card-img-top1 {
       height: 20px;
@@ -77,6 +77,6 @@
   }
   @media only screen and (max-width: 390px) {
     .text-center {
-      font-size: 4px;
+      font-size: 6px;
     }
   }
