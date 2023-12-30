@@ -73,7 +73,8 @@ let findRatingPersentageofProduct=async(req,res)=>{
         }
     }
     let x=((number_1_star*1)+(number_2_star*2)+(number_3_star*3)+(number_4_star*4)+(number_5_star*5));
-    let y=x/total;
+    let y=0;
+    if(x) y=x/total;
     overall_rating=y.toFixed(2);
     if (x!=0) persentage_1_star=(((number_1_star/total)*100));
     if (x!=0) persentage_2_star=(((number_2_star/total)*100));

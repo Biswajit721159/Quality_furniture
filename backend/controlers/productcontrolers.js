@@ -270,5 +270,5 @@ module.exports = {
   getallProductType,
   getproductUponPriceProductTypeAndProductName,
   getproductByType,
-  TopOfferProduct
+  TopOfferProduct,
 };
