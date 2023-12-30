@@ -99,9 +99,37 @@ let updateFeedback=async(req,res)=>{
   }
 }
 
+let getorderByLimit=async(req,res)=>{
+  try
+  {
+    let lowerLimit=req.params.lowerLimit;
+    let upperLimit=req.params.upperLimit;
+    let limit=upperLimit-lowerLimit;
+    let result=await order.find({email:req.params.email}).sort({ _id: -1 }).skip(lowerLimit).limit(limit+1).exec();
+    let hasNextPage = result.length > limit;
+    let actualResult=hasNextPage ? result.slice(0, limit) : result;
+    let hasPrevPage = lowerLimit > 0;
+    let pagination= {
+      'prev': hasPrevPage,
+      'next': hasNextPage,
+    }
+    if(actualResult.length) actualResult.push(pagination)
+    if (actualResult)
+    {
+      res.status(201).json(new ApiResponse(201, actualResult, "success"));
+    } 
+    else
+    {
+      res.status(404).json(new ApiResponse(404, null, "Review does not exist"));
+    }
+  }catch{
+    res.status(500).json(new ApiResponse(500,null, "Some Error is Found"));
+  }
+}
 module.exports = {
   orderInsert,
   orderGetByEmail,
   informationById,
   updateFeedback,
+  getorderByLimit,
 };
