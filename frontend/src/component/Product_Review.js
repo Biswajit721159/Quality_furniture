@@ -12,8 +12,8 @@ const Product_Review=(id)=>{
     let userinfo=JSON.parse(localStorage.getItem('user'))
     const _id=id._id
     const history=useNavigate()
-    const [load,setload]=useState(false)
-    const [review_data,setreview_data]=useState()
+    const [loadreview,setloadreview]=useState(false)
+    const [loadrating,setloadrating]=useState(false);
     const [reviews_data_show,setreviews_data_show]=useState([])
 
     let [persentage_5_star,setpersentage_5_star]=useState(0);
@@ -30,6 +30,11 @@ const Product_Review=(id)=>{
     let [total,settotal]=useState(0);
     let [overall_rating,setoverall_rating]=useState(0); 
 
+    let [low,setlow]=useState(0);
+    let [high,sethigh]=useState(5);
+    let [prev,setprev]=useState(false);
+    let [next,setnext]=useState(false)
+
     useEffect(()=>{
         if(userinfo==null)
         {
@@ -37,14 +42,15 @@ const Product_Review=(id)=>{
         }
         else
         {
-            loadReview();
+            loadReview(0,5);
+            loadRating();
         }
     },[_id])
 
-    function loadReview()
+    function loadRating()
     {
-        setload(true)
-        fetch(`${api}/Reviews/${_id}`,{
+        setloadrating(true)
+        fetch(`${api}/Reviews/findRatingPersentageofProduct/${_id}`,{
             headers:
             {
                 Authorization:`Bearer ${userinfo.accessToken}`
@@ -52,10 +58,24 @@ const Product_Review=(id)=>{
         }).then((responce=>responce.json())).then((res)=>{
             if(res.statusCode=201)
             {
-                setreview_data(res.data);
-                Find_Review(res.data);
-                loadmore(res.data)
-                setload(false);
+                let result=res.data;
+                setpersentage_1_star(result[0].persentage_1_star);
+                setnumber_1_star(result[0].number_1_star);
+
+                setpersentage_2_star(result[1].persentage_2_star);
+                setnumber_2_star(result[1].number_2_star);
+
+                setpersentage_3_star(result[2].persentage_3_star);
+                setnumber_3_star(result[2].number_3_star);
+
+                setpersentage_4_star(result[3].persentage_4_star);
+                setnumber_4_star(result[3].number_4_star);
+
+                setpersentage_5_star(result[4].persentage_5_star);
+                setnumber_5_star(result[4].number_5_star);
+                setoverall_rating(result[5].overall_rating);
+                settotal(result[5].total);
+                setloadrating(false);
             }
             else if(res.statusCode==498)
             {
@@ -67,145 +87,134 @@ const Product_Review=(id)=>{
             }
         })
     }
-    
-    function Find_Review(review_data)
+
+    function loadReview(low,high)
     {
-        if(review_data==undefined || review_data.length==0)
-        {
-            return;
-        }
-        let a=0,b=0,c=0,d=0,e=0;
-        for(let i=0;i<review_data.length;i++)
-        {
-            if(review_data[i].rating=="1")
+        setloadreview(true)
+        fetch(`${api}/Reviews/${_id}/${low}/${high}`,{
+            headers:
             {
-                a++;
+                Authorization:`Bearer ${userinfo.accessToken}`
             }
-            else if(review_data[i].rating=="2")
+        }).then((responce=>responce.json())).then((res)=>{
+            if(res.statusCode=201)
             {
-                b++;
+                let n=res.data.length;
+                
+                if(n<5) setreviews_data_show(res.data.slice(0,n-1));
+                else setreviews_data_show(res.data.slice(0,5));
+                if(n)
+                {
+                    setprev(res.data[n-1].prev);
+                    setnext(res.data[n-1].next);
+                }
+                setloadreview(false);
             }
-            else if(review_data[i].rating=="3")
+            else if(res.statusCode==498)
             {
-                c++;
-            }
-            else if(review_data[i].rating=="4")
-            {
-                d++;
+                history('/Signin');
             }
             else
             {
-                e++;
+                history('*');
             }
-        }
-        setnumber_1_star(a);
-        setnumber_2_star(b);
-        setnumber_3_star(c);
-        setnumber_4_star(d);
-        setnumber_5_star(e);
-        let x=a+b+c+d+e;
-        let y=x/review_data.length;
-        settotal(x);
-        setoverall_rating(y)
-        if (x!=0) setpersentage_1_star(((a/x)*100));
-        if (x!=0) setpersentage_2_star(((b/x)*100));
-        if (x!=0) setpersentage_3_star(((c/x)*100));
-        if (x!=0) setpersentage_4_star(((d/x)*100));
-        if (x!=0) setpersentage_5_star(((e/x)*100));
+        })
     }
 
-    function loadmore(review_data)
+    function prevpage()
     {
-      if(review_data==undefined) return;
-      let len=reviews_data_show.length;
-      let ans=reviews_data_show;
-      for(let i=len;i<reviews_data_show.length+5 && i<review_data.length;i++)
-      {
-          ans.push(review_data[i])
-      }
-      setreviews_data_show([...ans])
-      console.log(ans);
-    //   if(ans.length<5)
-    //   {
-    //       setMessage(false)
-    //   }
+        setlow(low-5);
+        sethigh(high-5);
+        loadReview(low-5,high-5);
     }
+
+    function nextpage()
+    {
+        setlow(high);
+        sethigh(high+5);
+        loadReview(high,high+5);
+    }
+    
     return(
         <>
-        {
-            load==true?
-            <div className="Loaderitem">
-                <PulseLoader color="#16A085"  />
-            </div>
-            :
             <>
+            {
+                loadrating==true?
+                <div className="LoaderiteminReviewProduct">
+                    <PulseLoader color="#16A085"  />
+                </div>:
                 <div className='col1 mt-4'>
                     <p className='reviewtextitem'><strong>{overall_rating}</strong> <AiFillStar /> Average based on <strong>{total}</strong> reviews.</p>
-                    <div class="row">
-                        <div class="side">
+                    <div className="row">
+                        <div className="side">
                             <div className="reviewtextitem" >5<AiFillStar /></div>
                         </div>
-                        <div class="middle">
-                            <div class="bar-container">
-                              <div class="bar" style={{width:`${persentage_5_star}%`,backgroundColor: "#04AA6D"}}></div>
+                        <div className="middle">
+                            <div className="bar-container">
+                              <div className="bar" style={{width:`${persentage_5_star}%`,backgroundColor: "#04AA6D"}}></div>
                             </div>
                         </div>
-                        <div class="side right">
-                            <div>{number_5_star}</div>
+                        <div className="side right">
+                            <div className="reviewtextitem" >{number_5_star}</div>
                         </div>
-                        <div class="side">
-                            <div>4<AiFillStar /></div>
+                        <div className="side">
+                            <div className="reviewtextitem" >4<AiFillStar /></div>
                         </div>
-                        <div class="middle">
-                            <div class="bar-container">
-                            <div class="bar"  style={{width:`${persentage_4_star}%` ,backgroundColor: "#2196F3"}}></div>
+                        <div className="middle">
+                            <div className="bar-container">
+                            <div className="bar"  style={{width:`${persentage_4_star}%` ,backgroundColor: "#2196F3"}}></div>
                             </div>
                         </div>
-                        <div class="side right">
-                            <div>{number_4_star}</div>
+                        <div className="side right">
+                            <div className="reviewtextitem" >{number_4_star}</div>
                         </div>
-                        <div class="side">
-                            <div>3<AiFillStar /></div>
+                        <div className="side">
+                            <div className="reviewtextitem" >3<AiFillStar /></div>
                         </div>
-                        <div class="middle">
-                            <div class="bar-container">
-                            <div class="bar" style={{width:`${persentage_3_star}%`,backgroundColor: "#00bcd4"}}></div>
+                        <div className="middle">
+                            <div className="bar-container">
+                            <div className="bar" style={{width:`${persentage_3_star}%`,backgroundColor: "#00bcd4"}}></div>
                             </div>
                         </div>
-                        <div class="side right">
-                            <div>{number_3_star}</div>
+                        <div className="side right">
+                            <div className="reviewtextitem" >{number_3_star}</div>
                         </div>
-                        <div class="side">
-                            <div>2<AiFillStar /></div>
+                        <div className="side">
+                            <div className="reviewtextitem" >2<AiFillStar /></div>
                         </div>
-                        <div class="middle">
-                            <div class="bar-container">
-                               <div class="bar" style={{width:`${persentage_2_star}%`,backgroundColor: "#ff9800"}}></div>
+                        <div className="middle">
+                            <div className="bar-container">
+                               <div className="bar" style={{width:`${persentage_2_star}%`,backgroundColor: "#ff9800"}}></div>
                             </div>
                         </div>
-                        <div class="side right">
-                            <div>{number_2_star}</div>
+                        <div className="side right">
+                            <div className="reviewtextitem" >{number_2_star}</div>
                         </div>
-                        <div class="side">
-                            <div>1<AiFillStar /></div>
+                        <div className="side">
+                            <div className="reviewtextitem" >1<AiFillStar /></div>
                         </div>
-                        <div class="middle">
-                            <div class="bar-container">
-                            <div class="bar" style={{width:`${persentage_1_star}%`,backgroundColor: "#f44336"}}></div>
+                        <div className="middle">
+                            <div className="bar-container">
+                            <div className="bar" style={{width:`${persentage_1_star}%`,backgroundColor: "#f44336"}}></div>
                             </div>
                         </div>
-                        <div class="side right">
-                            <div>{number_1_star}</div>
+                        <div className="side right">
+                            <div className="reviewtextitem" >{number_1_star}</div>
                         </div>
                     </div>
                 </div>
-                
+            }
+            {
+               loadreview==true ? 
+               <div className="LoaderiteminReviewProduct">
+                   <PulseLoader color="#16A085"  />
+               </div>:
                 <div className='col21 mt-4'>
                     <ui className="col21item1">
                         {
                             reviews_data_show!=undefined && reviews_data_show.length!=0?
                                 reviews_data_show.map((data,ind)=>(
-                                    <li style={{margin:'2px'}}>
+                                    <li key={ind} style={{margin:'2px'}}>
                                         <span  className="reviewtextitem"><VscVerifiedFilled /> {data.rating} <AiFillStar /> {data.review}</span>
                                     </li>
                                 ))   
@@ -213,14 +222,14 @@ const Product_Review=(id)=>{
                         }
                         {reviews_data_show!=undefined && reviews_data_show.length!=0 &&
                         <div className="col21item2">
-                            <button className="btn btn-primary btn-sm">prev</button>
-                            <button className="btn btn-primary btn-sm">next</button>
+                            <button className="btn btn-primary btn-sm" disabled={!prev} onClick={prevpage}>prev</button>
+                            <button className="btn btn-primary btn-sm" disabled={!next} onClick={nextpage}>next</button>
                         </div>
                         }
                     </ui>
                 </div>
+            }
             </>
-        }
         </>
     )
 }

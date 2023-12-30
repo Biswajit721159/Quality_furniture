@@ -67,57 +67,57 @@ const BootstrapNavbar=()=>{
     }    
 
     return(
-    <nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar navbar-dark bg-dark">
         <img src='https://t4.ftcdn.net/jpg/03/71/92/67/360_F_371926762_MdmDMtJbXt7DoaDrxFP0dp9Nq1tSFCnR.jpg' style={{height:'40px',width:'40px' ,borderRadius:'50%'}} alt='Error'/>
-        <Link class="navbar-brand mx-2" to="/">QFurniture</Link>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+        <Link className="navbar-brand mx-2" to="/">QFurniture</Link>
+        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarText">
+        <div className="collapse navbar-collapse" id="navbarText">
            {
             user==null?
             <>
-                <ul class="navbar-nav mr-auto">
+                <ul className="navbar-nav mr-auto">
                 </ul>
-                <span class="navbar-text">
+                <span className="navbar-text">
                     <Link to='/Register'><button className='btn btn-info btn-sm'>Register</button></Link>
                </span>
-               <span class="navbar-text mx-3">
+               <span className="navbar-text mx-3">
                     <Link to='/Signin'><button className='btn btn-info btn-sm' >Login</button></Link>
                </span>
             </>    
             :
             <>
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <Link class="nav-link" to="/Product">Home <span class="sr-only">(current)</span></Link>
+                <ul className="navbar-nav mr-auto">
+                    <li className="nav-item active">
+                        <Link className="nav-link" to="/Product">Home <span className="sr-only">(current)</span></Link>
                     </li>
-                    {/* <li class="nav-item">
-                        <a class="nav-link" href="#">Features</a>
+                    {/* <li className="nav-item">
+                        <a className="nav-link" href="#">Features</a>
                     </li> */}
                 </ul>
-                <span class="navbar-text mr-3">
-                    <div class="dropdown">
-                        <button class="btn btn-info btn-sm dropdown-toggle navbartext" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span className="navbar-text mr-3">
+                    <div className="dropdown">
+                        <button className="btn btn-info btn-sm dropdown-toggle navbartext" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {user.user.name}
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <Link class="dropdown-item" style={{color:'black'}} to="/Profile"><CgProfile /> Profile</Link>
-                            <Link class="dropdown-item" style={{color:'black'}} to="/Myorder"><IoReorderFourOutline /> Myorder</Link>
-                            <Link class="dropdown-item" style={{color:'black'}} to={'/Register'} onClick={logout}><IoIosLogOut /> Logout</Link>
+                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <Link className="dropdown-item" style={{color:'black'}} to="/Profile"><CgProfile /> Profile</Link>
+                            <Link className="dropdown-item" style={{color:'black'}} to="/Myorder"><IoReorderFourOutline /> Myorder</Link>
+                            <Link className="dropdown-item" style={{color:'black'}} to={'/Register'} onClick={logout}><IoIosLogOut /> Logout</Link>
                         </div>
                     </div>
                 </span>
-                <span class="navbar-text">
+                <span className="navbar-text">
                     <Link className='navbarTextItem' to={'/Cart'}>{cartdata}</Link>
                 </span>
-                <span class="navbar-text">
+                <span className="navbar-text">
                     <Link className='carticon' to={'/Cart'}><FaShoppingCart/></Link>
                 </span>
-                <span class="navbar-text mx-4">
+                <span className="navbar-text mx-4">
                     <Link style={{color:'red'}} className='carticon' to={'/Wishlist'}><FaHeart/></Link>
                 </span>
-                <span class="navbar-text mx-4">
+                <span className="navbar-text mx-4">
                     {
                     mode=="light"?
                     <li><button className='btn btn-light rounded-circle' onClick={changecolor}><MdOutlineDarkMode/></button></li>
