@@ -175,17 +175,21 @@ let getproductUponPriceProductTypeAndProductName = async (req, res) => {
     let high = req.params.high;
     let catagory = req.params.catagory;
     let product_name = req.params.product_name;
+    let LowerLimit = req.params.LowerLimit;
+    let HighLimit = req.params.HighLimit;
+    let Limit = HighLimit - LowerLimit;
     let result = null;
+
     if (product_name == "none") {
       if (catagory == "ALL") {
         result = await product.find({
           price: { $gte: low, $lte: high },
-        });
+        }).skip(LowerLimit).limit(Limit+1).exec();
       } else {
         result = await product.find({
           price: { $gte: low, $lte: high },
           product_type: catagory,
-        });
+        }).skip(LowerLimit).limit(Limit+1).exec();
       }
     } else {
       if (catagory == "ALL") {
@@ -195,7 +199,7 @@ let getproductUponPriceProductTypeAndProductName = async (req, res) => {
             { product_type: { $regex: product_name } },
             { product_name: { $regex: product_name } },
           ],
-        });
+        }).skip(LowerLimit).limit(Limit+1).exec();
       } else {
         result = await product.find({
           price: { $gte: low, $lte: high },
@@ -204,15 +208,27 @@ let getproductUponPriceProductTypeAndProductName = async (req, res) => {
             { product_type: { $regex: product_name } },
             { product_name: { $regex: product_name } },
           ],
-        });
+        }).skip(LowerLimit).limit(Limit+1).exec();
       }
     }
-    
-    if (result) res.status(201).json(new ApiResponse(201, result, "success"));
+
+    let hasNextPage = result.length > Limit;
+    let actualResult=hasNextPage ? result.slice(0, Limit) : result;
+    let hasPrevPage = LowerLimit > 0;
+    let pagination= {
+      'prev': hasPrevPage,
+      'next': hasNextPage,
+    }
+    if(actualResult.length) actualResult.push(pagination)
+    if (actualResult)
+    {
+      res.status(201).json(new ApiResponse(201, actualResult, "success"));
+    } 
     else
-      res
-        .status(404)
-        .json(new ApiResponse(404, null, "product does not exist"));
+    {
+      res.status(404).json(new ApiResponse(404, null, "Review does not exist"));
+    }
+
   } catch {
     res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
   }
@@ -231,31 +247,34 @@ let getallProductType = async (req, res) => {
   }
 };
 
-let getproductByType=async(req,res)=>{
-  try
-  {
-    let result = await product.find({ product_type:req.params.product_type  });
+let getproductByType = async (req, res) => {
+  try {
+    let result = await product.find({ product_type: req.params.product_type });
     if (result) res.status(201).json(new ApiResponse(201, result, "success"));
     else
-       res.status(404).json(new ApiResponse(404, null, "product does not exist"));
-  }catch{
+      res
+        .status(404)
+        .json(new ApiResponse(404, null, "product does not exist"));
+  } catch {
     res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
   }
-}
+};
 
-let TopOfferProduct=async(req,res)=>{
-  try{
+let TopOfferProduct = async (req, res) => {
+  try {
     const result = await product.aggregate([
       { $sort: { offer: -1 } },
-      { $limit: parseInt(req.params.numberofProduct) }
+      { $limit: parseInt(req.params.numberofProduct) },
     ]);
     if (result) res.status(201).json(new ApiResponse(201, result, "success"));
     else
-       res.status(404).json(new ApiResponse(404, null, "product does not exist"));
-  }catch{
-     res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
+      res
+        .status(404)
+        .json(new ApiResponse(404, null, "product does not exist"));
+  } catch {
+    res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
   }
-}
+};
 
 module.exports = {
   get_product_by_ids,
