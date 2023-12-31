@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { BrowserRouter as Router, Route, Link, useLocation, useParams, useSearchParams, useAsyncError } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, useSearchParams } from 'react-router-dom';
 import '../css/Main_page.css'
 import {AiFillStar } from "react-icons/ai";
 import {FaHeart, FaSketch} from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { PulseLoader } from 'react-spinners';
 import {useDispatch,useSelector} from 'react-redux'
-import { GrFormPrevious } from "react-icons/gr";
 import {cartmethod} from '../redux/CartSlice'
 import Footer from '../component/Footer'
+import {searchmethod} from '../redux/SearchSlice'
 export default function Show() {
 
 const dispatch=useDispatch()
@@ -29,6 +29,7 @@ const [pricerange2000to3000,setpricerange2000to3000]=useState(false)
 const [pricerange3000to4000,setpricerange3000to4000]=useState(false)
 const [pricerange4000toUp,setpricerange4000toUp]=useState(false)
 
+let value=useSelector((state)=>state.Search_Name.search_Name)
 const [ALL,setALL]=useState(false)
 
 const [lowprice,setlowprice]=useState(0)
@@ -50,22 +51,21 @@ let [next,setnext]=useState(false);
 const api = process.env.REACT_APP_API
 
  
-
 useEffect(()=>{
     loadCatagory();
-    let lowprice=queryParameters.get('lowprice');
-    let highprice=queryParameters.get('highprice');
-    let selectcatagory=queryParameters.get('selectcatagory');
-    let searchproduct=queryParameters.get('product_name');
+    let lowprice=queryParameters.get('lowprice')!=null?queryParameters.get('lowprice'):0;
+    let highprice=queryParameters.get('highprice')!=null?queryParameters.get('highprice'):10000000;
+    let selectcatagory=queryParameters.get('selectcatagory')!=null?queryParameters.get('selectcatagory'):'ALL';
     if(userinfo==null)
     {
         history('/Register')
     }
     else 
     {
-        findsearchData(lowprice,highprice,selectcatagory,searchproduct);
+        history(`?lowprice=${lowprice}&highprice=${highprice}&selectcatagory=${selectcatagory}&product_name=${value}`);
+        findsearchData(lowprice,highprice,selectcatagory,value);
     }
-},[])
+},[value])
 
 
 function findsearchData(lowprice,highprice,selectcatagory,searchproduct,low=0,high=12)
@@ -104,7 +104,7 @@ function findsearchData(lowprice,highprice,selectcatagory,searchproduct,low=0,hi
             history('*');
         }
        },(error)=>{        
-        history('*')
+            history('*')
        })
 }
 
@@ -312,20 +312,6 @@ function SortOnOfferfunction()
 
 //Searching section 
 
-function search(searchproduct)
-{ 
-    setsearchproduct(searchproduct)
-    history(`?lowprice=${lowprice}&highprice=${highprice}&selectcatagory=${selectcatagory}&product_name=${searchproduct}`)
-    findsearchData(lowprice,highprice,selectcatagory,searchproduct)
-}
-
-function clearsearch()
-{
-    setsearchproduct("");
-    history(`?lowprice=${lowprice}&highprice=${highprice}&selectcatagory=${selectcatagory}&product_name=${''}`)
-    findsearchData(lowprice,highprice,selectcatagory,'')
-}
-
 function cametocheck(lowprice,highprice)
 {
     history(`?lowprice=${lowprice}&highprice=${highprice}&selectcatagory=${selectcatagory}&product_name=${searchproduct}`)
@@ -353,6 +339,10 @@ function markvisited(lowprice,highprice,selectcatagory,searchproduct)
     if(selectcatagory=="ALL")
     {
         setALL(true)
+    }
+    else if(selectcatagory!="ALL")
+    {
+        setALL(false)
     }
     if(lowprice>=0 && highprice<=1000)
     {
@@ -418,6 +408,7 @@ function clearcatagory()
 
 function backTOHome()
 {
+    dispatch(searchmethod.CLEAR_SEARCH(''))
     history(`?lowprice=${0}&highprice=${1000000}&selectcatagory=${'ALL'}&product_name=${''}`)
     findsearchData(0,1000000,'ALL','')
 }
@@ -455,7 +446,7 @@ function PrevPage()
                 <div className='allproduct'> 
 
                     <div  className='subproduct'>
-                        <div className='subproductone'>
+                        {/* <div className='subproductone'>
                             <input className="form-control" id='inputform' value={searchproduct} name='search' onChange={(e)=>{setsearchproduct(e.target.value)}}  type="search" placeholder="Search product" aria-label="Search"/>
                             <div className='subproductform'>
                                <button className="btn btn-success btn-sm mt-2 button" onClick={()=>search(searchproduct)} type="submit">Search</button>
@@ -464,7 +455,7 @@ function PrevPage()
                                  :<button className="btn btn-secondary btn-sm mt-2 card-text button" onClick={clearsearch}  type="submit">Clear</button>
                                }
                             </div>
-                        </div>
+                        </div> */}
                         <div className='subproductone'>
                             <div className='subproductform'>
                                 <h6 className='card-text'>Price</h6>

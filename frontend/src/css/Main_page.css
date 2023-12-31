@@ -127,13 +127,6 @@
     .button{
         font-size: 6px;
     }
-    #inputform::placeholder{
-        font-size: 8px;
-    }
-    #inputform{
-        height: 30px;
-        width: 130px;
-    }
 }
 
 @media only screen and (max-width: 980px ) {
@@ -161,10 +154,6 @@
         height: auto;
         width: 150px;
     }
-    #inputform{
-        height: 25px;
-        width: 110px;
-    }
 }
 @media only screen and (max-width: 860px ) {
     .card-text{
@@ -178,10 +167,6 @@
         border-radius: 10px;
         height: auto;
         width: 130px;
-    }
-    #inputform{
-        height: 20px;
-        width: 105px;
     }
 }
 
@@ -205,10 +190,6 @@
         height: auto;
         width: 110px;
     }
-    #inputform{
-        height: 20px;
-        width: 90px;
-    }
 }
 
 @media only screen and (max-width: 550px ) {
@@ -230,10 +211,6 @@
         border-radius: 10px;
         height: auto;
         width: 110px;
-    }
-    #inputform{
-        height: 20px;
-        width: 90px;
     }
 }
 
@@ -257,10 +234,6 @@
         height: auto;
         width: 100px;
     }
-    #inputform{
-        height: 20px;
-        width: 80px;
-    }
 }
 
 @media only screen and (max-width: 395px ) {
@@ -282,9 +255,5 @@
         border-radius: 10px;
         height: auto;
         width: 100px;
-    }
-    #inputform{
-        height: 20px;
-        width: 80px;
     }
 }

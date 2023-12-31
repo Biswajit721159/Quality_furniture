@@ -123,6 +123,10 @@ export default function Myorder() {
              :
             data!=undefined && data.length!=0 ?
             <>   
+                {/* {
+                    colormode=='white'?<button className='btn btn-light rounded-circle mx-2'onClick={changecolor}><MdOutlineDarkMode/></button>
+                    :<button className='btn btn-dark rounded-circle mx-2'onClick={changecolor}><MdOutlineDarkMode/></button>
+                } */}
                 <table className="table" style={{backgroundColor:colormode}}>
                     <thead>
                         <tr>
@@ -131,12 +135,6 @@ export default function Myorder() {
                             <th className='text-center' scope="col">Date</th>
                             <th className='text-center' scope="col">Address</th>
                             <th className='text-center' scope="col">Feedback</th>
-                            <th>
-                                {
-                                colormode=='white'?<button className='btn btn-light rounded-circle mx-2 text-center' onClick={changecolor}><MdOutlineDarkMode/></button>
-                                :<button className='btn btn-dark rounded-circle mx-2 text-center' onClick={changecolor}><MdOutlineDarkMode/></button>
-                                }
-                            </th>    
                         </tr>
                     </thead>
                     {
@@ -149,14 +147,30 @@ export default function Myorder() {
                                                 {/* <Link to={`/Product/${item.product_id}`}>
                                                     <img className="card-img-top1" src={item.newImage[0]} alt="Card image cap"/>
                                                 </Link> */}
-                                                <Link to={`/Product/${item.product_id}`} style={{textDecoration:'none'}}><p className='text-center mt-1'>{item.product_name} X {item.product_count}</p></Link>
+                                                <Link to={`/Product/${item.product_id}`} style={{textDecoration:'none'}}>
+                                                    <p className='text-center mt-1'>{item.product_name} X {item.product_count}</p>
+                                                </Link>
                                             </div>
                                         </td>
                                         <td className='text-center'>₹{item.Total_rupess}</td>
                                         <td className='text-center'>{item.Date}</td>
-                                        <td onClick={()=>{showaddress(item.address)}}><button type="button" className="btn btn-default text-center btn-sm">Show Address</button></td>
-                                        {item.isfeedback?<td><Link to={`/${item.id}/${item.product_id}/Reviews`}><button className='btn btn-warning btn-sm text-center' disabled>Already Given</button></Link></td>:
-                                        <td><Link to={`/${item.id}/${item.product_id}/Reviews`}><button className='btn btn-primary btn-sm text-center'>Give Feedback</button></Link></td>}
+                                        <td className='text-center' onClick={()=>{showaddress(item.address)}}>
+                                            <button type="button" className="btn btn-default btn-sm text-center">Show Address</button>
+                                        </td>
+                                        {
+                                        item.isfeedback?
+                                            <td className='text-center'>
+                                                <Link to={`/${item.id}/${item.product_id}/Reviews`}>
+                                                    <button className='btn btn-warning btn-sm text-center' disabled>Already Given</button>
+                                                </Link>
+                                            </td>
+                                            :
+                                            <td className='text-center'>
+                                                <Link to={`/${item.id}/${item.product_id}/Reviews`}>
+                                                    <button className='btn btn-primary btn-sm text-center'>Give Feedback</button>
+                                                </Link>
+                                            </td>
+                                        }
                                     </tr>
                                 ))
                             }

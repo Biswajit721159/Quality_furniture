@@ -3,10 +3,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import loader from "../images/loader.gif"
 import {AiFillStar } from "react-icons/ai";
 import { PulseLoader } from 'react-spinners';
+import {cartmethod} from '../redux/CartSlice'
+import {useDispatch,useSelector} from 'react-redux'
 const api = process.env.REACT_APP_API
-
 export default function WishList() {
 
+  const dispatch=useDispatch()
   let userinfo=JSON.parse(localStorage.getItem('user'))
   let product=JSON.parse(localStorage.getItem('Wishlist'))
   const [data,setdata]=useState([])
@@ -97,78 +99,81 @@ export default function WishList() {
     }
     settoproduct(nums)
   }
+  
+  function AddToCart(product_id)
+  {
+      dispatch(cartmethod.ADD_TO_CART(product_id))
+      history('/Cart')
+  }
 
 
   return (
   <>
      {
        (data && data.length !=0) ?
-      <div className='container align-items-center  mx-5 row'>
+      <div className='product'>
          { data.map((item,ind)=>(
-               <div key={ind} className="card mx-4 mt-4" style={{width: "18rem", height:"26rem",backgroundColor:"#D6DBDF"}}>
+               <div key={ind} className="maincard mt-2">
                    <Link to={`/Product/${item._id}`}>
-                       <img className="card-img-top" src={item.newImage[0]} style={{height:"200px",width:"287px"}} alt="Card image cap"/>
+                       <img className="card-img-top" src={item.newImage[0]}  alt="Card image cap"/>
                    </Link>
                    <div className="card-body">
                        <h6 className="card-title">{item.product_name}</h6>
                        <div className="row">
                            <div className="container col">
-                             <h5 className="card-text" style={{color:'orange'}}>{item.offer}% OFF</h5>
+                             <h6 className="card-text" style={{color:'orange'}}>{item.offer}% OFF</h6>
                            </div>
                            <div className="container col">
-                             <h5 className="card-text" style={{color:'gray'}}><s>₹{item.price}</s></h5> 
+                             <h6 className="card-text" style={{color:'gray'}}><s>₹{item.price}</s></h6> 
                            </div>
                        </div>
                        <div className='row'>
-                       <div className='col'>
+                            <div className='col'>
                                 {
-                                    parseInt(item.rating)==0?<button className='btn btn-secondary btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    parseInt(item.rating)==0?<div className="card-text" style={{color:"black"}}>{item.rating}<AiFillStar /></div>
                                     :
-                                    parseInt(item.rating)==1?<button className='btn btn-danger btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    parseInt(item.rating)==1?<div className="card-text" style={{color:"tomato"}}>{item.rating}<AiFillStar /></div>
                                     :
-                                    parseInt(item.rating)==2?<button className='btn btn-info btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    parseInt(item.rating)==2?<div className="card-text" style={{color:"red"}}>{item.rating}<AiFillStar /></div>
                                     :
-                                    parseInt(item.rating)==3?<button className='btn btn-warning btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    parseInt(item.rating)==3?<div className="card-text" style={{color:"#DC7633"}}>{item.rating}<AiFillStar /></div>
                                     :
-                                    parseInt(item.rating)==4?<button className='btn btn-primary btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    parseInt(item.rating)==4?<div className="card-text" style={{color:"#28B463"}}>{item.rating}<AiFillStar /></div>
                                     :
-                                    parseInt(item.rating)==5?<button className='btn btn-success btn-sm '>{item.rating}  <AiFillStar /></button>
+                                    parseInt(item.rating)==5?<div className="card-text" style={{color:"green"}}>{item.rating}<AiFillStar /></div>
                                     :""
                                 }
                             </div>
                             <div className=" col">
-                                    <h5 className="card-text" style={{color:'tomato'}}>₹{(item.price-((item.price*item.offer)/100)).toFixed(2)}</h5>
+                                    <h6 className="card-text" style={{color:'tomato'}}>₹{(item.price-((item.price*item.offer)/100)).toFixed(2)}</h6>
                             </div>
                        </div>
                        {
                            item.total_number_of_product==0?
                            <div className=" row">
                                <div className="col">
-                                  <h5 className="card-text" style={{color:'lightgray'}}>Closed</h5>
+                                   <h6 className="card-text" style={{color:'tomato'}}>closed</h6>
                                </div>
                                <div className='col'>
-                                   {
-                                   item.total_number_of_product!=0?<strong>{item.total_number_of_product} Left</strong>:<strong style={{color:"#E2E2F4"}}>{item.total_number_of_product} Left</strong>
-                                   }
+                                   <h6 className="card-text">{item.total_number_of_product} left</h6>
                                </div>
                            </div>
                            :
                            <div className="row">
                                <div className=" col">
-                                 <h5 className="card-text" style={{color:'green'}}>Available</h5>
+                                   <h6 className="card-text" style={{color:'green'}}>Available</h6>
                                </div>
                                <div className='col'>
                                    {
-                                   item.total_number_of_product!=0?<strong>{item.total_number_of_product} Left</strong>:<strong style={{color:"#E2E2F4"}}>{item.total_number_of_product} Left</strong>
+                                   item.total_number_of_product!=0?<h6 className="card-text">{item.total_number_of_product} left</h6>:<h6 className="card-text" style={{color:"#E2E2F4"}}>{item.total_number_of_product} left</h6>
                                    }
                                </div>
                            </div>
                        }
-                       <div className="card-body">
                            <div className='row'>
-                               <div className='col'><button className="btn btn-danger" onClick={()=>removeToWishlist(item._id)}>Remove</button></div>
+                               <div className='col'><button className="btn btn-primary btn-danger btn-sm" onClick={()=>removeToWishlist(item._id)}>Cut</button></div>
+                               <div className='col'><button className="btn btn-primary btn-sm" onClick={()=>AddToCart(item._id)} >Add</button></div>
                            </div>
-                       </div>
                    </div>
                </div>
            ))

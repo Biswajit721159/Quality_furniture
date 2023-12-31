@@ -11,6 +11,9 @@ const SearchSlice = createSlice({
     SET_SEARCH: (state,action) => {
         state.search_Name = action.payload;
     },
+    CLEAR_SEARCH:(state,action)=>{
+      state.search_Name=""
+    }
   },
 })
 

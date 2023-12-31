@@ -9,7 +9,7 @@ import { GiLoveHowl } from "react-icons/gi";
 import { IoReorderFourOutline } from "react-icons/io5";
 import {useSelector} from 'react-redux'
 import '../css/BootstrapNavbar.css'
-
+import Search from './Search';
 const BootstrapNavbar=()=>{
 
     const history=useNavigate();
@@ -96,7 +96,19 @@ const BootstrapNavbar=()=>{
                         <a className="nav-link" href="#">Features</a>
                     </li> */}
                 </ul>
-                <span className="navbar-text mr-3">
+                <span>
+                    <Search/>
+                </span>
+                <span className="navbar-text mx-4">
+                    <Link style={{color:'red'}} className='carticon' to={'/Wishlist'}><FaHeart/></Link>
+                </span>
+                <span className="navbar-text">
+                    <Link className='navbarTextItem' to={'/Cart'}>{cartdata}</Link>
+                </span>
+                <span className="navbar-text">
+                    <Link className='carticon' to={'/Cart'}><FaShoppingCart/></Link>
+                </span>
+                <span className="navbar-text mr-3 mx-2">
                     <div className="dropdown">
                         <button className="btn btn-info btn-sm dropdown-toggle navbartext" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {user.user.name}
@@ -107,15 +119,6 @@ const BootstrapNavbar=()=>{
                             <Link className="dropdown-item" style={{color:'black'}} to={'/Register'} onClick={logout}><IoIosLogOut /> Logout</Link>
                         </div>
                     </div>
-                </span>
-                <span className="navbar-text">
-                    <Link className='navbarTextItem' to={'/Cart'}>{cartdata}</Link>
-                </span>
-                <span className="navbar-text">
-                    <Link className='carticon' to={'/Cart'}><FaShoppingCart/></Link>
-                </span>
-                <span className="navbar-text mx-4">
-                    <Link style={{color:'red'}} className='carticon' to={'/Wishlist'}><FaHeart/></Link>
                 </span>
                 <span className="navbar-text mx-4">
                     {

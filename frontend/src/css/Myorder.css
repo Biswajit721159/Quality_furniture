@@ -1,7 +1,4 @@
-/* .card123 {
-  width: 5rem;
-  height: 5rem;
-} */
+
 .card-img-top1 {
   height: 100px;
   width: 100px;
@@ -12,11 +9,13 @@
     font-size: 15px;
   }
 }
+
 @media only screen and (max-width: 900px) {
   .text-center {
     font-size: 15px;
   }
 }
+
 @media only screen and (max-width: 780px) {
   .text-center {
     font-size: 15px;
@@ -68,7 +67,7 @@
 
   @media only screen and (max-width: 420px) {
     .text-center {
-      font-size: 6px;
+      font-size: 7px;
     }
     .card-img-top1 {
       height: 15px;
@@ -78,5 +77,11 @@
   @media only screen and (max-width: 390px) {
     .text-center {
       font-size: 6px;
+    }
+  }
+
+  @media only screen and (max-width: 310px) {
+    .text-center {
+      font-size: 5px;
     }
   }
