@@ -24,6 +24,7 @@ const [disabled,setdisabled]=useState(false)
 const [load,setload]=useState(false)
 const [product,setproduct]=useState(null)
 
+console.log(userinfo)
 const history=useNavigate()
 
  useEffect(()=>{
@@ -63,6 +64,7 @@ const history=useNavigate()
         }
     }).then(responce=>responce.json())
     .then((res)=>{
+        console.log(res)
         if(res.statusCode==201)
         {
             setToproduct(res.data,cart)
