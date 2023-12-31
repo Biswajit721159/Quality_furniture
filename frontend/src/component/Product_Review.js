@@ -79,6 +79,7 @@ const Product_Review=(id)=>{
             }
             else if(res.statusCode==498)
             {
+                localStorage.removeItem('user');
                 history('/Signin');
             }
             else
@@ -112,6 +113,7 @@ const Product_Review=(id)=>{
             }
             else if(res.statusCode==498)
             {
+                localStorage.removeItem('user');
                 history('/Signin');
             }
             else

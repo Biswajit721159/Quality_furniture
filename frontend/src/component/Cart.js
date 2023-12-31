@@ -64,7 +64,6 @@ const history=useNavigate()
         }
     }).then(responce=>responce.json())
     .then((res)=>{
-        console.log(res)
         if(res.statusCode==201)
         {
             setToproduct(res.data,cart)
@@ -72,6 +71,7 @@ const history=useNavigate()
         }
         else if(res.statusCode==498)
         {
+            localStorage.removeItem('user');
             history('/Signin');
         }
         else

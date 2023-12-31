@@ -48,7 +48,7 @@ function findOrder_id()
                 else if(res.statusCode==498)
                 {
                     localStorage.removeItem('user');
-                    history('/Login')
+                    history('/Signin')
                 }
                 else if(res.statusCode==404 || res.statusCode==500)
                 {
@@ -117,7 +117,7 @@ function checkreviews()
        seterrormessreviews("*Review is Vary Less")
        return false;
    }
-   else if(reviews.length<60)
+   else if(reviews.length>60)
    {
       seterrorreviews(true)
       seterrormessreviews("*Review is Vary High")

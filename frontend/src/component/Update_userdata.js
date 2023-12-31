@@ -56,7 +56,7 @@ export default function Update_userdata() {
           else if(res.statusCode==498)
           {
             localStorage.removeItem('user');
-            history('/Login');
+            history('/Signin');
           }
           else
           {
@@ -64,6 +64,7 @@ export default function Update_userdata() {
           }
       })
   }
+  
   function checkforname(s)
   {
     var regex = /^[a-zA-Z ]{2,30}$/;
@@ -121,7 +122,7 @@ export default function Update_userdata() {
           else if(res.statusCode==498)
           {
             localStorage.removeItem('user');
-            history('/Login');
+            history('/Signin');
           }
           else
           {

@@ -15,6 +15,7 @@ const Search=()=>{
     }
     function Submit()
     {
+        history('/Product')
         dispatch(searchmethod.SET_SEARCH(search));
     }
     return(
