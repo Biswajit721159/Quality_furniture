@@ -2,14 +2,17 @@ import React, { useState } from "react";
 import '../css/Search.css'
 import { useDispatch,useSelector } from "react-redux";
 import {searchmethod} from '../redux/SearchSlice'
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 const Search=()=>{
     const [search,setsearch]=useState('');
     const dispatch=useDispatch();
     let value=useSelector((state)=>state.Search_Name.search_Name)
     const history=useNavigate()
+    const location = useLocation();
     function changesearch(e)
     {
+        if(location.pathname!='/Product') history('/Product')
         dispatch(searchmethod.SET_SEARCH(e.target.value));
         setsearch(e.target.value)
     }

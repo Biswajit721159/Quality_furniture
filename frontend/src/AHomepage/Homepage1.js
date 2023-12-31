@@ -17,7 +17,7 @@ const Homepage1=()=>{
     useEffect(()=>{
         let x=setTimeout(() => {
             next()
-        }, 2000);
+        }, 3000);
         return()=>{
             clearInterval(x);
         }
@@ -41,7 +41,7 @@ const Homepage1=()=>{
                     ))
                 }
             </div>
-    </div>
+        </div>
     )
 }
 export default Homepage1

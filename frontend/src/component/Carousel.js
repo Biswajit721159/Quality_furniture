@@ -9,18 +9,31 @@ const Carousel=(props)=>{
     let data=props.data;
     let message=props.message;
     const [low,setlow]=useState(0);
-    const [high,sethigh]=useState(4);
+    const [high,sethigh]=useState(data.length>=5?4:data.length);
+    const [prev,setprev]=useState(false);
+    const [next,setnext]=useState(data.length>=6?true:false);
+
 
     function Increment()
     {
-        if(high==data.length-1) return;
+        if(high==data.length-1)
+        {
+            setnext(false)
+            return
+        }
+        setprev(true)
         setlow(low+1)
         sethigh(high+1)
     }
 
     function Decrement()
     {
-        if(low==0) return
+        if(low==0)
+        {
+            setprev(false);
+            return;
+        }
+        setnext(true)
         sethigh(high-1)
         setlow(low-1)
     }
@@ -31,18 +44,18 @@ const Carousel=(props)=>{
             <div className="carousel">
                 {data && data.map((item,ind)=>(
                     <div key={ind} >
-                    { ind>=low && ind<=high && high-low==4 && 
-                        <div key={ind} >
+                    { ind>=low && ind<=high && 
+                        <div>
                             <Link to={`/Product/${item._id}`}><img  src={item.newImage[0]} className="imgs" alt="Error"/></Link>
                         </div>
                     }
                     </div>
                 ))}
             </div>
-        {data && 
+        {data.length>=6 && 
             <div className="Arrowleftright">
-                <FaAngleLeft className="Decrement" onClick={Decrement} />
-                {(high-low)==4 &&<FaAngleRight  className="Increment"  onClick={Increment}/>}
+                <button className=" btn btn-primary btn-sm" disabled={!prev} onClick={Decrement}>Prev</button>
+                <button  className="btn btn-primary btn-sm" disabled={!next}  onClick={Increment}>Next</button>
             </div>
         }    
     </>

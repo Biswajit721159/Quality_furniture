@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, json, useNavigate } from 'react-router-dom'
-import {AiFillStar } from "react-icons/ai";
-import {FaHeart} from 'react-icons/fa';
 import { PulseLoader ,BeatLoader } from 'react-spinners';
-import Error from '../component/Error'
 import {cartmethod} from '../redux/CartSlice'
 import {useDispatch,useSelector} from 'react-redux'
 import { GrAdd } from "react-icons/gr";
@@ -24,7 +21,6 @@ const [disabled,setdisabled]=useState(false)
 const [load,setload]=useState(false)
 const [product,setproduct]=useState(null)
 
-console.log(userinfo)
 const history=useNavigate()
 
  useEffect(()=>{
