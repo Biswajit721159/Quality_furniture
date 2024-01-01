@@ -419,6 +419,13 @@ function AddToCart(product_id)
     history('/Cart')
 }
 
+function ClearAllFilter()
+{
+    dispatch(searchmethod.CLEAR_SEARCH(''))
+    history(`?lowprice=${0}&highprice=${1000000}&selectcatagory=${'ALL'}&product_name=${''}`)
+    findsearchData(0,1000000,'ALL','')
+}
+
 function NextPage()
 {
     findsearchData(lowprice,highprice,selectcatagory,searchproduct,low+12,high+12);
@@ -432,6 +439,7 @@ function PrevPage()
     setlow(low-12);
     sethigh(high-12);
 }
+
 
 
   return (
@@ -456,6 +464,7 @@ function PrevPage()
                                }
                             </div>
                         </div> */}
+                        <button className='btn btn-primary mx-3 btn-sm' onClick={ClearAllFilter}>Clear All Filter</button>
                         <div className='subproductone'>
                             <div className='subproductform'>
                                 <h6 className='card-text'>Price</h6>

@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
 import loader from "../images/loader.gif"
 import { PulseLoader } from 'react-spinners';
+import '../css/Reviews.css'
 const api = process.env.REACT_APP_API
 
 
@@ -225,35 +226,33 @@ function submit()
         </div>
       :
         <div>
-            <div className="container mt-3">
-            <div className="col-md-4 mt-3"><h3>Reviews Form</h3></div>
-            <div className="col-md-4 mt-3">
-              <textarea
-                type="textarea"
-                className="form-control"
-                placeholder="Write Your Reviews"
-                value={reviews}
-                onChange={(e)=>setreviews(e.target.value)}
-                required
-              />
-              {errorreviews?<label  style={{color:"red"}}>{errormessreviews}</label>:""}
-            </div>
-            <div className="col-md-4 mt-3">
-              <select className="form-control" value={rating} onChange={(e)=>setrating(e.target.value)}  >
-              <option>Over All Rating out of 5</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-              </select>
-              {errorrating?<label  style={{color:"red"}}>{errormessrating}</label>:""}
-            </div>
-            <div className="col-md-3 mt-4">
-              <button className="btn btn-primary" disabled={disabled} type="submit" onClick={submit}>
-                {button}
-              </button>
-            </div>
+            <div className="Reviewsform mt-3">
+                <h5>Reviews Form</h5>
+                
+                  <textarea
+                    type="textarea"
+                    className="Reviewformtextarea-control"
+                    placeholder="Write Your Reviews"
+                    value={reviews}
+                    onChange={(e)=>setreviews(e.target.value)}
+                    required
+                  />
+                  {errorreviews?<label  style={{color:"red"}}>{errormessreviews}</label>:""}
+                
+                  <select className="Reviewselectform-control" value={rating} onChange={(e)=>setrating(e.target.value)}  >
+                    <option>Over All Rating out of 5</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+                  {errorrating?<label  style={{color:"red"}}>{errormessrating}</label>:""}
+                
+                  <button className="btn btn-info  mt-3 btn-sm" disabled={disabled} type="submit" onClick={submit}>
+                    {button}
+                  </button>
+                
             </div>
       </div>
       }

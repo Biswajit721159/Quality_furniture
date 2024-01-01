@@ -37,8 +37,10 @@ export default function Myorder() {
 
   function HandalError(order)
   {
+    setload(false)
     if(order.statusCode==201)
     {
+        if(order.data.length==0) return;
         let n=order.data.length;
         setdata(order.data.slice(0,n-1));
         setprev(order.data[n-1].prev);
@@ -61,7 +63,6 @@ export default function Myorder() {
     {
         history("*")
     }
-    setload(false)
   }
 
   function loadproduct(low,high)

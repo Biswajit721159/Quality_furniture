@@ -17,7 +17,7 @@ export default function Profile() {
     <div className='container mt-3'>
       {
         user?
-        <div className='container shadow-lg p-3 mb-5 bg-white rounded center'>
+        <div className='container '>
          {
          
           <div>
