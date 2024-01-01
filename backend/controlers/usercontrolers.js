@@ -47,7 +47,7 @@ let register = async (req, res) => {
   }
   return res
     .status(201)
-    .json(new ApiResponse(200, createdUser, "User registered Successfully"));
+    .json(new ApiResponse(201, createdUser, "User registered Successfully"));
 };
 
 const generateAccessAndRefereshTokens = async (userId, res) => {
