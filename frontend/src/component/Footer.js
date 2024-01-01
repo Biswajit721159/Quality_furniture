@@ -18,6 +18,7 @@ import { IoMdAddCircleOutline } from "react-icons/io";
 import { MdOutlineSell } from "react-icons/md";
 import { FaYoutube } from "react-icons/fa";
 import { IoMdReorder } from "react-icons/io";
+import { RiAdminFill } from "react-icons/ri";
 import '../css/Footer.css'
 const Footer=()=>{
     return(
@@ -38,7 +39,7 @@ const Footer=()=>{
                     <li className="head1"><Link to="/wishList"><GiRoyalLove /> WishList</Link></li>
                     <li className="head1"><Link to="/Cart"><FaShoppingCart /> Cart</Link></li>
                     <li className="head1"><Link to="/Myorder"><IoMdReorder /> MyOrder</Link></li>
-                    <li><a href="https://quality-furnitureadminpanel.vercel.app/">Adminpanel</a></li>
+                    <li className="head1"><a href="https://quality-furnitureadminpanel.vercel.app/"><RiAdminFill /> Adminpanel</a></li>
                 </div>
                 <div class="box">
                 <h4 className="head2">Contact Info</h4>
