@@ -1,6 +1,7 @@
 import React, { useState,useEffect }  from "react";
 import { json, useNavigate } from "react-router-dom";
 import '../css/Auth.css'
+const api = process.env.REACT_APP_API
 const Register=()=>{
 
 const [name,setname]=useState("")
@@ -22,6 +23,9 @@ const [messaddress,setmessaddress]=useState("")
 
 const [button,setbutton]=useState("Submit")
 const [disabled,setdisabled]=useState(false)
+
+const [wronginformation,setwronginformation]=useState(false);
+const [messwronginformation,setmesswronginformation]=useState("");
 
 
 
@@ -95,37 +99,35 @@ const [disabled,setdisabled]=useState(false)
     {
       setbutton("Please Wait....")
       setdisabled(true)
-      fetch(`https://quality-furniture.vercel.app/usermail/${email}`).then(response=>response.json()).then((res)=>{
-        if(res.message==false)
-        {
-            fetch('https://quality-furniture.vercel.app/register',{
-                method:'POST',
-                headers:{
-                    'Accept':'application/json',
-                    'Content-Type':'application/json'
-                },
-                body:JSON.stringify({
-                  name:name,
-                  email:email,
-                  password:password,
-                  address:address
-                })
-            })
-            .then(response=>response.json())
-            .then((result)=>{
-                localStorage.setItem("user",JSON.stringify(result))
-                history('/')
-            })
-        }
-        else
-        {
-          setbutton("Submit")
-          setdisabled(false)
-          setwrongemail(true)
-          setmessemail("*Email Already present")
-        }
-      })
-     }
+      fetch(`${api}/user/register`,{
+          method:'POST',
+          headers:{
+              'Accept':'application/json',
+              'Content-Type':'application/json'
+          },
+          body:JSON.stringify({
+            name:name,
+            email:email,
+            password:password,
+            address:address
+          })
+        })
+        .then(response=>response.json())
+        .then((result)=>{
+            if(result.statusCode==201)
+            {
+              alert("SuccessFully Register")
+              history('/Signin')
+            }
+            else 
+            {
+              setwronginformation(true);
+              setmesswronginformation(result.message)
+              setbutton("Submit")
+              setdisabled(false)
+            }
+        })
+      }
   }
 
     return(
@@ -150,11 +152,12 @@ const [disabled,setdisabled]=useState(false)
                 {wrongpassword?<label className="wrong"  style={{color:"red"}}>{messpassword}</label>:""}
             </div>
             <div className="">
-                <textarea type="text" value={address} onChange={(e)=>{setaddress(e.target.value)}} className="inputreglog" placeholder="Enter Full Address"  required/>
+                <textarea type="text" value={address} onChange={(e)=>{setaddress(e.target.value)}} rows="10" cols="50" className="inputreglog" placeholder="Enter Full Address"  required/>
             </div>
             <div>
                 {wrongaddress?<label className="wrong" style={{color:"red"}}>{messaddress}</label>:""}
             </div>
+            {wronginformation&&<label className="wrong" style={{color:"red"}}>*{messwronginformation}</label>}
             <button className="btn btn-info  btn-sm"  disabled={disabled} onClick={submit}>{button}</button>
         </div>
     )

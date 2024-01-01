@@ -1,6 +1,6 @@
 
 .mainfooter{
-    border: 2px solid black;
+    /* border: 2px solid black; */
     border-radius: 10px;
     margin-bottom: 2%;
 }  
@@ -9,7 +9,7 @@
     margin-left:0 ;
     margin-right: 0;
     top:0; left:0;
-    /* height:30vh;  */
+    height:30vh; 
     width:100%;
     display: flex;
     align-items: center;
@@ -42,6 +42,9 @@ li{
   .head2{
     font-size: 20px;
   }
+  .box-container{
+    height:27vh; 
+  }
 }
 @media only screen and (max-width: 830px ) {
   .head1{
@@ -49,6 +52,9 @@ li{
   }
   .head2{
     font-size: 16px;
+  }
+  .box-container{
+    height:25vh; 
   }
 }
 
@@ -58,6 +64,9 @@ li{
   }
   .head2{
     font-size: 14px;
+  }
+  .box-container{
+    height:22vh; 
   }
   .form-control{
     width: 150px;
@@ -76,6 +85,9 @@ li{
   }
   .head2{
     font-size: 10px;
+  }
+  .box-container{
+    height:18vh; 
   }
   .form-control{
     width: 130px;
@@ -100,6 +112,9 @@ li{
   .head2{
     font-size: 8px;
   }
+  .box-container{
+    height:15vh; 
+  }
   .form-control{
     width: 120px;
     height: 25px;
@@ -122,6 +137,9 @@ li{
   }
   .head2{
     font-size: 7px;
+  }
+  .box-container{
+    height:10vh; 
   }
   .form-control{
     width: 110px;

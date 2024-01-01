@@ -7,6 +7,7 @@ import {useDispatch,useSelector} from 'react-redux'
 import {cartmethod} from '../redux/CartSlice'
 import Carousel from "./Carousel";
 import Product_Review from './Product_Review';
+import Footer from '../component/Footer'
 const api = process.env.REACT_APP_API
 
 
@@ -63,6 +64,7 @@ export default function Product_view() {
         }
         else if(data.statusCode==498)
         {
+            localStorage.removeItem('user')
             history('/Signin')
         }
         else
@@ -111,6 +113,7 @@ export default function Product_view() {
         </div>
         :
         product!=null ?
+        <>
           <div className='container mt-3'>
 
                 <div className='item'>
@@ -151,7 +154,7 @@ export default function Product_view() {
                     <div className='col2'>
                        {cart && cart.product_id==_id ?
                        <button id='button' className='btn btn-danger btn-sm' onClick={removeTocart}> Remove To Cart </button>
-                       :<button id='button' className='btn btn-primary  btn-sm' onClick={Add_TO_CART} >Add To Cart </button>}
+                       :<button id='button' className='btn btn-primary  btn-sm' disabled={!product.total_number_of_product} onClick={Add_TO_CART} >Add To Cart </button>}
                     </div>
                 </div>
                 
@@ -163,8 +166,10 @@ export default function Product_view() {
                <div>
                      {relatedProduct && <Carousel data={relatedProduct} message='Related Product'/>}
                </div>
-    
           </div>
+          <hr/>
+          <Footer/>
+          </> 
             :
             <div className='loader-container'>
                 <h4>Product Not Found</h4>

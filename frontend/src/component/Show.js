@@ -653,6 +653,7 @@ function PrevPage()
                     <button className='btn btn-primary btn-sm' disabled={!prev} onClick={PrevPage}>Prev</button>
                     <button className='btn btn-primary btn-sm mx-2' disabled={!next} onClick={NextPage}>Next</button>
                 </div>
+                <hr/>
                 <Footer/>
             </>
         :

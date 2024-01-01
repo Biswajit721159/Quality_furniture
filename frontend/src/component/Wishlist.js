@@ -31,8 +31,20 @@ export default function WishList() {
       })
     }).then(responce=>responce.json()).then((res)=>{
       try{
-          setnums(res.data);
-          settoproduct(res.data);
+          if(res.statusCode==201)
+          {
+            setnums(res.data);
+            settoproduct(res.data);
+          }
+          else if(res.statusCode==498)
+          {
+            localStorage.removeItem('user');
+            history('/Signin');
+          }
+          else
+          {
+            history('*');
+          }
       }
       catch{
         alert("we are find Some Error")
@@ -44,8 +56,6 @@ export default function WishList() {
   {
     if(nums==undefined || product==undefined ) return
     let arr=[]
-    // console.log(product)
-    // console.log(nums)
     product=JSON.parse(localStorage.getItem('Wishlist'))
     for(let i=0;i<product.length;i++)
     {
@@ -57,7 +67,6 @@ export default function WishList() {
         }
       }
     }
-    //console.log(arr)
     setdata([...arr])
   }
 
@@ -172,7 +181,7 @@ export default function WishList() {
                        }
                            <div className='row'>
                                <div className='col'><button className="btn btn-primary btn-danger btn-sm" onClick={()=>removeToWishlist(item._id)}>Cut</button></div>
-                               <div className='col'><button className="btn btn-primary btn-sm" onClick={()=>AddToCart(item._id)} >Add</button></div>
+                               <div className='col'><button className="btn btn-primary btn-sm" disabled={!item.total_number_of_product} onClick={()=>AddToCart(item._id)} >Add</button></div>
                            </div>
                    </div>
                </div>

@@ -21,7 +21,7 @@ import { IoMdReorder } from "react-icons/io";
 import '../css/Footer.css'
 const Footer=()=>{
     return(
-        <footer className="mainfooter">
+        <footer className="mainfooter mt-5">
             <div className="box-container">
                 <div className="box">
                     <h4 className="head2">Locations</h4>
