@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, json } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, json, useFetcher } from "react-router-dom";
+import {useSelector} from 'react-redux'
 import "./App.css";
 import Dashboard from "./component/Dashboard";
 import Reviews_Section from './component/Reviews_Section';
@@ -7,9 +8,10 @@ import User_section from './component/User_section';
 import Product_Section from "./component/Product_Section";
 import Sidebar from "./component/Sidebar";
 import Adminlogin from "./component/Adminlogin";
+import './css/Loader.css'
 
 function App() {
-  const userinfo=JSON.parse(localStorage.getItem('user'));
+  const userinfo=useSelector((state)=>state.user.user);
   return (
     <div className="App">
       <Router>

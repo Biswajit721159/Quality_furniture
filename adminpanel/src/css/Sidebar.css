@@ -87,7 +87,7 @@
   .home-content .overview-boxes{
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
     flex-wrap: wrap;
     padding: 0 20px;
     margin-bottom: 26px;

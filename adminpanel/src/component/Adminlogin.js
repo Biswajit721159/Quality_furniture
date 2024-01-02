@@ -1,8 +1,11 @@
 import React, { useInsertionEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {usermethod} from '../redux/userslice'
+import { useDispatch } from "react-redux";
 const api = process.env.REACT_APP_API
 const Adminlogin = () => {
 
+  const dispatch=useDispatch();
   const [email,setemail]=useState("")
   const [password,setpassword]=useState("")
   const history=useNavigate()
@@ -26,10 +29,9 @@ const Adminlogin = () => {
       })
       .then(response=>response.json())
       .then((result)=>{
-          if(result.data && result.data.accessToken)
+          if(result.statusCode==200)
           {
-              localStorage.setItem("user",JSON.stringify(result.data))
-              history('/')
+             dispatch(usermethod.LOGIN(result.data))
           }
           else{
               setbutton("Submit")

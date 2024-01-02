@@ -4,7 +4,14 @@ import '../css/Sidebar.css'
 import { IoIosLogOut } from "react-icons/io";
 import { RxDashboard } from "react-icons/rx";
 import { RiShareBoxFill } from "react-icons/ri";
+import {usermethod} from '../redux/userslice'
+import {useDispatch} from 'react-redux'
 const Sidebar=()=>{
+  const dispatch=useDispatch()
+  function logout()
+  {
+    dispatch(usermethod.LOGOUT())
+  }
     return(
         <>
         <div className="sidebar">
@@ -33,8 +40,8 @@ const Sidebar=()=>{
           </Link>
         </li>
         <li className="log_out" >
-          <Link to="/logout" className="active">
-            <span className="links_name" > <IoIosLogOut /> Log out</span>
+          <Link  className="active">
+            <span className="links_name" onClick={logout} > <IoIosLogOut /> Log out</span>
           </Link>
         </li>  
       </ul>

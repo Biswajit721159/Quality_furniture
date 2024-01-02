@@ -8,11 +8,15 @@ import ReviewsDashboard from "../Dashboard/ReviewsDashboard";
 const Dashboard = () => {
   return (
     <>
-      <section class="home-section" style={{display:'flex',flexDirection:'column',flexWrap:'wrap'}}>
-        <ReviewsDashboard/>
-        <UserDashboard/>
-        <ProductDashboard/>
-        <OrderDashboard/>
+      <section class="home-section">
+        <div class="home-content">
+        <div class="overview-boxes">
+          <ReviewsDashboard />
+          <UserDashboard />
+          <ProductDashboard />
+          <OrderDashboard />
+        </div>
+        </div>
       </section>
     </>
   );
