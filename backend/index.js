@@ -21,6 +21,7 @@ let userRouter=require("./Router/userRoute.js")
 let productRouter=require('./Router/ProductRoute.js')
 let ReviewsRouter=require('./Router/ReviewRoute.js')
 let orderRouter=require('./Router/OrderRoute.js')
+let adminpanel=require('./Router/AdminPanelRouter.js')
 
 connectDB()
 
@@ -33,6 +34,7 @@ app.use("/user", userRouter)
 app.use('/product',productRouter)
 app.use('/Reviews',ReviewsRouter)
 app.use('/order',orderRouter)
+app.use('/adminpanel',adminpanel)
 
 
 app.listen(5000);
