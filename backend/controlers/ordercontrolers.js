@@ -157,10 +157,22 @@ let getorderByLimit=async(req,res)=>{
     res.status(500).json(new ApiResponse(500,null, "Some Error is Found"));
   }
 }
+
+let countNumberOrder=async(req,res)=>{
+  try {
+    const result=await order.countDocuments({});
+    res.status(201).json(new ApiResponse(201, result, "success"));
+  }
+  catch{
+    res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
+  }
+}
+
 module.exports = {
   orderInsert,
   orderGetByEmail,
   informationById,
   updateFeedback,
   getorderByLimit,
+  countNumberOrder
 };

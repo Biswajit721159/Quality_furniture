@@ -127,9 +127,21 @@ let findReviewsBylowerAndUpperLimit = async (req, res) => {
   }
 };
 
+let countNumberReviews=async(req,res)=>{
+  try {
+    const result=await Review.countDocuments({});
+    res.status(201).json(new ApiResponse(201, result, "success"));
+  }
+  catch{
+    res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
+  }
+}
+
+
 module.exports = {
   informationById,
   ReviewInsert,
   findReviewsBylowerAndUpperLimit,
   findRatingPersentageofProduct,
+  countNumberReviews
 };

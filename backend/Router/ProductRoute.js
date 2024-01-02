@@ -30,7 +30,7 @@ router.route('/getproductUponPriceProductTypeAndProductName/:low/:high/:catagory
 router.route('/Catagory/getallCatagory').get(verifytoken,getallProductType);
 router.route('/getproductByType/:product_type').get(getproductByType);
 router.route('/TopOfferProduct/:numberofProduct').get(TopOfferProduct);
-router.route('/Dashboard/findcountNumberProduct').get(countNumberProduct);
+router.route('/Dashboard/findcountNumberProduct').get(verifytoken,countNumberProduct);
 
 router.route("/uploads").post(verifytoken,upload.fields([
   {

@@ -6,6 +6,7 @@ let {
     informationById,
     updateFeedback,
     getorderByLimit,
+    countNumberOrder
 } = require("../controlers/ordercontrolers");
 
 const router = Router();
@@ -15,6 +16,6 @@ router.route("/getByEmail/:email").get(verifytoken, orderGetByEmail);
 router.route("/getById/:_id").get(verifytoken, informationById);
 router.route('/updateFeedback/:_id').put(verifytoken,updateFeedback);
 router.route('/getorderByLimit/:lowerLimit/:upperLimit/:email').get(verifytoken,getorderByLimit);
-
+router.route('/Dashboard/countNumberOrder').get(verifytoken,countNumberOrder);
 
 module.exports = router;
