@@ -4,7 +4,7 @@ import React from "react";
 const Order_section=()=>{
     return(
         <>
-        Product_Section
+           Order_Section
         </>
     )
 }

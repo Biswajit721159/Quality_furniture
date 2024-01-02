@@ -1,28 +1,42 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, json } from "react-router-dom";
 import "./App.css";
-import Main from "./component/Main";
-import Footer from "./component/Footer";
+import Dashboard from "./component/Dashboard";
 import Reviews_Section from './component/Reviews_Section';
 import Order_section from './component/Order_section';
 import User_section from './component/User_section';
 import Product_Section from "./component/Product_Section";
-import Navbar from "./component/Navbar";
+import Sidebar from "./component/Sidebar";
+import Adminlogin from "./component/Adminlogin";
 
 function App() {
+  const userinfo=JSON.parse(localStorage.getItem('user'));
   return (
     <div className="App">
-      {/* <Router> */}
-        <Navbar/>
-        {/* <Main/> */}
-        {/* <Routes>
-          <Route path="/" element={<Main/>}></Route>
-          <Route path="/product" element={<Product_Section/>}></Route>
-          <Route path="/Review" element={<Reviews_Section/>}></Route>
-          <Route path="/Order" element={<Order_section/>}></Route>
-          <Route path="/user" element={<User_section/>}></Route>
-        </Routes> */}
-        {/* <Footer/> */}
-      {/* </Router> */}
+      <Router>
+        {
+          userinfo!=null ?
+          <div className="Container">
+              <div className="left">
+                  <Sidebar/>
+              </div>
+              <div className="right">
+                  <Routes>
+                    <Route path="/" element={<Dashboard/>}></Route>
+                    <Route path="/Product" element={<Product_Section/>}></Route>
+                    <Route path="/Review" element={<Reviews_Section/>}></Route>
+                    <Route path="/Order" element={<Order_section/>}></Route>
+                    <Route path="/User" element={<User_section/>}></Route>
+                  </Routes>
+              </div>
+          </div>
+          :
+          <Routes>
+            <Route>
+               <Route path="/" element={<Adminlogin/>}></Route>
+            </Route>
+          </Routes>
+        }
+      </Router>
     </div>
   );
 }

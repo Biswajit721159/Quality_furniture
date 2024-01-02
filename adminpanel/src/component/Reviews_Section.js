@@ -4,7 +4,7 @@ import React from "react";
 const Reviews_Section=()=>{
     return(
         <>
-        Product_Section
+        Reviews_Section
         </>
     )
 }
