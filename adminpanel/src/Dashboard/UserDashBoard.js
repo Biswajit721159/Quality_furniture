@@ -40,7 +40,7 @@ const UserDashboard = () => {
         headers:{
             Authorization:`Bearer ${userinfo.accessToken}`
         }
-    }).then(responce=>responce.json())
+    }).then((responce)=>responce.json())
     .then((res)=>{
         if(res.statusCode==201)
         {
@@ -51,11 +51,14 @@ const UserDashboard = () => {
         else if(res.statusCode==498)
         {
           dispatch(usermethod.LOGOUT())
+          history('/')
         }
         else
         {
             history('*');
         }
+    }).catch((error)=>{
+      history('*')
     })
   }
 

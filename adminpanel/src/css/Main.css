@@ -19,6 +19,7 @@ body {
 }
 
 .right {
+  /* position: sticky; */
   flex: 3.3;
   /* background-color: #D5DBDB; */
   padding: 20px; /* Optional: Add some padding to separate content from the edges */

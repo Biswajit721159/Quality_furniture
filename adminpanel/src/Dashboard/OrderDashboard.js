@@ -56,6 +56,8 @@ const OrderDashboard = () => {
         {
             history('*');
         }
+    }).catch((error)=>{
+      history('*')
     })
   }
 

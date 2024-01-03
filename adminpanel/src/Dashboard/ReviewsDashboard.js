@@ -51,11 +51,14 @@ const ReviewsDashboard = () => {
         else if(res.statusCode==498)
         {
           dispatch(usermethod.LOGOUT())
+          history('/')
         }
         else
         {
             history('*');
         }
+    }).catch((error)=>{
+      history('*')
     })
   }
 
