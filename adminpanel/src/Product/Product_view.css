@@ -1,0 +1,9 @@
+.imagedata{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.imagedata1{
+    display: flex;
+    flex-direction: column;
+}
