@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import avatar from '../images/result.png';
 import  '../App.css';
 import axios from 'axios';
-// const api = process.env.REACT_APP_API
-const api="http://localhost:5000"
+const api = process.env.REACT_APP_API
+// const api="http://localhost:5000"
 export default function Addproduct() {
 
   const history=useNavigate();
@@ -142,7 +142,7 @@ export default function Addproduct() {
           Authorization:`Bearer ${userinfo.accessToken}`
         },
       }).then(responce=>responce.json()).then((res)=>{
-        // history('/Product')
+        history('/Product')
         console.log(res)
       })
     }
