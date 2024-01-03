@@ -19,7 +19,7 @@ const Product_View=()=>{
         }).then((res)=>res.json()).then((data)=>{
             if(data.statusCode==201)
             {
-
+                
             }
             else if(data.statusCode==498)
             {
