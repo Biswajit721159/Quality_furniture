@@ -14,7 +14,8 @@ let {
   getproductUponPriceProductTypeAndProductName,
   getproductByType,
   TopOfferProduct,
-  countNumberProduct
+  countNumberProduct,
+  getproductByLimit,
 } = require("../controlers/productcontrolers");
 
 const router = Router();
@@ -31,6 +32,7 @@ router.route('/Catagory/getallCatagory').get(verifytoken,getallProductType);
 router.route('/getproductByType/:product_type').get(getproductByType);
 router.route('/TopOfferProduct/:numberofProduct').get(TopOfferProduct);
 router.route('/Dashboard/findcountNumberProduct').get(verifytoken,countNumberProduct);
+router.route('/getproductByLimit/:LowerLimit/:HighLimit').get(getproductByLimit);
 
 router.route("/uploads").post(verifytoken,upload.fields([
   {
