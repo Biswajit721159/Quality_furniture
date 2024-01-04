@@ -46,6 +46,7 @@ let productInsert = async (req, res) => {
   let firstimg = req.files?.firstimg[0]?.path;
   let secondimg = req.files?.secondimg[0]?.path;
   let thirdimg = req.files?.thirdimg[0]?.path;
+  console.log(firstimg,secondimg,thirdimg)
   firstimg = await uploadOnCloudinary(firstimg);
   secondimg = await uploadOnCloudinary(secondimg);
   thirdimg = await uploadOnCloudinary(thirdimg);
@@ -56,6 +57,7 @@ let productInsert = async (req, res) => {
   arr.push(firstimg);
   arr.push(secondimg);
   arr.push(thirdimg);
+  console.log(arr)
   let jsondata = {
     newImage: arr,
     product_name: req.body.product_name,

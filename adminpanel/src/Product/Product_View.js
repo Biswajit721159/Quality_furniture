@@ -58,15 +58,15 @@ const Product_View=()=>{
             <>
                 <div className='imagedata'>
                     <div className='imagedata1'>
-                        <Link to={`${product.newImage[0]}`} target="_blank"><img src={product.newImage[0]}  style={{width:'350px' ,height:'350px'}} alt='Error to Load'/></Link>
+                        <Link to={`${product.newImage[0]}`} target="_blank"><img src={product.newImage[0]}  style={{width:'300px' ,height:'300px'}} alt='Error to Load'/></Link>
                         <input type="file" placeholder='Update Image' />
                     </div>
                     <div className='imagedata1'>
-                        <Link to={`${product.newImage[0]}`} target="_blank"><img src={product.newImage[1]}  style={{width:'350px' ,height:'350px'}} alt='Error to Load'/></Link>
+                        <Link to={`${product.newImage[0]}`} target="_blank"><img src={product.newImage[1]}  style={{width:'300px' ,height:'300px'}} alt='Error to Load'/></Link>
                         <Link>Update</Link>
                     </div>
                     <div className='imagedata1'>
-                        <Link to={`${product.newImage[0]}`} target="_blank"><img src={product.newImage[2]}  style={{width:'350px' ,height:'350px'}} alt='Error to Load'/></Link>
+                        <Link to={`${product.newImage[0]}`} target="_blank"><img src={product.newImage[2]}  style={{width:'300px' ,height:'300px'}} alt='Error to Load'/></Link>
                         <Link>Update</Link>
                     </div>
                 </div>
