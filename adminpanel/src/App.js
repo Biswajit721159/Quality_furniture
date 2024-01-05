@@ -3,7 +3,7 @@ import {useSelector} from 'react-redux'
 import "./App.css";
 import Dashboard from "./component/Dashboard";
 import Reviews_Section from './component/Reviews_Section';
-import Order_section from './component/Order_section';
+import Order_section from './order/Order_section';
 import User_section from './user/User_section';
 import Product_Section from "./Product/Product_Section";
 import Sidebar from "./component/Sidebar";
@@ -29,7 +29,7 @@ function App() {
                     <Route path="/Product/:LowerLimit/:UpperLimit" element={<Product_Section/>}></Route>
                     <Route path="/Product_view/:_id" element={<Product_View/>}></Route>
                     <Route path="/Review" element={<Reviews_Section/>}></Route>
-                    <Route path="/Order" element={<Order_section/>}></Route>
+                    <Route path="/Order/page/:page" element={<Order_section/>}></Route>
                     <Route path="/User/page/:page" element={<User_section/>}></Route>
                     <Route path="*" element={<ErrorPage/>}></Route>
                   </Routes>

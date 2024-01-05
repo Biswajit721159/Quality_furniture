@@ -173,7 +173,7 @@ let getAllOrder=async(req,res)=>{
     let LowerLimit = req.params.LowerLimit;
     let HighLimit = req.params.HighLimit;
     let Limit=HighLimit-LowerLimit;
-    let result=await order.find({}).skip(LowerLimit).limit(Limit+1).exec();
+    let result=await order.find({}).sort({ _id: -1 }).skip(LowerLimit).limit(Limit+1).exec();
     let hasNextPage = result.length > Limit;
     let orderarr=hasNextPage ? result.slice(0, Limit) : result;
     let hasPrevPage = LowerLimit > 0;
@@ -199,6 +199,7 @@ let getAllOrder=async(req,res)=>{
         if(ProductString==orderString)
         {
           let obj={
+            _id:orderarr[i]._id,
             product_name:product_data[j].product_name,
             product_id:product_data[j]._id,
             email:orderarr[i].email,
@@ -216,7 +217,6 @@ let getAllOrder=async(req,res)=>{
         }
       }
     }
-
     if(actualResult.length) actualResult.push(pagination)
     if (actualResult)
     {

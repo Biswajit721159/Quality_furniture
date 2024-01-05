@@ -12,7 +12,6 @@ const Usershow = () => {
   const prev=useSelector((state)=>state.Alluser.prev)
   const next=useSelector((state)=>state.Alluser.next)
   const history=useNavigate()
-  console.log(prev)
   function Shownextpage()
   {
     history(`/User/page/${page+1}`)
