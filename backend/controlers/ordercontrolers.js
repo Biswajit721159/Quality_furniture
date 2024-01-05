@@ -168,11 +168,76 @@ let countNumberOrder=async(req,res)=>{
   }
 }
 
+let getAllOrder=async(req,res)=>{
+  try {
+    let LowerLimit = req.params.LowerLimit;
+    let HighLimit = req.params.HighLimit;
+    let Limit=HighLimit-LowerLimit;
+    let result=await order.find({}).skip(LowerLimit).limit(Limit+1).exec();
+    let hasNextPage = result.length > Limit;
+    let orderarr=hasNextPage ? result.slice(0, Limit) : result;
+    let hasPrevPage = LowerLimit > 0;
+    let pagination= {
+      'prev': hasPrevPage,
+      'next': hasNextPage,
+    }
+    set=new Set();
+    for(let i=0;i<orderarr.length;i++)
+    {
+      set.add(orderarr[i].product_id);
+    }
+    let arr=[...set];
+    product_data=await get_product_by_ids(arr)
+    let actualResult=[]
+
+    for(let i=0;i<orderarr.length;i++)
+    {
+      for(let j=0;j<product_data.length;j++)
+      {
+        let ProductString = product_data[j]._id.toString();
+        let orderString=orderarr[i].product_id.toString();
+        if(ProductString==orderString)
+        {
+          let obj={
+            product_name:product_data[j].product_name,
+            product_id:product_data[j]._id,
+            email:orderarr[i].email,
+            address:orderarr[i].address,
+            product_count:orderarr[i].product_count,
+            payment_method:orderarr[i].payment_method,
+            Total_rupess:orderarr[i].Total_rupess,
+            Date:orderarr[i].Date,
+            isfeedback:orderarr[i].isfeedback,
+            createdAt:orderarr[i].createdAt,
+            updatedAt:orderarr[i].updatedAt,
+          }
+          actualResult.push(obj)
+          break;
+        }
+      }
+    }
+
+    if(actualResult.length) actualResult.push(pagination)
+    if (actualResult)
+    {
+      res.status(201).json(new ApiResponse(201, actualResult, "success"));
+    } 
+    else
+    {
+      res.status(404).json(new ApiResponse(404, null, "Review does not exist"));
+    }
+  }
+  catch{
+    res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
+  }
+}
+
 module.exports = {
   orderInsert,
   orderGetByEmail,
   informationById,
   updateFeedback,
   getorderByLimit,
-  countNumberOrder
+  countNumberOrder,
+  getAllOrder
 };
