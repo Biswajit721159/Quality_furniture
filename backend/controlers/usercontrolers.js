@@ -176,11 +176,40 @@ let countNumberUser=async(req,res)=>{
   }
 }
 
+let getAlluser=async(req,res)=>{
+  try {
+    let LowerLimit = req.params.LowerLimit;
+    let HighLimit = req.params.HighLimit;
+    let Limit=HighLimit-LowerLimit;
+    let result=await User.find({}).select("-password").skip(LowerLimit).limit(Limit+1).exec();
+    let hasNextPage = result.length > Limit;
+    let actualResult=hasNextPage ? result.slice(0, Limit) : result;
+    let hasPrevPage = LowerLimit > 0;
+    let pagination= {
+      'prev': hasPrevPage,
+      'next': hasNextPage,
+    }
+    if(actualResult.length) actualResult.push(pagination)
+    if (actualResult)
+    {
+      res.status(201).json(new ApiResponse(201, actualResult, "success"));
+    } 
+    else
+    {
+      res.status(404).json(new ApiResponse(404, null, "Review does not exist"));
+    }
+  }
+  catch{
+    res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
+  }
+}
+
 module.exports = {
   register,
   loginUser,
   getinfromationByEmail,
   getinfromationById,
   updateNameAddress,
-  countNumberUser
+  countNumberUser,
+  getAlluser,
 };

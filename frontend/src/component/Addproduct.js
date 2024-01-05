@@ -142,10 +142,8 @@ export default function Addproduct() {
           Authorization:`Bearer ${userinfo.accessToken}`
         },
       }).then(responce=>responce.json()).then((res)=>{
-        // history('/Product')
+        history('/Product')
         console.log(res)
-      }).catch((error)=>{
-        console.log(error)
       })
     }
   }
@@ -170,18 +168,18 @@ export default function Addproduct() {
     setfile3(data)
   }
 
-  // function convertToBase64(file){
-  //   return new Promise((resolve, reject) => {
-  //     const fileReader = new FileReader();
-  //     fileReader.readAsDataURL(file);
-  //     fileReader.onload = () => {
-  //       resolve(fileReader.result)
-  //     };
-  //     fileReader.onerror = (error) => {
-  //       reject(error)
-  //     }
-  //   })
-  // }
+  function convertToBase64(file){
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result)
+      };
+      fileReader.onerror = (error) => {
+        reject(error)
+      }
+    })
+  }
 
 
   return (

@@ -6,6 +6,7 @@ let {
   getinfromationById,
   updateNameAddress,
   countNumberUser,
+  getAlluser
 } = require("../controlers/usercontrolers");
 
 let verifytoken = require('../middlewares/verifiedToken')
@@ -18,6 +19,7 @@ router.route("/usermail/:email").get(verifytoken,getinfromationByEmail);
 router.route("/informationbyID/:_id").get(verifytoken,getinfromationById);
 router.route("/updateAddressAndName/:_id").put(verifytoken,updateNameAddress);
 router.route('/Dashboard/countNumberUser').get(verifytoken,countNumberUser);
+router.route("/getproductByLimit/:LowerLimit/:HighLimit").get(getAlluser);
 // router.route("/logout").post(verifyJWT,  logoutUser)
 
 module.exports = router;

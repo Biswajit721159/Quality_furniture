@@ -39,7 +39,7 @@ const Footer=()=>{
                     <li className="head1"><Link to="/wishList"><GiRoyalLove /> WishList</Link></li>
                     <li className="head1"><Link to="/Cart"><FaShoppingCart /> Cart</Link></li>
                     <li className="head1"><Link to="/Myorder"><IoMdReorder /> MyOrder</Link></li>
-                    <li className="head1"><a href="https://quality-furnitureadminpanel.vercel.app/"><RiAdminFill /> Adminpanel</a></li>
+                    <li className="head1"><Link to="https://quality-furnitureadminpanel.vercel.app/" target="_blank"><RiAdminFill /> Adminpanel</Link></li>
                 </div>
                 <div class="box">
                 <h4 className="head2">Contact Info</h4>

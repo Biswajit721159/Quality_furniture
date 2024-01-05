@@ -25,6 +25,11 @@ const Sidebar=()=>{
           </Link>
         </li>
         <li>
+          <Link to={`/User/page/${1}`} className="active">
+            <span className="links_name" ><RiShareBoxFill /> Manage User</span>
+          </Link>
+        </li>
+        <li>
           <Link to={`/Product/${0}/${12}`} className="active">
             <span className="links_name" ><RiShareBoxFill /> Manage Product</span>
           </Link>
