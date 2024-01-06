@@ -4,9 +4,9 @@ import './User_show.css'
 import { useNavigate, useParams } from "react-router-dom";
 const Usershow = () => {
 
-    let page=parseInt(useParams().page);
-    const LowerLimit=page
-    const UpperLimit=page*10;
+  let page=parseInt(useParams().page);
+  const LowerLimit=page
+  const UpperLimit=page*10;
   
   const user = useSelector((state) => state.Alluser.Alluser);
   const prev=useSelector((state)=>state.Alluser.prev)
@@ -41,12 +41,12 @@ const Usershow = () => {
           </tr>
           {user.map((item, ind) => (
             <tr key={ind}>
-              <th>{item._id}</th>
-              <th>{item.name}</th>
-              <th>{item.email}</th>
-              <th>{item.address}</th>
-              <th>{item.createdAt}</th>
-              <th><button onClick={()=>View(item)}>view</button></th>
+              <td>{item._id}</td>
+              <td>{item.name}</td>
+              <td>{item.email}</td>
+              <td>{item.address}</td>
+              <td>{item.createdAt}</td>
+              <td><button className="btn btn-primary btn-sm" onClick={()=>View(item)}>view</button></td>
             </tr>
           ))}
         </table>

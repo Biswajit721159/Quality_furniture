@@ -6,8 +6,6 @@ const Product_show = () => {
     
   
   let page=parseInt(useParams().page);
-  const LowerLimit=page
-  const UpperLimit=page*10;
   
   const Order = useSelector((state) => state.Order.Order);
   const prev=useSelector((state)=>state.Order.prev)
@@ -46,15 +44,15 @@ const Product_show = () => {
           </tr>
           {Order.map((item, ind) => (
             <tr key={ind}>
-              <th>{item._id}</th>
-              <th>{item.product_name}</th>
-              <th>{item.product_count}</th>
-              <th>{item.email}</th>
-              <th>{item.address}</th>
-              <th>{item.payment_method}</th>
-              <th>₹ {item.Total_rupess}</th>
-              <th>{item.Date}</th>
-              <th><button onClick={()=>View(item)}>view</button></th>
+              <td>{item._id}</td>
+              <td>{item.product_name}</td>
+              <td>{item.product_count}</td>
+              <td>{item.email}</td>
+              <td>{item.address}</td>
+              <td>{item.payment_method}</td>
+              <td>₹ {item.Total_rupess}</td>
+              <td>{item.Date}</td>
+              <td><button className="btn btn-primary btn-sm" onClick={()=>View(item)}>view</button></td>
             </tr>
           ))}
         </table>

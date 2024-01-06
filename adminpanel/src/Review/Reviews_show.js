@@ -1,9 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import './Product_show.css'
 import { useNavigate, useParams } from "react-router-dom";
-const Product_show = () => {
-  const page=parseInt(useParams().page)
+const Reviews_show = () => {
+  const page=parseInt(useParams().page);
   
   const product = useSelector((state) => state.product.product);
   const prev=useSelector((state)=>state.product.prev)
@@ -12,7 +11,7 @@ const Product_show = () => {
 
   function Shownextpage()
   {
-    history(`/Product/page/${page+1}`)
+    history(`/Review/page/${page+1}`)
   }
 
   function View(data)
@@ -22,7 +21,7 @@ const Product_show = () => {
 
   function ShowPrevPage()
   {
-    history(`/Product/page/${page-1}`)
+    history(`/Review/page/${page-1}`)
   }
   
   return (
@@ -31,9 +30,7 @@ const Product_show = () => {
         <table  style={{margin:"10px"}}>
           <tr>
             <th>Product_id</th>
-            <th>Product_type</th>
-            <th>offer</th>
-            <th>price</th>
+            <th>Product_name</th>
             <th>product_type</th>
             <th>rating</th>
             <th>View</th>
@@ -42,11 +39,9 @@ const Product_show = () => {
             <tr key={ind}>
               <td>{item._id}</td>
               <td>{item.product_name}</td>
-              <td>{item.offer}</td>
-              <td>{item.price}</td>
               <td>{item.product_type}</td>
               <td>{item.rating}({item.number_of_people_give_rating})</td>
-              <td><button className="btn btn-primary btn-sm" onClick={()=>View(item)}>view</button></td>
+              <td><button className="btn btn-primary btn-sm" onClick={()=>View(item)}>view Review</button></td>
             </tr>
           ))}
         </table>
@@ -59,4 +54,4 @@ const Product_show = () => {
   );
 };
 
-export default Product_show;
+export default Reviews_show;

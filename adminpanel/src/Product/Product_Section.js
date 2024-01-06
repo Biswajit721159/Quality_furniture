@@ -12,13 +12,14 @@ const Product_Section=()=>{
     const dispatch=useDispatch()
     const [load,setload]=useState(false)
     const history=useNavigate()
-    const LowerLimit=parseInt(useParams().LowerLimit);
-    const UpperLimit=parseInt(useParams().UpperLimit);
+    const page=parseInt(useParams().page);
+    const LowerLimit=(page-1)*12;
+    const UpperLimit=page*12;
     const userinfo=useSelector((state)=>state.user.user);
     
     useEffect(()=>{
         loadproduct()
-    },[LowerLimit],[UpperLimit])
+    },[page])
 
     function loadproduct()
     {

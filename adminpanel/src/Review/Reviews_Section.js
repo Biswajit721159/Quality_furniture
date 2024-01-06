@@ -1,37 +1,45 @@
 import React, { useEffect, useState } from "react";
-import {useNavigate} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
-import {usermethod} from '../redux/userslice'
-import { Allusermethod } from "../redux/AllUserSlice";
-import { PulseLoader ,BeatLoader ,ClipLoader} from 'react-spinners';
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import Usershow from "./Usershow";
+import {usermethod} from '../redux/userslice'
+import { productmethod } from "../redux/ProductSlice";
+import { PulseLoader ,BeatLoader ,ClipLoader} from 'react-spinners';
+import Reviews_show from "./Reviews_show";
 const api=process.env.REACT_APP_API
 
-const User_Section=()=>{
+const Reviews_Section=()=>{
     const dispatch=useDispatch()
+    const userinfo=useSelector((state)=>state.user.user);
     const [load,setload]=useState(false)
-    const history=useNavigate()
-    let page=useParams().page;
+    const history=useNavigate();
+    const page=parseInt(useParams().page);
     const LowerLimit=(page-1)*10;
     const UpperLimit=(page)*10;
-    const userinfo=useSelector((state)=>state.user.user);
-    
-    useEffect(()=>{
-        loadproduct()
-    },[LowerLimit],[UpperLimit])
 
+    useEffect(()=>{
+        if(userinfo==null)
+        {
+            history('/')
+        }
+        else
+        {
+            loadproduct();
+        }
+    },[page])
+    
     function loadproduct()
     {
         setload(true)
-        fetch(`${api}/user/getproductByLimit/${LowerLimit}/${UpperLimit}`,{
+        fetch(`${api}/product/getproductByLimit/${LowerLimit}/${UpperLimit}`,{
             headers:{
                 Authorization:`Bearer ${userinfo.accessToken}`
             }
         }).then((res)=>res.json()).then((data)=>{
+            console.log(data)
            if(data.statusCode==201)
            {
-              dispatch(Allusermethod.ADD_USER(data.data))
+               dispatch(productmethod.ADD_PRODUCT(data.data))
               setload(false)
            }
            else if(data.statusCode==498)
@@ -55,10 +63,11 @@ const User_Section=()=>{
             <div className="Loaderitem">
                <PulseLoader color="#16A085"  />
             </div>
-            :<Usershow/>
+            :
+            <Reviews_show/>
         }
         </>
     )
 }
 
-export default User_Section
+export default Reviews_Section

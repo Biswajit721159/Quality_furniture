@@ -125,7 +125,7 @@ const Product_View=()=>{
                    </div>
                 </div>
                 <div className='imagedata mx-5 mt-4'>
-                    <button>Final Update</button>
+                    <button className='btn btn-primary btn-sm'>Final Update</button>
                 </div>
             </>
         }
