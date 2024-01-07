@@ -26,6 +26,7 @@ const [messaddress,setmessaddress]=useState("")
 
 const [button,setbutton]=useState("Submit")
 const [disabled,setdisabled]=useState(false)
+const [resent,setresent]=useState(false)
 
 const [wronginformation,setwronginformation]=useState(false);
 const [messwronginformation,setmesswronginformation]=useState("");
@@ -59,6 +60,14 @@ const [addresscontorl,setaddresscontrol]=useState({
 
 const [emailcontrol,setemailcontrol]=useState({
   wrongemail:false,
+})
+
+const [otp,setotp]=useState({
+  otp:"",
+  showOtpfrom:false,
+  otpFromdata:"",
+  isvalidate:false,
+  disabledbutton:false,
 })
 
 
@@ -188,7 +197,7 @@ const [emailcontrol,setemailcontrol]=useState({
 
   function checkforemailid(s)
   {
-    s=s.replace(/\s+/g, ' ');
+    s=s.replace(/\s+/g, '');
     setemail(s);
     if(s.length==0){
       setemailcontrol((prevUserData) => ({
@@ -233,6 +242,7 @@ const [emailcontrol,setemailcontrol]=useState({
 
   function checkpassword(s)
   {
+    s=s.replace(/\s+/g, '');
     setpassword(s)
     if(s.length==0){
       setpasswordcontrol((prevUserData) => ({
@@ -472,13 +482,28 @@ const [emailcontrol,setemailcontrol]=useState({
 
   }
 
-  function submit()
+  //validate OTP
+
+  function checkotp(data)
   {
-  
-    if(namecontrol.charcter && namecontrol.word && namecontrol.lenWord && namecontrol.len &&namecontrol.specialCharacters
-      &&emailcontrol.wrongemail && passwordcontrol.uppercase && passwordcontrol.lowercase && passwordcontrol.digit && passwordcontrol.len &&passwordcontrol.specialCharacters&&
-      addresscontorl.street && addresscontorl.city && addresscontorl.pin && addresscontorl.state && addresscontorl.specialCharacters &&addresscontorl.len)
+    setotp((prevUserData) => ({
+      ...prevUserData,
+      otpFromdata: data,
+    }));
+    if(data==otp.otp)
     {
+      setotp((prevUserData) => ({
+        ...prevUserData,
+        isvalidate: true,
+        disabledbutton:true,
+      }));
+      setdisabled(false)
+      return;
+    }
+  }
+
+  function Register()
+  {
       setbutton("Please Wait....")
       setdisabled(true)
       fetch(`${api}/user/register`,{
@@ -509,7 +534,59 @@ const [emailcontrol,setemailcontrol]=useState({
               setdisabled(false)
             }
         })
+  }
+
+  function submit()
+  {
+  
+    if(namecontrol.charcter && namecontrol.word && namecontrol.lenWord && namecontrol.len &&namecontrol.specialCharacters
+      &&emailcontrol.wrongemail && passwordcontrol.uppercase && passwordcontrol.lowercase && passwordcontrol.digit && passwordcontrol.len &&passwordcontrol.specialCharacters&&
+      addresscontorl.street && addresscontorl.city && addresscontorl.pin && addresscontorl.state && addresscontorl.specialCharacters &&addresscontorl.len)
+    {
+      if(otp.isvalidate==true)
+      {
+        Register();
       }
+      else{
+        setresent(true)
+        setbutton("Please Wait....")
+        setdisabled(true)
+        fetch(`${api}/Verification/otp-send`,{
+        method:'POST',
+        headers:{
+            'Accept':'application/json',
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify({
+          email:email,
+        })
+      })
+      .then(response=>response.json())
+      .then((result)=>{
+          if(result.statusCode==200)
+          {
+            alert(result.message)
+            setotp((prevUserData) => ({
+              ...prevUserData,
+              otp: result.data,
+              showOtpfrom:true,
+            }));
+            setbutton("Submit")
+            setresent(false)
+          }
+          else 
+          {
+            setwronginformation(true);
+            setmesswronginformation(result.message)
+            setresent(false)
+            setbutton("Submit")
+            setdisabled(false)
+          }
+      }).catch(()=>{
+        history('*');
+      })
+     }
+    }
   }
 
     return(
@@ -571,8 +648,16 @@ const [emailcontrol,setemailcontrol]=useState({
                 <label className="wrongtext">{addresscontorl.len==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}  Length of Address in Between 45 to 100 Character</label>
               </div>
             </div>
-            {wronginformation&&<label className="wrong" style={{color:"red"}}><GoXCircleFill /> {messwronginformation}</label>}
-
+            {wronginformation&&<label className="wrongtext" style={{color:"red"}}><GoXCircleFill /> {messwronginformation}</label>}
+            <div className="">
+              {
+                otp.showOtpfrom &&
+                <>
+                  <input type="number" value={otp.otpFromdata} onChange={(e)=>{checkotp(e.target.value)}} disabled={otp.disabledbutton} className="inputreglog" placeholder="Enter OTP"  required/>
+                  {otp.isvalidate?<label className="wrongtext"><HiCheckCircle style={{color:'green'}} /> Verify</label>:<button onClick={submit} disabled={resent} className="btn btn-info btn-sm">Resent</button>}
+                </>
+              }
+            </div>
 
 
             <button className="btn btn-info  btn-sm"  disabled={disabled} onClick={submit}>{button}</button>

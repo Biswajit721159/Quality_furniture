@@ -52,4 +52,60 @@ let Verification = async (req, res) => {
   }
 };
 
-module.exports = { Verification };
+let LoginVerification = async (req, res) => {
+  try {
+    const { email ,password} = req.body;
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json(new ApiResponse(400, null, "Both Email and Password is required"));
+    }
+
+    let user = await User.findOne({ email: email });
+    if(!user){
+      res.status(404).json(new ApiResponse(404, null, "User does not exist"));
+       return;
+    }
+    const isPasswordValid = await user.isPasswordCorrect(password);
+    if (!isPasswordValid) {
+      res.status(401)
+        .json(new ApiResponse(401, null, "Invalid user credentials"));
+      return;
+    }
+    else {
+      const otp = Math.floor(1000 + Math.random() * 9000);
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: "bg5050525@gmail.com",
+          pass: "vqxn zycm bovh xexf",
+        },
+      });
+      const mailOptions = {
+        from: "bg5050525@gmail.com",
+        to: email,
+        subject: "Your OTP for Verification",
+        text: `Your OTP is: ${otp}`,
+      };
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return res
+            .status(500)
+            .json(new ApiResponse(500, null, "Failed to send OTP via email"));
+        } else {
+          return res
+            .status(200)
+            .json(new ApiResponse(200, otp, "OTP sent successfully"));
+        }
+      });
+    } 
+  } catch {
+    res
+      .status(500)
+      .json(
+        new ApiResponse(500, null, "Some Error is Found Please Try Again Later")
+      );
+  }
+};
+
+module.exports = { Verification,LoginVerification };
