@@ -132,7 +132,6 @@ export default function Addproduct() {
       formData.append('isdeleted', false);
       formData.append('Description', Description);
 
-      console.log(formData)
 
 
       fetch(`${api}/product/uploads`,{
@@ -143,7 +142,7 @@ export default function Addproduct() {
         },
       }).then(responce=>responce.json()).then((res)=>{
         history('/Product')
-        console.log(res)
+        
       })
     }
   }

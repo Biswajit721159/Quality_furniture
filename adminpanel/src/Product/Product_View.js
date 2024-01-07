@@ -11,7 +11,6 @@ const Product_View=()=>{
     const _id=useParams()._id
     const userinfo=useSelector((state)=>state.user.user)
     const product=useSelector((state)=>state.selectProduct.selectproduct)
-    console.log(product)
     const [load,setload]=useState(false)
 
     const history=useNavigate()

@@ -5,6 +5,11 @@
     align-items: center;
     margin: 10px;
 }
+
+.wrongtext{
+    font-size: 13px;
+}
+
 .inputreglog{
     width: 300px;
 }

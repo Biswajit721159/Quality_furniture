@@ -36,7 +36,6 @@ const Reviews_Section=()=>{
                 Authorization:`Bearer ${userinfo.accessToken}`
             }
         }).then((res)=>res.json()).then((data)=>{
-            console.log(data)
            if(data.statusCode==201)
            {
                dispatch(productmethod.ADD_PRODUCT(data.data))

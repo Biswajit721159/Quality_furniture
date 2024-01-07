@@ -15,7 +15,6 @@ import Logout from "./component/Logout";
 
 function App() {
   const userinfo=useSelector((state)=>state.user.user);
-  console.log(userinfo)
   return (
     <div className="App">
       <Router>
