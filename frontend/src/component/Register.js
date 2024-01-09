@@ -678,7 +678,7 @@ const [otp,setotp]=useState({
       })
       .then(response=>response.json())
       .then((result)=>{
-          if(result.statusCode==200){
+          if(result.statusCode==200 || result.statusCode==201){
             alert("SuccessFully Register")
             history('/Signin')
           }

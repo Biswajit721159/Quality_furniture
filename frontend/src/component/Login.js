@@ -205,14 +205,18 @@ function OTPVerified()
             'Content-Type':'application/json'
         },
         body:JSON.stringify({
-           email:email,otp:otp.otpFromdata
+           email:email,
+           otp:otp.otpFromdata,
+           password:password
         })
     })
     .then(response=>response.json())
     .then((result)=>{
         if(result.statusCode==200)
         {
-          Login()
+          alert(result.message)
+          localStorage.setItem("user",JSON.stringify(result.data))
+          history('/')
         }
         else{
             setotp((prevUserData) => ({
