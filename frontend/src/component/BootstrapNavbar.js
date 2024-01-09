@@ -63,7 +63,7 @@ const BootstrapNavbar=()=>{
 
     function logout(){
         localStorage.removeItem('user');
-        history('/')
+        history('/Signin')
     }    
 
     return(

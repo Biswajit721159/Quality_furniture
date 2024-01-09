@@ -16,15 +16,16 @@ const [resent,setresent]=useState(false)
 const api = process.env.REACT_APP_API
 
 const [otp,setotp]=useState({
-    otp:"",
     showOtpfrom:false,
     otpFromdata:"",
-    isvalidate:false,
-    disabledbutton:false,
+    showOtpButton:false,
+    disabledOtpForm :false,
+    loginbutton:false,
 })
 
 const [emailcontrol,setemailcontrol]=useState({
     wrongemail:false,
+    showemailfrom:false,
 })
 
 const [passwordcontrol,setpasswordcontrol]=useState({
@@ -32,7 +33,8 @@ const [passwordcontrol,setpasswordcontrol]=useState({
     lowercase:false,
     digit:false,
     specialCharacters:false,
-    len:false
+    len:false,
+    showpasswordfrom:false,
 })
 
 useEffect(()=>{
@@ -62,6 +64,7 @@ return /[^\w\d]/.test(str);
 
 function checkpassword(s)
   {
+    setwronguser(false)
     s=s.replace(/\s+/g, '');
     setpassword(s)
     if(s.length==0){
@@ -166,6 +169,12 @@ function checkforemailid(s)
   }
 }
 
+function checkAllInputfield()
+{
+  return emailcontrol.wrongemail && passwordcontrol.uppercase && passwordcontrol.lowercase && passwordcontrol.digit && passwordcontrol.len &&passwordcontrol.specialCharacters
+}
+
+
 function checkotp(data)
 {
   setwronguser(false)
@@ -174,21 +183,61 @@ function checkotp(data)
     ...prevUserData,
     otpFromdata: data,
   }));
-  if(data==otp.otp)
+}
+
+function OTPVerified()
+{
+  setresent(true)
+  setotp((prevUserData) => ({
+    ...prevUserData,
+    disabledOtpForm :true,
+    loginbutton:true,
+  }));
+  if(checkAllInputfield()==false || otp.otpFromdata==0)
   {
-    setotp((prevUserData) => ({
-      ...prevUserData,
-      isvalidate: true,
-      disabledbutton:true,
-    }));
-    setdisabled(false)
-    return;
+    alert("Please Fill All Input Form")
+    return ;
   }
+    fetch(`${api}/Verification/VerifyOTP`,{
+        method:'POST',
+        headers:{
+            'Accept':'application/json',
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify({
+           email:email,otp:otp.otpFromdata
+        })
+    })
+    .then(response=>response.json())
+    .then((result)=>{
+        if(result.statusCode==200)
+        {
+          Login()
+        }
+        else{
+            setotp((prevUserData) => ({
+              ...prevUserData,
+              disabledOtpForm :false,
+              loginbutton:false,
+            }));
+            setresent(false)
+            setwronguser(true)
+            seterrormess(result.message)
+        }
+    },(error)=>{
+      setotp((prevUserData) => ({
+        ...prevUserData,
+        disabledOtpForm :false,
+        loginbutton:false,
+      }));
+        setresent(false)
+        setwronguser(true)
+        seterrormess("Some Error is Found")
+    })
 }
 
 function Login()
 {
-    setdisabled(true)
     fetch(`${api}/user/login`,{
         method:'PATCH',
         headers:{
@@ -208,63 +257,102 @@ function Login()
             history('/')
         }
         else{
-            setdisabled(false)
+          setotp((prevUserData) => ({
+            ...prevUserData,
+            disabledOtpForm :false,
+            loginbutton:false,
+          }));
+            setresent(false)
             setwronguser(true)
+            seterrormess(result.message)
         }
     },(error)=>{
-        setdisabled(false)
+      setotp((prevUserData) => ({
+        ...prevUserData,
+        disabledOtpForm :false,
+        loginbutton:false,
+      }));
+        setresent(false)
         setwronguser(true)
+        seterrormess("We Find Some Error")
     })
 }
 
-function submit()
+function sendOTP()
 {
     setwronguser(false)
-    if(emailcontrol.wrongemail && passwordcontrol.uppercase && passwordcontrol.lowercase && passwordcontrol.digit && passwordcontrol.len &&passwordcontrol.specialCharacters){
-        if(otp.isvalidate){
-            Login()
-        }
-        else{
-            setresent(true)
-            setdisabled(true)
-            setotp((prevUserData) => ({
-                ...prevUserData,
-                disabledbutton:true
-            }));
-            fetch(`${api}/Verification/Login/otp-send`,{
-                method:'POST',
-                headers:{
-                    'Accept':'application/json',
-                    'Content-Type':'application/json'
-                },
-                body:JSON.stringify({
-                   email:email,password:password
-                })
+    setpasswordcontrol((prevUserData) => ({
+      ...prevUserData,
+      showpasswordfrom:true
+    }));
+    setemailcontrol((prevUserData) => ({
+      ...prevUserData,
+      showemailfrom:true
+    }));
+    if(checkAllInputfield())
+    {
+        setresent(true)
+        setdisabled(true)
+        setotp((prevUserData) => ({
+            ...prevUserData,
+            disabledOtpForm :true,
+            loginbutton:true,
+        }));
+        fetch(`${api}/Verification/Login/otp-send`,{
+            method:'POST',
+            headers:{
+                'Accept':'application/json',
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+                email:email,password:password
             })
-            .then(response=>response.json())
-            .then((result)=>{
-                if(result.statusCode==200)
-                {
-                    alert(result.message)
-                    setotp((prevUserData) => ({
-                        ...prevUserData,
-                        otp: result.data,
-                        showOtpfrom:true,
-                        disabledbutton:false
-                    }));
-                    setresent(false)
-                }
-                else{
-                    setdisabled(false)
-                    setwronguser(true)
-                    seterrormess(result.message)
-                }
-            },(error)=>{
+        })
+        .then(response=>response.json())
+        .then((result)=>{
+            if(result.statusCode==200)
+            {
+                alert(result.message)
+                setotp((prevUserData) => ({
+                    ...prevUserData,
+                    showOtpfrom:true,
+                    showOtpButton:true,
+                    disabledOtpForm :false,
+                    loginbutton:false,
+                }));
+                setresent(false)
+            }
+            else{
+              setpasswordcontrol((prevUserData) => ({
+                ...prevUserData,
+                showpasswordfrom:false
+              }));
+              setemailcontrol((prevUserData) => ({
+                ...prevUserData,
+                showemailfrom:false
+              }));
                 setdisabled(false)
                 setwronguser(true)
-                seterrormess("We Find Some Error")
-            })
-        }
+                seterrormess(result.message)
+            }
+        },(error)=>{
+          setpasswordcontrol((prevUserData) => ({
+            ...prevUserData,
+            showpasswordfrom:false
+          }));
+          setemailcontrol((prevUserData) => ({
+            ...prevUserData,
+            showemailfrom:false
+          }));
+            setdisabled(false)
+            setwronguser(true)
+            seterrormess("We Find Some Error")
+        })
+        
+   }
+   else
+   {
+    alert("Please Fill All the filed")
    }
 }
 
@@ -272,14 +360,14 @@ function submit()
     <div className="authform">
         <h3>Login</h3>
         <div className="">
-                <input type="email" value={email} onChange={(e)=>{checkforemailid(e.target.value)}}  className="inputreglog" placeholder="Enter Email Id"  required/>
+                <input type="email" value={email} onChange={(e)=>{checkforemailid(e.target.value)}}  disabled={emailcontrol.showemailfrom} className="inputreglog" placeholder="Enter Email Id"  required/>
                 {emailcontrol.wrongemail&&<HiCheckCircle style={{color:'green'}} />}
         </div>
         <div>
             <label className="wrongtext">{emailcontrol.wrongemail==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}  Email Address must be in valid formate with @ symbol</label>
         </div>
         <div className="">
-           <input type="password" value={password} onChange={(e)=>{checkpassword(e.target.value)}}  className="inputreglog" placeholder="Enter Password"  required/>
+           <input type="password" value={password} onChange={(e)=>{checkpassword(e.target.value)}} disabled={passwordcontrol.showpasswordfrom}  className="inputreglog" placeholder="Enter Password"  required/>
            {passwordcontrol.uppercase && passwordcontrol.lowercase && passwordcontrol.digit && passwordcontrol.len &&passwordcontrol.specialCharacters&&<HiCheckCircle style={{color:'green'}} />}
         </div>
         <div>
@@ -295,15 +383,16 @@ function submit()
               {
                 otp.showOtpfrom &&
                 <>
-                  <input type="number" value={otp.otpFromdata} onChange={(e)=>{checkotp(e.target.value)}} disabled={otp.disabledbutton} className="inputreglog" placeholder="Enter OTP"  required/>
-                  {otp.isvalidate?<label className="wrongtext"><HiCheckCircle style={{color:'green'}} /> Verify</label>:<button onClick={submit} disabled={resent} className="btn btn-info btn-sm">Resent</button>}
+                  <input type="number" value={otp.otpFromdata} onChange={(e)=>{checkotp(e.target.value)}} disabled={otp.disabledOtpForm } className="inputreglog" placeholder="Enter OTP"  required/>
+                  <button onClick={sendOTP} disabled={resent} className="btn btn-info btn-sm">Resent</button>
                 </>
               }
-            </div>
+        </div>
         <div>
          {wronguser?<label className="wrongtext" style={{color:"red"}}><GoXCircleFill/> {errormess}</label>:""}
         </div>
-        <button className="btn btn-info btn-sm" disabled={disabled} onClick={submit}>Submit</button>
+        {otp.showOtpButton==true? <button className="btn btn-info btn-sm" disabled={otp.loginbutton}  onClick={OTPVerified}>Login</button>:
+        <button className="btn btn-info btn-sm" disabled={disabled} onClick={sendOTP}>Send OTP</button>}
         <Link className="mt-3" to={'/ForgotPassword'}>Forgot Password</Link>
     </div>
   )
