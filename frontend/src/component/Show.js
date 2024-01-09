@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { PulseLoader } from 'react-spinners';
 import {useDispatch,useSelector} from 'react-redux'
 import {cartmethod} from '../redux/CartSlice'
+import { HiCheck } from "react-icons/hi";
 import Footer from '../component/Footer'
 import {searchmethod} from '../redux/SearchSlice'
 export default function Show() {
@@ -587,7 +588,7 @@ function PrevPage()
                                     </div>
                                     <div className="row">
                                         <div className="container col">
-                                            <h6 className="card-text" style={{color:'orange'}}>{item.offer}% OFF</h6>
+                                            <h6 className="card-text" style={{color:'#D68910 '}}>{item.offer}% OFF</h6>
                                         </div>
                                         <div className="container col">
                                             <h6 className="card-text" style={{color:'gray'}}><s>₹{item.price}</s></h6> 
@@ -627,7 +628,7 @@ function PrevPage()
                                         :
                                         <div className="row">
                                             <div className=" col">
-                                                <h6 className="card-text" style={{color:'green'}}>Available</h6>
+                                                <h6 className="card-text" style={{color:'green'}}><HiCheck />stock</h6>
                                             </div>
                                             <div className='col'>
                                                 {

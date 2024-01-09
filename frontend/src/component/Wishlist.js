@@ -41,6 +41,11 @@ export default function WishList() {
             localStorage.removeItem('user');
             history('/Signin');
           }
+          else if(res.statusCode==404)
+          {
+            setnums(res.data);
+            settoproduct(res.data);
+          }
           else
           {
             history('*');

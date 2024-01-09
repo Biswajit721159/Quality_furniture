@@ -656,6 +656,7 @@ const [otp,setotp]=useState({
 
   function OTPVerified()
   {
+    setwronginformation(false)
     if(checkAllInputfield()==false || otp.otpFromdata==0)
     {
       alert("Please Fill Input Form")
