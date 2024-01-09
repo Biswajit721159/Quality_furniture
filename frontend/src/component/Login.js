@@ -216,7 +216,7 @@ function OTPVerified()
         {
           alert(result.message)
           localStorage.setItem("user",JSON.stringify(result.data))
-          history('/')
+          history('/Product')
         }
         else{
             setotp((prevUserData) => ({
