@@ -195,7 +195,7 @@ function OTPVerified()
   }));
   if(checkAllInputfield()==false || otp.otpFromdata==0)
   {
-    alert("Please Fill All Input Form")
+    alert("Please Fill Input Form")
     return ;
   }
     fetch(`${api}/Verification/VerifyOTP`,{
@@ -352,7 +352,7 @@ function sendOTP()
    }
    else
    {
-    alert("Please Fill All the filed")
+    alert("Please Fill All the filed using description")
    }
 }
 

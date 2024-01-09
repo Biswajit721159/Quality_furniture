@@ -23,20 +23,28 @@ const [messname,setmessname]=useState("")
 const [messemail,setmessemail]=useState("Email Address must be in valid formate with @ symbol")
 const [messpassword,setmesspassword]=useState("");
 const [messaddress,setmessaddress]=useState("")
-
 const [button,setbutton]=useState("Submit")
+
+
 const [disabled,setdisabled]=useState(false)
 const [resent,setresent]=useState(false)
 
 const [wronginformation,setwronginformation]=useState(false);
 const [messwronginformation,setmesswronginformation]=useState("");
+const [confirmpassword,setconfirmpassword]=useState("");
+
+const [confirmpasswordcontrol,setconfirmpasswordcontrol]=useState({
+  isPasswordandconfirmPasswordIsSame:false,
+  showconfirmpasswordfrom:false,
+})
 
 const [namecontrol,setnamecontrol]=useState({
   charcter:false,
   word:false,
   lenWord:false,
   len:false,
-  specialCharacters:false
+  specialCharacters:false,
+  shownamefrom:false,
 })
 
 const [passwordcontrol,setpasswordcontrol]=useState({
@@ -44,7 +52,8 @@ const [passwordcontrol,setpasswordcontrol]=useState({
   lowercase:false,
   digit:false,
   specialCharacters:false,
-  len:false
+  len:false,
+  showpasswordfrom:false,
 })
 
 const [addresscontorl,setaddresscontrol]=useState({
@@ -56,18 +65,20 @@ const [addresscontorl,setaddresscontrol]=useState({
   len:false,
   mobile:false,
   numaricNumer:false,
+  showaddressfrom:false
 })
 
 const [emailcontrol,setemailcontrol]=useState({
   wrongemail:false,
+  showemailfrom:false,
 })
 
 const [otp,setotp]=useState({
-  otp:"",
   showOtpfrom:false,
   otpFromdata:"",
-  isvalidate:false,
-  disabledbutton:false,
+  showOtpButton:false,
+  disabledOtpForm :false,
+  loginbutton:false,
 })
 
 
@@ -88,6 +99,7 @@ const [otp,setotp]=useState({
 
   function checkforname(e)
   {
+    setwronginformation(false);
     let s=e.target.value;
     s=s.replace(/\s+/g, ' ');
     setname(s)
@@ -197,6 +209,7 @@ const [otp,setotp]=useState({
 
   function checkforemailid(s)
   {
+    setwronginformation(false);
     s=s.replace(/\s+/g, '');
     setemail(s);
     if(s.length==0){
@@ -242,8 +255,10 @@ const [otp,setotp]=useState({
 
   function checkpassword(s)
   {
+    setwronginformation(false);
     s=s.replace(/\s+/g, '');
-    setpassword(s)
+    setpassword(s);
+    checkconfirmpasswordIsEqualPassword(confirmpassword,s);
     if(s.length==0){
       setpasswordcontrol((prevUserData) => ({
         ...prevUserData,
@@ -331,6 +346,7 @@ const [otp,setotp]=useState({
 
   function checkaddress(s)
   {
+    setwronginformation(false);
     s=s.replace(/\s+/g, ' ');
     s=s.toLowerCase();
     setaddress(s);
@@ -482,6 +498,44 @@ const [otp,setotp]=useState({
 
   }
 
+  function inableconfirmpassword()
+  {
+    setconfirmpasswordcontrol((prevUserData) => ({
+      ...prevUserData,
+      isPasswordandconfirmPasswordIsSame:false
+    }));
+  }
+
+  function disabledconfirmpassword()
+  {
+    setconfirmpasswordcontrol((prevUserData) => ({
+      ...prevUserData,
+      isPasswordandconfirmPasswordIsSame:true
+    }));
+  }
+
+  //check confirm password
+
+  function checkconfirmpasswordIsEqualPassword(confirmpassword,password)
+  {
+    if(confirmpassword.length==0){
+      disabledconfirmpassword()
+    }
+    if(confirmpassword==password){
+      disabledconfirmpassword()
+    }
+    else{
+      inableconfirmpassword()
+    }
+  }
+
+  function checkconfirmpassword(data)
+  {
+    setwronginformation(false);
+    setconfirmpassword(data)
+    checkconfirmpasswordIsEqualPassword(data,password)
+  }
+
   //validate OTP
 
   function checkotp(data)
@@ -490,21 +544,86 @@ const [otp,setotp]=useState({
       ...prevUserData,
       otpFromdata: data,
     }));
-    if(data==otp.otp)
-    {
-      setotp((prevUserData) => ({
-        ...prevUserData,
-        isvalidate: true,
-        disabledbutton:true,
-      }));
-      setdisabled(false)
-      return;
-    }
+  }
+
+  function checkAllInputfield()
+  {
+    return (namecontrol.charcter && namecontrol.word && namecontrol.lenWord && namecontrol.len &&namecontrol.specialCharacters
+      &&emailcontrol.wrongemail && passwordcontrol.uppercase && passwordcontrol.lowercase && passwordcontrol.digit && passwordcontrol.len &&passwordcontrol.specialCharacters&&
+      addresscontorl.street && addresscontorl.city && addresscontorl.pin && addresscontorl.state && addresscontorl.specialCharacters &&addresscontorl.len && confirmpasswordcontrol.isPasswordandconfirmPasswordIsSame)
+    
+  }
+
+  function disabledinputfrom()
+  {
+    setnamecontrol((prevUserData) => ({
+      ...prevUserData,
+      shownamefrom:true
+    }));
+    setemailcontrol((prevUserData) => ({
+      ...prevUserData,
+      showemailfrom:true
+    }));
+    setpasswordcontrol((prevUserData) => ({
+      ...prevUserData,
+      showpasswordfrom:true
+    }));
+    setaddresscontrol((prevUserData) => ({
+      ...prevUserData,
+      showaddressfrom:true
+    }));
+    setconfirmpasswordcontrol((prevUserData) => ({
+      ...prevUserData,
+      showconfirmpasswordfrom:true
+    }));
+  }
+
+  function inableinputfrom()
+  {
+    setnamecontrol((prevUserData) => ({
+      ...prevUserData,
+      shownamefrom:false
+    }));
+    setemailcontrol((prevUserData) => ({
+      ...prevUserData,
+      showemailfrom:false
+    }));
+    setpasswordcontrol((prevUserData) => ({
+      ...prevUserData,
+      showpasswordfrom:false
+    }));
+    setaddresscontrol((prevUserData) => ({
+      ...prevUserData,
+      showaddressfrom:false
+    }));
+    setconfirmpasswordcontrol((prevUserData) => ({
+      ...prevUserData,
+      showconfirmpasswordfrom:false
+    }));
+  }
+
+  function inableotpcontrol()
+  {
+    setotp((prevUserData) => ({
+      ...prevUserData,
+      disabledOtpForm :false,
+      loginbutton:false,
+    }));
+    setresent(false)
+  }
+
+  function disableotpcontrol()
+  {
+    setresent(true)
+    setotp((prevUserData) => ({
+      ...prevUserData,
+      disabledOtpForm :true,
+      loginbutton:true,
+    }));
   }
 
   function Register()
   {
-      setbutton("Please Wait....")
       setdisabled(true)
       fetch(`${api}/user/register`,{
           method:'POST',
@@ -535,20 +654,54 @@ const [otp,setotp]=useState({
         })
   }
 
-  function submit()
+  function OTPVerified()
   {
-  
-    if(namecontrol.charcter && namecontrol.word && namecontrol.lenWord && namecontrol.len &&namecontrol.specialCharacters
-      &&emailcontrol.wrongemail && passwordcontrol.uppercase && passwordcontrol.lowercase && passwordcontrol.digit && passwordcontrol.len &&passwordcontrol.specialCharacters&&
-      addresscontorl.street && addresscontorl.city && addresscontorl.pin && addresscontorl.state && addresscontorl.specialCharacters &&addresscontorl.len)
+    if(checkAllInputfield()==false || otp.otpFromdata==0)
     {
-      if(otp.isvalidate==true)
-      {
-        Register();
-      }
-      else{
-        setresent(true)
+      alert("Please Fill Input Form")
+      return ;
+    }
+    disableotpcontrol()
+      fetch(`${api}/Verification/VerifyOTP`,{
+          method:'POST',
+          headers:{
+              'Accept':'application/json',
+              'Content-Type':'application/json'
+          },
+          body:JSON.stringify({
+            otp:otp.otpFromdata,
+            name:name,
+            email:email,
+            password:password,
+            address:address
+          })
+      })
+      .then(response=>response.json())
+      .then((result)=>{
+          if(result.statusCode==200){
+            alert("SuccessFully Register")
+            history('/Signin')
+          }
+          else{
+            inableotpcontrol()
+            setwronginformation(true)
+            setmesswronginformation(result.message)
+          }
+      },(error)=>{
+        inableotpcontrol()
+        setwronginformation(true)
+        setmesswronginformation("Some Error is Found")
+      })
+  }
+
+  function SendOTP()
+  {
+    if(checkAllInputfield())
+    {
+        setwronginformation(false)
+        disabledinputfrom()
         setdisabled(true)
+        disableotpcontrol()
         fetch(`${api}/Verification/otp-send`,{
         method:'POST',
         headers:{
@@ -566,22 +719,32 @@ const [otp,setotp]=useState({
             alert(result.message)
             setotp((prevUserData) => ({
               ...prevUserData,
-              otp: result.data,
               showOtpfrom:true,
+              showOtpButton:true,
+              disabledOtpForm :false,
+              loginbutton:false,
             }));
             setresent(false)
           }
           else 
           {
+            inableinputfrom()
             setwronginformation(true);
             setmesswronginformation(result.message)
             setresent(false)
             setdisabled(false)
           }
       }).catch(()=>{
-        history('*');
+            inableinputfrom()
+            setwronginformation(true);
+            setmesswronginformation("we find some error Please Try Again Later")
+            setresent(false)
+            setdisabled(false)
       })
-     }
+    }
+    else
+    {
+      alert("Please Fill All the filed using The Description")
     }
   }
 
@@ -590,7 +753,7 @@ const [otp,setotp]=useState({
             <h3 >Register</h3>
 
             <div className="">
-                  <input type="text" value={name} onChange={(e)=>checkforname(e)}  className="inputreglog" placeholder="Enter Full Name"  required/>
+                  <input type="text" value={name} onChange={(e)=>checkforname(e)} disabled={namecontrol.shownamefrom} className="inputreglog" placeholder="Enter Full Name"  required/>
                   {namecontrol.charcter && namecontrol.word && namecontrol.lenWord && namecontrol.len &&namecontrol.specialCharacters&&<HiCheckCircle style={{color:'green'}} />}
             </div>
             <div>
@@ -605,7 +768,7 @@ const [otp,setotp]=useState({
 
 
             <div className="">
-                <input type="email" value={email} onChange={(e)=>{checkforemailid(e.target.value)}} className="inputreglog" placeholder="Enter Email Id"  required/>
+                <input type="email" value={email} onChange={(e)=>{checkforemailid(e.target.value)}} disabled={emailcontrol.showemailfrom} className="inputreglog" placeholder="Enter Email Id"  required/>
                 {emailcontrol.wrongemail&&<HiCheckCircle style={{color:'green'}} />}
             </div>
             <div>
@@ -614,7 +777,7 @@ const [otp,setotp]=useState({
 
 
             <div className="">
-                <input type="password" value={password} onChange={(e)=>{checkpassword(e.target.value)}} className="inputreglog" placeholder="Enter Password"  required/>
+                <input type="password" value={password} onChange={(e)=>{checkpassword(e.target.value)}} disabled={passwordcontrol.showpasswordfrom} className="inputreglog" placeholder="Enter Password"  required/>
                 {passwordcontrol.uppercase && passwordcontrol.lowercase && passwordcontrol.digit && passwordcontrol.len &&passwordcontrol.specialCharacters&&<HiCheckCircle style={{color:'green'}} />}
             </div>
             <div>
@@ -628,8 +791,20 @@ const [otp,setotp]=useState({
             </div>
 
 
+            <div className="">
+                <input type="password" value={confirmpassword} onChange={(e)=>{checkconfirmpassword(e.target.value)}} disabled={confirmpasswordcontrol.showconfirmpasswordfrom} className="inputreglog" placeholder="Enter confirm Password"  required/>
+                {confirmpasswordcontrol.isPasswordandconfirmPasswordIsSame&&<HiCheckCircle style={{color:'green'}} />}
+            </div>
+
+            <div>
+              <div className="authform">
+                <label className="wrongtext">{confirmpasswordcontrol.isPasswordandconfirmPasswordIsSame==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />} Password and Confirmpassword Must be Same</label>
+              </div>
+            </div>
+
+
             <div className=""> 
-                <textarea type="text" value={address} onChange={(e)=>{checkaddress(e.target.value)}} style={{height:'60px'}} className="inputreglog" placeholder="Enter Full Address"  required/>
+                <textarea type="text" value={address} onChange={(e)=>{checkaddress(e.target.value)}} disabled={addresscontorl.showaddressfrom} style={{height:'60px'}} className="inputreglog" placeholder="Enter Full Address"  required/>
                 {addresscontorl.street && addresscontorl.city && addresscontorl.pin && addresscontorl.state && addresscontorl.specialCharacters &&addresscontorl.len && addresscontorl.mobile && addresscontorl.numaricNumer&&<HiCheckCircle style={{color:'green'}} />}
             </div>
             <div>
@@ -644,19 +819,21 @@ const [otp,setotp]=useState({
                 <label className="wrongtext">{addresscontorl.len==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}  Length of Address in Between 45 to 100 Character</label>
               </div>
             </div>
-            {wronginformation&&<label className="wrongtext" style={{color:"red"}}><GoXCircleFill /> {messwronginformation}</label>}
+
             <div className="">
               {
                 otp.showOtpfrom &&
                 <>
-                  <input type="number" value={otp.otpFromdata} onChange={(e)=>{checkotp(e.target.value)}} disabled={otp.disabledbutton} className="inputreglog" placeholder="Enter OTP"  required/>
-                  {otp.isvalidate?<label className="wrongtext"><HiCheckCircle style={{color:'green'}} /> Verify</label>:<button onClick={submit} disabled={resent} className="btn btn-info btn-sm">Resent</button>}
+                  <input type="number" value={otp.otpFromdata} onChange={(e)=>{checkotp(e.target.value)}} disabled={otp.disabledOtpForm} className="inputreglog" placeholder="Enter OTP"  required/>
+                  <button onClick={SendOTP} disabled={resent} className="btn btn-info btn-sm">Resent</button>
                 </>
               }
             </div>
+            {wronginformation&&<label className="wrongtext" style={{color:"red"}}><GoXCircleFill /> {messwronginformation}</label>}
 
 
-            <button className="btn btn-info  btn-sm"  disabled={disabled} onClick={submit}>{button}</button>
+            {otp.showOtpButton==true? <button className="btn btn-info btn-sm" disabled={otp.loginbutton}  onClick={OTPVerified}>Register</button>:
+               <button className="btn btn-info btn-sm" disabled={disabled} onClick={SendOTP}>Send OTP</button>}
         </div>
     )
 }

@@ -4,6 +4,7 @@ import { HiCheckCircle } from "react-icons/hi";
 const ForgotPassword=()=>{
     const [email,setemail]=useState("")
     const [wronguser,setwronguser]=useState(false)
+    
     const [otp,setotp]=useState({
         otp:"",
         showOtpfrom:false,
@@ -18,23 +19,23 @@ const ForgotPassword=()=>{
 
     function checkforemailid(s)
     {
-    setwronguser(false)
-    s=s.replace(/\s+/g, '');
-    setemail(s);
-    if(s.length==0){
-        setemailcontrol((prevUserData) => ({
-        ...prevUserData,
-        wrongemail: false,
-        }));
-        return
-    }
-    var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-    let a= regex.test(s);
-    if(a){
-        setemailcontrol((prevUserData) => ({
-        ...prevUserData,
-        wrongemail: true,
-        }));
+        setwronguser(false)
+        s=s.replace(/\s+/g, '');
+        setemail(s);
+        if(s.length==0){
+            setemailcontrol((prevUserData) => ({
+            ...prevUserData,
+            wrongemail: false,
+            }));
+            return
+        }
+        var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+        let a= regex.test(s);
+        if(a){
+            setemailcontrol((prevUserData) => ({
+            ...prevUserData,
+            wrongemail: true,
+            }));
     }
     else{
         setemailcontrol((prevUserData) => ({

@@ -3,8 +3,12 @@ const User = require("../models/user_models.js");
 let { ApiResponse } = require("../utils/ApiResponse.js");
 let userValidation=require('../models/userValidation_models.js')
 const bcrypt = require("bcrypt");
+let {
+  register,
+  loginUser,
+} = require("../controlers/usercontrolers");
 
-let Verification = async (req, res) => {
+let VerificationRegister = async (req, res) => {
   try {
     const { email } = req.body;
     if (!email) {
@@ -15,29 +19,7 @@ let Verification = async (req, res) => {
 
     let user = await User.findOne({ email: email });
     if (user == null) {
-      const otp = Math.floor(1000 + Math.random() * 9000);
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: "bg5050525@gmail.com",
-          pass: "vqxn zycm bovh xexf",
-        },
-      });
-      const mailOptions = {
-        from: "bg5050525@gmail.com",
-        to: email,
-        subject: "Your OTP for Verification",
-        text: `Your OTP is: ${otp}`,
-      };
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          return res
-            .status(500)
-            .json(new ApiResponse(500, null, "Failed to send OTP via email"));
-        } else {
-          return checkMailIsPresent(otp,email,res);
-        }
-      });
+       return OTPGenerateAndSendToUser(res,email);
     } else {
       return res
         .status(409)
@@ -51,6 +33,32 @@ let Verification = async (req, res) => {
       );
   }
 };
+
+let OTPGenerateAndSendToUser=async(res,email)=>{
+  const otp = Math.floor(1000 + Math.random() * 9000);
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "bg5050525@gmail.com",
+      pass: "vqxn zycm bovh xexf",
+    },
+  });
+  const mailOptions = {
+    from: "bg5050525@gmail.com",
+    to: email,
+    subject: "Your OTP for Verification",
+    text: `Your OTP is ${otp}. It is valid for 10 minutes.`,
+  };
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return res
+        .status(500)
+        .json(new ApiResponse(500, null, "Failed to send OTP via email"));
+    } else {
+      return checkMailIsPresent(otp,email,res);
+    }
+  });
+}
 
 let LoginVerification = async (req, res) => {
   try {
@@ -70,29 +78,7 @@ let LoginVerification = async (req, res) => {
       return res.status(401).json(new ApiResponse(401, null, "Invalid user credentials"));
     }
     else {
-      const otp = Math.floor(1000 + Math.random() * 9000);
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: "bg5050525@gmail.com",
-          pass: "vqxn zycm bovh xexf",
-        },
-      });
-      const mailOptions = {
-        from: "bg5050525@gmail.com",
-        to: email,
-        subject: "Your OTP for Verification",
-        text: `Your OTP is: ${otp}. It is valid for 10 minutes only`,
-      };
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          return res
-            .status(500)
-            .json(new ApiResponse(500, null, "Failed to send OTP via email"));
-        } else {
-          return checkMailIsPresent(otp,email,res);
-        }
-      });
+      return OTPGenerateAndSendToUser(res,email);
     } 
   } catch {
     return res
@@ -102,7 +88,6 @@ let LoginVerification = async (req, res) => {
       );
   }
 };
-
 
 let checkMailIsPresent=async(otp,email,res)=>{
   try{
@@ -134,8 +119,6 @@ let checkMailIsPresent=async(otp,email,res)=>{
 }
 
 let VerifyOTP=async(req,res)=>{
-
-
   try {
     const { email ,otp} = req.body;
     if (!email || !otp) {
@@ -153,16 +136,22 @@ let VerifyOTP=async(req,res)=>{
         const isOTPCorrect  = await bcrypt.compare(otp.toString(), user.OTP);
         if (isOTPCorrect) {
           let data=await userValidation.deleteOne({ email });
-          if(data) return res.status(200).json(new ApiResponse(200, null, "OTP verified successfully")); 
-          else {
-            return res.status(200).json(new ApiResponse(200, null, "OTP verified successfully")); 
+          if(data)
+          {
+            let finduseronregister=await User.findOne({email:email})
+            if(!finduseronregister) return register(req,res);
+            else return loginUser(req,res);
+          }
+          else 
+          {
+            return res.status(404).json(new ApiResponse(404, null, "Please Try Again Later")); 
           }
         } else {
           return res.status(401).json(new ApiResponse(401, null, "Invalid OTP"));
         }
       }
       else{
-        return res.status(404).json(new ApiResponse(404, null, "user Not Found"));
+        return res.status(404).json(new ApiResponse(404, null, "Please Try Again Later"));
       }
     }
   }catch {
@@ -172,9 +161,51 @@ let VerifyOTP=async(req,res)=>{
         new ApiResponse(500, null, "Some Error is Found Please Try Again Later")
       );
     }
-  
-
 }
 
+let ForgotPassword=async(req,res)=>{
+  try{
+    let {email}=req.body;
+    if (!email) {
+      return res
+        .status(400)
+        .json(new ApiResponse(400, null, "Email is required"));
+    }else{
+      let user = await User.findOne({ email: email });
+      if(!user){
+        return res.status(404).json(new ApiResponse(404, null, "User does not exist"));
+      }
+      else{
+        return OTPGenerateAndSendToUser(res,email);
+      }
+    }
+  }catch{
+    return res
+      .status(500)
+      .json(
+        new ApiResponse(500, null, "Some Error is Found Please Try Again Later")
+      );
+  }
+}
 
-module.exports = { Verification,LoginVerification ,VerifyOTP};
+let passwordSave=async(req,res)=>{
+  try{
+    const { email ,password} = req.body;
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json(new ApiResponse(400, null, "Both Email and Password is required"));
+    }
+    else{
+      // let user=
+    }
+  }catch{
+    return res
+    .status(500)
+    .json(
+      new ApiResponse(500, null, "Some Error is Found Please Try Again Later")
+    );
+  }
+}
+
+module.exports = { VerificationRegister,LoginVerification ,VerifyOTP,ForgotPassword};
