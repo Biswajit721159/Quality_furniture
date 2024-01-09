@@ -387,7 +387,7 @@ function sendOTP()
               {
                 otp.showOtpfrom &&
                 <>
-                  <input type="number" value={otp.otpFromdata} onChange={(e)=>{checkotp(e.target.value)}} disabled={otp.disabledOtpForm } className="inputreglog" placeholder="Enter OTP"  required/>
+                  <input type="number" value={otp.otpFromdata} style={{width:"260px"}} onChange={(e)=>{checkotp(e.target.value)}} disabled={otp.disabledOtpForm } className="inputreglog" placeholder="Enter OTP"  required/>
                   <button onClick={sendOTP} disabled={resent} className="btn btn-info btn-sm">Resent</button>
                 </>
               }
@@ -395,7 +395,7 @@ function sendOTP()
         <div>
          {wronguser?<label className="wrongtext" style={{color:"red"}}><GoXCircleFill/> {errormess}</label>:""}
         </div>
-        {otp.showOtpButton==true? <button className="btn btn-info btn-sm" disabled={otp.loginbutton}  onClick={OTPVerified}>Login</button>:
+        {otp.showOtpButton==true? <button className="btn btn-info btn-sm" disabled={otp.loginbutton}   onClick={OTPVerified}>Login</button>:
         <button className="btn btn-info btn-sm" disabled={disabled} onClick={sendOTP}>Send OTP</button>}
         <Link className="mt-3" to={'/ForgotPassword'}>Forgot Password</Link>
     </div>

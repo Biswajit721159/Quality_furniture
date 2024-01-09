@@ -825,7 +825,7 @@ const [otp,setotp]=useState({
               {
                 otp.showOtpfrom &&
                 <>
-                  <input type="number" value={otp.otpFromdata} onChange={(e)=>{checkotp(e.target.value)}} disabled={otp.disabledOtpForm} className="inputreglog" placeholder="Enter OTP"  required/>
+                  <input type="number" value={otp.otpFromdata} onChange={(e)=>{checkotp(e.target.value)}} style={{width:"260px"}} disabled={otp.disabledOtpForm} className="inputreglog" placeholder="Enter OTP"  required/>
                   <button onClick={SendOTP} disabled={resent} className="btn btn-info btn-sm">Resent</button>
                 </>
               }
