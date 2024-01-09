@@ -530,7 +530,6 @@ const [otp,setotp]=useState({
             {
               setwronginformation(true);
               setmesswronginformation(result.message)
-              setbutton("Submit")
               setdisabled(false)
             }
         })
@@ -549,7 +548,6 @@ const [otp,setotp]=useState({
       }
       else{
         setresent(true)
-        setbutton("Please Wait....")
         setdisabled(true)
         fetch(`${api}/Verification/otp-send`,{
         method:'POST',
@@ -571,7 +569,6 @@ const [otp,setotp]=useState({
               otp: result.data,
               showOtpfrom:true,
             }));
-            setbutton("Submit")
             setresent(false)
           }
           else 
@@ -579,7 +576,6 @@ const [otp,setotp]=useState({
             setwronginformation(true);
             setmesswronginformation(result.message)
             setresent(false)
-            setbutton("Submit")
             setdisabled(false)
           }
       }).catch(()=>{
