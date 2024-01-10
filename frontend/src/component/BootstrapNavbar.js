@@ -116,7 +116,7 @@ const BootstrapNavbar=()=>{
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <Link className="dropdown-item" style={{color:'black'}} to="/Profile"><CgProfile /> Profile</Link>
                             <Link className="dropdown-item" style={{color:'black'}} to="/Myorder"><IoReorderFourOutline /> Myorder</Link>
-                            <Link className="dropdown-item" style={{color:'black'}} to={'/Register'} onClick={logout}><IoIosLogOut /> Logout</Link>
+                            <Link className="dropdown-item" style={{color:'black'}} to={'/Signin'} onClick={logout}><IoIosLogOut /> Logout</Link>
                         </div>
                     </div>
                 </span>

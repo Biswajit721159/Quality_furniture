@@ -40,6 +40,7 @@ const ForgotPassword=()=>{
 
     const [emailcontrol,setemailcontrol]=useState({
         wrongemail:false,
+        showemailfrom:false,
     })
 
 
@@ -276,6 +277,10 @@ const ForgotPassword=()=>{
         ...prevUserData,
         showemailfrom:true
         }));
+        setconfirmpasswordcontrol((prevUserData)=>({
+            ...prevUserData,
+            showconfirmpasswordfrom:true
+        }))
     }
 
     function inableinputfrom(){
@@ -287,6 +292,10 @@ const ForgotPassword=()=>{
             ...prevUserData,
             showemailfrom:false
         }));
+        setconfirmpasswordcontrol((prevUserData)=>({
+            ...prevUserData,
+            showconfirmpasswordfrom:false
+        }))
     }
 
     
@@ -310,9 +319,9 @@ const ForgotPassword=()=>{
     function sendOTP()
     {
         setwronguser(false)
-        disabledinputfrom()
         if(checkAllInputfield())
         {
+            disabledinputfrom()
             setresent(true)
             setdisabled(true)
             setotp((prevUserData) => ({
@@ -366,7 +375,7 @@ const ForgotPassword=()=>{
     return(
         <div className="authform">
             <div className="">
-                <input type="email" value={email} onChange={(e)=>{checkforemailid(e.target.value)}}  className="inputreglog" placeholder="Enter Email Id"  required/>
+                <input type="email" value={email} onChange={(e)=>{checkforemailid(e.target.value)}} disabled={emailcontrol.showemailfrom}  className="inputreglog" placeholder="Enter Email Id"  required/>
                 {emailcontrol.wrongemail&&<HiCheckCircle style={{color:'green'}} />}
             </div>
             <div>

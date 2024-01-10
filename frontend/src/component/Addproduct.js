@@ -38,7 +38,7 @@ export default function Addproduct() {
   useEffect(()=>{
     if(userinfo==null)
     {
-      history('/Register')
+      history('/Signin')
     }
   },[])
 

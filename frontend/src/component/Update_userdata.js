@@ -31,7 +31,7 @@ export default function Update_userdata() {
   useEffect(()=>{
     if(userinfo==null)
     {
-      history('/Register')
+      history('/Signin')
     }
     else
     {

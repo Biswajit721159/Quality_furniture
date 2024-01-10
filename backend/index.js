@@ -23,6 +23,7 @@ let ReviewsRouter=require('./Router/ReviewRoute.js')
 let orderRouter=require('./Router/OrderRoute.js')
 let adminpanel=require('./Router/AdminPanelRouter.js')
 let Verification=require('./Router/Verification_Router.js')
+let cart=require('./Router/cartRouter.js')
 
 connectDB()
 
@@ -37,7 +38,7 @@ app.use('/Reviews',ReviewsRouter)
 app.use('/order',orderRouter)
 app.use('/adminpanel',adminpanel)
 app.use('/Verification',Verification)
-
+app.use('/cart',cart)
 
 app.listen(5000);
 

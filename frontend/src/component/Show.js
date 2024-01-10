@@ -15,7 +15,6 @@ export default function Show() {
 const dispatch=useDispatch()
 const history =useNavigate()     
 const [data,setdata]=useState([])
-let [cart,setcart]=useState(JSON.parse(localStorage.getItem('cart')))
 const [product,setproduct]=useState([])
 let userinfo=JSON.parse(localStorage.getItem('user'))
 let wishlist=JSON.parse(localStorage.getItem('Wishlist'))
@@ -59,7 +58,7 @@ useEffect(()=>{
     let selectcatagory=queryParameters.get('selectcatagory')!=null?queryParameters.get('selectcatagory'):'ALL';
     if(userinfo==null)
     {
-        history('/Register')
+        history('/Signin')
     }
     else 
     {
@@ -92,7 +91,7 @@ function findsearchData(lowprice,highprice,selectcatagory,searchproduct,low=0,hi
                 setnext(data.data[n-1].next);
             }
             setproduct(data.data.slice(0,n-1));
-            setToproduct(data.data.slice(0,n-1),cart);
+            setToproduct(data.data.slice(0,n-1));
             setload(false);
         }
         else if(data.statusCode==498)
@@ -134,12 +133,11 @@ function loadCatagory()
     })
 }
 
-function setToproduct(data,res)
+function setToproduct(data)
 {
     if(data==undefined) return
     else
     {
-        res=JSON.parse(localStorage.getItem('cart'))
         wishlist=JSON.parse(localStorage.getItem('Wishlist'))
         let ans=[]
         for(let i=0;i<data.length;i++)
@@ -154,15 +152,15 @@ function setToproduct(data,res)
                 product_type:data[i].product_type,
                 total_number_of_product:data[i].total_number_of_product,
                 number_of_people_give_rating:data[i].number_of_people_give_rating,
-                product_count:0,
+                // product_count:0,
                 islove:false, 
                 isdeleted:false,
             }
             
-            if(res && res.length!=0 && res.product_id==obj._id)
-            {
-                obj.product_count=res.product_count;
-            }
+            // if(res && res.length!=0 && res.product_id==obj._id)
+            // {
+            //     obj.product_count=res.product_count;
+            // }
             for(let j=0; wishlist!=null && j<wishlist.length;j++)
             {
                 if(wishlist[j]==obj._id)
@@ -211,8 +209,7 @@ function addToWishlist(id)
         arr.push(id)
         localStorage.setItem('Wishlist',JSON.stringify(arr))
     }
-    cart=JSON.parse(localStorage.getItem('cart'));
-    setToproduct(data,cart)
+    setToproduct(data)
 }
 
 // data handeling part 
@@ -220,7 +217,7 @@ function addToWishlist(id)
 function clearallfilter()
 {
     setdata(product);
-    setToproduct(product,cart)
+    setToproduct(product)
     setpriceLowTOHigh(false);
     setpriceHighTOLow(false);
     setSortOnRating(false);

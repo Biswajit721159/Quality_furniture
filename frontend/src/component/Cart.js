@@ -26,7 +26,7 @@ const history=useNavigate()
  useEffect(()=>{
     if(userinfo==null)
     {
-        history('/Register')
+        history('/Signin')
     }
     else if(cart)
     {

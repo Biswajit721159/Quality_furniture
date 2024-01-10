@@ -78,7 +78,7 @@ export default function WishList() {
   useEffect(()=>{
     if(userinfo==null)
     {
-      history('/Register')
+      history('/Signin')
     }
     else
     {

@@ -187,17 +187,17 @@ function checkotp(data)
 
 function OTPVerified()
 {
+  if(checkAllInputfield()==false || otp.otpFromdata==0)
+  {
+    alert("Please Fill Input Form")
+    return ;
+  }
   setresent(true)
   setotp((prevUserData) => ({
     ...prevUserData,
     disabledOtpForm :true,
     loginbutton:true,
   }));
-  if(checkAllInputfield()==false || otp.otpFromdata==0)
-  {
-    alert("Please Fill Input Form")
-    return ;
-  }
     fetch(`${api}/Verification/VerifyOTP`,{
         method:'POST',
         headers:{
@@ -240,49 +240,7 @@ function OTPVerified()
     })
 }
 
-function Login()
-{
-    fetch(`${api}/user/login`,{
-        method:'PATCH',
-        headers:{
-            'Accept':'application/json',
-            'Content-Type':'application/json'
-        },
-        body:JSON.stringify({
-           email:email,password:password
-        })
-    })
-    .then(response=>response.json())
-    .then((result)=>{
-        if(result.statusCode==200)
-        {
-            alert(result.message)
-            localStorage.setItem("user",JSON.stringify(result.data))
-            history('/')
-        }
-        else{
-          setotp((prevUserData) => ({
-            ...prevUserData,
-            disabledOtpForm :false,
-            loginbutton:false,
-          }));
-            setresent(false)
-            setwronguser(true)
-            seterrormess(result.message)
-        }
-    },(error)=>{
-      setotp((prevUserData) => ({
-        ...prevUserData,
-        disabledOtpForm :false,
-        loginbutton:false,
-      }));
-        setresent(false)
-        setwronguser(true)
-        seterrormess("We Find Some Error")
-    })
-}
-
-function sendOTP()
+function disableinputform()
 {
     setwronguser(false)
     setpasswordcontrol((prevUserData) => ({
@@ -293,8 +251,26 @@ function sendOTP()
       ...prevUserData,
       showemailfrom:true
     }));
+}
+
+function inableinputfrom()
+{
+  setpasswordcontrol((prevUserData) => ({
+    ...prevUserData,
+    showpasswordfrom:false
+  }));
+  setemailcontrol((prevUserData) => ({
+    ...prevUserData,
+    showemailfrom:false
+  }));
+  setwronguser(true)
+}
+
+function sendOTP()
+{
     if(checkAllInputfield())
     {
+        disableinputform()
         setresent(true)
         setdisabled(true)
         setotp((prevUserData) => ({
@@ -327,30 +303,14 @@ function sendOTP()
                 setresent(false)
             }
             else{
-              setpasswordcontrol((prevUserData) => ({
-                ...prevUserData,
-                showpasswordfrom:false
-              }));
-              setemailcontrol((prevUserData) => ({
-                ...prevUserData,
-                showemailfrom:false
-              }));
+                inableinputfrom()
                 setdisabled(false)
-                setwronguser(true)
                 seterrormess(result.message)
             }
         },(error)=>{
-          setpasswordcontrol((prevUserData) => ({
-            ...prevUserData,
-            showpasswordfrom:false
-          }));
-          setemailcontrol((prevUserData) => ({
-            ...prevUserData,
-            showemailfrom:false
-          }));
-            setdisabled(false)
-            setwronguser(true)
-            seterrormess("We Find Some Error")
+          inableinputfrom()
+          setdisabled(false)
+          seterrormess("We Find Some Error")
         })
         
    }

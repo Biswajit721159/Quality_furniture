@@ -26,7 +26,7 @@ export default function Myorder() {
     }
     if(userinfo==null)
     {
-        history('/Register')
+        history('/Signin')
     }
     else
     {

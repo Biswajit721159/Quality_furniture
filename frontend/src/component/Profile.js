@@ -8,7 +8,7 @@ export default function Profile() {
   useEffect(()=>{
     if(user==null)
     {
-      history('/Register')
+      history('/Signin')
     }
   },[])
 
