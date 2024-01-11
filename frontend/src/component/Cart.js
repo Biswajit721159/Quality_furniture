@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, json, useNavigate } from 'react-router-dom'
-import { PulseLoader ,BeatLoader } from 'react-spinners';
+import { PulseLoader ,BeatLoader ,ClipLoader} from 'react-spinners';
 import {cartmethod} from '../redux/CartSlice'
 import {useDispatch,useSelector} from 'react-redux'
 import { GrAdd } from "react-icons/gr";
@@ -236,9 +236,9 @@ const history=useNavigate()
                         <Link to={`/Product/${product._id}`}><img className='styleimage' src={product.newImage[0]}  alt='Error'/></Link>
                     </div>
                     <div className='col2'>
-                        <button style={{borderRadius:'50%'}} onClick={SUB_TO_CART}><GrSubtract /></button>
-                        <h4 className='cartcount'>{cartdata}</h4>
-                        <button style={{borderRadius:'50%'}} onClick={Add_TO_CART}><GrAdd /></button>
+                        <button style={{borderRadius:'30%', border:'2px solid #D0D3D4'}} onClick={SUB_TO_CART}><GrSubtract /></button>
+                        <h4 className='cartcount'><ClipLoader color="#36d7b7" size={'20px'} /> {cartdata}</h4>
+                        <button style={{borderRadius:'30%' ,border:'2px solid #D0D3D4'}} onClick={Add_TO_CART}><GrAdd /></button>
                     </div>
                 </div>
 

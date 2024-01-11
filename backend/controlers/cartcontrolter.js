@@ -24,7 +24,7 @@ const Add_To_Cart = async (req, res) => {
           .json(new ApiResponse(500, null, "Some Error is Found"));
       }
     } else {
-      let result = (await cart.create({ email, product_id, product_count }));
+      let result = await cart.create({ email, product_id, product_count });
       if (result._id) {
         return res.status(200).json(new ApiResponse(200, req.body, "Success"));
       } else {
@@ -68,4 +68,22 @@ const Remove_To_Cart = async (req, res) => {
   }
 };
 
-module.exports = { Add_To_Cart, Remove_To_Cart };
+const GetCart = async (req, res) => {
+  try {
+    let { email } = req.body;
+    if (!email)
+      return res
+        .status(400)
+        .json(new ApiResponse(400, null, "Some Thing is Missing"));
+    let result = await cart.findOne({ email: email });
+    if (result) {
+      return res.status(200).json(new ApiResponse(200, result, "Success"));
+    } else {
+      res.status(404).json(new ApiResponse(404, null, "Product Not found"));
+    }
+  } catch {
+    res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
+  }
+};
+
+module.exports = { Add_To_Cart, Remove_To_Cart, GetCart };
