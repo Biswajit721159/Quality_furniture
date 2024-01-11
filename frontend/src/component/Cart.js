@@ -31,7 +31,7 @@ const history=useNavigate()
     else if(cart)
     {
         setaddress(userinfo.user.address)
-        loadproduct()
+        loadcart()
     }
  },[])
 
@@ -39,6 +39,32 @@ const history=useNavigate()
  useEffect(()=>{
     findCost(data);
  },[cartdata])
+
+ function loadcart()
+ {
+    setload(true)
+    fetch(`${api}/cart/GetCart/${userinfo.user.email}`,{
+        headers:{
+            Authorization:`Bearer ${userinfo.accessToken}`
+        }
+    }).then(responce=>responce.json())
+    .then((res)=>{
+        if(res.statusCode==201)
+        {
+            setToproduct(res.data,cart)
+            setload(false)
+        }
+        else if(res.statusCode==498)
+        {
+            localStorage.removeItem('user');
+            history('/Signin');
+        }
+        else
+        {
+            history('*');
+        }
+    })
+ }
  
  function findCost(ans)
  {

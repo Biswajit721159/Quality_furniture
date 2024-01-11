@@ -70,7 +70,7 @@ const Remove_To_Cart = async (req, res) => {
 
 const GetCart = async (req, res) => {
   try {
-    let { email } = req.body;
+    let email = req.params.email;
     if (!email)
       return res
         .status(400)

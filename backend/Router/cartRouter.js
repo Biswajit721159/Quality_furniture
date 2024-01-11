@@ -7,7 +7,7 @@ const router = Router();
 
 router.route('/Add_To_Cart').post(verifytoken,Add_To_Cart)
 router.route('/Remove_To_Cart').delete(verifytoken,Remove_To_Cart)
-router.route('/GetCart').get(verifytoken,GetCart)
+router.route('/GetCart/:email').get(verifytoken,GetCart)
 
 
 module.exports = router;
