@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {useNavigate, useParams} from 'react-router-dom'
 import {AiFillStar } from "react-icons/ai";
-import { PulseLoader } from 'react-spinners';
+import { PulseLoader ,BarLoader,BeatLoader} from 'react-spinners';
 import '../css/Product_view.css'
 import {useDispatch,useSelector} from 'react-redux'
 import {cartmethod} from '../redux/CartSlice'
@@ -21,8 +21,9 @@ export default function Product_view() {
   let userinfo=JSON.parse(localStorage.getItem('user'))
 
   let [load,setload]=useState(true)
-  let [cart,setcart]=useState(JSON.parse(localStorage.getItem('cart')));
+  let cart= useSelector((state) => state.cartdata);
   const [relatedProduct,setrelatedProduct]=useState(null)
+  const [removebutton,setremovebutton]=useState(false)
 
   useEffect(()=>{
     if(userinfo==null)
@@ -92,14 +93,69 @@ export default function Product_view() {
 
   function Add_TO_CART()
   {
-    dispatch(cartmethod.ADD_TO_CART(_id))
-    history('/cart')
+    setload(true)
+    fetch(`${api}/cart/Add_To_Cart`,{
+        method:'POST',
+        headers:{
+            'Accept':'application/json',
+            'Content-Type':'application/json',
+            Authorization:`Bearer ${userinfo.accessToken}`
+        },
+        body:JSON.stringify({
+            email:userinfo.user.email,
+            product_id:product._id,
+            product_count:1
+        })
+    }).then((responce)=>responce.json())
+    .then((res)=>{
+        if(res.statusCode==200)
+        {
+            dispatch(cartmethod.ADD_TO_CART(res.data))
+            setload(false)
+            history('/cart')
+        }
+        else if(res.statusCode==498)
+        {
+            localStorage.removeItem('user');
+            history('/Signin');
+        }
+        else
+        {
+            history('*');
+        }
+    })
   }
 
   function removeTocart()
   {
-     dispatch(cartmethod.REMOVE_TO_CART())
-     setcart(JSON.parse(localStorage.getItem('cart')));
+    setremovebutton(true)
+    fetch(`${api}/cart/Remove_To_Cart`,{
+        method:'DELETE',
+        headers:{
+            'Accept':'application/json',
+            'Content-Type':'application/json',
+            Authorization:`Bearer ${userinfo.accessToken}`
+        },
+        body:JSON.stringify({
+            email:userinfo.user.email,
+        })
+    }).then((responce)=>responce.json())
+    .then((res)=>{
+        if(res.statusCode==200)
+        {
+            setremovebutton(false)
+            dispatch(cartmethod.Remove_To_Cart())
+        }
+        else if(res.statusCode==498)
+        {
+            localStorage.removeItem('user');
+            history('/Signin');
+        }
+        else
+        {
+            history('*');
+        }
+    })
   }
 
 
@@ -153,7 +209,11 @@ export default function Product_view() {
                     </div>
                     <div className='col2'>
                        {cart && cart.product_id==_id ?
-                       <button id='button' className='btn btn-danger btn-sm' onClick={removeTocart}> Remove To Cart </button>
+                       <button id='button' className='btn btn-danger btn-sm' onClick={removeTocart}>
+                        {
+                            removebutton==true?<BeatLoader color="#36d7b7" />:"Remove To Cart"
+                        }
+                         </button>
                        :<button id='button' className='btn btn-primary  btn-sm' disabled={!product.total_number_of_product} onClick={Add_TO_CART} >Add To Cart </button>}
                     </div>
                 </div>

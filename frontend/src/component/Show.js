@@ -413,8 +413,37 @@ function backTOHome()
 
 function AddToCart(product_id)
 {
-    dispatch(cartmethod.ADD_TO_CART(product_id))
-    history('/Cart')
+    setload(true)
+    fetch(`${api}/cart/Add_To_Cart`,{
+        method:'POST',
+        headers:{
+            'Accept':'application/json',
+            'Content-Type':'application/json',
+            Authorization:`Bearer ${userinfo.accessToken}`
+        },
+        body:JSON.stringify({
+            email:userinfo.user.email,
+            product_id:product_id,
+            product_count:1
+        })
+    }).then((responce)=>responce.json())
+    .then((res)=>{
+        if(res.statusCode==200)
+        {
+            dispatch(cartmethod.ADD_TO_CART(res.data))
+            setload(false)
+            history('/cart')
+        }
+        else if(res.statusCode==498)
+        {
+            localStorage.removeItem('user');
+            history('/Signin');
+        }
+        else
+        {
+            history('*');
+        }
+    })
 }
 
 function ClearAllFilter()

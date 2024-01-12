@@ -7,11 +7,13 @@ import { IoIosLogOut } from "react-icons/io";
 import {FaHeart, FaSketch} from 'react-icons/fa';
 import { GiLoveHowl } from "react-icons/gi";
 import { IoReorderFourOutline } from "react-icons/io5";
-import {useSelector} from 'react-redux'
+import {cartmethod} from '../redux/CartSlice'
+import {useSelector,useDispatch} from 'react-redux'
 import '../css/BootstrapNavbar.css'
 import Search from './Search';
+const api = process.env.REACT_APP_API
 const BootstrapNavbar=()=>{
-
+    const dispatch=useDispatch();
     const history=useNavigate();
     const user=JSON.parse(localStorage.getItem('user'));
     const [mode,setmode]=useState(localStorage.getItem('mode'));
@@ -19,23 +21,40 @@ const BootstrapNavbar=()=>{
     
     useEffect(()=>{
         givecolor(localStorage.getItem('mode'));
+        loadcart()
     },[])
+
+    function loadcart()
+    {
+        if(user==null) return;
+        fetch(`${api}/cart/GetCart/${user.user.email}`,{
+            headers:{
+                Authorization:`Bearer ${user.accessToken}`
+            }
+        }).then(responce=>responce.json())
+        .then((res)=>{
+            if(res.statusCode==200)
+            {
+                dispatch(cartmethod.ADD_TO_CART(res.data))
+            }
+        })
+    }
 
     function givecolor(color)
     {
         if(color==null)
         {
-        localStorage.setItem('mode','dark')
-        setmode('dark')
-        givecolor('dark')
+            localStorage.setItem('mode','dark')
+            setmode('dark')
+            givecolor('dark')
         }
         else if(color=='light')
         {
-        document.body.style.backgroundColor = "#D0D3D4 ";
+            document.body.style.backgroundColor = "#D0D3D4";
         }
         else
         {
-        document.body.style.backgroundColor = "#85929E";
+            document.body.style.backgroundColor = "#85929E";
         }
     }
 

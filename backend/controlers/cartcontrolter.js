@@ -14,7 +14,7 @@ const Add_To_Cart = async (req, res) => {
     if (product) {
       const result = await cart.updateOne(
         { email: email },
-        { $set: { product_count: product_count } }
+        { $set: {product_id:product_id, product_count: product_count } }
       );
       if (result.modifiedCount == 1) {
         return res.status(200).json(new ApiResponse(200, req.body, "success"));

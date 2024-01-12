@@ -13,13 +13,14 @@ const dispatch=useDispatch();
 const userinfo=JSON.parse(localStorage.getItem('user'))
 let cartdata = useSelector((state) => state.cartdata.product_count);
 const [data,setdata]=useState([])
-const [cart,setcart]=useState(JSON.parse(localStorage.getItem('cart')))
+const [cart,setcart]=useState(null)
 const [cost,setcost]=useState(0)
 const [address,setaddress]=useState()
 const [button,setbutton]=useState("PLACE ORDER")
 const [disabled,setdisabled]=useState(false)
 const [load,setload]=useState(false)
 const [product,setproduct]=useState(null)
+const [loadercart,setloadercart]=useState(false)
 
 const history=useNavigate()
 
@@ -28,7 +29,7 @@ const history=useNavigate()
     {
         history('/Signin')
     }
-    else if(cart)
+    else 
     {
         setaddress(userinfo.user.address)
         loadcart()
@@ -49,10 +50,16 @@ const history=useNavigate()
         }
     }).then(responce=>responce.json())
     .then((res)=>{
-        if(res.statusCode==201)
+        if(res.statusCode==200)
         {
-            setToproduct(res.data,cart)
+            dispatch(cartmethod.ADD_TO_CART(res.data))
+            setcart(res.data)
+            loadproduct(res.data)
+        }
+        else if(res.statusCode==404)
+        {
             setload(false)
+            setproduct(null)
         }
         else if(res.statusCode==498)
         {
@@ -77,10 +84,10 @@ const history=useNavigate()
     setcost(x)
  }
 
- function loadproduct()
+ function loadproduct(cartdata)
  {
     setload(true)
-    fetch(`${api}/product/${cart.product_id}`,{
+    fetch(`${api}/product/${cartdata.product_id}`,{
         headers:{
             Authorization:`Bearer ${userinfo.accessToken}`
         }
@@ -88,7 +95,7 @@ const history=useNavigate()
     .then((res)=>{
         if(res.statusCode==201)
         {
-            setToproduct(res.data,cart)
+            setToproduct(res.data,cartdata)
             setload(false)
         }
         else if(res.statusCode==498)
@@ -105,7 +112,6 @@ const history=useNavigate()
 
  function setToproduct(data,res)
  {
-    res=JSON.parse(localStorage.getItem('cart'))
     if(data==undefined || res==null) return
     let ans=[]
     
@@ -137,6 +143,41 @@ const history=useNavigate()
     if(ans.length)setproduct(ans[0])
  }
 
+ function DataBaseSaveADDTOCART(email,product_id,product_count)
+ {
+    setloadercart(true)
+    fetch(`${api}/cart/Add_To_Cart`,{
+        method:'POST',
+        headers:{
+            'Accept':'application/json',
+            'Content-Type':'application/json',
+            Authorization:`Bearer ${userinfo.accessToken}`
+        },
+        body:JSON.stringify({
+            email:email,
+            product_id:product_id,
+            product_count:product_count
+        })
+    }).then((responce)=>responce.json())
+    .then((res)=>{
+        if(res.statusCode==200)
+        {
+            dispatch(cartmethod.ADD_TO_CART(res.data))
+            setcart(res.data)
+            setloadercart(false)
+        }
+        else if(res.statusCode==498)
+        {
+            localStorage.removeItem('user');
+            history('/Signin');
+        }
+        else
+        {
+            history('*');
+        }
+    })
+ }
+
  function Add_TO_CART()
  {
     if(cartdata>=product.total_number_of_product || cartdata>=5)
@@ -144,7 +185,9 @@ const history=useNavigate()
         alert("Sorry You are not Allow ")
     } 
     else
-        dispatch(cartmethod.ADD_TO_CART(product._id))
+    {
+        DataBaseSaveADDTOCART(userinfo.user.email,cart.product_id,cart.product_count+1)
+    }
  }
 
  function SUB_TO_CART()
@@ -154,13 +197,40 @@ const history=useNavigate()
         alert("Sorry You are not Allow ")
     } 
     else
-       dispatch(cartmethod.SUB_TO_CART(product._id))
+    {
+        DataBaseSaveADDTOCART(userinfo.user.email,cart.product_id,cart.product_count-1)
+    }
  }
 
  function removeTocart()
  {
-    dispatch(cartmethod.REMOVE_TO_CART())
     setproduct(null)
+    fetch(`${api}/cart/Remove_To_Cart`,{
+        method:'DELETE',
+        headers:{
+            'Accept':'application/json',
+            'Content-Type':'application/json',
+            Authorization:`Bearer ${userinfo.accessToken}`
+        },
+        body:JSON.stringify({
+            email:userinfo.user.email,
+        })
+    }).then((responce)=>responce.json())
+    .then((res)=>{
+        if(res.statusCode==200)
+        {
+            dispatch(cartmethod.Remove_To_Cart())
+        }
+        else if(res.statusCode==498)
+        {
+            localStorage.removeItem('user');
+            history('/Signin');
+        }
+        else
+        {
+            history('*');
+        }
+    })
  }
 
  function submit_order()
@@ -263,7 +333,11 @@ const history=useNavigate()
                     </div>
                     <div className='col2'>
                         <button style={{borderRadius:'30%', border:'2px solid #D0D3D4'}} onClick={SUB_TO_CART}><GrSubtract /></button>
-                        <h4 className='cartcount'><ClipLoader color="#36d7b7" size={'20px'} /> {cartdata}</h4>
+                        <h4 className='cartcount'>
+                            {
+                                loadercart==true?<ClipLoader size={'15px'} />:cartdata
+                            }
+                        </h4>
                         <button style={{borderRadius:'30%' ,border:'2px solid #D0D3D4'}} onClick={Add_TO_CART}><GrAdd /></button>
                     </div>
                 </div>
@@ -310,8 +384,8 @@ const history=useNavigate()
             </div>
         </>    
         :<div className='loader-container'>
-        <Link to={'/Product'}><button className='btn btn-info'>  <h4>ADD PRODUCTS</h4>  </button></Link>
-         </div>
+             <Link to={'/Product'}><button className='btn btn-info'>  <h4>ADD PRODUCTS</h4>  </button></Link>
+        </div>
     }
     </>
   )
