@@ -15,10 +15,12 @@ export default function WishList() {
   const [update,setupdate]=useState(false)
   const history=useNavigate()
   const [nums,setnums]=useState([])
+  const [load,setload]=useState(false)
 
 
   function loadproduct()
   {
+    setload(true)
     fetch(`${api}/product/get_product_by_ids`,{
       method:'PATCH',
       headers:{
@@ -33,6 +35,7 @@ export default function WishList() {
       try{
           if(res.statusCode==201)
           {
+            setload(false)
             setnums(res.data);
             settoproduct(res.data);
           }
@@ -45,6 +48,7 @@ export default function WishList() {
           {
             setnums(res.data);
             settoproduct(res.data);
+            setload(false)
           }
           else
           {
@@ -116,15 +120,49 @@ export default function WishList() {
   
   function AddToCart(product_id)
   {
-      dispatch(cartmethod.ADD_TO_CART(product_id))
-      history('/Cart')
+    setload(true)
+      fetch(`${api}/cart/Add_To_Cart`,{
+        method:'POST',
+        headers:{
+            'Accept':'application/json',
+            'Content-Type':'application/json',
+            Authorization:`Bearer ${userinfo.accessToken}`
+        },
+        body:JSON.stringify({
+            email:userinfo.user.email,
+            product_id:product_id,
+            product_count:1,
+        })
+      }).then((responce)=>responce.json())
+      .then((res)=>{
+        if(res.statusCode==200)
+        {
+            setload(false)
+            dispatch(cartmethod.ADD_TO_CART(res.data))
+            history('/cart')
+        }
+        else if(res.statusCode==498)
+        {
+            localStorage.removeItem('user');
+            history('/Signin');
+        }
+        else
+        {
+            history('*');
+        }
+    })
   }
 
 
   return (
   <>
-     {
-       (data && data.length !=0) ?
+    {
+      load==true?
+      <div className="Loaderitem">
+          <PulseLoader color="#16A085"  />
+      </div>
+      :
+      (data && data.length !=0) ?
       <div className='product'>
          { data.map((item,ind)=>(
                <div key={ind} className="maincard mt-2">
@@ -194,14 +232,9 @@ export default function WishList() {
          }
       </div>
       :
-      product && product.length?
-      <div className="Loaderitem">
-          <PulseLoader color="#16A085"  />
+      <div className='loader-container'>
+          <Link to={'/Product'}><button className='btn btn-info'>  <h4>ADD PRODUCTS</h4>  </button></Link>
       </div>
-      :
-        <div className='loader-container'>
-            <Link to={'/Product'}><button className='btn btn-info'>  <h4>ADD PRODUCTS</h4>  </button></Link>
-        </div>
     }
   </>
  )

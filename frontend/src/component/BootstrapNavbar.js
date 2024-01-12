@@ -5,12 +5,11 @@ import { FaShoppingCart } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { IoIosLogOut } from "react-icons/io";
 import {FaHeart, FaSketch} from 'react-icons/fa';
-import { GiLoveHowl } from "react-icons/gi";
 import { IoReorderFourOutline } from "react-icons/io5";
 import {cartmethod} from '../redux/CartSlice'
 import {useSelector,useDispatch} from 'react-redux'
 import '../css/BootstrapNavbar.css'
-import Search from './Search';
+import Searchcomponent from './Searchcomponent';
 const api = process.env.REACT_APP_API
 const BootstrapNavbar=()=>{
     const dispatch=useDispatch();
@@ -22,10 +21,11 @@ const BootstrapNavbar=()=>{
     useEffect(()=>{
         givecolor(localStorage.getItem('mode'));
         loadcart()
-    },[])
+    },[user])
 
     function loadcart()
     {
+        console.log(user)
         if(user==null) return;
         fetch(`${api}/cart/GetCart/${user.user.email}`,{
             headers:{
@@ -116,7 +116,8 @@ const BootstrapNavbar=()=>{
                     </li> */}
                 </ul>
                 <span>
-                    <Search/>
+                    {/* <Search/> */}
+                    <Searchcomponent/>
                 </span>
                 <span className="navbar-text mx-4">
                     <Link style={{color:'red'}} className='carticon' to={'/Wishlist'}><FaHeart/></Link>
