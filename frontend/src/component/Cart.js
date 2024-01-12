@@ -343,7 +343,7 @@ const history=useNavigate()
 
                 <div className='item1item2'>
                     <h5 className='pricedetailmain' >{product.product_name}</h5>
-                    <p className='pricedetail' style={{color:"orange"}}>{product.offer}%OFF ({product.total_number_of_product} left)</p>
+                    <p className='pricedetail' style={{color:"#D68910"}}>{product.offer}%OFF ({product.total_number_of_product} left)</p>
                     <h6 className='pricedetail' style={{color:'gray'}}>Original - <s>₹{product.price}</s></h6> 
                     <h5 className='pricedetailmain' style={{color:'tomato'}}>Price - ₹{(product.price-((product.price*product.offer)/100)).toFixed(2)}</h5>
                     <button className='btn btn-secondary btn-sm removebutton' onClick={removeTocart}>Remove To Cart</button>
