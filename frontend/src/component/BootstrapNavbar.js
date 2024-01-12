@@ -43,9 +43,9 @@ const BootstrapNavbar=()=>{
     {
         if(color==null)
         {
-            localStorage.setItem('mode','dark')
-            setmode('dark')
-            givecolor('dark')
+            localStorage.setItem('mode','light')
+            setmode('light')
+            givecolor('light')
         }
         else if(color=='light')
         {
@@ -61,21 +61,21 @@ const BootstrapNavbar=()=>{
     {
         if(mode==null)
         {
-        localStorage.setItem('mode','light')
-        setmode('light')
-        givecolor('light')
+            localStorage.setItem('mode','light')
+            setmode('light')
+            givecolor('light')
         }
         else if(mode=='light')
         {
-        localStorage.setItem('mode','dark')
-        setmode('dark')
-        givecolor('dark')
+            localStorage.setItem('mode','dark')
+            setmode('dark')
+            givecolor('dark')
         }
         else
         {
-        localStorage.setItem('mode','light')
-        setmode('light')
-        givecolor('light')
+            localStorage.setItem('mode','light')
+            setmode('light')
+            givecolor('light')
         }
     }
 
@@ -87,7 +87,7 @@ const BootstrapNavbar=()=>{
     return(
     <nav className="navbar navbar-expand-lg navbar navbar-dark bg-dark">
        <Link  to={'/Product'}><img src='https://t4.ftcdn.net/jpg/03/71/92/67/360_F_371926762_MdmDMtJbXt7DoaDrxFP0dp9Nq1tSFCnR.jpg' style={{height:'40px',width:'40px' ,borderRadius:'50%'}} alt='Error'/></Link>
-        <Link className="navbar-brand mx-2" to="/">QFurniture</Link>
+        <Link className="navbar-brand mx-2" to="/">QRFurniture</Link>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
         </button>
