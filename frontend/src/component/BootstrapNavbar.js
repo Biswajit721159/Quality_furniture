@@ -25,7 +25,6 @@ const BootstrapNavbar=()=>{
 
     function loadcart()
     {
-        console.log(user)
         if(user==null) return;
         fetch(`${api}/cart/GetCart/${user.user.email}`,{
             headers:{

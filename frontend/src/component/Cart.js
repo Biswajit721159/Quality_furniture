@@ -258,7 +258,6 @@ const history=useNavigate()
         })
       }).then(responce=>responce.json())
       .then((res)=>{
-        console.log(res)
         history('/Myorder')
       })
  }
@@ -324,8 +323,8 @@ const history=useNavigate()
         </div>:
          product!=null?
          <>
-            <h6 className='pricedetail' style={{textAlign:'center',fontFamily:'monospace',color:"red"}}>*If You Want to Change Your Address Go to Your Profile Section </h6>
-            <div className='cartitem'>
+            <h6 className='pricedetail mt-3' style={{textAlign:'center',fontFamily:'monospace',color:"red"}}>*If You Want to Change Your Address Go to Your Profile Section </h6>
+            <div className='cartitem mt-4'>
 
                 <div className='item1'>
                     <div className='insideritem'>
