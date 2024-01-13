@@ -5,6 +5,7 @@ import {cartmethod} from '../redux/CartSlice'
 import {useDispatch,useSelector} from 'react-redux'
 import { GrAdd } from "react-icons/gr";
 import { GrSubtract } from "react-icons/gr";
+import swal from 'sweetalert'
 import '../css/cart.css'
 const api = process.env.REACT_APP_API
 export default function Cart() {
@@ -180,24 +181,24 @@ const history=useNavigate()
 
  function Add_TO_CART()
  {
-    if(cartdata>=product.total_number_of_product || cartdata>=5)
-    {
-        alert("Sorry You are not Allow ")
+    if(cartdata>=product.total_number_of_product){
+        swal(`Sorry, in our stock, ${product.total_number_of_product} products are Available.`)
+    }
+    else if(cartdata>=5){
+        swal("Sorry, your cart already has 5 products.")
     } 
-    else
-    {
+    else{
         DataBaseSaveADDTOCART(userinfo.user.email,cart.product_id,cart.product_count+1)
     }
  }
 
  function SUB_TO_CART()
  {
-    if(cartdata<=1)
-    {
-        alert("Sorry You are not Allow ")
+    console.log(cart.product_count-1)
+    if(cartdata<=1){
+        swal("If you want to remove the product, there is a 'Remove' button available .")
     } 
-    else
-    {
+    else{
         DataBaseSaveADDTOCART(userinfo.user.email,cart.product_id,cart.product_count-1)
     }
  }
@@ -217,17 +218,14 @@ const history=useNavigate()
         })
     }).then((responce)=>responce.json())
     .then((res)=>{
-        if(res.statusCode==200)
-        {
+        if(res.statusCode==200){
             dispatch(cartmethod.Remove_To_Cart())
         }
-        else if(res.statusCode==498)
-        {
+        else if(res.statusCode==498){
             localStorage.removeItem('user');
             history('/Signin');
         }
-        else
-        {
+        else{
             history('*');
         }
     })
@@ -284,7 +282,7 @@ const history=useNavigate()
  {
     if(cartdata==0)
     {
-      alert("Please Select Atleast One Product .")
+      swal("Please Select Atleast One Product .")
       return ;
     }
     setdisabled(true)
@@ -296,15 +294,12 @@ const history=useNavigate()
       }
     }).then(responce=>responce.json()).then((result)=>{
       let product_data=result.data
-      if(product_data!=undefined && product_data.length!=0)
-      {
-          if(product_data.total_number_of_product>=cartdata)
-          {
+      if(product_data!=undefined && product_data.length!=0){
+          if(product_data.total_number_of_product>=cartdata){
             submit_in_product(product_data)
           }
-          else
-          {
-            alert(`Acctually We Have Total ${product_data.total_number_of_product} Product Available`)
+          else{
+            swal(`Sorry, in our stock, ${product_data.total_number_of_product} products are available.`)
             setbutton("PLACE ORDER")
             setdisabled(false)
           }

@@ -2,6 +2,7 @@ import React,{useState} from "react"
 import { GoXCircleFill } from "react-icons/go";
 import { HiCheckCircle } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
+import swal from 'sweetalert'
 const api = process.env.REACT_APP_API
 const ForgotPassword=()=>{
     const [email,setemail]=useState("")
@@ -165,9 +166,9 @@ const ForgotPassword=()=>{
     function checkconfirmpasswordIsEqualPassword(confirmpassword,password)
     {
       if(confirmpassword.length==0){
-        disabledconfirmpassword()
+        inableconfirmpassword()
       }
-      if(confirmpassword==password){
+      else if(confirmpassword==password){
         disabledconfirmpassword()
       }
       else{
@@ -223,7 +224,7 @@ const ForgotPassword=()=>{
         }));
         if(otp.otpFromdata==0)
         {
-            alert("Please Fill Input Form")
+            swal("Please Fill Input Form")
             return ;
         }
             fetch(`${api}/Verification/passwordSave`,{
@@ -242,7 +243,7 @@ const ForgotPassword=()=>{
             .then((result)=>{
                 if(result.statusCode==200)
                 {
-                    alert(result.message)
+                    swal(result.message)
                     localStorage.setItem("user",JSON.stringify(result.data))
                     history('/Signin')
                 }
@@ -343,7 +344,7 @@ const ForgotPassword=()=>{
             .then((result)=>{
                 if(result.statusCode==200)
                 {
-                    alert(result.message)
+                    swal(result.message)
                     setotp((prevUserData) => ({
                         ...prevUserData,
                         showOtpfrom:true,
@@ -368,7 +369,7 @@ const ForgotPassword=()=>{
         }
         else
         {
-            alert("Please Fill All the filed using description")
+            swal("Please Fill All the filed using description")
         }
     }
 

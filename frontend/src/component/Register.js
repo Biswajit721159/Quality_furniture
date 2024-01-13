@@ -1,8 +1,10 @@
 import React, { useState,useEffect }  from "react";
 import { json, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { GoXCircleFill } from "react-icons/go";
 import { HiCheckCircle } from "react-icons/hi";
 import { MdOutlineRadioButtonUnchecked } from "react-icons/md"
+import swal from 'sweetalert'
 import '../css/Auth.css'
 const api = process.env.REACT_APP_API
 const Register=()=>{
@@ -32,6 +34,7 @@ const [resent,setresent]=useState(false)
 const [wronginformation,setwronginformation]=useState(false);
 const [messwronginformation,setmesswronginformation]=useState("");
 const [confirmpassword,setconfirmpassword]=useState("");
+const [registerandloginlink,setregisterandloginlink]=useState(true)
 
 const [confirmpasswordcontrol,setconfirmpasswordcontrol]=useState({
   isPasswordandconfirmPasswordIsSame:false,
@@ -519,9 +522,9 @@ const [otp,setotp]=useState({
   function checkconfirmpasswordIsEqualPassword(confirmpassword,password)
   {
     if(confirmpassword.length==0){
-      disabledconfirmpassword()
+      inableconfirmpassword()
     }
-    if(confirmpassword==password){
+    else if(confirmpassword==password){
       disabledconfirmpassword()
     }
     else{
@@ -622,44 +625,13 @@ const [otp,setotp]=useState({
     }));
   }
 
-  function Register()
-  {
-      setdisabled(true)
-      fetch(`${api}/user/register`,{
-          method:'POST',
-          headers:{
-              'Accept':'application/json',
-              'Content-Type':'application/json'
-          },
-          body:JSON.stringify({
-            name:name,
-            email:email,
-            password:password,
-            address:address
-          })
-        })
-        .then(response=>response.json())
-        .then((result)=>{
-            if(result.statusCode==201)
-            {
-              alert("SuccessFully Register")
-              history('/Signin')
-            }
-            else 
-            {
-              setwronginformation(true);
-              setmesswronginformation(result.message)
-              setdisabled(false)
-            }
-        })
-  }
 
   function OTPVerified()
   {
     setwronginformation(false)
     if(checkAllInputfield()==false || otp.otpFromdata==0)
     {
-      alert("Please Fill Input Form")
+      swal("Please Fill Input Form")
       return ;
     }
     disableotpcontrol()
@@ -680,7 +652,7 @@ const [otp,setotp]=useState({
       .then(response=>response.json())
       .then((result)=>{
           if(result.statusCode==200 || result.statusCode==201){
-            alert("SuccessFully Register")
+            swal("SuccessFully Register")
             history('/Signin')
           }
           else{
@@ -717,7 +689,8 @@ const [otp,setotp]=useState({
       .then((result)=>{
           if(result.statusCode==200)
           {
-            alert(result.message)
+            setregisterandloginlink(false)
+            swal(result.message)
             setotp((prevUserData) => ({
               ...prevUserData,
               showOtpfrom:true,
@@ -745,7 +718,7 @@ const [otp,setotp]=useState({
     }
     else
     {
-      alert("Please Fill All the filed using The Description")
+      swal("Please Fill All the filed using The Description")
     }
   }
 
@@ -794,7 +767,7 @@ const [otp,setotp]=useState({
 
             <div className="">
                 <input type="password" value={confirmpassword} onChange={(e)=>{checkconfirmpassword(e.target.value)}} disabled={confirmpasswordcontrol.showconfirmpasswordfrom} className="inputreglog" placeholder="Enter confirm Password"  required/>
-                {confirmpasswordcontrol.isPasswordandconfirmPasswordIsSame&&<HiCheckCircle style={{color:'green'}} />}
+                {confirmpasswordcontrol.isPasswordandconfirmPasswordIsSame?<HiCheckCircle style={{color:'green'}} />:<HiCheckCircle style={{color:'red'}} />}
             </div>
 
             <div>
@@ -810,11 +783,11 @@ const [otp,setotp]=useState({
             </div>
             <div>
               <div className="authform">
-                <label className="wrongtext">{addresscontorl.street==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />} Address must be a string containing only street name</label>
-                <label className="wrongtext">{addresscontorl.city==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}  Address must be a string containing only city name</label>
-                <label className="wrongtext">{addresscontorl.pin==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}  Address must be a string containing only pin name</label>
-                <label className="wrongtext">{addresscontorl.state==false?<GoXCircleFill style={{color:'red'}} />: <HiCheckCircle style={{color:'green'}} />}Address must be a string containing only state name</label>
-                <label className="wrongtext">{addresscontorl.mobile==false?<GoXCircleFill style={{color:'red'}} />: <HiCheckCircle style={{color:'green'}} />}Address must be a string containing only mobile Number</label>
+                <label className="wrongtext">{addresscontorl.street==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />} Address must be a string containing  'street' name</label>
+                <label className="wrongtext">{addresscontorl.city==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}  Address must be a string containing  'city' name</label>
+                <label className="wrongtext">{addresscontorl.pin==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}  Address must be a string containing  'pin' name</label>
+                <label className="wrongtext">{addresscontorl.state==false?<GoXCircleFill style={{color:'red'}} />: <HiCheckCircle style={{color:'green'}} />}Address must be a string containing  'state' name</label>
+                <label className="wrongtext">{addresscontorl.mobile==false?<GoXCircleFill style={{color:'red'}} />: <HiCheckCircle style={{color:'green'}} />}Address must be a string containing  'mobile' Number</label>
                 <label className="wrongtext">{addresscontorl.numaricNumer==false?<GoXCircleFill style={{color:'red'}} />: <HiCheckCircle style={{color:'green'}} />}Address must be contain at Max 22 numaric Number</label>
                 <label className="wrongtext">{addresscontorl.specialCharacters==false?<GoXCircleFill style={{color:'red'}} />: <HiCheckCircle style={{color:'green'}} />}Address Maximum 9 Special charcter Accept That are <strong> ,-. </strong></label>
                 <label className="wrongtext">{addresscontorl.len==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}  Length of Address in Between 45 to 100 Character</label>
@@ -835,6 +808,8 @@ const [otp,setotp]=useState({
 
             {otp.showOtpButton==true? <button className="btn btn-info btn-sm" disabled={otp.loginbutton}  onClick={OTPVerified}>Register</button>:
                <button className="btn btn-info btn-sm" disabled={disabled} onClick={SendOTP}>Send OTP</button>}
+
+            {registerandloginlink && <p className="mt-3">Already have an account? <Link to={'/Signin'}>Sing in</Link></p>}
         </div>
     )
 }

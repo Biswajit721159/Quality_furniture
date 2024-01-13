@@ -1,8 +1,9 @@
-import React, { useState,useEffect}  from "react";
+import React, { useState,useEffect, useTransition}  from "react";
 import { GoXCircleFill } from "react-icons/go";
 import { HiCheckCircle } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
 import '../css/Auth.css'
+import swal from 'sweetalert'
 export default function Login() {
 
 const [email,setemail]=useState("")
@@ -12,6 +13,7 @@ const [wronguser,setwronguser]=useState(false)
 const [disabled,setdisabled]=useState(false)
 const [errormess,seterrormess]=useState("")
 const [resent,setresent]=useState(false)
+const [registerandloginlink,setregisterandloginlink]=useState(true)
 
 const api = process.env.REACT_APP_API
 
@@ -189,7 +191,7 @@ function OTPVerified()
 {
   if(checkAllInputfield()==false || otp.otpFromdata==0)
   {
-    alert("Please Fill Input Form")
+    swal("Please Fill Input Form")
     return ;
   }
   setresent(true)
@@ -214,7 +216,7 @@ function OTPVerified()
     .then((result)=>{
         if(result.statusCode==200)
         {
-          alert(result.message)
+          swal(result.message)
           localStorage.setItem("user",JSON.stringify(result.data))
           history('/Product')
         }
@@ -292,7 +294,8 @@ function sendOTP()
         .then((result)=>{
             if(result.statusCode==200)
             {
-                alert(result.message)
+              setregisterandloginlink(false)
+              swal(result.message)
                 setotp((prevUserData) => ({
                     ...prevUserData,
                     showOtpfrom:true,
@@ -316,7 +319,7 @@ function sendOTP()
    }
    else
    {
-    alert("Please Fill All the filed using description")
+    swal("Please Fill All the filed using description")
    }
 }
 
@@ -357,7 +360,12 @@ function sendOTP()
         </div>
         {otp.showOtpButton==true? <button className="btn btn-info btn-sm" disabled={otp.loginbutton}   onClick={OTPVerified}>Login</button>:
         <button className="btn btn-info btn-sm" disabled={disabled} onClick={sendOTP}>Send OTP</button>}
-        <Link className="mt-3" to={'/ForgotPassword'}>Forgot Password</Link>
+        {registerandloginlink &&
+        <>
+          <Link className="mt-3" to={'/ForgotPassword'}>Forgot Password</Link>
+          <p className="mt-4">Not a member? <Link to={'/register'}>Signup now</Link></p>
+        </>
+        }
     </div>
   )
 }

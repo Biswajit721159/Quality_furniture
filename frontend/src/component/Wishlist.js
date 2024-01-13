@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import loader from "../images/loader.gif"
 import {AiFillStar } from "react-icons/ai";
 import { PulseLoader } from 'react-spinners';
+import swal from 'sweetalert'
 import {cartmethod} from '../redux/CartSlice'
 import {useDispatch,useSelector} from 'react-redux'
 const api = process.env.REACT_APP_API
@@ -56,7 +57,7 @@ export default function WishList() {
           }
       }
       catch{
-        alert("we are find Some Error")
+        swal("we are find Some Error")
       }
      })
   }

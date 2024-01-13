@@ -8,6 +8,7 @@ import {cartmethod} from '../redux/CartSlice'
 import Carousel from "./Carousel";
 import Product_Review from './Product_Review';
 import Footer from '../component/Footer'
+import swal from 'sweetalert'
 const api = process.env.REACT_APP_API
 
 
