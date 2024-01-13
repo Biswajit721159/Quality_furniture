@@ -10,6 +10,7 @@ import {cartmethod} from '../redux/CartSlice'
 import { HiCheck } from "react-icons/hi";
 import Footer from '../component/Footer'
 import {searchmethod} from '../redux/SearchSlice'
+import Slider from './Slider';
 export default function Show() {
 
 const dispatch=useDispatch()
@@ -467,6 +468,19 @@ function PrevPage()
     sethigh(high-12);
 }
 
+const [takeid,settakeid]=useState(0)
+
+function handleMouseOver(product_id)
+{  
+    settakeid(product_id)
+}
+
+function handleMouseLeave()
+{
+    settakeid(0)
+}
+
+
 
 
   return (
@@ -481,16 +495,6 @@ function PrevPage()
                 <div className='allproduct'> 
 
                     <div  className='subproduct'>
-                        {/* <div className='subproductone'>
-                            <input className="form-control" id='inputform' value={searchproduct} name='search' onChange={(e)=>{setsearchproduct(e.target.value)}}  type="search" placeholder="Search product" aria-label="Search"/>
-                            <div className='subproductform'>
-                               <button className="btn btn-success btn-sm mt-2 button" onClick={()=>search(searchproduct)} type="submit">Search</button>
-                               {
-                                 searchproduct.length==0?<button className="btn btn-secondary btn-sm mt-2 button"  disabled={true} type="submit">Clear</button>
-                                 :<button className="btn btn-secondary btn-sm mt-2 card-text button" onClick={clearsearch}  type="submit">Clear</button>
-                               }
-                            </div>
-                        </div> */}
                         <button className='btn btn-primary mx-3 btn-sm' onClick={ClearAllFilter}>Clear All Filter</button>
                         <div className='subproductone'>
                             <div className='subproductform'>
@@ -596,10 +600,19 @@ function PrevPage()
                     <div className='product'>
                     {
                        data && data.map((item,ind)=>(
-                            <div key={ind} className="maincard mt-2" >
-                                <Link to={`/Product/${item._id}`}>
-                                    <img className="card-img-top" src={item.newImage[0]}  alt="Card image cap"/>
-                                </Link>
+                            <div key={ind} className="maincard shadow-lg mt-2" >
+                                {
+                                    takeid==item._id?
+                                    <Link to={`/Product/${item._id}`} onMouseLeave={handleMouseLeave} onMouseOver={()=>handleMouseOver(item._id)}>
+                                        {
+                                            <Slider data={item.newImage}/>
+                                        }
+                                    </Link>
+                                    :
+                                    <Link to={`/Product/${item._id}`} onMouseOver={()=>handleMouseOver(item._id)}>
+                                        <img className="card-img-top" src={item.newImage[0]}  alt="Card image cap"/>
+                                    </Link>
+                                }
                                 <div className="card-body">
                                     <div className='row'>
                                         <div className='col'>
