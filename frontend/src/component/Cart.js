@@ -195,9 +195,12 @@ const history=useNavigate()
  function SUB_TO_CART()
  {
     console.log(cart.product_count-1)
-    if(cartdata<=1){
+    if(cartdata<=0){
         swal("If you want to remove the product, there is a 'Remove' button available .")
     } 
+    else if(cartdata==1){
+        removeTocart()
+    }
     else{
         DataBaseSaveADDTOCART(userinfo.user.email,cart.product_id,cart.product_count-1)
     }
@@ -231,14 +234,22 @@ const history=useNavigate()
     })
  }
 
- function submit_order()
+ function submit()
  {
     const date = new Date();
     let day = date.getDate();
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
     let currentDate = `${day}-${month}-${year}`;
-    fetch(`${api}/order`,{
+    if(cartdata==0)
+    {
+      swal("Please Select Atleast One Product .")
+      return ;
+    }
+    setdisabled(true)
+    setbutton(<BeatLoader color="#36d7b7" />)
+
+    fetch(`http://localhost:5000/order`,{
         method:'POST',
         headers:{
             'Accept':'application/json',
@@ -254,57 +265,31 @@ const history=useNavigate()
           Total_rupess:cost,
           Date:currentDate,
         })
-      }).then(responce=>responce.json())
-      .then((res)=>{
-        history('/Myorder')
-      })
- }
-
- function submit_in_product(product_data)
- {
-    fetch(`${api}/product/total_number_of_product/${cart.product_id}`,{
-        method:'PUT',
-        headers:{
-            'Accept':'application/json',
-            'Content-Type':'application/json',
-            Authorization:`Bearer ${userinfo.accessToken}`
-        },
-        body:JSON.stringify({
-          product_id:cart.product_id,
-          product_count:product_data.total_number_of_product-cartdata
-        })
-      }).then(responce=>responce.json()).then((data)=>{
-          submit_order()
-      })
- }
-
- function submit()
- {
-    if(cartdata==0)
-    {
-      swal("Please Select Atleast One Product .")
-      return ;
-    }
-    setdisabled(true)
-    setbutton(<BeatLoader color="#36d7b7" />)
-
-    fetch(`${api}/product/${cart.product_id}`,{
-      headers:{
-        Authorization:`Bearer ${userinfo.accessToken}`
-      }
-    }).then(responce=>responce.json()).then((result)=>{
-      let product_data=result.data
-      if(product_data!=undefined && product_data.length!=0){
-          if(product_data.total_number_of_product>=cartdata){
-            submit_in_product(product_data)
-          }
-          else{
-            swal(`Sorry, in our stock, ${product_data.total_number_of_product} products are available.`)
-            setbutton("PLACE ORDER")
+    }).then(responce=>responce.json())
+    .then((res)=>{
+        if(res.statusCode==201){
+            setbutton("Order SuccessFull")
+            let id=swal({
+                icon: "success",
+            });
+            id.then((res)=>{
+                if(res==true){
+                    history('/Myorder')
+                }
+            })
+        }
+        else if(res.statusCode==498){
+            localStorage.removeItem('user');
+            history('/Login')
+        }
+        else{
+            swal(res.message)
             setdisabled(false)
-          }
-      }
-    })    
+            setbutton("PLACE ORDER")
+        }
+    }).catch((error)=>{
+        history('*')
+    })
  }
 
 

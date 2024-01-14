@@ -15,7 +15,7 @@ const Slider =(data)=>{
         {
             item.map((data,index)=>(
             <>
-                {index==imageindex && <img className="card-img-top" src={data}  alt="Card image cap"/>}
+                {index==imageindex && <img key={index} className="card-img-top" src={data}  alt="Card image cap"/>}
             </>
             ))
         }
