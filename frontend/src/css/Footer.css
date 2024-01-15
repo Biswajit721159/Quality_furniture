@@ -48,25 +48,25 @@ li{
 }
 @media only screen and (max-width: 830px ) {
   .head1{
-    font-size: 12px;
+    font-size: 13px;
   }
   .head2{
-    font-size: 16px;
+    font-size: 18px;
   }
   .box-container{
-    height:25vh; 
+    height:26vh; 
   }
 }
 
 @media only screen and (max-width: 730px ) {
   .head1{
-    font-size: 10px;
+    font-size: 12px;
   }
   .head2{
-    font-size: 14px;
+    font-size: 15px;
   }
   .box-container{
-    height:22vh; 
+    height:24vh; 
   }
   .form-control{
     width: 150px;
@@ -81,13 +81,13 @@ li{
 }
 @media only screen and (max-width: 580px ) {
   .head1{
-    font-size: 7px;
+    font-size: 9px;
   }
   .head2{
-    font-size: 10px;
+    font-size: 12px;
   }
   .box-container{
-    height:18vh; 
+    height:19vh; 
   }
   .form-control{
     width: 130px;
@@ -107,13 +107,13 @@ li{
 
 @media only screen and (max-width: 440px ) {
   .head1{
-    font-size: 5px;
-  }
-  .head2{
     font-size: 8px;
   }
+  .head2{
+    font-size: 10px;
+  }
   .box-container{
-    height:15vh; 
+    height:17vh; 
   }
   .form-control{
     width: 120px;
@@ -133,13 +133,13 @@ li{
 
 @media only screen and (max-width: 350px ) {
   .head1{
-    font-size: 4px;
-  }
-  .head2{
     font-size: 7px;
   }
+  .head2{
+    font-size: 9px;
+  }
   .box-container{
-    height:10vh; 
+    height:15vh; 
   }
   .form-control{
     width: 110px;
