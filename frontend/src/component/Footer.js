@@ -57,14 +57,14 @@ const Footer=()=>{
                     <li className="head1"><a href="#"><FaLinkedinIn /> Linkedin</a></li>
                     <li className="head1"><a href="#"><FaYoutube /> Youtube</a></li>
                 </div>
-                <div class="box">
+                {/* <div class="box">
                     <h4 className="head2">Message US</h4>
                     <div>
                         <input className="form-control mr-sm-2" name='search' type="search" placeholder="Enter Message" aria-label="Search"/>
                     </div>
                     <li></li>
                     <li className="head2"><button className="btn btn-primary btn-sm mt-1">Send</button></li>
-                </div>
+                </div> */}
             </div>
             <hr/>
             <div className="credit"> Copyright @ 2023 by <span>Mr Biswajit Ghosh</span> </div>

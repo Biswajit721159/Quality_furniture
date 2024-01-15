@@ -249,7 +249,7 @@ const history=useNavigate()
     setdisabled(true)
     setbutton(<BeatLoader color="#36d7b7" />)
 
-    fetch(`http://localhost:5000/order`,{
+    fetch(`${api}/order`,{
         method:'POST',
         headers:{
             'Accept':'application/json',
@@ -269,9 +269,7 @@ const history=useNavigate()
     .then((res)=>{
         if(res.statusCode==201){
             setbutton("Order SuccessFull")
-            let id=swal({
-                icon: "success",
-            });
+            let id=swal(res.message, '', "success");
             id.then((res)=>{
                 if(res==true){
                     history('/Myorder')
