@@ -216,9 +216,11 @@ function OTPVerified()
     .then((result)=>{
         if(result.statusCode==200)
         {
-          swal(result.message)
-          localStorage.setItem("user",JSON.stringify(result.data))
-          history('/Product')
+          let x=swal(result.message)
+          x.then((res)=>{
+            localStorage.setItem("user",JSON.stringify(result.data))
+            history('/Product')
+          })
         }
         else{
             setotp((prevUserData) => ({
@@ -342,7 +344,7 @@ function sendOTP()
                 <label className="wrongtext">{passwordcontrol.uppercase==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />} Password Must be one Upper case Character</label>
                 <label className="wrongtext">{passwordcontrol.lowercase==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}   Password Must be one Lower case Character</label>
                 <label className="wrongtext">{passwordcontrol.digit==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}  Password Must be Contain one Digit Character</label>
-                <label className="wrongtext">{passwordcontrol.specialCharacters==false?<GoXCircleFill style={{color:'red'}} />: <HiCheckCircle style={{color:'green'}} />}  Password Must be  one Special Character </label>
+                <label className="wrongtext">{passwordcontrol.specialCharacters==false?<GoXCircleFill style={{color:'red'}} />: <HiCheckCircle style={{color:'green'}} />}  Password Must be Contain one Special Character </label>
                 <label className="wrongtext">{passwordcontrol.len==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}  Length of Password at Least 8 to 15 Character</label>
               </div>
             </div>

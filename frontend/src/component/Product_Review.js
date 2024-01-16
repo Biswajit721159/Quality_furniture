@@ -145,7 +145,7 @@ const Product_Review=(id)=>{
                 <div className="LoaderiteminReviewProduct">
                     <PulseLoader color="#16A085"  />
                 </div>:
-                <div className='col1 mt-4'>
+                <div className='col12 mt-4'>
                     <p className='reviewtextitem'><strong>{overall_rating}</strong> <AiFillStar /> Average based on <strong>{total}</strong> reviews.</p>
                     <div className="row">
                         <div className="side">

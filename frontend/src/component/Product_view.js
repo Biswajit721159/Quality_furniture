@@ -174,7 +174,7 @@ export default function Product_view() {
           <div className='container mt-3'>
 
                 <div className='item'>
-                    <div className='col1'>
+                    <div className='col12'>
                         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                         <div class="carousel-inner" style={{border:'2px solid green' ,borderRadius:10}}>
                             <div class="carousel-item active">

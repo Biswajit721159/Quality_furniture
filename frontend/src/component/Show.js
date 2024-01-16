@@ -53,16 +53,16 @@ const api = process.env.REACT_APP_API
 
  
 useEffect(()=>{
-    loadCatagory();
-    let lowprice=queryParameters.get('lowprice')!=null?queryParameters.get('lowprice'):0;
-    let highprice=queryParameters.get('highprice')!=null?queryParameters.get('highprice'):10000000;
-    let selectcatagory=queryParameters.get('selectcatagory')!=null?queryParameters.get('selectcatagory'):'ALL';
     if(userinfo==null)
     {
         history('/Signin')
     }
     else 
     {
+        loadCatagory();
+        let lowprice=queryParameters.get('lowprice')!=null?queryParameters.get('lowprice'):0;
+        let highprice=queryParameters.get('highprice')!=null?queryParameters.get('highprice'):10000000;
+        let selectcatagory=queryParameters.get('selectcatagory')!=null?queryParameters.get('selectcatagory'):'ALL';
         history(`?lowprice=${lowprice}&highprice=${highprice}&selectcatagory=${selectcatagory}&product_name=${value}`);
         findsearchData(lowprice,highprice,selectcatagory,value);
     }

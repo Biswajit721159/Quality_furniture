@@ -258,11 +258,11 @@ const ForgotPassword=()=>{
                     seterrormess(result.message)
                 }
             },(error)=>{
-            setotp((prevUserData) => ({
-                ...prevUserData,
-                disabledOtpForm :false,
-                loginbutton:false,
-            }));
+                setotp((prevUserData) => ({
+                    ...prevUserData,
+                    disabledOtpForm :false,
+                    loginbutton:false,
+                }));
                 setresent(false)
                 setwronguser(true)
                 seterrormess("Some Error is Found")
@@ -375,6 +375,7 @@ const ForgotPassword=()=>{
 
     return(
         <div className="authform">
+            <h3>Password Reset</h3>
             <div className="">
                 <input type="email" value={email} onChange={(e)=>{checkforemailid(e.target.value)}} disabled={emailcontrol.showemailfrom}  className="inputreglog" placeholder="Enter Email Id"  required/>
                 {emailcontrol.wrongemail&&<HiCheckCircle style={{color:'green'}} />}
@@ -392,7 +393,7 @@ const ForgotPassword=()=>{
                 <label className="wrongtext">{passwordcontrol.uppercase==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />} Password Must be one Upper case Character</label>
                 <label className="wrongtext">{passwordcontrol.lowercase==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}   Password Must be one Lower case Character</label>
                 <label className="wrongtext">{passwordcontrol.digit==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}  Password Must be Contain one Digit Character</label>
-                <label className="wrongtext">{passwordcontrol.specialCharacters==false?<GoXCircleFill style={{color:'red'}} />: <HiCheckCircle style={{color:'green'}} />}  Password Must be  one Special Character </label>
+                <label className="wrongtext">{passwordcontrol.specialCharacters==false?<GoXCircleFill style={{color:'red'}} />: <HiCheckCircle style={{color:'green'}} />}  Password Must be Contain one Special Character </label>
                 <label className="wrongtext">{passwordcontrol.len==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}  Length of Password at Least 8 to 15 Character</label>
               </div>
             </div>

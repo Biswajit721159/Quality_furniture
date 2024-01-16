@@ -15,18 +15,6 @@ const [password,setpassword]=useState("")
 const [address,setaddress]=useState("")
 const history=useNavigate();
 
-const [wrongname,setwrongname]=useState(false)
-const [wrongemail,setwrongemail]=useState(false)
-const [wrongpassword,setwrongpasword]=useState(false)
-const [wrongaddress,setwrongaddress]=useState(false)
-
-
-const [messname,setmessname]=useState("")
-const [messemail,setmessemail]=useState("Email Address must be in valid formate with @ symbol")
-const [messpassword,setmesspassword]=useState("");
-const [messaddress,setmessaddress]=useState("")
-const [button,setbutton]=useState("Submit")
-
 
 const [disabled,setdisabled]=useState(false)
 const [resent,setresent]=useState(false)
@@ -36,11 +24,6 @@ const [messwronginformation,setmesswronginformation]=useState("");
 const [confirmpassword,setconfirmpassword]=useState("");
 const [registerandloginlink,setregisterandloginlink]=useState(true)
 
-const [confirmpasswordcontrol,setconfirmpasswordcontrol]=useState({
-  isPasswordandconfirmPasswordIsSame:false,
-  showconfirmpasswordfrom:false,
-})
-
 const [namecontrol,setnamecontrol]=useState({
   charcter:false,
   word:false,
@@ -48,6 +31,13 @@ const [namecontrol,setnamecontrol]=useState({
   len:false,
   specialCharacters:false,
   shownamefrom:false,
+  show_name_error_text:false
+})
+
+const [emailcontrol,setemailcontrol]=useState({
+  wrongemail:false,
+  showemailfrom:false,
+  show_email_error_text:false
 })
 
 const [passwordcontrol,setpasswordcontrol]=useState({
@@ -57,6 +47,13 @@ const [passwordcontrol,setpasswordcontrol]=useState({
   specialCharacters:false,
   len:false,
   showpasswordfrom:false,
+  show_password_error_text:false
+})
+
+const [confirmpasswordcontrol,setconfirmpasswordcontrol]=useState({
+  isPasswordandconfirmPasswordIsSame:false,
+  showconfirmpasswordfrom:false,
+  show_confirmpassword_error_text:false
 })
 
 const [addresscontorl,setaddresscontrol]=useState({
@@ -68,13 +65,10 @@ const [addresscontorl,setaddresscontrol]=useState({
   len:false,
   mobile:false,
   numaricNumer:false,
-  showaddressfrom:false
+  showaddressfrom:false,
+  show_address_error_text:false
 })
 
-const [emailcontrol,setemailcontrol]=useState({
-  wrongemail:false,
-  showemailfrom:false,
-})
 
 const [otp,setotp]=useState({
   showOtpfrom:false,
@@ -94,6 +88,58 @@ const [otp,setotp]=useState({
     }
   },[])
   
+  function onErrorText(text){
+    setnamecontrol((prevUserData) => ({
+      ...prevUserData,
+      show_name_error_text:false
+    }));
+    setemailcontrol((prevUserData) => ({
+      ...prevUserData,
+      show_email_error_text:false
+    }));
+    setpasswordcontrol((prevUserData) => ({
+      ...prevUserData,
+      show_password_error_text:false
+    }));
+    setconfirmpasswordcontrol((prevUserData) => ({
+      ...prevUserData,
+      show_confirmpassword_error_text:false
+    }));
+    setaddresscontrol((prevUserData) => ({
+      ...prevUserData,
+      show_address_error_text:false
+    }));
+    if(text=="name"){
+      setnamecontrol((prevUserData) => ({
+        ...prevUserData,
+        show_name_error_text:true
+      }));
+    }
+    else if(text=="email"){
+      setemailcontrol((prevUserData) => ({
+        ...prevUserData,
+        show_email_error_text:true
+      }));
+    }
+    else if(text=="password"){
+      setpasswordcontrol((prevUserData) => ({
+        ...prevUserData,
+        show_password_error_text:true
+      }));
+    }
+    else if(text=="confirmpassword"){
+      setconfirmpasswordcontrol((prevUserData) => ({
+        ...prevUserData,
+        show_confirmpassword_error_text:true
+      }));
+    }
+    else if(text=="address"){
+      setaddresscontrol((prevUserData) => ({
+        ...prevUserData,
+        show_address_error_text:true
+      }));
+    }
+  }
 
   //name section
   function containsNumber(inputString) {
@@ -102,6 +148,7 @@ const [otp,setotp]=useState({
 
   function checkforname(e)
   {
+    onErrorText("name")
     setwronginformation(false);
     let s=e.target.value;
     s=s.replace(/\s+/g, ' ');
@@ -212,6 +259,7 @@ const [otp,setotp]=useState({
 
   function checkforemailid(s)
   {
+    onErrorText("email")
     setwronginformation(false);
     s=s.replace(/\s+/g, '');
     setemail(s);
@@ -258,6 +306,7 @@ const [otp,setotp]=useState({
 
   function checkpassword(s)
   {
+    onErrorText("password")
     setwronginformation(false);
     s=s.replace(/\s+/g, '');
     setpassword(s);
@@ -349,6 +398,7 @@ const [otp,setotp]=useState({
 
   function checkaddress(s)
   {
+    onErrorText("address")
     setwronginformation(false);
     s=s.replace(/\s+/g, ' ');
     s=s.toLowerCase();
@@ -534,6 +584,7 @@ const [otp,setotp]=useState({
 
   function checkconfirmpassword(data)
   {
+    onErrorText("confirmpassword")
     setwronginformation(false);
     setconfirmpassword(data)
     checkconfirmpasswordIsEqualPassword(data,password)
@@ -669,6 +720,7 @@ const [otp,setotp]=useState({
 
   function SendOTP()
   {
+    onErrorText("")
     if(checkAllInputfield())
     {
         setwronginformation(false)
@@ -730,59 +782,77 @@ const [otp,setotp]=useState({
                   <input type="text" value={name} onChange={(e)=>checkforname(e)} disabled={namecontrol.shownamefrom} className="inputreglog" placeholder="Enter Full Name"  required/>
                   {namecontrol.charcter && namecontrol.word && namecontrol.lenWord && namecontrol.len &&namecontrol.specialCharacters&&<HiCheckCircle style={{color:'green'}} />}
             </div>
+            {namecontrol.show_name_error_text==true &&
             <div>
               <div className="authform">
+               <>
                 <label className="wrongtext">{namecontrol.charcter==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />} FullName Must not be Contain Number</label>
                 <label className="wrongtext">{namecontrol.word==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}  FullName Must be Minimum Two Word</label>
                 <label className="wrongtext">{namecontrol.lenWord==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}  Length of Each word Greater then one</label>
                 <label className="wrongtext">{namecontrol.len==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}  Length of FullName in Between 10 to 20</label>
                 <label className="wrongtext">{namecontrol.specialCharacters==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}  Avoid Numbers and Special Characters</label>
+                </>
               </div>
             </div>
+            }
 
 
             <div className="">
                 <input type="email" value={email} onChange={(e)=>{checkforemailid(e.target.value)}} disabled={emailcontrol.showemailfrom} className="inputreglog" placeholder="Enter Email Id"  required/>
                 {emailcontrol.wrongemail&&<HiCheckCircle style={{color:'green'}} />}
             </div>
+            {emailcontrol.show_email_error_text==true &&
             <div>
+               <>
                 <label className="wrongtext">{emailcontrol.wrongemail==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}  Email Address must be in valid formate with @ symbol</label>
+              </>
             </div>
+            }
 
 
             <div className="">
                 <input type="password" value={password} onChange={(e)=>{checkpassword(e.target.value)}} disabled={passwordcontrol.showpasswordfrom} className="inputreglog" placeholder="Enter Password"  required/>
                 {passwordcontrol.uppercase && passwordcontrol.lowercase && passwordcontrol.digit && passwordcontrol.len &&passwordcontrol.specialCharacters&&<HiCheckCircle style={{color:'green'}} />}
             </div>
+            {passwordcontrol.show_password_error_text &&
             <div>
               <div className="authform">
+                <>
                 <label className="wrongtext">{passwordcontrol.uppercase==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />} Password Must be one Upper case Character</label>
                 <label className="wrongtext">{passwordcontrol.lowercase==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}   Password Must be one Lower case Character</label>
                 <label className="wrongtext">{passwordcontrol.digit==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}  Password Must be Contain one Digit Character</label>
                 <label className="wrongtext">{passwordcontrol.specialCharacters==false?<GoXCircleFill style={{color:'red'}} />: <HiCheckCircle style={{color:'green'}} />}  Password Must be  one Special Character </label>
                 <label className="wrongtext">{passwordcontrol.len==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}  Length of Password at Least 8 to 15 Character</label>
+                </>
               </div>
             </div>
+            }
 
 
             <div className="">
                 <input type="password" value={confirmpassword} onChange={(e)=>{checkconfirmpassword(e.target.value)}} disabled={confirmpasswordcontrol.showconfirmpasswordfrom} className="inputreglog" placeholder="Enter confirm Password"  required/>
-                {confirmpasswordcontrol.isPasswordandconfirmPasswordIsSame?<HiCheckCircle style={{color:'green'}} />:<HiCheckCircle style={{color:'red'}} />}
+                {confirmpasswordcontrol.isPasswordandconfirmPasswordIsSame&&<HiCheckCircle style={{color:'green'}} />}
             </div>
 
+            {confirmpasswordcontrol.show_confirmpassword_error_text==true &&
             <div>
               <div className="authform">
+                 <>
                 <label className="wrongtext">{confirmpasswordcontrol.isPasswordandconfirmPasswordIsSame==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />} Password and Confirmpassword Must be Same</label>
+                </>
               </div>
             </div>
+            }
 
 
             <div className=""> 
                 <textarea type="text" value={address} onChange={(e)=>{checkaddress(e.target.value)}} disabled={addresscontorl.showaddressfrom} style={{height:'60px'}} className="inputreglog" placeholder="Enter Full Address"  required/>
                 {addresscontorl.street && addresscontorl.city && addresscontorl.pin && addresscontorl.state && addresscontorl.specialCharacters &&addresscontorl.len && addresscontorl.mobile && addresscontorl.numaricNumer&&<HiCheckCircle style={{color:'green'}} />}
             </div>
+            {addresscontorl.show_address_error_text==true &&
             <div>
               <div className="authform">
+                 <>
                 <label className="wrongtext">{addresscontorl.street==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />} Address must be a string containing  'street' name</label>
                 <label className="wrongtext">{addresscontorl.city==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}  Address must be a string containing  'city' name</label>
                 <label className="wrongtext">{addresscontorl.pin==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}  Address must be a string containing  'pin' name</label>
@@ -791,8 +861,10 @@ const [otp,setotp]=useState({
                 <label className="wrongtext">{addresscontorl.numaricNumer==false?<GoXCircleFill style={{color:'red'}} />: <HiCheckCircle style={{color:'green'}} />}Address must be contain at Max 22 numaric Number</label>
                 <label className="wrongtext">{addresscontorl.specialCharacters==false?<GoXCircleFill style={{color:'red'}} />: <HiCheckCircle style={{color:'green'}} />}Address Maximum 9 Special charcter Accept That are <strong> ,-. </strong></label>
                 <label className="wrongtext">{addresscontorl.len==false?<GoXCircleFill style={{color:'red'}} />:<HiCheckCircle style={{color:'green'}} />}  Length of Address in Between 45 to 100 Character</label>
+                </>
               </div>
             </div>
+            }
 
             <div className="">
               {

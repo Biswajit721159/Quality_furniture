@@ -36,6 +36,11 @@ const BootstrapNavbar=()=>{
             {
                 dispatch(cartmethod.ADD_TO_CART(res.data))
             }
+            else if(res.statusCode==498)
+            {
+                localStorage.removeItem('user');
+                history('/Login')
+            }
         })
     }
 
