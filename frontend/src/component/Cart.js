@@ -194,7 +194,6 @@ const history=useNavigate()
 
  function SUB_TO_CART()
  {
-    console.log(cart.product_count-1)
     if(cartdata<=0){
         swal("If you want to remove the product, there is a 'Remove' button available .")
     } 

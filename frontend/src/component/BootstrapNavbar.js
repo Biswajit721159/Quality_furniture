@@ -39,7 +39,7 @@ const BootstrapNavbar=()=>{
             else if(res.statusCode==498)
             {
                 localStorage.removeItem('user');
-                history('/Login')
+                history('/Signin')
             }
         })
     }
