@@ -58,8 +58,8 @@ let productInsert = async (req, res) => {
   try {
     let data = await product.create(jsondata);
     res
-      .status(200)
-      .json(new ApiResponse(200, data, "Product Added Successfully"));
+      .status(201)
+      .json(new ApiResponse(201, data, "Product Added Successfully"));
   } catch {
     res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
   }

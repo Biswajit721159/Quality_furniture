@@ -4,6 +4,7 @@ import avatar from '../images/result.png';
 import  '../App.css';
 import axios from 'axios';
 import swal from 'sweetalert'
+import { PulseLoader ,BeatLoader ,ClipLoader} from 'react-spinners';
 const api = process.env.REACT_APP_API
 export default function Addproduct() {
 
@@ -139,9 +140,6 @@ export default function Addproduct() {
     let e=forTotalNoProduct(total_number_of_product)
     if(a && b && c && d && e)
     {
-      setbutton("Please wait....")
-      setdisable(true)
-
       fetch(`${api}/product/uploads`,{
         method:'POST',
         headers:{
@@ -180,12 +178,11 @@ export default function Addproduct() {
   }
   
   const createPost = async () => {
-    if(arr.length==3){
-      submitproductdetail(arr)
-    }else{
+    setdisable(true)
+    setbutton(<ClipLoader size={'15px'} />)
     await uploadImage(file1)
     await uploadImage(file2)
-    await uploadImage(file3)}
+    await uploadImage(file3)
   }
 
   const handleSubmit = (e) => {
