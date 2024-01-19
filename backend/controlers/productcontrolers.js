@@ -43,21 +43,8 @@ let getFullProduct = async (req, res) => {
 };
 
 let productInsert = async (req, res) => {
-  let firstimg = req.files?.firstimg[0]?.path;
-  let secondimg = req.files?.secondimg[0]?.path;
-  let thirdimg = req.files?.thirdimg[0]?.path;
-  firstimg = await uploadOnCloudinary(firstimg);
-  secondimg = await uploadOnCloudinary(secondimg);
-  thirdimg = await uploadOnCloudinary(thirdimg);
-  firstimg = firstimg.url;
-  secondimg = secondimg.url;
-  thirdimg = thirdimg.url;
-  let arr = [];
-  arr.push(firstimg);
-  arr.push(secondimg);
-  arr.push(thirdimg);
   let jsondata = {
-    newImage: arr,
+    newImage: req.body.arr,
     product_name: req.body.product_name,
     price: req.body.price,
     offer: req.body.offer,

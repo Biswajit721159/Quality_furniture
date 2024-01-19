@@ -33,21 +33,7 @@ router.route('/getproductByType/:product_type').get(getproductByType);
 router.route('/TopOfferProduct/:numberofProduct').get(TopOfferProduct);
 router.route('/Dashboard/findcountNumberProduct').get(verifytoken,countNumberProduct);
 router.route('/getproductByLimit/:LowerLimit/:HighLimit').get(verifytoken,getproductByLimit);
-
-router.route("/uploads").post(verifytoken,upload.fields([
-  {
-      name: "firstimg",
-      maxCount: 1
-  },
-  {
-      name: "secondimg",
-      maxCount: 1
-  },
-  {
-      name: "thirdimg",
-      maxCount: 1
-  },
-]), productInsert);
+router.route("/uploads").post(verifytoken,productInsert);
 
 
 module.exports = router;

@@ -1,11 +1,10 @@
-
 import { Link,json,useNavigate, useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import avatar from '../images/result.png';
 import  '../App.css';
 import axios from 'axios';
+import swal from 'sweetalert'
 const api = process.env.REACT_APP_API
-// const api="http://localhost:5000"
 export default function Addproduct() {
 
   const history=useNavigate();
@@ -34,6 +33,9 @@ export default function Addproduct() {
   const [Description,setDescription]=useState('')
   const [button,setbutton]=useState("Submit")
   const [disable,setdisable]=useState(false);
+  const [arr,setarr]=useState([])
+
+  
 
   useEffect(()=>{
     if(userinfo==null)
@@ -102,11 +104,33 @@ export default function Addproduct() {
     }
     return true;
   }
-  
-  const createPost = async (postImage) => {
 
-    const formData = new FormData();
 
+  const uploadImage = async (file) => {
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset",process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET);
+    data.append("cloud_name", process.env.REACT_APP_CLOUDINARY_CLOUD_NAME);
+    data.append("folder", "Cloudinary-React");
+    try {
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`,{
+          method: "POST",
+          body: data,
+        }
+      );
+      const res = await response.json();
+      arr.push(res.secure_url)
+      if(arr.length==3){
+        submitproductdetail(arr)
+      }
+      setarr([...arr])
+    }catch (error) {
+      return null
+    }
+  };
+
+  const submitproductdetail=async(arr)=>{
     
     let a=forproduct_name(product_name)
     let b=forproduct_type(product_type)
@@ -115,36 +139,53 @@ export default function Addproduct() {
     let e=forTotalNoProduct(total_number_of_product)
     if(a && b && c && d && e)
     {
-      // setbutton("Please wait....")
-      // setdisable(true)
-
-
-      formData.append('firstimg', file1);
-      formData.append('secondimg', file2);
-      formData.append('thirdimg', file3);
-      formData.append('product_name', product_name);
-      formData.append('price', price);
-      formData.append('offer', offer);
-      formData.append('product_type', product_type);
-      formData.append('total_number_of_product', total_number_of_product);
-      formData.append('rating', 0);
-      formData.append('number_of_people_give_rating', 0);
-      formData.append('isdeleted', false);
-      formData.append('Description', Description);
-
-
+      setbutton("Please wait....")
+      setdisable(true)
 
       fetch(`${api}/product/uploads`,{
         method:'POST',
-        body:formData,
         headers:{
+          'Accept':'application/json',
+          'Content-Type':'application/json',
           Authorization:`Bearer ${userinfo.accessToken}`
-        },
+         },
+         body:JSON.stringify({
+          'arr':arr,
+          'product_name':product_name,
+          'price':price,
+          'offer':offer,
+          'product_type':product_type,
+          'total_number_of_product':total_number_of_product,
+          'rating':0,
+          'number_of_people_give_rating':0,
+          'isdeleted':false,
+          'Description':Description
+        })
       }).then(responce=>responce.json()).then((res)=>{
-        history('/Product')
-        
+          if(res.statusCode==201){
+            swal(res.message)
+            history('/Product')
+          }
+          else if(res.statusCode==498){
+            localStorage.removeItem('user');
+            history('/Signin');
+          }
+          else{
+            history('*')
+          }
+      }).catch((error)=>{
+        history('*')
       })
     }
+  }
+  
+  const createPost = async () => {
+    if(arr.length==3){
+      submitproductdetail(arr)
+    }else{
+    await uploadImage(file1)
+    await uploadImage(file2)
+    await uploadImage(file3)}
   }
 
   const handleSubmit = (e) => {
@@ -167,31 +208,16 @@ export default function Addproduct() {
     setfile3(data)
   }
 
-  function convertToBase64(file){
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        resolve(fileReader.result)
-      };
-      fileReader.onerror = (error) => {
-        reject(error)
-      }
-    })
-  }
-
 
   return (
     <div className='container'>
        <form onSubmit={handleSubmit} className='grid'>
-          {/* <div className="col mt-3">
-            <img className='file' src={postImage.myFile || avatar} alt="" />
-          </div> */}
-          <div className="col-md-4 mt-3">
+
+         <div className="col-md-4 mt-3">
             <label htmlFor="formFile" className="form-label">First Image</label>
             <input type="file" className="form-control"  name="myFile"  accept='.jpeg, .png, .jpg' required onChange={(e) => handleFileUpload1(e)} />
           </div>
-          <div className="col-md-4 mt-3">
+           <div className="col-md-4 mt-3">
             <label htmlFor="formFile" className="form-label">Second Image</label>
             <input type="file" className="form-control"  name="myFile"  accept='.jpeg, .png, .jpg'  onChange={(e) => handleFileUpload2(e)} />
           </div>
@@ -210,7 +236,7 @@ export default function Addproduct() {
                   <input type="number" value={price} onChange={(e)=>{setprice(e.target.value)}} name="Price" className="form-control" placeholder="Enter Price"  required/>
                   {errorprice?<label  style={{color:"red"}}>{errorpricemess}</label>:""}
               </div>
-          </div>
+          </div> 
           <div className="col-md-4 mt-3">
               <div className="form-group">
                   <input type="number" value={offer} onChange={(e)=>{setoffer(e.target.value)}} name="Offer" className="form-control" placeholder="Enter Offer"  required/>
@@ -227,10 +253,6 @@ export default function Addproduct() {
               <option >Door</option>
               <option >Other</option>
             </select>
-            {/* <div className="form-group">
-                <input type="text"  value={product_type} onChange={(e)=>{setproduct_type(e.target.value)}} name="product_Type" className="form-control" placeholder="Enter Product Type"  required/>
-                {errorproduct_type?<label  style={{color:"red"}}>{errorproduct_typemess}</label>:""}
-            </div> */}
           </div>
           <div className="col-md-4 mt-3">
               <div className="form-group">
