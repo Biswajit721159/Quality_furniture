@@ -2,9 +2,10 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import './Product_show.css'
 import { useNavigate, useParams } from "react-router-dom";
+import { FaPlus } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 const Product_show = () => {
   const page=parseInt(useParams().page)
-  
   const product = useSelector((state) => state.product.product);
   const prev=useSelector((state)=>state.product.prev)
   const next=useSelector((state)=>state.product.next)
@@ -27,6 +28,7 @@ const Product_show = () => {
   
   return (
     <>
+      <Link to={'/Product/AddProduct'}><button className="btn btn-success btn-sm"><FaPlus /> Add</button></Link>
       {product != null && product.length != 0 && (
         <table  style={{margin:"10px"}}>
           <tr>
@@ -45,7 +47,7 @@ const Product_show = () => {
               <td>{item.offer}</td>
               <td>{item.price}</td>
               <td>{item.product_type}</td>
-              <td>{item.rating}({item.number_of_people_give_rating})</td>
+              <td>{item.rating} ({item.number_of_people_give_rating})</td>
               <td><button className="btn btn-primary btn-sm" onClick={()=>View(item)}>view</button></td>
             </tr>
           ))}

@@ -1,8 +1,6 @@
 import { Link,json,useNavigate, useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import avatar from '../images/result.png';
 import  '../App.css';
-import axios from 'axios';
 import swal from 'sweetalert'
 import { PulseLoader ,BeatLoader ,ClipLoader} from 'react-spinners';
 const api = process.env.REACT_APP_API
@@ -106,7 +104,6 @@ export default function Addproduct() {
     return true;
   }
 
-
   const uploadImage = async (file) => {
     const data = new FormData();
     data.append("file", file);
@@ -161,8 +158,12 @@ export default function Addproduct() {
         })
       }).then(responce=>responce.json()).then((res)=>{
           if(res.statusCode==201){
-            swal(res.message)
-            history('/Product')
+            let data=swal(res.message)
+            data.then((result)=>{
+              history('/Product')
+            }).catch((error)=>{
+              history('*')
+            })
           }
           else if(res.statusCode==498){
             localStorage.removeItem('user');
@@ -207,7 +208,7 @@ export default function Addproduct() {
 
 
   return (
-    <div className='container'>
+    <div className='App'>
        <form onSubmit={handleSubmit} className='grid'>
 
          <div className="col-md-4 mt-3">
@@ -241,7 +242,7 @@ export default function Addproduct() {
               </div>
           </div>
           <div className="col-md-4 mt-3">
-            <select class="custom-select" value={product_type} onChange={(e)=>{setproduct_type(e.target.value)}} name="product_Type" id="inputGroupSelect01">
+            <select class="form-select" value={product_type} onChange={(e)=>{setproduct_type(e.target.value)}} name="product_Type" id="inputGroupSelect01">
               <option >....</option>
               <option >Chair</option>
               <option >Window</option>
@@ -262,7 +263,7 @@ export default function Addproduct() {
                    <textarea class="form-control" placeholder='Product Description' onChange={(e)=>{setDescription(e.target.value)}} id="exampleFormControlTextarea1" rows="3"></textarea>
                </div>
           </div>
-          <div className="col-md-4 mt-3"><button type='submit' disabled={disable} className='btn btn-primary'>{button}</button></div>
+          <div className="col-md-4 mt-3 my-4"><button type='submit' disabled={disable} className='btn btn-primary'>{button}</button></div>
         </form>
     </div>
   )

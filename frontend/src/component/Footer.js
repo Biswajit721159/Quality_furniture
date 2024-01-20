@@ -34,8 +34,8 @@ const Footer=()=>{
                 </div>
                 <div class="box">
                     <h4 className="head2">Quick Links</h4>
-                    {/* <li className="head1"><Link to="/Product"><MdOutlineSell /> Buy Product</Link></li> */}
-                    <li className="head1"><Link to="/addproduct"><IoMdAddCircleOutline /> Add Product</Link></li>
+                    <li className="head1"><Link to="/Product"><MdOutlineSell /> Buy Product</Link></li>
+                    {/* <li className="head1"><Link to="/addproduct"><IoMdAddCircleOutline /> Add Product</Link></li> */}
                     <li className="head1"><Link to="/wishList"><GiRoyalLove /> WishList</Link></li>
                     <li className="head1"><Link to="/Cart"><FaShoppingCart /> Cart</Link></li>
                     <li className="head1"><Link to="/Myorder"><IoMdReorder /> MyOrder</Link></li>

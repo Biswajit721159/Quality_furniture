@@ -4,7 +4,6 @@ import Register from "./component/Register";
 import Privatecomponent from "./component/Privatecomponent";
 import Login from "./component/Login";
 import Product from "./component/Product";
-import Addproduct from "./component/Addproduct";
 import Show from "./component/Show";
 import Product_view from "./component/Product_view";
 import Profile from "./component/Profile";
@@ -29,7 +28,6 @@ function App() {
             <Route path="/" element={<Product/>}></Route>
             <Route path="/Product" element={<Show/>}></Route>
             <Route path="/Product/:_id" element={<Product_view/>}></Route>
-            <Route path="/addProduct"element={<Addproduct/>}></Route>
             <Route path="/Profile" element={<Profile/>}></Route>
             <Route path="/Profile/:_id" element={<Update_userdata/>}></Route>
             <Route path="/wishlist" element={<WishList/>}></Route>
