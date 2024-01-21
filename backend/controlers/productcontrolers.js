@@ -9,7 +9,7 @@ let ProductUpdate = async (req, res) => {
       { _id: new mongoose.mongo.BSON.ObjectId(req.params._id) },
       {
         $set: {
-          newImage:req.body.newImage,
+          newImage:req.body.arr,
           product_name:req.body.product_name,
           price:req.body.price,
           offer:req.body.offer,
@@ -315,7 +315,7 @@ let getproductByLimit = async (req, res) => {
     }
     if (actualResult.length) actualResult.push(pagination)
     if (actualResult) {
-      res.status(201).json(new ApiResponse(201, actualResult, "success"));
+      res.status(201).json(new ApiResponse(201, actualResult, "Product Successfully Updated"));
     }
     else {
       res.status(404).json(new ApiResponse(404, null, "Review does not exist"));
