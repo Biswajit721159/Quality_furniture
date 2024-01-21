@@ -51,6 +51,7 @@ const history=useNavigate()
         }
     }).then(responce=>responce.json())
     .then((res)=>{
+        console.log(res)
         if(res.statusCode==200)
         {
             dispatch(cartmethod.ADD_TO_CART(res.data))

@@ -18,6 +18,7 @@ import Carousel from './component/Carousel'
 import './css/Loader.css'
 import BootstrapNavbar from "./component/BootstrapNavbar";
 import ForgotPassword from "./component/ForgotPassword";
+import './App.css'
 function App() {
   return (
     <div className="App">
