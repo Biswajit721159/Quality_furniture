@@ -3,12 +3,41 @@ const mongoose = require("mongoose");
 let { ApiResponse } = require("../utils/ApiResponse.js");
 let { uploadOnCloudinary } = require("../utils/cloudenary");
 
+let ProductUpdate = async (req, res) => {
+  try {
+    let result = await product.updateOne(
+      { _id: new mongoose.mongo.BSON.ObjectId(req.params._id) },
+      {
+        $set: {
+          newImage:req.body.newImage,
+          product_name:req.body.product_name,
+          price:req.body.price,
+          offer:req.body.offer,
+          product_type:req.body.product_type,
+          total_number_of_product:req.body.total_number_of_product,
+          rating:req.body.rating,
+          number_of_people_give_rating:req.body.number_of_people_give_rating,
+          Description:req.body.Description,
+          isdeleted:req.body.isdeleted
+        }
+      }
+    );
+    if (result.acknowledged) {
+      res.status(200).json(new ApiResponse(200, result, "success"));
+    } else {
+      res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
+    }
+  } catch {
+    res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
+  }
+}
+
 let get_product_by_ids = async (product_id_arr) => {
   try {
     let res = await product.find({ _id: { $in: product_id_arr } });
     return res;
   } catch {
-    return [];
+    res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
   }
 };
 
@@ -171,48 +200,46 @@ let getproductUponPriceProductTypeAndProductName = async (req, res) => {
       if (catagory == "ALL") {
         result = await product.find({
           price: { $gte: low, $lte: high },
-        }).skip(LowerLimit).limit(Limit+1).exec();
+        }).skip(LowerLimit).limit(Limit + 1).exec();
       } else {
         result = await product.find({
           price: { $gte: low, $lte: high },
           product_type: catagory,
-        }).skip(LowerLimit).limit(Limit+1).exec();
+        }).skip(LowerLimit).limit(Limit + 1).exec();
       }
     } else {
       if (catagory == "ALL") {
-          result = await product.find({
+        result = await product.find({
           price: { $gte: low, $lte: high },
           $or: [
-            { product_name: { $regex: new RegExp(product_name, 'i') }},
+            { product_name: { $regex: new RegExp(product_name, 'i') } },
             { product_type: { $regex: new RegExp(product_name, 'i') } },
           ],
-        }).skip(LowerLimit).limit(Limit+1).exec();
+        }).skip(LowerLimit).limit(Limit + 1).exec();
       } else {
-          result = await product.find({
+        result = await product.find({
           price: { $gte: low, $lte: high },
           product_type: catagory,
           $or: [
-            { product_name: { $regex: new RegExp(product_name, 'i') }},
+            { product_name: { $regex: new RegExp(product_name, 'i') } },
             { product_type: { $regex: new RegExp(product_name, 'i') } },
           ],
-        }).skip(LowerLimit).limit(Limit+1).exec();
+        }).skip(LowerLimit).limit(Limit + 1).exec();
       }
     }
 
     let hasNextPage = result.length > Limit;
-    let actualResult=hasNextPage ? result.slice(0, Limit) : result;
+    let actualResult = hasNextPage ? result.slice(0, Limit) : result;
     let hasPrevPage = LowerLimit > 0;
-    let pagination= {
+    let pagination = {
       'prev': hasPrevPage,
       'next': hasNextPage,
     }
-    if(actualResult.length) actualResult.push(pagination)
-    if (actualResult)
-    {
+    if (actualResult.length) actualResult.push(pagination)
+    if (actualResult) {
       res.status(201).json(new ApiResponse(201, actualResult, "success"));
-    } 
-    else
-    {
+    }
+    else {
       res.status(404).json(new ApiResponse(404, null, "Review does not exist"));
     }
 
@@ -263,40 +290,38 @@ let TopOfferProduct = async (req, res) => {
   }
 };
 
-let countNumberProduct=async(req,res)=>{
+let countNumberProduct = async (req, res) => {
   try {
-    const result=await product.countDocuments({});
+    const result = await product.countDocuments({});
     res.status(201).json(new ApiResponse(201, result, "success"));
   }
-  catch{
+  catch {
     res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
   }
 }
 
-let getproductByLimit=async(req,res)=>{
+let getproductByLimit = async (req, res) => {
   try {
     let LowerLimit = req.params.LowerLimit;
     let HighLimit = req.params.HighLimit;
-    let Limit=HighLimit-LowerLimit;
-    let result=await product.find({}).skip(LowerLimit).limit(Limit+1).exec();
+    let Limit = HighLimit - LowerLimit;
+    let result = await product.find({}).skip(LowerLimit).limit(Limit + 1).exec();
     let hasNextPage = result.length > Limit;
-    let actualResult=hasNextPage ? result.slice(0, Limit) : result;
+    let actualResult = hasNextPage ? result.slice(0, Limit) : result;
     let hasPrevPage = LowerLimit > 0;
-    let pagination= {
+    let pagination = {
       'prev': hasPrevPage,
       'next': hasNextPage,
     }
-    if(actualResult.length) actualResult.push(pagination)
-    if (actualResult)
-    {
+    if (actualResult.length) actualResult.push(pagination)
+    if (actualResult) {
       res.status(201).json(new ApiResponse(201, actualResult, "success"));
-    } 
-    else
-    {
+    }
+    else {
       res.status(404).json(new ApiResponse(404, null, "Review does not exist"));
     }
   }
-  catch{
+  catch {
     res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
   }
 }
@@ -317,4 +342,5 @@ module.exports = {
   TopOfferProduct,
   countNumberProduct,
   getproductByLimit,
+  ProductUpdate,
 };

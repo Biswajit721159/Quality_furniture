@@ -16,6 +16,7 @@ let {
   TopOfferProduct,
   countNumberProduct,
   getproductByLimit,
+  ProductUpdate,
 } = require("../controlers/productcontrolers");
 
 const router = Router();
@@ -34,6 +35,7 @@ router.route('/TopOfferProduct/:numberofProduct').get(TopOfferProduct);
 router.route('/Dashboard/findcountNumberProduct').get(verifytoken,countNumberProduct);
 router.route('/getproductByLimit/:LowerLimit/:HighLimit').get(verifytoken,getproductByLimit);
 router.route("/uploads").post(verifytoken,productInsert);
+router.route('/ProductUpdate/:_id').put(ProductUpdate);
 
 
 module.exports = router;
