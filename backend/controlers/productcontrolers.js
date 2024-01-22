@@ -23,7 +23,7 @@ let ProductUpdate = async (req, res) => {
       }
     );
     if (result.acknowledged) {
-      res.status(200).json(new ApiResponse(200, result, "success"));
+      res.status(200).json(new ApiResponse(200, result, "Product Update SuccessFully"));
     } else {
       res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
     }
