@@ -239,7 +239,7 @@ const Product_View = () => {
                 'total_number_of_product':total_number_of_product,
                 'rating':rating,
                 'number_of_people_give_rating':number_of_people_give_rating,
-                'isdeleted':false,
+                'isdeleted':isdeleted,
                 'Description':Description
             })
         }).then(responce=>responce.json()).then((res)=>{
@@ -308,36 +308,35 @@ const Product_View = () => {
                                 {file1 ? <img src={image1} style={{ width: '300px', height: '300px' }} /> :
                                     <Link to={`${product.newImage[0]}`} target="_blank"><img src={product.newImage[0]} style={{ width: '300px', height: '300px' }} alt='Error to Load' /></Link>
                                 }
-                                <input type="file" placeholder='Update Image' onChange={(e) => handleFileUpload1(e)} />
+                                <input type="file" className="form-control" placeholder='Update Image' onChange={(e) => handleFileUpload1(e)} />
                             </div>
                             <div className='imagedata1'>
                                 {file2 ? <img src={image2} style={{ width: '300px', height: '300px' }} /> :
                                     <Link to={`${product.newImage[0]}`} target="_blank"><img src={product.newImage[1]} style={{ width: '300px', height: '300px' }} alt='Error to Load' /></Link>
                                 }
-                                <input type="file" placeholder='Update Image' onChange={(e) => handleFileUpload2(e)} />
+                                <input type="file" className="form-control" placeholder='Update Image' onChange={(e) => handleFileUpload2(e)} />
                             </div>
                             <div className='imagedata1'>
                                 {file3 ? <img src={image3} style={{ width: '300px', height: '300px' }} /> :
                                     <Link to={`${product.newImage[0]}`} target="_blank"><img src={product.newImage[2]} style={{ width: '300px', height: '300px' }} alt='Error to Load' /></Link>
                                 }
-                                <input type="file" placeholder='Update Image' onChange={(e) => handleFileUpload3(e)} />
+                                <input type="file" className="form-control" placeholder='Update Image' onChange={(e) => handleFileUpload3(e)} />
                             </div>
                         </div>
 
                         <div className='imagedata mt-5'>
                             <div className='imagedata1'>
                                 <label>Id</label>
-                                <input value={product._id} disabled={true} />
+                                <input class="form-control"  value={product._id} disabled={true} />
                             </div>
                             <div className='imagedata1'>
                                 <label>Product Name</label>
-                                <input value={product_name} onChange={(e)=>setproduct_name(e.target.value)}/>
+                                <input class="form-control"  value={product_name} onChange={(e)=>setproduct_name(e.target.value)}/>
                                 {errorproduct_name?<label  style={{color:"red"}}>{errorproduct_namemess}</label>:""}
                             </div>
                             <div className='imagedata1'>
                                 <label>Product Type</label>
                                 <select class="form-select" value={product_type} onChange={(e)=>{setproduct_type(e.target.value)}} name="product_Type" id="inputGroupSelect01">
-                                    <option >....</option>
                                     <option >Chair</option>
                                     <option >Window</option>
                                     <option >Table</option>
@@ -348,48 +347,51 @@ const Product_View = () => {
                             </div>
                             <div className='imagedata1'>
                                 <label>Rating <MdOutlineStarPurple500 /></label>
-                                <input value={rating} onChange={(e)=>setrating(e.target.value)} disabled={true}/>
+                                <input class="form-control" value={rating} onChange={(e)=>setrating(e.target.value)} disabled={true}/>
                             </div>
                         </div>
 
-                        <div className='imagedata mt-3'>
+                        <div className='imagedata mt-4'>
                             <div className='imagedata1'>
                                 <label>Number Of people Given Rating</label>
-                                <input value={number_of_people_give_rating}  onChange={(e)=>setnumber_of_people_give_rating(e.target.value)} disabled={true}/>
+                                <input class="form-control" type='number' value={number_of_people_give_rating}  onChange={(e)=>setnumber_of_people_give_rating(e.target.value)} disabled={true}/>
                             </div>
                             <div className='imagedata1'>
                                 <label>Offer</label>
-                                <input value={offer} onChange={(e)=>setoffer(e.target.value)}/>
+                                <input class="form-control" type='number' value={offer} onChange={(e)=>setoffer(e.target.value)}/>
                                 {erroroffer?<label  style={{color:"red"}}>{erroroffermess}</label>:""}
                             </div>
                             <div className='imagedata1'>
                                 <label>Price</label>
-                                <input value={price} onChange={(e)=>setprice(e.target.value)} />
+                                <input class="form-control" type='number' value={price} onChange={(e)=>setprice(e.target.value)} />
                                 {errorprice?<label  style={{color:"red"}}>{errorpricemess}</label>:""}
                             </div>
                             <div className='imagedata1'>
                                 <label>Number of Aviliable Product</label>
-                                <input value={total_number_of_product} onChange={(e)=>settotal_number_of_product(e.target.value)} />
+                                <input class="form-control" type='number' value={total_number_of_product} onChange={(e)=>settotal_number_of_product(e.target.value)} />
                                 {errorNumberOfProduct?<label  style={{color:"red"}}>{errorNumberOfProductmess}</label>:""}
                             </div>
                         </div>
 
-                        <div className='imagedata mt-3'>
+                        <div className='imagedata mt-4'>
                             <div className='imagedata1'>
                                 <label>CreatedAt</label>
-                                <input value={product.createdAt} disabled={true} />
+                                <input class="form-control" value={product.createdAt} disabled={true} />
                             </div>
                             <div className='imagedata1'>
                                 <label>Last Updated At</label>
-                                <input value={product.updatedAt} disabled={true} />
+                                <input class="form-control" value={product.updatedAt} disabled={true} />
                             </div>
                             <div className='imagedata1'>
                                 <label>Product Deleted</label>
-                                <input value={isdeleted} onChange={(e)=>setisdeleted(e.target.value)} />
+                                <select class="form-select" value={isdeleted} onChange={(e)=>setisdeleted(e.target.value)} name="isdeleted" id="inputGroupSelect01">
+                                    <option >false</option>
+                                    <option >true</option>
+                                </select>
                             </div>
                             <div className='imagedata1'>
                                 <label>Description</label>
-                                <textarea value={Description} onChange={(e)=>setDescription(e.target.value)} />
+                                <textarea class="form-control" value={Description} onChange={(e)=>setDescription(e.target.value)} />
                             </div>
                         </div>
 
