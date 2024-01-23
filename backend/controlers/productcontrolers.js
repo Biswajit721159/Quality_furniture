@@ -200,11 +200,13 @@ let getproductUponPriceProductTypeAndProductName = async (req, res) => {
       if (catagory == "ALL") {
         result = await product.find({
           price: { $gte: low, $lte: high },
+          isdeleted:false
         }).skip(LowerLimit).limit(Limit + 1).exec();
       } else {
         result = await product.find({
           price: { $gte: low, $lte: high },
           product_type: catagory,
+          isdeleted:false,
         }).skip(LowerLimit).limit(Limit + 1).exec();
       }
     } else {
@@ -215,6 +217,7 @@ let getproductUponPriceProductTypeAndProductName = async (req, res) => {
             { product_name: { $regex: new RegExp(product_name, 'i') } },
             { product_type: { $regex: new RegExp(product_name, 'i') } },
           ],
+          isdeleted:false,
         }).skip(LowerLimit).limit(Limit + 1).exec();
       } else {
         result = await product.find({
@@ -224,6 +227,7 @@ let getproductUponPriceProductTypeAndProductName = async (req, res) => {
             { product_name: { $regex: new RegExp(product_name, 'i') } },
             { product_type: { $regex: new RegExp(product_name, 'i') } },
           ],
+          isdeleted:false,
         }).skip(LowerLimit).limit(Limit + 1).exec();
       }
     }
