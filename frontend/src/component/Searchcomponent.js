@@ -27,9 +27,9 @@ const Searchcomponent=()=>{
     return(
         <div className='Searchcomponent mt-1'>
            <div className='searchfrom'>
-                <div class="form-inline my-2 my-lg-0 mr-3">
-                    <input class="form-control1 mr-sm-2" type="search" placeholder="Search For Products" value={value} onChange={(e)=>changesearch(e)}    aria-label="Search"/>
-                    <button class="btn btn-success my-sm-0" onClick={Submit}  type="submit"><CiSearch /></button>
+                <div className="form-inline my-2 my-lg-0 mr-3">
+                    <input className="form-control1 mr-sm-2"  type="search" placeholder="Search For Products" value={value} onChange={(e)=>changesearch(e)}    aria-label="Search"/>
+                    <button className="btn btn-success my-sm-0" onClick={Submit}  type="submit"><CiSearch /></button>
                 </div>
            </div>
         </div>

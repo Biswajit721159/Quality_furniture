@@ -12,6 +12,9 @@
 
 .inputreglog{
     width: 300px;
+    padding: 10px;
+    margin: 10px;
+    outline: none;
 }
 
 .wrong{
