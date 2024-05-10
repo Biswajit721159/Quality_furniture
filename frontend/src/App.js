@@ -18,27 +18,27 @@ import Carousel from './component/Carousel'
 import './css/Loader.css'
 import BootstrapNavbar from "./component/BootstrapNavbar";
 import ForgotPassword from "./component/ForgotPassword";
+import Test from './component/Test'
 import './App.css'
 function App() {
   return (
     <div className="App">
       <Router>
-       <BootstrapNavbar/>
+        <BootstrapNavbar />
         <Routes>
-          {/* <Route element={<Privatecomponent/>}> */}
-            <Route path="/" element={<Product/>}></Route>
-            <Route path="/Product" element={<Show/>}></Route>
-            <Route path="/Product/:_id" element={<Product_view/>}></Route>
-            <Route path="/Profile" element={<Profile/>}></Route>
-            <Route path="/Profile/:_id" element={<Update_userdata/>}></Route>
-            <Route path="/wishlist" element={<WishList/>}></Route>
-            <Route path="/Cart" element={<Cart/>}></Route>
-            <Route path="Myorder" element={<Myorder/>}></Route>
-            <Route path="/:id/:product_id/Reviews" element={<Reviews/>}></Route>
-            <Route path="/Footer" element={<Footer/>}></Route>
-            <Route path="/ForgotPassword" element={<ForgotPassword/>}></Route>
-          {/* </Route> */}
-          <Route path="/Signin" element={<Login/>}></Route>
+          <Route path="/Test" element={<Test />}></Route>
+          <Route path="/" element={<Product />}></Route>
+          <Route path="/Product" element={<Show />}></Route>
+          <Route path="/Product/:_id" element={<Product_view />}></Route>
+          <Route path="/Profile" element={<Profile />}></Route>
+          <Route path="/Profile/:_id" element={<Update_userdata />}></Route>
+          <Route path="/wishlist" element={<WishList />}></Route>
+          <Route path="/Cart" element={<Cart />}></Route>
+          <Route path="Myorder" element={<Myorder />}></Route>
+          <Route path="/:id/:product_id/Reviews" element={<Reviews />}></Route>
+          <Route path="/Footer" element={<Footer />}></Route>
+          <Route path="/ForgotPassword" element={<ForgotPassword />}></Route>
+          <Route path="/Signin" element={<Login />}></Route>
           <Route path="/Register" element={<Register />}></Route>
           <Route path="*" element={<Error />}></Route>
         </Routes>

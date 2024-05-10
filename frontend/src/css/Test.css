@@ -1,0 +1,10 @@
+.card{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.carditem{
+    margin: 10px;
+    border: 1px solid gray;
+}

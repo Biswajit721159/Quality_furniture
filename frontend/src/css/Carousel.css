@@ -1,25 +1,12 @@
 
 .product_name{
     text-align: center;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 .carousel{
     display: flex;
     justify-content: center;
     flex-direction: row;
 }
-/* .Increment{
-    font-size:40px;
-    border-radius:20px;
-    border:1px solid black;
-    margin: 5px;
-}
-.Decrement{
-    font-size: 40px;
-    border-radius:20px;
-    border:1px solid black;
-    margin: 5px;
-} */
 
 .Arrowleftright{
     display: flex;

@@ -18,18 +18,18 @@ const Searchcomponent=()=>{
         dispatch(searchmethod.SET_SEARCH(e.target.value));
         setsearch(e.target.value)
     }
-    function Submit()
-    {
-        history('/Product')
-        dispatch(searchmethod.SET_SEARCH(search));
-    }
+    // function Submit()
+    // {
+    //     history('/Product')
+    //     dispatch(searchmethod.SET_SEARCH(search));
+    // }
 
     return(
         <div className='Searchcomponent mt-1'>
            <div className='searchfrom'>
                 <div className="form-inline my-2 my-lg-0 mr-3">
-                    <input className="form-control1 mr-sm-2"  type="search" placeholder="Search For Products" value={value} onChange={(e)=>changesearch(e)}    aria-label="Search"/>
-                    <button className="btn btn-success my-sm-0" onClick={Submit}  type="submit"><CiSearch /></button>
+                    <input className="form-control1 mr-sm-2" spellCheck='false' type="search" placeholder="Search Product" value={value} onChange={(e)=>changesearch(e)}    aria-label="Search"/>
+                    {/* <button className="btn btn-success my-sm-0" onClick={Submit}  type="submit"><CiSearch /></button> */}
                 </div>
            </div>
         </div>
