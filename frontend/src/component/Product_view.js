@@ -175,36 +175,36 @@ export default function Product_view() {
 
                 <div className='item'>
                     <div className='col12'>
-                        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                        <div class="carousel-inner" style={{border:'2px solid green' ,borderRadius:10}}>
-                            <div class="carousel-item active">
-                                <img class="d-block" src={product.newImage[0]} className='image'  alt="First slide"/>
+                        <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
+                        <div className="carousel-inner" style={{border:'2px solid green' ,borderRadius:10}}>
+                            <div className="carousel-item active">
+                                <img className="d-block image" src={product.newImage[0]}   alt="First slide"/>
                             </div>
-                            <div class="carousel-item">
-                                <img class="d-block" src={product.newImage[1]} className='image'  alt="Second slide"/>
+                            <div className="carousel-item">
+                                <img className="d-block image" src={product.newImage[1]}   alt="Second slide"/>
                             </div>
-                            <div class="carousel-item">
-                                <img class="d-block" src={product.newImage[2]} className='image'  alt="Third slide"/>
+                            <div className="carousel-item">
+                                <img className="d-block image" src={product.newImage[2]}   alt="Third slide"/>
                             </div>
                         </div>
-                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" style={{backgroundColor:"black",borderRadius:"10px"}}  aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
+                        <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                            <span className="carousel-control-prev-icon" style={{backgroundColor:"black",borderRadius:"10px"}}  aria-hidden="true"></span>
+                            <span className="sr-only">Previous</span>
                         </a>
-                        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" style={{backgroundColor:"black",borderRadius:"10px"}}  aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
+                        <a className="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                            <span className="carousel-control-next-icon" style={{backgroundColor:"black",borderRadius:"10px"}}  aria-hidden="true"></span>
+                            <span className="sr-only">Next</span>
                         </a>
                     </div>
                     </div>
                     <div className='col3'>
-                        <div class="card123" >
-                            <div class="card-body">
-                                <h5 class="card-title1">{product.product_name}</h5>
-                                <p class="card-text1" style={{color:"#D68910"}}>{product.offer}%OFF</p>
+                        <div className="card123" >
+                            <div className="card-body">
+                                <h5 className="card-title1">{product.product_name}</h5>
+                                <p className="card-text1" style={{color:"#D68910"}}>{product.offer}%OFF</p>
                                 <h6 className="card-text1" style={{color:'gray'}}><s>₹{product.price}</s></h6> 
                                 <h5 className="card-text1" style={{color:'tomato'}}>Price - ₹{(product.price-((product.price*product.offer)/100)).toFixed(2)}</h5>
-                                <h5 class="card-title1">{product.total_number_of_product} Left Only </h5>
+                                <h5 className="card-title1">{product.total_number_of_product} Left Only </h5>
                             </div>
                         </div>
                     </div>

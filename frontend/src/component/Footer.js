@@ -32,7 +32,7 @@ const Footer=()=>{
                     <li className="head1"><GiUsaFlag /> USA</li>
                     <li className="head1"><SiIledefrancemobilites /> France</li>
                 </div>
-                <div class="box">
+                <div className="box">
                     <h4 className="head2">Quick Links</h4>
                     <li className="head1"><Link to="/Product"><MdOutlineSell /> Buy Product</Link></li>
                     {/* <li className="head1"><Link to="/addproduct"><IoMdAddCircleOutline /> Add Product</Link></li> */}
@@ -41,7 +41,7 @@ const Footer=()=>{
                     <li className="head1"><Link to="/Myorder"><IoMdReorder /> MyOrder</Link></li>
                     <li className="head1"><Link to="https://quality-furnitureadminpanel.vercel.app/" target="_blank"><RiAdminFill /> Adminpanel</Link></li>
                 </div>
-                <div class="box">
+                <div className="box">
                 <h4 className="head2">Contact Info</h4>
                     <li className="head1"><CiHeadphones/> +123-456-7890</li>
                     <li className="head1"><CiHeadphones/> +111-222-3333</li>
@@ -49,7 +49,7 @@ const Footer=()=>{
                     <li className="head1"><MdEmail /> biswajit@riktamtech.com</li>
                     <li className="head1"><FaLocationArrow /> Hyderabad , india - 500016</li>
                 </div>
-                <div class="box">
+                <div className="box">
                     <h4 className="head2">Follow us</h4>
                     <li className="head1"><a href="#"><FaFacebook /> Facebook</a></li>
                     <li className="head1"><a href="#"><FaTwitter /> Twitter</a></li>
@@ -57,7 +57,7 @@ const Footer=()=>{
                     <li className="head1"><a href="#"><FaLinkedinIn /> Linkedin</a></li>
                     <li className="head1"><a href="#"><FaYoutube /> Youtube</a></li>
                 </div>
-                {/* <div class="box">
+                {/* <div className="box">
                     <h4 className="head2">Message US</h4>
                     <div>
                         <input className="form-control mr-sm-2" name='search' type="search" placeholder="Enter Message" aria-label="Search"/>

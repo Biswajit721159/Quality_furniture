@@ -63,14 +63,14 @@ const OrderDashboard = () => {
 
   return (
     <>
-      <div class="box">
+      <div className="box">
         <Link>
-          <div class="right-side">
-            <div class="box-topic">Total Order</div>
-            <div class="number">
+          <div className="right-side">
+            <div className="box-topic">Total Order</div>
+            <div className="number">
               {load==true?<PulseLoader color="#16A085"  />:count}
             </div>
-            <div class="indicator"></div>
+            <div className="indicator"></div>
           </div>
         </Link>
       </div>

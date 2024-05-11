@@ -1,4 +1,5 @@
 let product = require("../models/product_models");
+let Wishlist = require('../models/Wishlist_models.js')
 const mongoose = require("mongoose");
 let { ApiResponse } = require("../utils/ApiResponse.js");
 let { uploadOnCloudinary } = require("../utils/cloudenary");
@@ -9,16 +10,16 @@ let ProductUpdate = async (req, res) => {
       { _id: new mongoose.mongo.BSON.ObjectId(req.params._id) },
       {
         $set: {
-          newImage:req.body.arr,
-          product_name:req.body.product_name,
-          price:req.body.price,
-          offer:req.body.offer,
-          product_type:req.body.product_type,
-          total_number_of_product:req.body.total_number_of_product,
-          rating:req.body.rating,
-          number_of_people_give_rating:req.body.number_of_people_give_rating,
-          Description:req.body.Description,
-          isdeleted:req.body.isdeleted
+          newImage: req.body.arr,
+          product_name: req.body.product_name,
+          price: req.body.price,
+          offer: req.body.offer,
+          product_type: req.body.product_type,
+          total_number_of_product: req.body.total_number_of_product,
+          rating: req.body.rating,
+          number_of_people_give_rating: req.body.number_of_people_give_rating,
+          Description: req.body.Description,
+          isdeleted: req.body.isdeleted
         }
       }
     );
@@ -200,14 +201,14 @@ let getproductUponPriceProductTypeAndProductName = async (req, res) => {
       if (catagory == "ALL") {
         result = await product.find({
           price: { $gte: low, $lte: high },
-          isdeleted:false
-        }).skip(LowerLimit).limit(Limit + 1).exec();
+          isdeleted: false
+        }).select(["-createdAt", "-updatedAt", "-__v", "-isdeleted"]).skip(LowerLimit).limit(Limit + 1).exec();
       } else {
         result = await product.find({
           price: { $gte: low, $lte: high },
           product_type: catagory,
-          isdeleted:false,
-        }).skip(LowerLimit).limit(Limit + 1).exec();
+          isdeleted: false,
+        }).select(["-createdAt", "-updatedAt", "-__v", "-isdeleted"]).skip(LowerLimit).limit(Limit + 1).exec();
       }
     } else {
       if (catagory == "ALL") {
@@ -217,8 +218,8 @@ let getproductUponPriceProductTypeAndProductName = async (req, res) => {
             { product_name: { $regex: new RegExp(product_name, 'i') } },
             { product_type: { $regex: new RegExp(product_name, 'i') } },
           ],
-          isdeleted:false,
-        }).skip(LowerLimit).limit(Limit + 1).exec();
+          isdeleted: false,
+        }).select(["-createdAt", "-updatedAt", "-__v", "-isdeleted"]).skip(LowerLimit).limit(Limit + 1).exec();
       } else {
         result = await product.find({
           price: { $gte: low, $lte: high },
@@ -227,10 +228,36 @@ let getproductUponPriceProductTypeAndProductName = async (req, res) => {
             { product_name: { $regex: new RegExp(product_name, 'i') } },
             { product_type: { $regex: new RegExp(product_name, 'i') } },
           ],
-          isdeleted:false,
-        }).skip(LowerLimit).limit(Limit + 1).exec();
+          isdeleted: false,
+        }).select(["-createdAt", "-updatedAt", "-__v", "-isdeleted"]).skip(LowerLimit).limit(Limit + 1).exec();
       }
     }
+
+    let email = req?.user?.email
+    let Wishlistproduct = await Wishlist.find({ 'email': email })
+    let WishlistproductIds = Wishlistproduct?.map((data) => { return data?.product_id?.toString() })
+    let ans = []
+    for (let i = 0; i < result?.length; i++) {
+      let obj = {
+        _id: result[i]?._id,
+        newImage: result[i].newImage,
+        product_name: result[i]?.product_name,
+        price: result[i]?.price,
+        offer: result[i]?.offer,
+        product_type: result[i]?.product_type,
+        total_number_of_product: result[i]?.total_number_of_product,
+        rating: result[i]?.rating,
+        number_of_people_give_rating: result[i]?.number_of_people_give_rating,
+        Description: result[i]?.Description,
+        islove: false
+      }
+      if (WishlistproductIds.includes(result[i]._id.toString())) {
+        obj.islove = true
+      }
+      ans.push(obj)
+    }
+    result = ans
+
 
     let hasNextPage = result.length > Limit;
     let actualResult = hasNextPage ? result.slice(0, Limit) : result;

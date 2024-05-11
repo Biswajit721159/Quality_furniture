@@ -242,7 +242,7 @@ export default function Addproduct() {
               </div>
           </div>
           <div className="col-md-4 mt-3">
-            <select class="form-select" value={product_type} onChange={(e)=>{setproduct_type(e.target.value)}} name="product_Type" id="inputGroupSelect01">
+            <select className="form-select" value={product_type} onChange={(e)=>{setproduct_type(e.target.value)}} name="product_Type" id="inputGroupSelect01">
               <option >....</option>
               <option >Chair</option>
               <option >Window</option>
@@ -260,7 +260,7 @@ export default function Addproduct() {
           </div> 
           <div className="col-md-4 mt-3">
                <div className='form-group'>
-                   <textarea class="form-control" placeholder='Product Description' onChange={(e)=>{setDescription(e.target.value)}} id="exampleFormControlTextarea1" rows="3"></textarea>
+                   <textarea className="form-control" placeholder='Product Description' onChange={(e)=>{setDescription(e.target.value)}} id="exampleFormControlTextarea1" rows="3"></textarea>
                </div>
           </div>
           <div className="col-md-4 mt-3 my-4"><button type='submit' disabled={disable} className='btn btn-primary'>{button}</button></div>

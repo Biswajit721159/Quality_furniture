@@ -48,7 +48,6 @@ export default function Cart() {
             }
         }).then(responce => responce.json())
             .then((res) => {
-                console.log(res)
                 if (res.statusCode == 200) {
                     dispatch(cartmethod.ADD_TO_CART(res.data))
                     setcart(res.data)
@@ -305,7 +304,7 @@ export default function Cart() {
 
                                 <div className='item2'>
                                     <h4 className='pricedetailmain' style={{ textAlign: 'center' }}>PRICE DETAILS</h4>
-                                    <table class="table">
+                                    <table className="table">
                                         <tbody>
                                             <tr>
                                                 <td className='pricedetail'>Price ({cartdata} item)</td>

@@ -8,9 +8,9 @@ import ReviewsDashboard from "../Dashboard/ReviewsDashboard";
 const Dashboard = () => {
   return (
     <>
-      <section class="home-section">
-        <div class="home-content">
-        <div class="overview-boxes">
+      <section className="home-section">
+        <div className="home-content">
+        <div className="overview-boxes">
           <ReviewsDashboard />
           <UserDashboard />
           <ProductDashboard />

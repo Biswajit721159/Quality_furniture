@@ -92,7 +92,7 @@ const BootstrapNavbar=()=>{
     return(
     <nav className="navbar navbar-expand-lg navbar navbar-dark bg-dark">
        <Link  to={'/Product'}><img src='https://t3.ftcdn.net/jpg/05/93/29/50/360_F_593295067_2SvEv1yO5R5JZPtnE4AHAun5js3MrTnp.jpg' style={{height:'45px',width:'45px' ,borderRadius:'50%'}} alt='Error'/></Link>
-        <Link className="navbar-brand mx-2" to="/">QRFurniture</Link>
+        <Link className="navbar-brand mx-2" to="/">QUFurniture</Link>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
         </button>
@@ -138,9 +138,9 @@ const BootstrapNavbar=()=>{
                         {user.user.name}
                         </button>
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <Link className="dropdown-item" style={{color:'black'}} to="/Profile"><CgProfile /> Profile</Link>
-                            <Link className="dropdown-item" style={{color:'black'}} to="/Myorder"><IoReorderFourOutline /> Myorder</Link>
-                            <Link className="dropdown-item" style={{color:'black'}} to={'/Signin'} onClick={logout}><IoIosLogOut /> Logout</Link>
+                            <Link className="dropdown-item" style={{color:'black'}} to="/Profile">Profile</Link>
+                            <Link className="dropdown-item" style={{color:'black'}} to="/Myorder">Myorder</Link>
+                            <Link className="dropdown-item" style={{color:'black'}} to={'/Signin'} onClick={logout}>Logout</Link>
                         </div>
                     </div>
                 </span>

@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '../css/Main_page.css'
 import { AiFillStar } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
-import { PulseLoader } from 'react-spinners';
+import { PulseLoader, ClipLoader } from 'react-spinners';
 import { useDispatch, useSelector } from 'react-redux'
 import { cartmethod } from '../redux/CartSlice'
 import Footer from '../component/Footer'
 import { searchmethod } from '../redux/SearchSlice'
 import Slider from './Slider';
+import { loadProduct, AddToWishList, RemoveToWishList } from '../redux/ProductSlice'
+import { productmethod } from '../redux/ProductSlice'
 
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
@@ -16,45 +18,20 @@ import CardActions from '@mui/material/CardActions';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Button from '@mui/material/Button';
 
+import Filter from './Filter';
+
 export default function Show() {
 
     const dispatch = useDispatch()
     const history = useNavigate()
-    const [data, setdata] = useState([])
-    const [product, setproduct] = useState([])
     let userinfo = JSON.parse(localStorage.getItem('user'))
-    let wishlist = JSON.parse(localStorage.getItem('Wishlist'))
-    let [load, setload] = useState(true)
-    const [Catagory, setCatagoty] = useState()
+    const [wishlistid, setwishlistid] = useState(0)
+    let [load, setload] = useState(false)
 
-    const [queryParameters] = useSearchParams()
-
-    const [pricerange0to1000, setpricerange0to1000] = useState(false)
-    const [pricerange1000to2000, setpricerange1000to2000] = useState(false)
-    const [pricerange2000to3000, setpricerange2000to3000] = useState(false)
-    const [pricerange3000to4000, setpricerange3000to4000] = useState(false)
-    const [pricerange4000toUp, setpricerange4000toUp] = useState(false)
-
-    let value = useSelector((state) => state.Search_Name.search_Name)
-    const [ALL, setALL] = useState(false)
-
-    const [lowprice, setlowprice] = useState(0)
-    const [highprice, sethighprice] = useState(10000000)
-    const [selectcatagory, setselectcatagory] = useState('ALL')
-    const [searchproduct, setsearchproduct] = useState("none")
-
-    const [priceLowTOHigh, setpriceLowTOHigh] = useState(false)
-    const [priceHighTOLow, setpriceHighTOLow] = useState(false)
-    const [SortOnRating, setSortOnRating] = useState(false)
-    const [SortOffer, setSortOffer] = useState(false)
-
-
-    let [low, setlow] = useState(0);
-    let [high, sethigh] = useState(12);
-    let [prev, setprev] = useState(false);
-    let [next, setnext] = useState(false);
+    let searchInput = useSelector((state) => state.Search_Name.search_Name)
 
     const api = process.env.REACT_APP_API
+    let { product, lowerLimit, higherLimit, lowprice, highprice, selectcatagory, loadingproduct, previous_page, next_page, wishlistloader } = useSelector((state) => state?.product)
 
 
     useEffect(() => {
@@ -62,316 +39,22 @@ export default function Show() {
             history('/Signin')
         }
         else {
-            loadCatagory();
-            let lowprice = queryParameters.get('lowprice') != null ? queryParameters.get('lowprice') : 0;
-            let highprice = queryParameters.get('highprice') != null ? queryParameters.get('highprice') : 10000000;
-            let selectcatagory = queryParameters.get('selectcatagory') != null ? queryParameters.get('selectcatagory') : 'ALL';
-            history(`?lowprice=${lowprice}&highprice=${highprice}&selectcatagory=${selectcatagory}&product_name=${value}`);
-            findsearchData(lowprice, highprice, selectcatagory, value);
+            dispatch(loadProduct({ lowprice, highprice, selectcatagory, searchInput, lowerLimit, higherLimit, userinfo }))
         }
-    }, [value])
+    }, [searchInput])
 
-
-    function findsearchData(lowprice, highprice, selectcatagory, searchproduct, low = 0, high = 12) {
-        if (lowprice == null) lowprice = 0;
-        if (highprice == null) highprice = 1000000;
-        if (selectcatagory == null) selectcatagory = "ALL";
-        if (searchproduct == null) searchproduct = "";
-        markvisited(lowprice, highprice, selectcatagory, searchproduct)
-        if (searchproduct == null || searchproduct.length == 0) searchproduct = "none";
-        setload(true);
-        fetch(`${api}/product/getproductUponPriceProductTypeAndProductName/${lowprice}/${highprice}/${selectcatagory}/${searchproduct}/${low}/${high}`, {
-            headers: {
-                Authorization: `Bearer ${userinfo.accessToken}`
-            }
-        }).then(response => response.json()).then((data) => {
-            if (data.statusCode == 201) {
-                let n = data.data.length;
-                if (n) {
-                    setprev(data.data[n - 1].prev);
-                    setnext(data.data[n - 1].next);
-                }
-                setproduct(data.data.slice(0, n - 1));
-                setToproduct(data.data.slice(0, n - 1));
-                setload(false);
-            }
-            else if (data.statusCode == 498) {
-                localStorage.removeItem('user');
-                history('/Signin');
-            }
-            else {
-                history('*');
-            }
-        }, (error) => {
-            history('*')
-        })
+    function addToWishlist(product_id) {
+        setwishlistid(product_id)
+        dispatch(AddToWishList({ userinfo, product_id }))
     }
 
-    function loadCatagory() {
-        fetch(`${api}/product/Catagory/getallCatagory`, {
-            headers: {
-                Authorization: `Bearer ${userinfo.accessToken}`
-            }
-        }).then(response => response.json()).then((data) => {
-            if (data.statusCode == 201) {
-                setCatagoty(data.data)
-            }
-            else if (data.statusCode == 498) {
-                localStorage.removeItem('user');
-                history('/Signin');
-            }
-            else {
-                history('*')
-            }
-        }, (error) => {
-            history('*')
-        })
-    }
-
-    function setToproduct(data) {
-        if (data == undefined) return
-        else {
-            wishlist = JSON.parse(localStorage.getItem('Wishlist'))
-            let ans = []
-            for (let i = 0; i < data.length; i++) {
-                let obj = {
-                    _id: data[i]._id,
-                    product_name: data[i].product_name,
-                    rating: data[i].rating,
-                    newImage: data[i].newImage,
-                    price: data[i].price,
-                    offer: data[i].offer,
-                    product_type: data[i].product_type,
-                    total_number_of_product: data[i].total_number_of_product,
-                    number_of_people_give_rating: data[i].number_of_people_give_rating,
-                    // product_count:0,
-                    islove: false,
-                    isdeleted: false,
-                }
-
-                // if(res && res.length!=0 && res.product_id==obj._id)
-                // {
-                //     obj.product_count=res.product_count;
-                // }
-                for (let j = 0; wishlist != null && j < wishlist.length; j++) {
-                    if (wishlist[j] == obj._id) {
-                        obj.islove = true;
-                    }
-                }
-                ans.push(obj)
-            }
-            setdata([...ans])
-        }
-    }
-
-    function checkIdPresent(nums, id) {
-        for (let i = 0; i < nums.length; i++) {
-            if (nums[i] == id) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    function addToWishlist(id) {
-        let arr = []
-        let itemsList = JSON.parse(localStorage.getItem('Wishlist'))
-        if (itemsList) {
-            let a = checkIdPresent(itemsList, id);
-            if (a != -1) {
-                itemsList.splice(a, 1);
-                localStorage.setItem('Wishlist', JSON.stringify(itemsList));
-            }
-            else {
-                itemsList.push(id)
-                localStorage.setItem('Wishlist', JSON.stringify(itemsList));
-            }
-        }
-        else {
-            arr.push(id)
-            localStorage.setItem('Wishlist', JSON.stringify(arr))
-        }
-        setToproduct(data)
-    }
-
-    // data handeling part 
-
-    function clearallfilter() {
-        setdata(product);
-        setToproduct(product)
-        setpriceLowTOHigh(false);
-        setpriceHighTOLow(false);
-        setSortOnRating(false);
-        setSortOffer(false);
-    }
-
-    function PriceLowToHighfunction() {
-        setpriceLowTOHigh(true);
-        setpriceHighTOLow(false);
-        setSortOnRating(false);
-        setSortOffer(false);
-        data.sort((a, b) => {
-            let fa = parseInt(a.price - ((a.price * a.offer) / 100))
-            let fb = parseInt(b.price - ((b.price * b.offer) / 100))
-
-            if (fa < fb) {
-                return -1;
-            }
-            if (fa > fb) {
-                return 1;
-            }
-            return 0;
-        });
-        setdata([...data])
-    }
-
-    function PriceHighToLowfunction() {
-        setpriceLowTOHigh(false);
-        setpriceHighTOLow(true);
-        setSortOnRating(false);
-        setSortOffer(false);
-        data.sort((a, b) => {
-            let fa = parseInt(a.price - ((a.price * a.offer) / 100))
-            let fb = parseInt(b.price - ((b.price * b.offer) / 100))
-
-            if (fa > fb) {
-                return -1;
-            }
-            if (fa < fb) {
-                return 1;
-            }
-            return 0;
-        });
-        setdata([...data])
-    }
-
-    function SortOnRatingfunction() {
-        setpriceLowTOHigh(false);
-        setpriceHighTOLow(false);
-        setSortOnRating(true);
-        setSortOffer(false);
-        data.sort((a, b) => {
-            let fa = parseFloat(a.rating),
-                fb = parseFloat(b.rating);
-
-            if (fa > fb) {
-                return -1;
-            }
-            if (fa < fb) {
-                return 1;
-            }
-            return 0;
-        });
-        setdata([...data])
-    }
-
-    function SortOnOfferfunction() {
-        setpriceLowTOHigh(false);
-        setpriceHighTOLow(false);
-        setSortOnRating(false);
-        setSortOffer(true);
-        data.sort((a, b) => {
-            let fa = parseInt(a.offer),
-                fb = parseInt(b.offer);
-
-            if (fa > fb) {
-                return -1;
-            }
-            if (fa < fb) {
-                return 1;
-            }
-            return 0;
-        });
-        setdata([...data])
-    }
-
-    //Searching section 
-
-    function cametocheck(lowprice, highprice) {
-        history(`?lowprice=${lowprice}&highprice=${highprice}&selectcatagory=${selectcatagory}&product_name=${searchproduct}`)
-        findsearchData(lowprice, highprice, selectcatagory, searchproduct)
-    }
-
-    function cametocatagory(selectcatagory) {
-        history(`?lowprice=${lowprice}&highprice=${highprice}&selectcatagory=${selectcatagory}&product_name=${searchproduct}`)
-        findsearchData(lowprice, highprice, selectcatagory, searchproduct)
-    }
-
-    function markvisited(lowprice, highprice, selectcatagory, searchproduct) {
-        setlowprice(lowprice);
-        sethighprice(highprice);
-        setselectcatagory(selectcatagory)
-        setsearchproduct(searchproduct)
-
-        setpriceLowTOHigh(false);
-        setpriceHighTOLow(false);
-        setSortOnRating(false);
-        setSortOffer(false);
-
-        if (selectcatagory == "ALL") {
-            setALL(true)
-        }
-        else if (selectcatagory != "ALL") {
-            setALL(false)
-        }
-        if (lowprice >= 0 && highprice <= 1000) {
-            setpricerange0to1000(true)
-            setpricerange1000to2000(false)
-            setpricerange2000to3000(false)
-            setpricerange3000to4000(false)
-            setpricerange4000toUp(false)
-        }
-        else if (lowprice >= 1000 && highprice <= 2000) {
-            setpricerange0to1000(false)
-            setpricerange1000to2000(true)
-            setpricerange2000to3000(false)
-            setpricerange3000to4000(false)
-            setpricerange4000toUp(false)
-        }
-        else if (lowprice >= 2000 && highprice <= 3000) {
-            setpricerange0to1000(false)
-            setpricerange1000to2000(false)
-            setpricerange2000to3000(true)
-            setpricerange3000to4000(false)
-            setpricerange4000toUp(false)
-        }
-        else if (lowprice >= 3000 && highprice <= 4000) {
-            setpricerange0to1000(false)
-            setpricerange1000to2000(false)
-            setpricerange2000to3000(false)
-            setpricerange3000to4000(true)
-            setpricerange4000toUp(false)
-        }
-        else if (lowprice >= 4000 && highprice <= 10000000) {
-            setpricerange0to1000(false)
-            setpricerange1000to2000(false)
-            setpricerange2000to3000(false)
-            setpricerange3000to4000(false)
-            setpricerange4000toUp(true)
-        }
-        else {
-            setpricerange0to1000(false)
-            setpricerange1000to2000(false)
-            setpricerange2000to3000(false)
-            setpricerange3000to4000(false)
-            setpricerange4000toUp(false)
-        }
-    }
-
-    function clearPrice() {
-        history(`?lowprice=${0}&highprice=${1000000}&selectcatagory=${selectcatagory}&product_name=${searchproduct}`)
-        findsearchData(0, 1000000, selectcatagory, searchproduct)
-    }
-
-    function clearcatagory() {
-        history(`?lowprice=${lowprice}&highprice=${highprice}&selectcatagory=${'ALL'}&product_name=${searchproduct}`)
-        findsearchData(lowprice, highprice, 'ALL', searchproduct)
+    function removeToWishlist(product_id) {
+        setwishlistid(product_id)
+        dispatch(RemoveToWishList({ userinfo, product_id }))
     }
 
     function backTOHome() {
         dispatch(searchmethod.CLEAR_SEARCH(''))
-        history(`?lowprice=${0}&highprice=${1000000}&selectcatagory=${'ALL'}&product_name=${''}`)
-        findsearchData(0, 1000000, 'ALL', '')
     }
 
     function AddToCart(product_id) {
@@ -405,24 +88,19 @@ export default function Show() {
             })
     }
 
-    function ClearAllFilter() {
-        dispatch(searchmethod.CLEAR_SEARCH(''))
-        history(`?lowprice=${0}&highprice=${1000000}&selectcatagory=${'ALL'}&product_name=${''}`)
-        findsearchData(0, 1000000, 'ALL', '')
-    }
-
     function NextPage() {
-        findsearchData(lowprice, highprice, selectcatagory, searchproduct, low + 12, high + 12);
-        setlow(low + 12)
-        sethigh(high + 12);
+        lowerLimit += 12
+        higherLimit += 12
+        dispatch(productmethod.AddEveryThing({ lowerLimit: lowerLimit, higherLimit: higherLimit }))
+        dispatch(loadProduct({ lowprice, highprice, selectcatagory, searchInput, lowerLimit, higherLimit, userinfo }))
     }
 
     function PrevPage() {
-        findsearchData(lowprice, highprice, selectcatagory, searchproduct, low - 12, high - 12)
-        setlow(low - 12);
-        sethigh(high - 12);
+        lowerLimit -= 12
+        higherLimit -= 12
+        dispatch(productmethod.AddEveryThing({ lowerLimit: lowerLimit, higherLimit: higherLimit }))
+        dispatch(loadProduct({ lowprice, highprice, selectcatagory, searchInput, lowerLimit, higherLimit, userinfo }))
     }
-
     const [takeid, settakeid] = useState(0)
 
     function handleMouseOver(product_id) {
@@ -435,116 +113,20 @@ export default function Show() {
 
 
 
-
     return (
         <>
-            {load == true ?
+            {loadingproduct === true || load === true ?
                 <div className="Loaderitem">
                     <PulseLoader color="#16A085" />
                 </div>
                 :
-                data.length != 0 ?
+                product?.length != 0 ?
                     <>
-                        {/* <div className='subproduct'>
-                            <button className='btn btn-primary mx-3 btn-sm' onClick={ClearAllFilter}>Clear All Filter</button>
-                            <div className='subproductone'>
-                                <p className='card-text'>price</p>
-                                <div className="form-check">
-                                    <input className="form-check-input" onClick={() => cametocheck(0, 1000)} checked={pricerange0to1000} onChange={(e) => setpricerange0to1000(e.target.checked)} type="radio" />
-                                    <label className="form-check-label card-text" >
-                                        Under ₹ 1000
-                                    </label>
-                                </div>
-                                <div className="form-check">
-                                    <input className="form-check-input" onClick={() => cametocheck(1000, 2000)} checked={pricerange1000to2000} onChange={(e) => setpricerange1000to2000(e.target.checked)} type="radio" />
-                                    <label className="form-check-label card-text" >
-                                        ₹ 1000 - ₹ 2000
-                                    </label>
-                                </div>
-                                <div className="form-check">
-                                    <input className="form-check-input" onClick={() => cametocheck(2000, 3000)} checked={pricerange2000to3000} onChange={(e) => setpricerange2000to3000(e.target.checked)} type="radio" />
-                                    <label className="form-check-label card-text" >
-                                        ₹ 2000 - ₹ 3000
-                                    </label>
-                                </div>
-                                <div className="form-check">
-                                    <input className="form-check-input" onClick={() => cametocheck(3000, 4000)} checked={pricerange3000to4000} onChange={(e) => setpricerange3000to4000(e.target.checked)} type="radio" />
-                                    <label className="form-check-label card-text" >
-                                        ₹ 3000 - ₹ 4000
-                                    </label>
-                                </div>
-                                <div className="form-check">
-                                    <input className="form-check-input" onClick={() => cametocheck(4000, 1000000)} checked={pricerange4000toUp} onChange={(e) => setpricerange4000toUp(e.target.checked)} type="radio" />
-                                    <label className="form-check-label card-text" >
-                                        Over ₹ 4000
-                                    </label>
-                                </div>
-                                {pricerange0to1000 || pricerange1000to2000 || pricerange2000to3000 || pricerange3000to4000 || pricerange4000toUp ? <p className='card-text' onClick={clearPrice} style={{ color: "#48C9B0", cursor: 'pointer' }}>clear</p> : <p className='card-text'>clear</p>}
-
-                            </div>
-                            <div className='subproductone mt-3'>
-                                <p className='card-text'>sort</p>
-                                <div className="form-check mt-2">
-                                    <input className="form-check-input" onClick={PriceLowToHighfunction} checked={priceLowTOHigh} type="radio" />
-                                    <label className="form-check-label card-text" >
-                                        Price Low To High
-                                    </label>
-                                </div>
-                                <div className="form-check">
-                                    <input className="form-check-input" onClick={PriceHighToLowfunction} checked={priceHighTOLow} type="radio" />
-                                    <label className="form-check-label card-text" >
-                                        Price High To Low
-                                    </label>
-                                </div>
-                                <div className="form-check">
-                                    <input className="form-check-input" onClick={SortOnRatingfunction} checked={SortOnRating} type="radio" />
-                                    <label className="form-check-label card-text" >
-                                        Sort On Rating
-                                    </label>
-                                </div>
-                                <div className="form-check">
-                                    <input className="form-check-input" onClick={SortOnOfferfunction} checked={SortOffer} type="radio" />
-                                    <label className="form-check-label card-text" >
-                                        Sort Offer
-                                    </label>
-                                </div>
-                                {
-                                    priceLowTOHigh || priceHighTOLow || SortOnRating || SortOffer ? <p className='card-text mx-2' onClick={clearallfilter} style={{ color: "#48C9B0", cursor: 'pointer' }}>clear</p> : <p className='card-text mx-2'>clear</p>
-                                }
-                            </div>
-                            <div className='subproductone mt-3'>
-
-                                <p className='card-text'>Catagory</p>
-
-                                <div className="form-check mt-2">
-                                    <input className="form-check-input " onClick={() => cametocatagory('ALL')} checked={ALL} onChange={(e) => setALL(e.target.checked)} type="radio" />
-                                    <label className="form-check-label card-text" >
-                                        ALL
-                                    </label>
-                                </div>
-                                {
-                                    Catagory && Catagory.map((item, ind) => (
-                                        <div className="form-check mt-2" key={ind}>
-                                            {
-                                                item == selectcatagory ? <input className="form-check-input" onClick={() => cametocatagory(item)} checked={true} type="radio" />
-                                                    : <input className="form-check-input" onClick={() => cametocatagory(item)} type="radio" />
-                                            }
-                                            <label className="form-check-label card-text" >
-                                                {item}
-                                            </label>
-                                        </div>
-                                    ))
-                                }
-                                {
-                                    selectcatagory != "ALL" ? <p className='card-text mx-2'><p onClick={clearcatagory} style={{ color: "#48C9B0", cursor: 'pointer' }}>clear</p></p> : <p className='card-text mx-2'><p>clear</p></p>
-                                }
-                            </div>
-                        </div> */}
-
+                        {/* <Filter /> */}
                         <div className='allproduct'>
                             <div className='product'>
                                 {
-                                    data && data.map((item, ind) => (
+                                    product && product?.map((item, ind) => (
                                         <Card key={ind} sx={{ width: 250 }} className='carditem'>
                                             {
                                                 takeid == item._id ?
@@ -615,8 +197,9 @@ export default function Show() {
                                                 }
                                                 <CardActions disableSpacing>
                                                     {
-                                                        item.islove == false ? <FavoriteIcon sx={{ color: 'gray' }} onClick={() => addToWishlist(item._id)} /> :
-                                                            <FavoriteIcon sx={{ color: 'red' }} onClick={() => addToWishlist(item._id)} />
+                                                        wishlistloader === true && wishlistid === item._id ? <ClipLoader color="#16A085" size={'25px'} /> :
+                                                            item.islove == false ? <FavoriteIcon sx={{ color: 'gray' }} onClick={() => addToWishlist(item._id)} /> :
+                                                                <FavoriteIcon sx={{ color: 'red' }} onClick={() => removeToWishlist(item._id)} />
                                                     }
                                                     <div className='col'>
                                                         {
@@ -642,18 +225,17 @@ export default function Show() {
                                 }
                             </div>
                         </div>
-
                         <div className='PrevNext mt-5 mb-4'>
-                            <Button sx={{ m: 2 }} variant="contained" size="small" color="success" disabled={!prev} onClick={PrevPage}>Prev</Button>
-                            <Button sx={{ m: 2 }} variant="contained" size="small" color="success" disabled={!next} onClick={NextPage}>Next</Button>
+                            <Button sx={{ m: 2 }} variant="contained" size="small" color="success" disabled={!previous_page} onClick={PrevPage}>Prev</Button>
+                            <Button sx={{ m: 2 }} variant="contained" size="small" color="success" disabled={!next_page} onClick={NextPage}>Next</Button>
                         </div>
                         <hr />
                         <Footer />
                     </>
                     :
                     <div className='loader-container'>
-                        <h4>Product Not Found</h4>
-                        <button className='btn btn-primary mx-3' onClick={backTOHome}>Back</button>
+                        <h5>Product Not Found</h5>
+                        <Button variant="contained" size="small" color="success" sx={{ m: 3 }} onClick={backTOHome}>Back</Button>
                     </div>
 
             }

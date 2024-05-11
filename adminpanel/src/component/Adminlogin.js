@@ -47,15 +47,15 @@ const Adminlogin = () => {
   
   return (
     <>
-      <div class="box">
-        <div class="container">
-          <div class="top">
+      <div className="box">
+        <div className="container">
+          <div className="top">
             <span>Admins Login Panel</span>
           </div>
-            <div class="input-field mt-2">
+            <div className="input-field mt-2">
               <input
                 type="email"
-                class="input"
+                className="input"
                 name="eamil"
                 value={email}
                 onChange={(e)=>setemail(e.target.value)}
@@ -63,10 +63,10 @@ const Adminlogin = () => {
                 required
               />
             </div>
-            <div class="input-field mt-2">
+            <div className="input-field mt-2">
               <input
                 type="Password" 
-                class="input"
+                className="input"
                 value={password}
                 onChange={(e)=>setpassword(e.target.value)}
                 name="password"
@@ -75,8 +75,8 @@ const Adminlogin = () => {
               />
             </div>
             {wronguser && <span style={{color:"red"}}>*Wronguser</span>}
-            <div class="input-field mt-2">
-              <input type="submit" onClick={submit} disabled={disabled} class="submit" value={button} />
+            <div className="input-field mt-2">
+              <input type="submit" onClick={submit} disabled={disabled} className="submit" value={button} />
             </div>
         </div>
       </div>

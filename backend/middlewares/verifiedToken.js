@@ -10,6 +10,7 @@ function verifytoken(req, res, next) {
     try {
       const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
       if (decodedToken) {
+        req.user = decodedToken; 
         next();
       } else {
         res.status(498).json(new ApiResponse(498, null, "Invalid Token"));

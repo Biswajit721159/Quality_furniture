@@ -86,15 +86,15 @@ const Navbar=()=>{
                         </div>
                       </Link>
                     </li>
-                    <div class="dropdown mt-1">
-                      <button class="btn btn-light btn-sm dropdown-toggle navbartext" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div className="dropdown mt-1">
+                      <button className="btn btn-light btn-sm dropdown-toggle navbartext" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Welcome {user.user.name}
                       </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <Link class="dropdown-item navbartext" to="/Profile"><CgProfile /> profile</Link>
-                        <Link class="dropdown-item navbartext" to="/Myorder"><IoReorderFourOutline /> Myorder</Link>
-                        <Link class="dropdown-item navbartext" to="/wishlist"><GiLoveHowl /> WishList</Link>
-                        <Link class="dropdown-item navbartext" to={'/Register'} onClick={logout}><IoIosLogOut /> Logout</Link>
+                      <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <Link className="dropdown-item navbartext" to="/Profile"><CgProfile /> profile</Link>
+                        <Link className="dropdown-item navbartext" to="/Myorder"><IoReorderFourOutline /> Myorder</Link>
+                        <Link className="dropdown-item navbartext" to="/wishlist"><GiLoveHowl /> WishList</Link>
+                        <Link className="dropdown-item navbartext" to={'/Register'} onClick={logout}><IoIosLogOut /> Logout</Link>
                       </div>
                     </div>
                 </>    
