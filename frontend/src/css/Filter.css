@@ -1,0 +1,27 @@
+
+.mainfilter{
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+.filter {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.form-check {
+    display: flex;
+    /* justify-content: center; */
+    flex-wrap: wrap;
+}
+
+.form-check-input1 {
+    color: aquamarine;
+}
+
+.form-check-label {
+    color: gray;
+    margin-left: 1px;
+}

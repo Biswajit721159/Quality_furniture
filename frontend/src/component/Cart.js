@@ -7,6 +7,7 @@ import { GrAdd } from "react-icons/gr";
 import { GrSubtract } from "react-icons/gr";
 import swal from 'sweetalert'
 import '../css/cart.css'
+import Loader from './Loader'
 const api = process.env.REACT_APP_API
 export default function Cart() {
 
@@ -270,9 +271,7 @@ export default function Cart() {
         <>
             {
                 load == true ?
-                    <div className="Loaderitem">
-                        <PulseLoader color="#16A085" />
-                    </div> :
+                    <Loader /> :
                     product != null ?
                         <>
                             <h6 className='pricedetail mt-3' style={{ textAlign: 'center', fontFamily: 'monospace', color: "red" }}>*If You Want to Change Your Address Go to Your Profile Section </h6>

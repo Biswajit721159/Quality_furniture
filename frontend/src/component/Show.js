@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import '../css/Main_page.css'
 import { AiFillStar } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
-import { PulseLoader, ClipLoader } from 'react-spinners';
+import { ClipLoader } from 'react-spinners';
 import { useDispatch, useSelector } from 'react-redux'
 import { cartmethod } from '../redux/CartSlice'
 import Footer from '../component/Footer'
@@ -17,8 +17,8 @@ import CardMedia from '@mui/material/CardMedia';
 import CardActions from '@mui/material/CardActions';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Button from '@mui/material/Button';
-
 import Filter from './Filter';
+import Loader from './Loader';
 
 export default function Show() {
 
@@ -35,10 +35,10 @@ export default function Show() {
 
 
     useEffect(() => {
-        if (userinfo == null) {
+        if (userinfo === null) {
             history('/Signin')
         }
-        else {
+        else if (product?.length === 0) {
             dispatch(loadProduct({ lowprice, highprice, selectcatagory, searchInput, lowerLimit, higherLimit, userinfo }))
         }
     }, [searchInput])
@@ -116,9 +116,7 @@ export default function Show() {
     return (
         <>
             {loadingproduct === true || load === true ?
-                <div className="Loaderitem">
-                    <PulseLoader color="#16A085" />
-                </div>
+                <Loader />
                 :
                 product?.length != 0 ?
                     <>
@@ -127,7 +125,7 @@ export default function Show() {
                             <div className='product'>
                                 {
                                     product && product?.map((item, ind) => (
-                                        <Card key={ind} sx={{ width: 250 }} className='carditem'>
+                                        <Card key={ind} sx={{ width: 240 }} className='carditem'>
                                             {
                                                 takeid == item._id ?
                                                     <Link to={`/Product/${item._id}`} onMouseLeave={handleMouseLeave} onMouseOver={() => handleMouseOver(item._id)}>

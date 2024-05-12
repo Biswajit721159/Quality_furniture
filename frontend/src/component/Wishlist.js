@@ -9,6 +9,7 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import { RemoveToWishList } from '../redux/ProductSlice'
+import Loader from './Loader';
 
 const api = process.env.REACT_APP_API
 export default function WishList() {
@@ -31,7 +32,7 @@ export default function WishList() {
       },
     }).then(responce => responce.json()).then((res) => {
       try {
-        if (res.statusCode == 200 || res.statusCode==404) {
+        if (res.statusCode == 200 || res.statusCode == 404) {
           setdata(res.data);
         }
         else if (res.statusCode == 498) {
@@ -100,9 +101,7 @@ export default function WishList() {
     <>
       {
         load == true ?
-          <div className="Loaderitem">
-            <PulseLoader color="#16A085" />
-          </div>
+          <Loader />
           :
           (data && data?.length != 0) ?
             <div className='product'>

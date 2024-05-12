@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 const api = process.env.REACT_APP_API;
 
-
 export const loadProduct = createAsyncThunk(
     'product/loadProduct',
     async (parameter) => {
@@ -100,7 +99,11 @@ const productSlice = createSlice({
             state.higherLimit = data.higherLimit
         },
         Addsearch: (state, action) => {
-            state.searchinput = action?.payload?.searchinput
+            let searchinput = action?.payload?.searchinput
+            let allproduct = action?.payload?.allproduct
+            state.searchinput = searchinput
+            state.product = allproduct
+            state.product = searchproduct(searchinput, allproduct)
         },
     },
     extraReducers: (builder) => {
@@ -187,6 +190,80 @@ const productSlice = createSlice({
             })
     }
 })
+
+function searchproduct(searchinput, product) {
+    if (searchinput.length === 0) {
+        return product
+    }
+    else {
+        searchinput = searchinput.toLowerCase();
+        let n = searchinput.length;
+        let newproduct = [];
+        for (let i = 0; i < product.length; i++) {
+            let s = product[i]?.product_name;
+            s = s?.toLowerCase();
+            let product_type = product[i]?.product_type
+            product_type = product_type?.toLowerCase()
+            if (KMP(searchinput, s) === true || check_All_Charcter(searchinput, s)
+                || KMP(searchinput, product_type) || check_All_Charcter(searchinput, product_type)) {
+                newproduct.push(product[i]);
+            }
+        }
+        return newproduct
+    }
+}
+
+function KMP(searchproduct, product_name) {
+    let patt = solve1(searchproduct);
+    let original = solve2(product_name);
+    let n = patt.length;
+    for (let i = 0; i < original.length - n + 1; i++) {
+        let generate = original.substring(i, i + n);
+        if (generate === patt) return true;
+    }
+    return false;
+}
+
+function check_All_Charcter(searchproduct, product_name) {
+    let s = product_name;
+    let patt = searchproduct;
+    let i = 0;
+    let j = 0;
+    let n = s.length;
+    let m = patt.length;
+    while (i < n && j < m) {
+        if (patt[j] == s[i]) {
+            i++; j++;
+        }
+        else {
+            i++;
+        }
+    }
+    if (j == m) {
+        return true;
+    }
+    return false;
+}
+
+function solve1(s) {
+    let res = "";
+    for (let i = 0; i < s.length; i++) {
+        if (s[i] >= 'a' && s[i] < 'z') {
+            res += s[i];
+        }
+    }
+    return res;
+}
+
+function solve2(s) {
+    let res = "";
+    for (let i = 0; i < s.length; i++) {
+        if (s[i] >= 'a' && s[i] < 'z') {
+            res += s[i];
+        }
+    }
+    return res;
+}
 
 export const productmethod = productSlice.actions;
 export default productSlice.reducer;

@@ -124,15 +124,15 @@ const BootstrapNavbar=()=>{
                     <Searchcomponent/>
                 </span>
                 <span className="navbar-text mx-4">
-                    <Link style={{color:'red'}} className='carticon' to={'/Wishlist'}><FaHeart/></Link>
+                    <Link style={{color:'tomato'}} className='carticon' to={'/Wishlist'}><FaHeart/></Link>
                 </span>
                 <span className="navbar-text">
-                    <Link className='navbarTextItem' to={'/Cart'}>{cartdata}</Link>
+                    <Link className='navbarTextItem' style={{textDecoration:'none'}} to={'/Cart'}>{cartdata}</Link>
                 </span>
                 <span className="navbar-text">
                     <Link className='carticon' to={'/Cart'}><FaShoppingCart/></Link>
                 </span>
-                <span className="navbar-text mr-3 mx-2">
+                <span className="navbar-text mr-3 mx-3">
                     <div className="dropdown">
                         <button className="btn btn-info btn-sm dropdown-toggle navbartext" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {user.user.name}

@@ -1,9 +1,17 @@
-import React from 'react'
+import React from 'react';
+import { Link } from 'react-router-dom'
+const NotFoundPage = () => {
+    return (
+        <div className="container mt-5">
+            <div className="row">
+                <div className="col-md-6 offset-md-3 text-center">
+                    <h3 className="mb-4">404 - Page Not Found</h3>
+                    <p className="mb-4">Oops! The page you are looking for does not exist.</p>
+                    <Link to="/" className="btn btn-primary btn-sm">Go Home</Link>
+                </div>
+            </div>
+        </div>
+    );
+};
 
-export default function Error() {
-  return (
-    <div className='loader-container'>
-            <h4>404 Not Found</h4>
-    </div>
-  )
-}
+export default NotFoundPage;

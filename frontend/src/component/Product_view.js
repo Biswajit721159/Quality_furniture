@@ -9,6 +9,7 @@ import Carousel from "./Carousel";
 import Product_Review from './Product_Review';
 import Footer from '../component/Footer'
 import swal from 'sweetalert'
+import Loader from './Loader';
 const api = process.env.REACT_APP_API
 
 
@@ -165,9 +166,7 @@ export default function Product_view() {
     <>
     {
        load==true?  
-        <div className="Loaderitem">
-           <PulseLoader color="#16A085"  />
-        </div>
+        <Loader/>
         :
         product!=null ?
         <>

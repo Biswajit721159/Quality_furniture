@@ -7,6 +7,9 @@
   font-family: "Poppins", sans-serif;
 }
 
+html {
+  font-size: 83%;
+}
 
 .grid{
   display: flex;

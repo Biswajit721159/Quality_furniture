@@ -1,33 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom';
-import '../css/Main_page.css'
-import { AiFillStar } from "react-icons/ai";
+import React, { useState } from 'react'
+import Button from '@mui/material/Button';
+import '../css/Filter.css'
 import { useNavigate } from 'react-router-dom';
 import { PulseLoader } from 'react-spinners';
 import { useDispatch, useSelector } from 'react-redux'
-import { cartmethod } from '../redux/CartSlice'
-import Footer from '../component/Footer'
 import { searchmethod } from '../redux/SearchSlice'
-import Slider from './Slider';
-import { loadProduct } from '../redux/ProductSlice'
-
-import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
-import CardActions from '@mui/material/CardActions';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import Button from '@mui/material/Button';
 
 const Filter = () => {
     const dispatch = useDispatch()
     const history = useNavigate()
     const [data, setdata] = useState([])
-    // const [product, setproduct] = useState([])
-    let userinfo = JSON.parse(localStorage.getItem('user'))
-    let wishlist = JSON.parse(localStorage.getItem('Wishlist'))
-    let [load, setload] = useState(true)
-    // const [Catagory, setCatagoty] = useState()
-
-    const [queryParameters] = useSearchParams()
 
     const [pricerange0to1000, setpricerange0to1000] = useState(false)
     const [pricerange1000to2000, setpricerange1000to2000] = useState(false)
@@ -38,10 +20,6 @@ const Filter = () => {
     let searchInput = useSelector((state) => state.Search_Name.search_Name)
     const [ALL, setALL] = useState(false)
 
-    // const [lowprice, setlowprice] = useState(0)
-    // const [highprice, sethighprice] = useState(10000000)
-    // const [selectcatagory, setselectcatagory] = useState('ALL')
-    // const [searchproduct, setsearchproduct] = useState("none")
 
     const [priceLowTOHigh, setpriceLowTOHigh] = useState(false)
     const [priceHighTOLow, setpriceHighTOLow] = useState(false)
@@ -51,8 +29,6 @@ const Filter = () => {
 
     let [low, setlow] = useState(0);
     let [high, sethigh] = useState(12);
-    let [prev, setprev] = useState(false);
-    let [next, setnext] = useState(false);
 
     const api = process.env.REACT_APP_API
     const { product, Catagory, lowerLimit, higherLimit, lowprice, highprice, selectcatagory, searchproduct, previous_page, next_page, loadingproduct } = useSelector((state) => state?.product)
@@ -147,7 +123,7 @@ const Filter = () => {
         setdata([...data])
     }
 
- 
+
 
     function markvisited(lowprice, highprice, selectcatagory, searchproduct) {
         setpriceLowTOHigh(false);
@@ -248,125 +224,123 @@ const Filter = () => {
         history(`?lowprice=${lowprice}&highprice=${highprice}&selectcatagory=${selectcatagory}&product_name=${searchproduct}`)
         ////findsearchData(lowprice, highprice, selectcatagory, searchproduct)
     }
+
     function cametocatagory(selectcatagory) {
         history(`?lowprice=${lowprice}&highprice=${highprice}&selectcatagory=${selectcatagory}&product_name=${searchproduct}`)
         //findsearchData(lowprice, highprice, selectcatagory, searchproduct)
+    }
+
+    function clearPrice() {
+
     }
 
 
 
     return (
         <>
-            {loadingproduct == true ?
-                <div className="Loaderitem">
-                    <PulseLoader color="#16A085" />
-                </div>
-                :
-                product.length != 0 ?
-                    <>
-                        <div className='subproduct'>
-                            <button className='btn btn-primary mx-3 btn-sm' onClick={ClearAllFilter}>Clear All Filter</button>
-                            <div className='subproductone'>
-                                <p className='card-text'>price</p>
-                                <div className="form-check">
-                                    <input className="form-check-input" onClick={() => cametocheck(0, 1000)} checked={pricerange0to1000} onChange={(e) => setpricerange0to1000(e.target.checked)} type="radio" />
-                                    <label className="form-check-label card-text" >
-                                        Under ₹ 1000
-                                    </label>
-                                </div>
-                                <div className="form-check">
-                                    <input className="form-check-input" onClick={() => cametocheck(1000, 2000)} checked={pricerange1000to2000} onChange={(e) => setpricerange1000to2000(e.target.checked)} type="radio" />
-                                    <label className="form-check-label card-text" >
-                                        ₹ 1000 - ₹ 2000
-                                    </label>
-                                </div>
-                                <div className="form-check">
-                                    <input className="form-check-input" onClick={() => cametocheck(2000, 3000)} checked={pricerange2000to3000} onChange={(e) => setpricerange2000to3000(e.target.checked)} type="radio" />
-                                    <label className="form-check-label card-text" >
-                                        ₹ 2000 - ₹ 3000
-                                    </label>
-                                </div>
-                                <div className="form-check">
-                                    <input className="form-check-input" onClick={() => cametocheck(3000, 4000)} checked={pricerange3000to4000} onChange={(e) => setpricerange3000to4000(e.target.checked)} type="radio" />
-                                    <label className="form-check-label card-text" >
-                                        ₹ 3000 - ₹ 4000
-                                    </label>
-                                </div>
-                                <div className="form-check">
-                                    <input className="form-check-input" onClick={() => cametocheck(4000, 1000000)} checked={pricerange4000toUp} onChange={(e) => setpricerange4000toUp(e.target.checked)} type="radio" />
-                                    <label className="form-check-label card-text" >
-                                        Over ₹ 4000
-                                    </label>
-                                </div>
-                                {/* {pricerange0to1000 || pricerange1000to2000 || pricerange2000to3000 || pricerange3000to4000 || pricerange4000toUp ? <p className='card-text' onClick={clearPrice} style={{ color: "#48C9B0", cursor: 'pointer' }}>clear</p> : <p className='card-text'>clear</p>} */}
-
-                            </div>
-                            <div className='subproductone mt-3'>
-                                <p className='card-text'>sort</p>
-                                <div className="form-check mt-2">
-                                    <input className="form-check-input" onClick={PriceLowToHighfunction} checked={priceLowTOHigh} type="radio" />
-                                    <label className="form-check-label card-text" >
-                                        Price Low To High
-                                    </label>
-                                </div>
-                                <div className="form-check">
-                                    <input className="form-check-input" onClick={PriceHighToLowfunction} checked={priceHighTOLow} type="radio" />
-                                    <label className="form-check-label card-text" >
-                                        Price High To Low
-                                    </label>
-                                </div>
-                                <div className="form-check">
-                                    <input className="form-check-input" onClick={SortOnRatingfunction} checked={SortOnRating} type="radio" />
-                                    <label className="form-check-label card-text" >
-                                        Sort On Rating
-                                    </label>
-                                </div>
-                                <div className="form-check">
-                                    <input className="form-check-input" onClick={SortOnOfferfunction} checked={SortOffer} type="radio" />
-                                    <label className="form-check-label card-text" >
-                                        Sort Offer
-                                    </label>
-                                </div>
-                                {
-                                    priceLowTOHigh || priceHighTOLow || SortOnRating || SortOffer ? <p className='card-text mx-2' onClick={clearallfilter} style={{ color: "#48C9B0", cursor: 'pointer' }}>clear</p> : <p className='card-text mx-2'>clear</p>
-                                }
-                            </div>
-                            <div className='subproductone mt-3'>
-
-                                <p className='card-text'>Catagory</p>
-
-                                <div className="form-check mt-2">
-                                    <input className="form-check-input " onClick={() => cametocatagory('ALL')} checked={ALL} onChange={(e) => setALL(e.target.checked)} type="radio" />
-                                    <label className="form-check-label card-text" >
-                                        ALL
-                                    </label>
-                                </div>
-                                {
-                                    Catagory && Catagory.map((item, ind) => (
-                                        <div className="form-check mt-2" key={ind}>
-                                            {
-                                                item == selectcatagory ? <input className="form-check-input" onClick={() => cametocatagory(item)} checked={true} type="radio" />
-                                                    : <input className="form-check-input" onClick={() => cametocatagory(item)} type="radio" />
-                                            }
-                                            <label className="form-check-label card-text" >
-                                                {item}
-                                            </label>
-                                        </div>
-                                    ))
-                                }
-                                {
-                                    selectcatagory != "ALL" ? <p className='card-text mx-2'><p onClick={clearcatagory} style={{ color: "#48C9B0", cursor: 'pointer' }}>clear</p></p> : <p className='card-text mx-2'><p>clear</p></p>
-                                }
-                            </div>
-                        </div>
-
-                    </>
-                    :
-                    <div className='loader-container'>
-                        <h4>Product Not Found</h4>
-                        <button className='btn btn-primary mx-3' onClick={backTOHome}>Back</button>
+            {
+                loadingproduct == true ?
+                    <div className="Loaderitem">
+                        <PulseLoader color="#16A085" />
                     </div>
-
+                    :
+                    product?.length != 0 &&
+                    <div className='mainfilter'>
+                        {/* <Button variant="contained" size="small" onClick={ClearAllFilter}>Clear All Filter</Button> */}
+                        <div className='filter '>
+                            <div className="form-check  mb-3 mx-2">
+                                <input className="form-check-input1" onClick={() => cametocheck(0, 1000)} checked={pricerange0to1000} onChange={(e) => setpricerange0to1000(e.target.checked)} type="radio" />
+                                <label className="form-check-label " >
+                                    Under ₹ 1000
+                                </label>
+                            </div>
+                            <div className="form-check  mb-3 mx-2">
+                                <input className="form-check-input1" onClick={() => cametocheck(1000, 2000)} checked={pricerange1000to2000} onChange={(e) => setpricerange1000to2000(e.target.checked)} type="radio" />
+                                <label className="form-check-label " >
+                                    ₹ 1000 - ₹ 2000
+                                </label>
+                            </div>
+                            <div className="form-check  mb-3 mx-2">
+                                <input className="form-check-input1" onClick={() => cametocheck(2000, 3000)} checked={pricerange2000to3000} onChange={(e) => setpricerange2000to3000(e.target.checked)} type="radio" />
+                                <label className="form-check-label " >
+                                    ₹ 2000 - ₹ 3000
+                                </label>
+                            </div>
+                            <div className="form-check  mb-3 mx-2">
+                                <input className="form-check-input1" onClick={() => cametocheck(3000, 4000)} checked={pricerange3000to4000} onChange={(e) => setpricerange3000to4000(e.target.checked)} type="radio" />
+                                <label className="form-check-label " >
+                                    ₹ 3000 - ₹ 4000
+                                </label>
+                            </div>
+                            <div className="form-check  mb-3 mx-2">
+                                <input className="form-check-input1" onClick={() => cametocheck(4000, 1000000)} checked={pricerange4000toUp} onChange={(e) => setpricerange4000toUp(e.target.checked)} type="radio" />
+                                <label className="form-check-label " >
+                                    Over ₹ 4000
+                                </label>
+                            </div>
+                            {pricerange0to1000 || pricerange1000to2000 || pricerange2000to3000 || pricerange3000to4000 || pricerange4000toUp ?
+                                <p className='form-check  mb-3 mx-3' onClick={clearPrice} style={{ color: "#48C9B0", cursor: 'pointer' }}>clear</p>
+                                : <p className='form-check  mb-3 mx-3'>clear</p>}
+                        </div>
+                        <div className='filter'>
+                            <div className="form-check mb-3 mx-2">
+                                <input className="form-check-input1" onClick={PriceLowToHighfunction} checked={priceLowTOHigh} type="radio" />
+                                <label className="form-check-label " >
+                                    Price Low To High
+                                </label>
+                            </div>
+                            <div className="form-check mb-3 mx-2">
+                                <input className="form-check-input1" onClick={PriceHighToLowfunction} checked={priceHighTOLow} type="radio" />
+                                <label className="form-check-label " >
+                                    Price High To Low
+                                </label>
+                            </div>
+                            <div className="form-check mb-3 mx-2">
+                                <input className="form-check-input1" onClick={SortOnRatingfunction} checked={SortOnRating} type="radio" />
+                                <label className="form-check-label " >
+                                    Sort On Rating
+                                </label>
+                            </div>
+                            <div className="form-check mb-3 mx-2">
+                                <input className="form-check-input1" onClick={SortOnOfferfunction} checked={SortOffer} type="radio" />
+                                <label className="form-check-label " >
+                                    Sort Offer
+                                </label>
+                            </div>
+                            {
+                                priceLowTOHigh || priceHighTOLow || SortOnRating || SortOffer ?
+                                    <p className='form-check  mb-3 mx-3' onClick={clearallfilter} style={{ color: "#48C9B0", cursor: 'pointer' }}>clear</p>
+                                    : <p className='form-check  mb-3 mx-3'>clear</p>
+                            }
+                        </div>
+                        <div className='filter'>
+                            {/* <p className='form-check  mb-3 mx-2'>Catagory</p> */}
+                            <div className="form-check mb-3 mx-2">
+                                <input className="form-check-input1 " onClick={() => cametocatagory('ALL')} checked={ALL} onChange={(e) => setALL(e.target.checked)} type="radio" />
+                                <label className="form-check-label " >
+                                    ALL
+                                </label>
+                            </div>
+                            {
+                                Catagory && Catagory?.map((item, ind) => (
+                                    <div className="form-check" key={ind}>
+                                        {
+                                            item == selectcatagory ? <input className="form-check-input1" onClick={() => cametocatagory(item)} checked={true} type="radio" />
+                                                : <input className="form-check-input1" onClick={() => cametocatagory(item)} type="radio" />
+                                        }
+                                        <label className="form-check-label " >
+                                            {item}
+                                        </label>
+                                    </div>
+                                ))
+                            }
+                            {
+                                selectcatagory != "ALL" ?
+                                    <p className='form-check  mb-3 mx-3' onClick={clearcatagory} style={{ color: "#48C9B0", cursor: 'pointer' }}>clear</p>
+                                    : <p className='form-check  mb-3 mx-3'>clear</p>
+                            }
+                        </div>
+                    </div>
             }
         </>
     )

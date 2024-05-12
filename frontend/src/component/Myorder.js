@@ -4,6 +4,7 @@ import swal from "sweetalert";
 import { PulseLoader } from 'react-spinners';
 import Button from '@mui/material/Button';
 import '../css/Myorder.css'
+import Loader from './Loader';
 const api = process.env.REACT_APP_API
 export default function Myorder() {
 
@@ -103,9 +104,7 @@ export default function Myorder() {
         <>
             {
                 load == true ?
-                    <div className="Loaderitem">
-                        <PulseLoader color="#16A085" />
-                    </div>
+                    <Loader/>
                     :
                     data != undefined && data.length != 0 ?
                         <>
