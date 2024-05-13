@@ -5,12 +5,12 @@ import { AiFillStar } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
 import { useDispatch, useSelector } from 'react-redux'
-import { cartmethod } from '../redux/CartSlice'
 import Footer from '../component/Footer'
 import { searchmethod } from '../redux/SearchSlice'
 import Slider from './Slider';
 import { loadProduct, AddToWishList, RemoveToWishList } from '../redux/ProductSlice'
 import { productmethod } from '../redux/ProductSlice'
+import { AddToCartDB, RemoveToDB } from '../redux/CartSlice'
 
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
@@ -27,7 +27,8 @@ export default function Show() {
     let userinfo = JSON.parse(localStorage.getItem('user'))
     const [wishlistid, setwishlistid] = useState(0)
     let [load, setload] = useState(false)
-
+    let cartproduct = useSelector((state) => state?.cartdata?.product)
+    let { loadingcart, loadingcartcount } = useSelector((state) => state.cartdata);
     let searchInput = useSelector((state) => state.Search_Name.search_Name)
 
     const api = process.env.REACT_APP_API
@@ -58,34 +59,16 @@ export default function Show() {
     }
 
     function AddToCart(product_id) {
-        setload(true)
-        fetch(`${api}/cart/Add_To_Cart`, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${userinfo.accessToken}`
-            },
-            body: JSON.stringify({
-                email: userinfo.user.email,
-                product_id: product_id,
-                product_count: 1
-            })
-        }).then((responce) => responce.json())
-            .then((res) => {
-                if (res.statusCode == 200) {
-                    dispatch(cartmethod.ADD_TO_CART(res.data))
-                    setload(false)
-                    history('/cart')
-                }
-                else if (res.statusCode == 498) {
-                    localStorage.removeItem('user');
-                    history('/Signin');
-                }
-                else {
-                    history('*');
-                }
-            })
+        if (cartproduct?.product_id === product_id) {
+            dispatch(AddToCartDB({ userinfo: userinfo, product_id: product?.product_id, product_count: product?.product_count + 1, product: cartproduct }))
+        }
+        else {
+            dispatch(AddToCartDB({ userinfo: userinfo, product_id: product_id, product_count: 1, product: cartproduct }))
+        }
+    }
+
+    function removeTocart() {
+        dispatch(RemoveToDB({ userinfo: userinfo, product_id: cartproduct?.product_id, product_count: cartproduct?.product_count, product: cartproduct }))
     }
 
     function NextPage() {
@@ -195,7 +178,7 @@ export default function Show() {
                                                 }
                                                 <CardActions disableSpacing>
                                                     {
-                                                        wishlistloader === true && wishlistid === item._id ? <ClipLoader color="#16A085" size={'25px'} /> :
+                                                        wishlistloader === true && wishlistid === item._id ? <ClipLoader color="#16A085" size={'20px'} /> :
                                                             item.islove == false ? <FavoriteIcon sx={{ color: 'gray' }} onClick={() => addToWishlist(item._id)} /> :
                                                                 <FavoriteIcon sx={{ color: 'red' }} onClick={() => removeToWishlist(item._id)} />
                                                     }
@@ -208,13 +191,19 @@ export default function Show() {
                                                                     </Button>
                                                                 </div>
                                                                 :
-                                                                <div className='col'>
-                                                                    <Button variant="contained" size="small" onClick={() => AddToCart(item._id)} >
-                                                                        ADD TO CART
-                                                                    </Button>
-                                                                </div>
+                                                                item?._id === cartproduct?.product_id ?
+                                                                    < div className='col'>
+                                                                        <Button variant="contained" size="small" color="error" onClick={() => removeTocart(item._id)} >
+                                                                            Remove cart
+                                                                        </Button>
+                                                                    </div>
+                                                                    :
+                                                                    < div className='col'>
+                                                                        <Button variant="contained" size="small" onClick={() => AddToCart(item._id)} >
+                                                                            ADD TO CART
+                                                                        </Button>
+                                                                    </div>
                                                         }
-
                                                     </div>
                                                 </CardActions>
                                             </div>
@@ -222,7 +211,7 @@ export default function Show() {
                                     ))
                                 }
                             </div>
-                        </div>
+                        </div >
                         <div className='PrevNext mt-5 mb-4'>
                             <Button sx={{ m: 2 }} variant="contained" size="small" color="success" disabled={!previous_page} onClick={PrevPage}>Prev</Button>
                             <Button sx={{ m: 2 }} variant="contained" size="small" color="success" disabled={!next_page} onClick={NextPage}>Next</Button>

@@ -13,13 +13,13 @@ function verifytoken(req, res, next) {
         req.user = decodedToken; 
         next();
       } else {
-        res.status(498).json(new ApiResponse(498, null, "Invalid Token"));
+        return res.status(498).json(new ApiResponse(498, null, "Invalid Token"));
       }
     } catch {
-      res.status(498).json(new ApiResponse(498, null, "Invalid Token"));
+      return res.status(498).json(new ApiResponse(498, null, "Invalid Token"));
     }
   } else {
-    res.status(498).json(new ApiResponse(498, null, "Invalid Token"));
+    return res.status(498).json(new ApiResponse(498, null, "Invalid Token"));
   }
 }
 

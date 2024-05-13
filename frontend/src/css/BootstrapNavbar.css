@@ -1,10 +1,26 @@
-.navbarTextItem{
+
+.rupees-value {
+    position: absolute;
+    top: -2px;
+    background-color: green;
+    color: white;
     font-size: 12px;
-    border-radius: 10%;
-    text-decoration: none;
-    padding: 2px;
-    font-size: 15px;
+    padding: 1px 6px;
+    border-radius: 20%;
 }
-.carticon{
-    font-size: 22px;
+
+.carticon {
+    font-size: 20px;
+    z-index: 100;
+}
+
+.cart-value {
+    position: absolute;
+    top: -2px;
+    margin: 1px;
+    background-color: tomato;
+    color: white;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 50%;
 }
