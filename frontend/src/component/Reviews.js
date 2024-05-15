@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
-import loader from "../images/loader.gif"
-import { PulseLoader } from 'react-spinners';
+import { useDispatch, useSelector } from 'react-redux';
 import '../css/Reviews.css'
+import { usermethod } from '../redux/UserSlice'
 import Loader from './Loader';
 const api = process.env.REACT_APP_API
 
 
 export default function Reviews() {
-  let userinfo = JSON.parse(localStorage.getItem('user'))
+  const userinfo = useSelector((state) => state.user)?.user
   let order_id = useParams().id
   let product_id = useParams().product_id
 
+  const dispatch = useDispatch()
   let history = useNavigate()
   const [reviews, setreviews] = useState("");
   const [rating, setrating] = useState("Over All Rating Out of 5");
@@ -30,7 +31,11 @@ export default function Reviews() {
 
 
   useEffect(() => {
-    loadproduct()
+    if (userinfo === null || userinfo === undefined) {
+      dispatch(usermethod.Logout_User())
+      history('/Signin')
+    }
+    else loadproduct()
   }, [])
 
 
@@ -46,7 +51,7 @@ export default function Reviews() {
             setorder(res.data)
           }
           else if (res.statusCode == 498) {
-            localStorage.removeItem('user');
+            dispatch(usermethod.Logout_User())
             history('/Signin')
           }
           else if (res.statusCode == 404 || res.statusCode == 500) {
@@ -68,8 +73,8 @@ export default function Reviews() {
       findOrder_id()
     }
     else if (result.statusCode == 498) {
-      localStorage.removeItem('user');
-      history('/Login')
+      dispatch(usermethod.Logout_User())
+      history('/Signin')
     }
     else if (result.statusCode == 404 || result.statusCode == 500) {
       history('*');

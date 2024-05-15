@@ -8,7 +8,6 @@ const api = process.env.REACT_APP_API
 
 export default function Update_userdata() {
   const _id=useParams()._id
-  //console.log(_id)
   const [name,setname]=useState("")
   const [email,setemail]=useState("")
   const [address,setaddress]=useState("")

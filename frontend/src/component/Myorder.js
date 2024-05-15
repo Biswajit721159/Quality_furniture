@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import swal from "sweetalert";
-import { PulseLoader } from 'react-spinners';
 import Button from '@mui/material/Button';
+import { useDispatch, useSelector } from 'react-redux';
 import '../css/Myorder.css'
 import Loader from './Loader';
+import { usermethod } from '../redux/UserSlice'
 const api = process.env.REACT_APP_API
 export default function Myorder() {
 
-    const userinfo = JSON.parse(localStorage.getItem('user'));
+    const dispatch = useDispatch()
+    const userinfo = useSelector((state) => state.user)?.user
     const [data, setdata] = useState([])
     const history = useNavigate()
     const [load, setload] = useState(true)
@@ -24,7 +26,8 @@ export default function Myorder() {
             setcolormode('white');
             localStorage.setItem('colormode', 'white');
         }
-        if (userinfo == null) {
+        if (userinfo === null) {
+            dispatch(usermethod.Logout_User())
             history('/Signin')
         }
         else {
@@ -42,15 +45,12 @@ export default function Myorder() {
             setprev(order.data[n - 1].prev);
             setnext(order.data[n - 1].next);
         }
-        else if (order.statusCode == 498) {
-            localStorage.removeItem('user');
-            history('/Login')
+        else if (order.statusCode === 498) {
+            dispatch(usermethod.Logout_User())
+            history('/Signin')
         }
-        else if (order.statusCode == 404) {
+        else if (order.statusCode === 404) {
             setdata([])
-        }
-        else if (order.statusCode == 500) {
-            history('*');
         }
         else {
             history("*")
@@ -59,9 +59,9 @@ export default function Myorder() {
 
     function loadproduct(low, high) {
         setload(true)
-        fetch(`${api}/order/getorderByLimit/${low}/${high}/${userinfo.user.email}`, {
+        fetch(`${api}/order/getorderByLimit/${low}/${high}/${userinfo?.user?.email}`, {
             headers: {
-                Authorization: `Bearer ${userinfo.accessToken}`
+                Authorization: `Bearer ${userinfo?.accessToken}`
             }
         }).then(responce => responce.json()).then((order) => {
             try {
@@ -75,17 +75,6 @@ export default function Myorder() {
 
     function showaddress(data) {
         swal(data)
-    }
-
-    function changecolor() {
-        if (colormode == 'white') {
-            setcolormode('#BFC9CA')
-            localStorage.setItem('colormode', '#BFC9CA');
-        }
-        else {
-            setcolormode('white');
-            localStorage.setItem('colormode', 'white');
-        }
     }
 
     function PrevPage() {
@@ -104,7 +93,7 @@ export default function Myorder() {
         <>
             {
                 load == true ?
-                    <Loader/>
+                    <Loader />
                     :
                     data != undefined && data.length != 0 ?
                         <>

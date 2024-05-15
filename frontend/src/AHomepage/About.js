@@ -7,15 +7,15 @@ import { RiEBikeFill } from "react-icons/ri";
 import '../css/About.css'
 const About=()=>{
     return(
-        <div className=' mt-1 shadow-none p-3 mb-5 bg-light rounded'>
+        <div className=' mt-3 shadow-none p-3 mb-5 bg-light rounded'>
         <h3 className='headline1' >About us</h3>
         <h1 className='headline2'  > WHY CHOOSE US? </h1>
         <div > 
             <div className="imageitem">
                 <img src={Table3} className="imageitem" alt="Error"/>
             </div>
-            <div >
-                <h3 className='headline2'>Best Quality Furniture in the country</h3>
+            <div  style={{color:'gray'}}>
+                <h3 className='headline2 mt-1'>Best Quality Furniture in the country</h3>
                 <p className='headline1'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore, sequi corrupti corporis quaerat voluptatem ipsam neque labore modi autem, saepe numquam quod reprehenderit rem? Tempora aut soluta odio corporis nihil!</p>
                 <p className='headline1'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam, nemo. Sit porro illo eos cumque deleniti iste alias, eum natus.</p>
 

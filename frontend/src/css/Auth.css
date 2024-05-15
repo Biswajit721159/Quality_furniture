@@ -15,6 +15,7 @@
     padding: 10px;
     margin: 10px;
     outline: none;
+    color: gray;
 }
 
 .wrong{
@@ -23,16 +24,8 @@
 
 .inputreglog{
     margin: 10px;
-    border: 1px solid white;
+    border: 1px solid gray;
     border-radius: 5px;
     height: 35px;
 }
 
-/* @media only screen and (max-width: 720px ) {
-    .inputreglog{
-        width: 300px;
-    }
-    .inputauth{
-        width: 300px;
-    }
-} */

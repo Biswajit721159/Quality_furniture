@@ -18,7 +18,7 @@ export default function Product_view() {
     const history = useNavigate()
     const dispatch = useDispatch();
 
-    let userinfo = JSON.parse(localStorage.getItem('user'))
+    const userinfo = useSelector((state) => state.user)
 
     let [load, setload] = useState(true)
     let cart = useSelector((state) => state.cartdata);

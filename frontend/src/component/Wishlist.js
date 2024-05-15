@@ -1,34 +1,35 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { AiFillStar } from "react-icons/ai";
-import { PulseLoader } from 'react-spinners';
 import swal from 'sweetalert'
-import { cartmethod } from '../redux/CartSlice'
 import { useDispatch } from 'react-redux'
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import { RemoveToWishList } from '../redux/ProductSlice'
+import { useSelector } from 'react-redux';
+import { AddToCartDB } from '../redux/CartSlice'
+import { usermethod } from '../redux/UserSlice';
 import Loader from './Loader';
 
 const api = process.env.REACT_APP_API
 export default function WishList() {
 
   const dispatch = useDispatch()
-  let userinfo = JSON.parse(localStorage.getItem('user'))
+  const userinfo = useSelector((state) => state.user)?.user
   const [data, setdata] = useState([])
   const history = useNavigate()
   const [load, setload] = useState(false)
-
+  let cartproduct = useSelector((state) => state?.cartdata?.product)
 
   function loadproduct() {
     setload(true)
-    fetch(`${api}/wishlist/GetFavouriteJourneyByemail/${userinfo?.user?.email}`, {
+    fetch(`${api}/wishlist/GetFavouriteByemail/${userinfo?.user?.email}`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${userinfo.accessToken}`
+        Authorization: `Bearer ${userinfo?.accessToken}`
       },
     }).then(responce => responce.json()).then((res) => {
       try {
@@ -36,8 +37,8 @@ export default function WishList() {
           setdata(res.data);
         }
         else if (res.statusCode == 498) {
-          localStorage.removeItem('user');
-          history('/Signin');
+          dispatch(usermethod.Logout_User())
+          history('/Signin')
         }
         else {
           history('*');
@@ -51,7 +52,7 @@ export default function WishList() {
   }
 
   useEffect(() => {
-    if (userinfo == null) {
+    if (userinfo === null) {
       history('/Signin')
     }
     else {
@@ -66,34 +67,7 @@ export default function WishList() {
   }
 
   function AddToCart(product_id) {
-    setload(true)
-    fetch(`${api}/cart/Add_To_Cart`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userinfo.accessToken}`
-      },
-      body: JSON.stringify({
-        email: userinfo.user.email,
-        product_id: product_id,
-        product_count: 1,
-      })
-    }).then((responce) => responce.json())
-      .then((res) => {
-        if (res.statusCode == 200) {
-          setload(false)
-          dispatch(cartmethod.ADD_TO_CART(res.data))
-          history('/cart')
-        }
-        else if (res.statusCode == 498) {
-          localStorage.removeItem('user');
-          history('/Signin');
-        }
-        else {
-          history('*');
-        }
-      })
+    dispatch(AddToCartDB({ userinfo: userinfo, product_id: product_id, product_count: 1, product: cartproduct }))
   }
 
 

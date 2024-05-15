@@ -5,9 +5,9 @@ let { AddFavouriteJourney,
     RemoveFavouriteJourney,
     GetFavouriteJourneyByemail, } = require('../controlers/Wishlistcontroler')
 
-router.route('/AddFavouriteJourney/:product_id').post(verifytoken, AddFavouriteJourney);
-router.route('/RemoveFavouriteJourney/:product_id').delete(verifytoken, RemoveFavouriteJourney);
-router.route('/GetFavouriteJourneyByemail/:email').get(verifytoken, GetFavouriteJourneyByemail);
+router.route('/AddFavourite/:product_id').post(verifytoken, AddFavouriteJourney);
+router.route('/RemoveFavourite/:product_id').delete(verifytoken, RemoveFavouriteJourney);
+router.route('/GetFavouriteByemail/:email').get(verifytoken, GetFavouriteJourneyByemail);
 
 
 

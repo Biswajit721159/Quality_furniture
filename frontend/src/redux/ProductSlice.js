@@ -5,7 +5,6 @@ export const loadProduct = createAsyncThunk(
     'product/loadProduct',
     async (parameter) => {
         try {
-
             let lowprice = parameter.lowprice
             let highprice = parameter.highprice
             let selectcatagory = parameter.selectcatagory
@@ -13,19 +12,19 @@ export const loadProduct = createAsyncThunk(
             let lowerLimit = parameter.lowerLimit
             let higherLimit = parameter.higherLimit
             let userinfo = parameter.userinfo
+            if (searchproduct === null || searchproduct?.length === 0) searchproduct = "none";
 
-            if (searchproduct == null || searchproduct.length == 0) searchproduct = "none";
             const response = await fetch(`${api}/product/getproductUponPriceProductTypeAndProductName/${lowprice}/${highprice}/${selectcatagory}/${searchproduct}/${lowerLimit}/${higherLimit}`, {
                 method: 'POST',
                 headers: {
-                    Authorization: `Bearer ${userinfo.accessToken}`
+                    Authorization: `Bearer ${userinfo?.accessToken}`
                 },
                 body: JSON.stringify({
                     'email': userinfo?.user?.email,
                 })
             })
             const data = await response.json();
-            return data.data;
+            return data;
         } catch (error) {
             throw error;
         }
@@ -38,10 +37,10 @@ export const AddToWishList = createAsyncThunk(
         try {
             let userinfo = parameter.userinfo
             let product_id = parameter.product_id
-            let response = await fetch(`${api}/wishlist/AddFavouriteJourney/${product_id}`, {
+            let response = await fetch(`${api}/wishlist/AddFavourite/${product_id}`, {
                 method: "POST",
                 headers: {
-                    Authorization: `Bearer ${userinfo.accessToken}`
+                    Authorization: `Bearer ${userinfo?.accessToken}`
                 },
             })
             const data = await response.json();
@@ -58,10 +57,10 @@ export const RemoveToWishList = createAsyncThunk(
         try {
             let userinfo = parameter.userinfo
             let product_id = parameter.product_id
-            let response = await fetch(`${api}/wishlist/RemoveFavouriteJourney/${product_id}`, {
+            let response = await fetch(`${api}/wishlist/RemoveFavourite/${product_id}`, {
                 method: "DELETE",
                 headers: {
-                    Authorization: `Bearer ${userinfo.accessToken}`
+                    Authorization: `Bearer ${userinfo?.accessToken}`
                 },
             })
             const data = await response.json();
@@ -86,6 +85,7 @@ const initialState = {
     next_page: false,
     loadingproduct: false,
     wishlistloader: false,
+    isProductLogedin: true,
     error: null,
 };
 
@@ -114,19 +114,24 @@ const productSlice = createSlice({
             })
             .addCase(loadProduct.fulfilled, (state, action) => {
                 state.loadingproduct = false;
-                let n = action.payload.length;
-                let data = action.payload
-                if (n) {
-                    state.previous_page = data[n - 1].prev;
-                    state.next_page = data[n - 1].next;
+                let n = action?.payload?.data?.length;
+                let data = action?.payload?.data
+                if (action?.payload?.statusCode === 498) {
+                    state.isProductLogedin = false
+                    return;
                 }
-                state.product = data.slice(0, n - 1);
-                state.allproduct = data.slice(0, n - 1);
+                if (n) {
+                    state.previous_page = data?.[n - 1]?.prev;
+                    state.next_page = data?.[n - 1]?.next;
+                }
+                state.product = data?.slice?.(0, n - 1);
+                state.allproduct = data?.slice?.(0, n - 1);
                 state.error = null
             })
             .addCase(loadProduct.rejected, (state, action) => {
                 state.loadingproduct = false;
                 state.error = action.error.message;
+                state.isProductLogedin = false
             })
             .addCase(AddToWishList.pending, (state) => {
                 state.wishlistloader = true
@@ -135,8 +140,8 @@ const productSlice = createSlice({
             .addCase(AddToWishList.fulfilled, (state, action) => {
                 state.wishlistloader = false;
                 state.error = null
-                let data = action.payload.data
-                let product_id = action.payload.product_id
+                let data = action?.payload?.data
+                let product_id = action?.payload?.product_id
                 if (data.statusCode === 201) {
                     let product = state.product
                     let allproduct = state.allproduct
@@ -153,10 +158,15 @@ const productSlice = createSlice({
                     state.product = product
                     state.allproduct = allproduct
                 }
+                else if (data.statusCode === 498) {
+                    state.isProductLogedin = false
+                    return;
+                }
             })
             .addCase(AddToWishList.rejected, (state, action) => {
                 state.wishlistloader = false;
                 state.error = action.error.message;
+                state.isProductLogedin = false
             })
             .addCase(RemoveToWishList.pending, (state) => {
                 state.wishlistloader = true
@@ -165,8 +175,8 @@ const productSlice = createSlice({
             .addCase(RemoveToWishList.fulfilled, (state, action) => {
                 state.wishlistloader = false;
                 state.error = null
-                let data = action.payload.data
-                let product_id = action.payload.product_id
+                let data = action?.payload?.data
+                let product_id = action?.payload?.product_id
                 if (data.statusCode === 200) {
                     let product = state.product
                     let allproduct = state.allproduct
@@ -183,10 +193,15 @@ const productSlice = createSlice({
                     state.product = product
                     state.allproduct = allproduct
                 }
+                else if (data.statusCode === 498) {
+                    state.isProductLogedin = false
+                }
+
             })
             .addCase(RemoveToWishList.rejected, (state, action) => {
                 state.wishlistloader = false;
                 state.error = action.error.message;
+                state.isProductLogedin = false
             })
     }
 })

@@ -7,22 +7,33 @@ import { useSelector, useDispatch } from 'react-redux'
 import { LoadCart } from '../redux/CartSlice'
 import '../css/BootstrapNavbar.css'
 import Searchcomponent from './Searchcomponent';
+import { usermethod } from '../redux/UserSlice'
 const BootstrapNavbar = () => {
     const dispatch = useDispatch();
     const history = useNavigate();
-    const userinfo = JSON.parse(localStorage.getItem('user'));
+    const userinfo = useSelector((state) => state?.user)?.user
     const [mode, setmode] = useState(localStorage.getItem('mode'));
     const cost = useSelector((state) => state?.cartdata?.product_Price)
     const product = useSelector((state) => state?.cartdata?.product)
+    const isCartLogedin = useSelector((state) => state?.cartdata?.isCartLogedin)
+    const isProductLogedin = useSelector((state) => state?.product?.isProductLogedin)
 
+    // console.log(isCartLogedin, isProductLogedin)
+    
     useEffect(() => {
-        if (userinfo === null) {
-            history('/Sigin')
-        } else {
-            givecolor(localStorage.getItem('mode'));
-            if (Object.keys(product).length === 0) dispatch(LoadCart(userinfo))
+        if (userinfo === null || userinfo === undefined) {
+            dispatch(usermethod.Logout_User())
+            history('/Signin')
         }
-    }, [])
+        else if (isCartLogedin === false || isProductLogedin === false) {
+            dispatch(usermethod.Logout_User())
+            history('/Signin')
+        }
+        else if (userinfo?.user?.email && userinfo?.accessToken) {
+            if (Object?.keys(product)?.length === 0) dispatch(LoadCart(userinfo))
+        }
+        givecolor(localStorage.getItem('mode'));
+    }, [userinfo, isCartLogedin, isProductLogedin])
 
     function givecolor(color) {
         if (color == null) {
@@ -57,7 +68,7 @@ const BootstrapNavbar = () => {
     }
 
     function logout() {
-        localStorage.removeItem('user');
+        dispatch(usermethod.Logout_User())
         history('/Signin')
     }
 
@@ -71,7 +82,7 @@ const BootstrapNavbar = () => {
             </button>
             <div className="collapse navbar-collapse" id="navbarText">
                 {
-                    userinfo === null ?
+                    userinfo === null || userinfo === undefined ?
                         <>
                             <ul className="navbar-nav mr-auto">
                             </ul>
@@ -82,7 +93,7 @@ const BootstrapNavbar = () => {
                                 <Link to='/Signin'><button className='btn btn-info btn-sm' >Login</button></Link>
                             </span>
                         </>
-                        :
+                        : userinfo &&
                         <>
                             <ul className="navbar-nav mr-auto">
                                 <li className="nav-item active">

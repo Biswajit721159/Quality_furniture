@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
 import { useDispatch, useSelector } from 'react-redux'
 import Footer from '../component/Footer'
-import { searchmethod } from '../redux/SearchSlice'
 import Slider from './Slider';
 import { loadProduct, AddToWishList, RemoveToWishList } from '../redux/ProductSlice'
 import { productmethod } from '../redux/ProductSlice'
@@ -19,30 +18,30 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import Button from '@mui/material/Button';
 import Filter from './Filter';
 import Loader from './Loader';
+import { usermethod } from '../redux/UserSlice'
 
 export default function Show() {
 
     const dispatch = useDispatch()
     const history = useNavigate()
-    let userinfo = JSON.parse(localStorage.getItem('user'))
+    const userinfo = useSelector((state) => state?.user)?.user
     const [wishlistid, setwishlistid] = useState(0)
     let [load, setload] = useState(false)
     let cartproduct = useSelector((state) => state?.cartdata?.product)
+    let allproduct = useSelector((state) => state?.product?.allproduct)
     let { loadingcart, loadingcartcount } = useSelector((state) => state.cartdata);
-    let searchInput = useSelector((state) => state.Search_Name.search_Name)
+    let searchInput = useSelector((state) => state?.product?.searchproduct)
 
-    const api = process.env.REACT_APP_API
     let { product, lowerLimit, higherLimit, lowprice, highprice, selectcatagory, loadingproduct, previous_page, next_page, wishlistloader } = useSelector((state) => state?.product)
-
-
     useEffect(() => {
-        if (userinfo === null) {
+        if (userinfo === null || userinfo === undefined) {
+            dispatch(usermethod.Logout_User())
             history('/Signin')
         }
-        else if (product?.length === 0) {
+        else if (userinfo?.user?.email && userinfo?.accessToken && product?.length === 0) {
             dispatch(loadProduct({ lowprice, highprice, selectcatagory, searchInput, lowerLimit, higherLimit, userinfo }))
         }
-    }, [searchInput])
+    }, [])
 
     function addToWishlist(product_id) {
         setwishlistid(product_id)
@@ -55,7 +54,7 @@ export default function Show() {
     }
 
     function backTOHome() {
-        dispatch(searchmethod.CLEAR_SEARCH(''))
+        dispatch(productmethod.Addsearch({ searchinput: '', allproduct }));
     }
 
     function AddToCart(product_id) {

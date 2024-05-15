@@ -12,7 +12,7 @@ export const LoadCart = createAsyncThunk(
         }
       })
       const data = await response.json();
-      return data.data;
+      return data;
     } catch (error) {
       throw error;
     }
@@ -38,7 +38,7 @@ export const AddToCartDB = createAsyncThunk('cart/AddTocartDB', async (parameter
       })
     })
     let data = await responce.json()
-    return data?.data
+    return data
   } catch (error) {
     throw error;
   }
@@ -52,13 +52,13 @@ export const RemoveToDB = createAsyncThunk('cart/RemovecartDB', async (parameter
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${userinfo.accessToken}`
+        Authorization: `Bearer ${userinfo?.accessToken}`
       },
       body: JSON.stringify({
-        email: userinfo.user.email,
+        email: userinfo?.user?.email,
       })
     }).then((responce) => responce.json())
-    return data?.data
+    return data
   } catch (error) {
     throw error
   }
@@ -73,15 +73,12 @@ const initialState = {
   loadingcartcount: false,
   product_Price: 0,
   error: null,
+  isCartLogedin: true
 };
 
 const cartSlice = createSlice({
   name: "cartstore",
   initialState,
-  reducers: {
-    Remove_To_Cart: (state, action) => {
-    }
-  },
   extraReducers: (builder) => {
     builder
       .addCase(LoadCart.pending, (state) => {
@@ -91,13 +88,18 @@ const cartSlice = createSlice({
       .addCase(LoadCart.fulfilled, (state, action) => {
         state.loadingcart = false;
         let data = action?.payload
-        state.product = data
-        state.product_Price = findCost(data)
+        if (data?.statusCode === 498) {
+          state.isCartLogedin = false
+          return
+        }
+        state.product = data?.data
+        state.product_Price = findCost(data?.data)
         state.error = null
       })
       .addCase(LoadCart.rejected, (state, action) => {
         state.loadingcart = false;
         state.error = action.error.message;
+        state.isCartLogedin = false
       })
       .addCase(AddToCartDB.pending, (state) => {
         state.loadingcartcount = true;
@@ -106,13 +108,18 @@ const cartSlice = createSlice({
       .addCase(AddToCartDB.fulfilled, (state, action) => {
         state.loadingcartcount = false;
         let data = action?.payload
-        state.product = data
-        state.product_Price = findCost(data)
+        if (data?.statusCode === 498) {
+          state.isCartLogedin = false
+          return
+        }
+        state.product = data?.data
+        state.product_Price = findCost(data?.data)
         state.error = null
       })
       .addCase(AddToCartDB.rejected, (state, action) => {
         state.loadingcartcount = false;
         state.error = action.error.message;
+        state.isCartLogedin = false
       })
       .addCase(RemoveToDB.pending, (state) => {
         state.loadingcart = true;
@@ -121,14 +128,19 @@ const cartSlice = createSlice({
       .addCase(RemoveToDB.fulfilled, (state, action) => {
         state.loadingcart = false;
         let data = action?.payload
-        state.product = data
-        state.product_count = data?.product_count === undefined ? 0 : data?.product_count
-        state.product_Price = findCost(data)
+        if (data?.statusCode === 498) {
+          state.isCartLogedin = false
+          return
+        }
+        state.product = data?.data
+        state.product_count = data?.data?.product_count === undefined ? 0 : data?.data?.product_count
+        state.product_Price = findCost(data?.data)
         state.error = null
       })
       .addCase(RemoveToDB.rejected, (state, action) => {
         state.loadingcart = false;
         state.error = action.error.message;
+        state.isCartLogedin=false
       })
   }
 });

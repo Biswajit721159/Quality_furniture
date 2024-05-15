@@ -12,7 +12,7 @@ const api = process.env.REACT_APP_API
 export default function Cart() {
 
     const dispatch = useDispatch();
-    const userinfo = JSON.parse(localStorage.getItem('user'))
+    const userinfo = useSelector((state) => state.user)?.user
     let { product, loadingcart, product_Price, loadingcartcount } = useSelector((state) => state.cartdata);
     const [address, setaddress] = useState()
     const [button, setbutton] = useState("PLACE ORDER")
@@ -26,7 +26,7 @@ export default function Cart() {
         }
         else {
             setaddress(userinfo?.user?.address)
-            if (Object.keys(product)?.length === 0) {
+            if (userinfo?.user?.email && userinfo?.accessToken && Object?.keys(product)?.length === 0) {
                 dispatch(LoadCart(userinfo))
             }
         }

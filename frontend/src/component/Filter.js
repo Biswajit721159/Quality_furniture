@@ -4,7 +4,6 @@ import '../css/Filter.css'
 import { useNavigate } from 'react-router-dom';
 import { PulseLoader } from 'react-spinners';
 import { useDispatch, useSelector } from 'react-redux'
-import { searchmethod } from '../redux/SearchSlice'
 
 const Filter = () => {
     const dispatch = useDispatch()
@@ -182,7 +181,7 @@ const Filter = () => {
     }
 
     function ClearAllFilter() {
-        dispatch(searchmethod.CLEAR_SEARCH(''))
+        // dispatch(searchmethod.CLEAR_SEARCH(''))
         history(`?lowprice=${0}&highprice=${1000000}&selectcatagory=${'ALL'}&product_name=${''}`)
         //////findsearchData(0, 1000000, 'ALL', '')
     }
@@ -205,7 +204,7 @@ const Filter = () => {
     }
 
     function backTOHome() {
-        dispatch(searchmethod.CLEAR_SEARCH(''))
+        // dispatch(searchmethod.CLEAR_SEARCH(''))
         history(`?lowprice=${0}&highprice=${1000000}&selectcatagory=${'ALL'}&product_name=${''}`)
         //findsearchData(0, 1000000, 'ALL', '')
     }

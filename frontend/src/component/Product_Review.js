@@ -5,12 +5,13 @@ import { PulseLoader } from 'react-spinners';
 import { VscVerifiedFilled } from "react-icons/vsc";
 import { GrFormPreviousLink } from "react-icons/gr";
 import { GrFormNextLink } from "react-icons/gr";
+import { useSelector } from "react-redux";
 import '../css/Product_Review.css'
 import Loader from "./Loader";
 const api = process.env.REACT_APP_API
 const Product_Review = (id) => {
 
-    let userinfo = JSON.parse(localStorage.getItem('user'))
+    const userinfo = useSelector((state)=>state.user)
     const _id = id._id
     const history = useNavigate()
     const [loadreview, setloadreview] = useState(false)

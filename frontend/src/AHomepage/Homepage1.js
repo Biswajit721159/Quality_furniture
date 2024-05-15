@@ -17,7 +17,7 @@ const Homepage1=()=>{
     useEffect(()=>{
         let x=setTimeout(() => {
             next()
-        }, 3000);
+        }, 5000);
         return()=>{
             clearInterval(x);
         }
@@ -27,7 +27,7 @@ const Homepage1=()=>{
             <div className="carousel-inner">
                 {
                     data.map((item,ind)=>(
-                        ind==index?
+                        ind===index?
                         <div className="carousel-item active" key={ind}>
                            <img className="d-block w-100" id="image" src={item} alt="slide"/>
                            <a className="carousel-control-prev" href="#carouselExampleControls" onClick={prev} role="button" data-slide="prev">

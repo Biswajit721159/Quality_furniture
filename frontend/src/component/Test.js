@@ -34,7 +34,6 @@ const Test = () => {
         }).then(response => response.json()).then((data) => {
             if (data.statusCode == 201) {
                 let n = data.data.length;
-                console.log(data)
                 setproduct(data.data.slice(0, n - 1));
             }
 
