@@ -15,7 +15,7 @@ const About=()=>{
                 <img src={Table3} className="imageitem" alt="Error"/>
             </div>
             <div  style={{color:'gray'}}>
-                <h3 className='headline2 mt-1'>Best Quality Furniture in the country</h3>
+                <h4 className='headline2 mt-4'>Best Quality Furniture in the country</h4>
                 <p className='headline1'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore, sequi corrupti corporis quaerat voluptatem ipsam neque labore modi autem, saepe numquam quod reprehenderit rem? Tempora aut soluta odio corporis nihil!</p>
                 <p className='headline1'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam, nemo. Sit porro illo eos cumque deleniti iste alias, eum natus.</p>
 

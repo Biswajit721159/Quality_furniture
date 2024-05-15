@@ -33,10 +33,10 @@ export default function WishList() {
       },
     }).then(responce => responce.json()).then((res) => {
       try {
-        if (res.statusCode == 200 || res.statusCode == 404) {
+        if (res.statusCode === 200 || res.statusCode === 404) {
           setdata(res.data);
         }
-        else if (res.statusCode == 498) {
+        else if (res.statusCode === 498) {
           dispatch(usermethod.Logout_User())
           history('/Signin')
         }
@@ -74,10 +74,10 @@ export default function WishList() {
   return (
     <>
       {
-        load == true ?
+        load === true ?
           <Loader />
           :
-          (data && data?.length != 0) ?
+          (data && data?.length !== 0) ?
             <div className='product'>
               {data?.map((item, ind) => (
                 <Card key={ind} sx={{ width: 250 }} className='carditem'>
@@ -102,17 +102,17 @@ export default function WishList() {
                     <div className='row'>
                       <div className='col'>
                         {
-                          parseInt(item.rating) == 0 ? <div className="card-text" style={{ color: "black" }}>{item.rating}<AiFillStar /></div>
+                          parseInt(item.rating) === 0 ? <div className="card-text" style={{ color: "black" }}>{item.rating}<AiFillStar /></div>
                             :
-                            parseInt(item.rating) == 1 ? <div className="card-text" style={{ color: "tomato" }}>{item.rating}<AiFillStar /></div>
+                            parseInt(item.rating) === 1 ? <div className="card-text" style={{ color: "tomato" }}>{item.rating}<AiFillStar /></div>
                               :
-                              parseInt(item.rating) == 2 ? <div className="card-text" style={{ color: "red" }}>{item.rating}<AiFillStar /></div>
+                              parseInt(item.rating) === 2 ? <div className="card-text" style={{ color: "red" }}>{item.rating}<AiFillStar /></div>
                                 :
-                                parseInt(item.rating) == 3 ? <div className="card-text" style={{ color: "#DC7633" }}>{item.rating}<AiFillStar /></div>
+                                parseInt(item.rating) === 3 ? <div className="card-text" style={{ color: "#DC7633" }}>{item.rating}<AiFillStar /></div>
                                   :
-                                  parseInt(item.rating) == 4 ? <div className="card-text" style={{ color: "#28B463" }}>{item.rating}<AiFillStar /></div>
+                                  parseInt(item.rating) === 4 ? <div className="card-text" style={{ color: "#28B463" }}>{item.rating}<AiFillStar /></div>
                                     :
-                                    parseInt(item.rating) == 5 ? <div className="card-text" style={{ color: "green" }}>{item.rating}<AiFillStar /></div>
+                                    parseInt(item.rating) === 5 ? <div className="card-text" style={{ color: "green" }}>{item.rating}<AiFillStar /></div>
                                       : ""
                         }
                       </div>
@@ -121,7 +121,7 @@ export default function WishList() {
                       </div>
                     </div>
                     {
-                      item?.total_number_of_product == 0 ?
+                      item?.total_number_of_product === 0 ?
                         <div className=" row">
                           <div className="col">
                             <h6 className="card-text" style={{ color: 'tomato' }}>closed</h6>
@@ -137,7 +137,7 @@ export default function WishList() {
                           </div>
                           <div className='col'>
                             {
-                              item?.total_number_of_product != 0 ? <h6 className="card-text">{item?.total_number_of_product} left</h6> : <h6 className="card-text" style={{ color: "#E2E2F4" }}>{item.total_number_of_product} left</h6>
+                              item?.total_number_of_product !== 0 ? <h6 className="card-text">{item?.total_number_of_product} left</h6> : <h6 className="card-text" style={{ color: "#E2E2F4" }}>{item.total_number_of_product} left</h6>
                             }
                           </div>
                         </div>

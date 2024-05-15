@@ -1,0 +1,13 @@
+.catagory{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.catagoryitem{
+    background-color: gray ;
+    height: 200px;
+    width: 200px;
+    text-align: center;
+    margin: 10px;
+}

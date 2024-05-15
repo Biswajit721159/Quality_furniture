@@ -100,7 +100,7 @@ export default function Show() {
             {loadingproduct === true || load === true ?
                 <Loader />
                 :
-                product?.length != 0 ?
+                product?.length !== 0 ?
                     <>
                         {/* <Filter /> */}
                         <div className='allproduct'>
@@ -109,7 +109,7 @@ export default function Show() {
                                     product && product?.map((item, ind) => (
                                         <Card key={ind} sx={{ width: 240 }} className='carditem'>
                                             {
-                                                takeid == item._id ?
+                                                takeid === item._id ?
                                                     <Link to={`/Product/${item._id}`} onMouseLeave={handleMouseLeave} onMouseOver={() => handleMouseOver(item._id)}>
                                                         <Slider data={item.newImage} />
                                                     </Link> :

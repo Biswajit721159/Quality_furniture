@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { BeatLoader } from 'react-spinners';
 import '../css/Product_view.css'
 import { useDispatch, useSelector } from 'react-redux'
-import { cartmethod } from '../redux/CartSlice'
+import { usermethod } from '../redux/UserSlice'
 import Carousel from "./Carousel";
 import Product_Review from './Product_Review';
 import Footer from '../component/Footer'
@@ -18,17 +18,17 @@ export default function Product_view() {
     const history = useNavigate()
     const dispatch = useDispatch();
 
-    const userinfo = useSelector((state) => state.user)
+    const userinfo = useSelector((state) => state.user)?.user
 
     let [load, setload] = useState(true)
     let cart = useSelector((state) => state.cartdata);
     const [relatedProduct, setrelatedProduct] = useState(null)
     const [removebutton, setremovebutton] = useState(false)
     let cartproduct = useSelector((state) => state?.cartdata?.product)
-    let { loadingcart, loadingcartcount } = useSelector((state) => state.cartdata);
+    let { loadingcart, loadingcartcount } = useSelector((state) => state?.cartdata);
 
     useEffect(() => {
-        if (userinfo == null) {
+        if (userinfo === null) {
             history('/Register')
         }
         else {
@@ -50,17 +50,17 @@ export default function Product_view() {
         fetch(`${api}/product/${_id}`, {
             headers:
             {
-                Authorization: `Bearer ${userinfo.accessToken}`
+                Authorization: `Bearer ${userinfo?.accessToken}`
             }
         }).then(response => response.json()).
             then((data) => {
-                if (data.statusCode == 201) {
-                    setproduct(data.data)
-                    findrelatedproduct(data.data);
+                if (data.statusCode === 201) {
+                    setproduct(data?.data)
+                    findrelatedproduct(data?.data);
                     setload(false)
                 }
-                else if (data.statusCode == 498) {
-                    localStorage.removeItem('user')
+                else if (data.statusCode === 498) {
+                    dispatch(usermethod.Logout_User())
                     history('/Signin')
                 }
                 else {
@@ -75,8 +75,8 @@ export default function Product_view() {
         else {
             fetch(`${api}/product/getproductByType/${product.product_type}`).
                 then(response => response.json()).then((data) => {
-                    if (data.statusCode == 201) {
-                        setrelatedProduct(data.data)
+                    if (data.statusCode === 201) {
+                        setrelatedProduct(data?.data)
                     }
                 })
         }

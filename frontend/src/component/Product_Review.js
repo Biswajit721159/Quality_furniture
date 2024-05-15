@@ -3,15 +3,15 @@ import { useNavigate } from "react-router-dom"
 import { AiFillStar } from "react-icons/ai";
 import { PulseLoader } from 'react-spinners';
 import { VscVerifiedFilled } from "react-icons/vsc";
-import { GrFormPreviousLink } from "react-icons/gr";
-import { GrFormNextLink } from "react-icons/gr";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { usermethod } from '../redux/UserSlice'
 import '../css/Product_Review.css'
 import Loader from "./Loader";
 const api = process.env.REACT_APP_API
 const Product_Review = (id) => {
 
-    const userinfo = useSelector((state)=>state.user)
+    const userinfo = useSelector((state) => state.user)?.user
+    const dispatch = useDispatch()
     const _id = id._id
     const history = useNavigate()
     const [loadreview, setloadreview] = useState(false)
@@ -38,7 +38,7 @@ const Product_Review = (id) => {
     let [next, setnext] = useState(false);
 
     useEffect(() => {
-        if (userinfo == null) {
+        if (userinfo === null) {
             history('/Signin')
         }
         else {
@@ -52,11 +52,11 @@ const Product_Review = (id) => {
         fetch(`${api}/Reviews/findRatingPersentageofProduct/${_id}`, {
             headers:
             {
-                Authorization: `Bearer ${userinfo.accessToken}`
+                Authorization: `Bearer ${userinfo?.accessToken}`
             }
         }).then((responce => responce.json())).then((res) => {
             if (res.statusCode = 201) {
-                let result = res.data;
+                let result = res?.data;
                 setpersentage_1_star(result[0].persentage_1_star);
                 setnumber_1_star(result[0].number_1_star);
 
@@ -75,9 +75,9 @@ const Product_Review = (id) => {
                 settotal(result[5].total);
                 setloadrating(false);
             }
-            else if (res.statusCode == 498) {
-                localStorage.removeItem('user');
-                history('/Signin');
+            else if (res?.statusCode == 498) {
+                dispatch(usermethod.Logout_User())
+                history('/Signin')
             }
             else {
                 history('*');
@@ -90,23 +90,23 @@ const Product_Review = (id) => {
         fetch(`${api}/Reviews/${_id}/${low}/${high}`, {
             headers:
             {
-                Authorization: `Bearer ${userinfo.accessToken}`
+                Authorization: `Bearer ${userinfo?.accessToken}`
             }
         }).then((responce => responce.json())).then((res) => {
             if (res.statusCode = 201) {
-                let n = res.data.length;
+                let n = res?.data?.length;
 
-                if (n < 5) setreviews_data_show(res.data.slice(0, n - 1));
-                else setreviews_data_show(res.data.slice(0, 5));
+                if (n < 5) setreviews_data_show(res?.data?.slice?.(0, n - 1));
+                else setreviews_data_show(res?.data?.slice?.(0, 5));
                 if (n) {
-                    setprev(res.data[n - 1].prev);
-                    setnext(res.data[n - 1].next);
+                    setprev(res?.data?.[n - 1]?.prev);
+                    setnext(res?.data?.[n - 1]?.next);
                 }
                 setloadreview(false);
             }
-            else if (res.statusCode == 498) {
-                localStorage.removeItem('user');
-                history('/Signin');
+            else if (res.statusCode === 498) {
+                dispatch(usermethod.Logout_User())
+                history('/Signin')
             }
             else {
                 history('*');

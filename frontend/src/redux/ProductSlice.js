@@ -71,6 +71,19 @@ export const RemoveToWishList = createAsyncThunk(
     }
 );
 
+export const LoadCatagory = createAsyncThunk(
+    'product/LoadCatagory',
+    async (parameter) => {
+        try {
+            let response = await fetch(`${api}/product/Catagory/getallCatagory`)
+            const data = await response.json();
+            return data
+        } catch (error) {
+            throw error;
+        }
+    }
+);
+
 const initialState = {
     product: [],
     allproduct: [],
@@ -85,6 +98,7 @@ const initialState = {
     next_page: false,
     loadingproduct: false,
     wishlistloader: false,
+    catagoryloader: false,
     isProductLogedin: true,
     error: null,
 };
@@ -203,6 +217,23 @@ const productSlice = createSlice({
                 state.error = action.error.message;
                 state.isProductLogedin = false
             })
+            .addCase(LoadCatagory.pending, (state) => {
+                state.catagoryloader = true
+                state.error = null;
+            })
+            .addCase(LoadCatagory.fulfilled, (state, action) => {
+                state.catagoryloader = false;
+                state.error = null
+                let data = action?.payload?.data
+                if (action?.payload?.statusCode === 200) {
+                    state.Catagory = data
+                }
+            })
+            .addCase(LoadCatagory.rejected, (state, action) => {
+                state.catagoryloader = false;
+                state.error = action.error.message;
+                state.isProductLogedin = false
+            })
     }
 })
 
@@ -212,7 +243,6 @@ function searchproduct(searchinput, product) {
     }
     else {
         searchinput = searchinput.toLowerCase();
-        let n = searchinput.length;
         let newproduct = [];
         for (let i = 0; i < product.length; i++) {
             let s = product[i]?.product_name;
@@ -247,14 +277,14 @@ function check_All_Charcter(searchproduct, product_name) {
     let n = s.length;
     let m = patt.length;
     while (i < n && j < m) {
-        if (patt[j] == s[i]) {
+        if (patt[j] === s[i]) {
             i++; j++;
         }
         else {
             i++;
         }
     }
-    if (j == m) {
+    if (j === m) {
         return true;
     }
     return false;

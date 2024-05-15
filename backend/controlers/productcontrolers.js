@@ -281,8 +281,29 @@ let getproductUponPriceProductTypeAndProductName = async (req, res) => {
 
 let getallProductType = async (req, res) => {
   try {
-    let result = await product.distinct("product_type");
-    if (result) res.status(201).json(new ApiResponse(201, result, "success"));
+    const result = await product.aggregate([
+      {
+        $match: {
+          isdeleted: false
+        }
+      },
+      {
+        $group: {
+          _id: "$product_type",
+          firstImage: { $first: { $arrayElemAt: ["$newImage", 0] } },
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          product_type: "$_id",
+          firstImage: 1,
+          count: 1
+        }
+      }
+    ]);
+    if (result) res.status(200).json(new ApiResponse(200, result, "success"));
     else
       res
         .status(404)
