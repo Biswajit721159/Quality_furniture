@@ -5,9 +5,13 @@
     flex-wrap: wrap;
 }
 .catagoryitem{
+    margin-top: 2px;
     background-color: gray ;
-    height: 200px;
-    width: 200px;
+    height: 190px;
+    width: 180px;
     text-align: center;
     margin: 10px;
+}
+.card-title{
+    text-decoration: none !important;
 }

@@ -20,11 +20,11 @@ const Catagory = () => {
     }
     return (
         <>
-            <h5 style={{ textAlign: "center" }}>Catagory</h5>
+            {Catagory?.length && <h6 style={{ textAlign: "center" ,color:'gray'}}>Catagory</h6>}
             <div className="catagory mt-2">
                 {
                     Catagory && Catagory?.map((data, ind) => (
-                        <Link to={'/Product'} key={ind} onClick={() => GoToProduct(data?.product_type)}>
+                        <Link to={'/Product'} key={ind} onClick={() => GoToProduct(data?.product_type)} style={{textDecoration:'none'}}> 
                             <Card className="catagoryitem">
                                 <CardMedia
                                     component="img"
@@ -32,7 +32,7 @@ const Catagory = () => {
                                     image={data?.firstImage}
                                     alt="wait"
                                 />
-                                <h6 className="card-title mt-3" style={{ textDecoration: 'none' }}>{data?.product_type}({data?.count})</h6>
+                                <h6 className="card-title mt-3" style={{ color: 'green' }}>{data?.product_type}({data?.count})</h6>
                             </Card>
                         </Link>
                     ))
