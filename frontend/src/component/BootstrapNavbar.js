@@ -18,18 +18,21 @@ const BootstrapNavbar = () => {
     const isCartLogedin = useSelector((state) => state?.cartdata?.isCartLogedin)
     const isProductLogedin = useSelector((state) => state?.product?.isProductLogedin)
 
-    // console.log(isCartLogedin, isProductLogedin)
+    console.log("userinfo is ",userinfo,isCartLogedin,isProductLogedin)
     
     useEffect(() => {
         if (userinfo === null || userinfo === undefined) {
+            // console.log("firstcalled ")
             dispatch(usermethod.Logout_User())
             history('/Signin')
         }
         else if (isCartLogedin === false || isProductLogedin === false) {
+            // console.log("secondcalled ")
             dispatch(usermethod.Logout_User())
             history('/Signin')
         }
         else if (userinfo?.user?.email && userinfo?.accessToken) {
+            // console.log("thirdcalled ")
             if (Object?.keys(product)?.length === 0) dispatch(LoadCart(userinfo))
         }
         givecolor(localStorage.getItem('mode'));

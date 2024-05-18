@@ -232,7 +232,6 @@ const productSlice = createSlice({
             .addCase(LoadCatagory.rejected, (state, action) => {
                 state.catagoryloader = false;
                 state.error = action.error.message;
-                state.isProductLogedin = false
             })
     }
 })

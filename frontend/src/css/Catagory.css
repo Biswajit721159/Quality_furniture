@@ -1,17 +1,41 @@
-.catagory{
+.catagory {
     display: flex;
     justify-content: center;
     flex-direction: row;
     flex-wrap: wrap;
 }
-.catagoryitem{
+
+.catagoryitem {
     margin-top: 2px;
-    background-color: gray ;
+    background-color: gray;
     height: 190px;
     width: 180px;
     text-align: center;
     margin: 10px;
 }
-.card-title{
-    text-decoration: none !important;
+
+
+@media only screen and (max-width: 1170px) {
+    .catagoryitem {
+        height: 170px;
+        width: 160px;
+        margin: 5px;
+    }
+
+    .CatagoryImage {
+        height: 110px;
+        width: 110px;
+    }
+}
+@media only screen and (max-width: 860px) {
+    .catagoryitem {
+        height: 150px;
+        width: 120px;
+        margin: 4px;
+    }
+
+    .CatagoryImage {
+        height: 90px;
+        width: 90px;
+    }
 }

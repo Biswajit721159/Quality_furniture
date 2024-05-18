@@ -20,19 +20,21 @@ const Catagory = () => {
     }
     return (
         <>
-            {Catagory?.length && <h6 style={{ textAlign: "center" ,color:'gray'}}>Catagory</h6>}
+            {Catagory?.length !== 0 && <h6 style={{ textAlign: "center", color: 'gray', marginTop: '2px' }}>Catagory</h6>}
             <div className="catagory mt-2">
                 {
                     Catagory && Catagory?.map((data, ind) => (
-                        <Link to={'/Product'} key={ind} onClick={() => GoToProduct(data?.product_type)} style={{textDecoration:'none'}}> 
+                        <Link to={'/Product'} key={ind} onClick={() => GoToProduct(data?.product_type)} style={{ textDecoration: 'none' }}>
                             <Card className="catagoryitem">
                                 <CardMedia
+                                    className="CatagoryImage"
+                                    style={{ marginTop: '2px', borderRadius: '10%' }}
                                     component="img"
                                     height="150"
                                     image={data?.firstImage}
                                     alt="wait"
                                 />
-                                <h6 className="card-title mt-3" style={{ color: 'green' }}>{data?.product_type}({data?.count})</h6>
+                                <h6 className="catagory-title1 mt-3" style={{ color: 'green' }}>{data?.product_type}({data?.count})</h6>
                             </Card>
                         </Link>
                     ))

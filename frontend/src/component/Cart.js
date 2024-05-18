@@ -129,10 +129,10 @@ export default function Cart() {
                                         <Link to={`/Product/${product?._id}`}><img className='styleimage' src={product?.newImage?.[0]} alt='Error' /></Link>
                                     </div>
                                     <div className='col2 mt-3'>
-                                        <button className='btn btn-rounded-info btn-sm' disabled={product?.product_count <= 0 ? true : false} style={{ borderRadius: '40%', outline: 'none' }} onClick={SUB_TO_CART}><GrSubtract /></button>
+                                        <button className='btn btn-rounded-info btn-sm'  disabled={product?.product_count <= 0 ? true : false} style={{ borderRadius: '40%', outline: 'none' }} onClick={SUB_TO_CART}><GrSubtract /></button>
                                         <h4 className='cartcount'>
                                             {
-                                                loadingcartcount == true ? <ClipLoader size={'20px'} /> : product?.product_count
+                                                loadingcartcount == true ? <ClipLoader size={'12px'} color='green'/> : product?.product_count
                                             }
                                         </h4>
                                         <button className='btn btn-rounded-info btn-sm' disabled={product?.product_count >= 5 ? true : false} style={{ borderRadius: '40%', outline: 'none' }} onClick={Add_TO_CART}><GrAdd /></button>
