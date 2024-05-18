@@ -7,6 +7,8 @@
 
 .catagoryitem {
     margin-top: 2px;
+    margin-left: 2px;
+    margin-right: 2px;
     background-color: gray;
     height: 190px;
     width: 180px;
@@ -17,7 +19,7 @@
 
 @media only screen and (max-width: 1170px) {
     .catagoryitem {
-        height: 170px;
+        height: 160px;
         width: 160px;
         margin: 5px;
     }
@@ -29,7 +31,7 @@
 }
 @media only screen and (max-width: 860px) {
     .catagoryitem {
-        height: 150px;
+        height: 130px;
         width: 120px;
         margin: 4px;
     }
