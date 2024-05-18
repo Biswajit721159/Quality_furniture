@@ -7,15 +7,15 @@ import { RiEBikeFill } from "react-icons/ri";
 import '../css/About.css'
 const About = () => {
     return (
-        <div className='shadow-none p-3 mb-5 bg-light rounded gradient-background'>
-            <h3 className='headline1' >About us</h3>
-            <h1 className='headline2'  > WHY CHOOSE US? </h1>
+        <div className=' mt-2 shadow-none p-3 mb-5 bg-light rounded gradient-background'>
+            <h3 className='headline1' style={{color:'green'}}>About us</h3>
+            <h1 className='headline2' style={{color:'green'}} > WHY CHOOSE US? </h1>
             <div className='gradient-background'>
                 <div className="imageitem">
                     <img src={Table3} className="imageitem" alt="Error" />
                 </div>
                 <div style={{ color: 'gray' }}>
-                    <h3 className='headline2 mt-4'>Best Quality Furniture in the country</h3>
+                    <h3 className='headline2 mt-4' style={{color:'green'}}>Best Quality Furniture in the country</h3>
                     <p className='headline1' style={{color:"grey"}}><strong style={{color:'green'}}>(About Us):</strong> Our luxury coaches offer a premium travel experience with plush, reclining seats, ample legroom, and onboard amenities such as Wi-Fi, charging ports, and entertainment systems. Sit back, relax, and enjoy the journey in style.</p>
                     <p className='headline1' style={{color:"grey"}}><strong style={{color:'green'}}>(Our Story):</strong> Founded in [Year], QUFurniture started with a simple idea: to provide high-quality, stylish furniture that combines comfort and durability. Over the years, we have grown into a trusted brand known for our commitment to excellence and customer satisfaction.</p>
                     <p className='headline1' style={{color:"grey"}}><strong style={{color:'green'}}>(Our Commitment):</strong>At QUFurniture, we are passionate about creating furniture that not only looks great but also stands the test of time. Each piece in our collection is crafted with meticulous attention to detail, using the finest materials and innovative design techniques. Whether you're furnishing a cozy apartment or a spacious home, our wide range of products ensures that you will find something that perfectly fits your needs.</p>

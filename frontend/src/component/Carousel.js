@@ -37,7 +37,7 @@ const Carousel = (props) => {
 
     return (
         <>
-            {data && <h6 className="product_name" style={{ color: 'gray' }}>{message}</h6>}
+            {data && <h5 className="product_name" >{message}</h5>}
             <div className="carousel">
                 {data && data?.map((item, ind) => (
                     <div key={ind} >
@@ -85,7 +85,7 @@ const Carousel = (props) => {
                 ))}
             </div>
             {data?.length >= 6 &&
-                <div className="Arrowleftright mt-2">
+                <div className="Arrowleftright mt-1">
                     <FcPrevious disabled={!prev} onClick={Decrement} style={{ backgroundColor: "black", borderRadius: "10px", fontSize: '20px', cursor: 'pointer' }} />
                     <FcNext disabled={!next} onClick={Increment} style={{ backgroundColor: "black", borderRadius: "10px", fontSize: '20px', cursor: 'pointer' }} />
                 </div>

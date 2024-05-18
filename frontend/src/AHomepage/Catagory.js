@@ -20,7 +20,7 @@ const Catagory = () => {
     }
     return (
         <>
-            {Catagory?.length !== 0 && <h6 className="product_name" style={{ color: 'gray' }}>Catagory</h6>}
+            {Catagory?.length !== 0 && <h5 className="product_name" >Catagory</h5>}
             <div className="catagory  mt-2" style={{ backgroundColor: `rgba(var(--color-foreground), 0.2)` }}>
                 {
                     Catagory && Catagory?.map((data, ind) => (
@@ -34,7 +34,7 @@ const Catagory = () => {
                                     image={data?.firstImage}
                                     alt="wait"
                                 />
-                                <h6 className="catagory-title1 mt-3" style={{ backgroundColor: 'rgba(var(--color-foreground), 0.2)' }}>{data?.product_type}({data?.count})</h6>
+                                <p className="card-title mt-3" style={{ backgroundColor: 'rgba(var(--color-foreground), 0.2)' }}>{data?.product_type}({data?.count})</p>
                             </Card>
                         </Link>
                     ))
