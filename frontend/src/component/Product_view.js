@@ -8,20 +8,22 @@ import Carousel from "./Carousel";
 import Product_Review from './Product_Review';
 import Footer from '../component/Footer'
 import Loader from './Loader';
+import { FcPrevious } from "react-icons/fc";
+import { FcNext } from "react-icons/fc";
 import { AddToCartDB, RemoveToDB } from '../redux/CartSlice'
 const api = process.env.REACT_APP_API
 
 export default function Product_view() {
 
     const [product, setproduct] = useState(null)
-    const _id = useParams()._id
+    const _id = useParams()?._id
     const history = useNavigate()
     const dispatch = useDispatch();
 
-    const userinfo = useSelector((state) => state.user)?.user
+    const userinfo = useSelector((state) => state?.user)?.user
 
     let [load, setload] = useState(true)
-    let cart = useSelector((state) => state.cartdata);
+    let cart = useSelector((state) => state?.cartdata);
     const [relatedProduct, setrelatedProduct] = useState(null)
     const [removebutton, setremovebutton] = useState(false)
     let cartproduct = useSelector((state) => state?.cartdata?.product)
@@ -98,10 +100,9 @@ export default function Product_view() {
                 load == true ?
                     <Loader />
                     :
-                    product != null ?
+                    product !== null ?
                         <>
                             <div className='container mt-3'>
-
                                 <div className='item'>
                                     <div className='col12'>
                                         <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
@@ -117,12 +118,10 @@ export default function Product_view() {
                                                 </div>
                                             </div>
                                             <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                                                <span className="carousel-control-prev-icon" style={{ backgroundColor: "black", borderRadius: "10px" }} aria-hidden="true"></span>
-                                                <span className="sr-only">Previous</span>
+                                                <FcPrevious style={{ backgroundColor: "black", borderRadius: "10px", fontSize: '20px', cursor: 'pointer' }} />
                                             </a>
                                             <a className="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                                                <span className="carousel-control-next-icon" style={{ backgroundColor: "black", borderRadius: "10px" }} aria-hidden="true"></span>
-                                                <span className="sr-only">Next</span>
+                                                <FcNext style={{ backgroundColor: "black", borderRadius: "10px", fontSize: '20px', cursor: 'pointer' }} />
                                             </a>
                                         </div>
                                     </div>
@@ -149,9 +148,9 @@ export default function Product_view() {
                                 </div>
 
                                 <hr />
-                                <div className='item'>
-                                    <Product_Review _id={_id} />
-                                </div>
+                                {/* <div className='item'> */}
+                                <Product_Review _id={_id} />
+                                {/* </div> */}
                                 <hr />
                                 <div>
                                     {relatedProduct && <Carousel data={relatedProduct} message='Related Product' />}

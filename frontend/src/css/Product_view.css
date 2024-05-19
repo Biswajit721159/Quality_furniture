@@ -1,116 +1,148 @@
-.image{
+/* .Product_Review {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+} */
+
+.image {
   height: 250px;
   width: 450px;
 }
-.col2{
+
+.col2 {
   display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    flex-direction: row;
-    align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
 }
-.item{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+
+.item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
 }
-.product_View{
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    flex-direction: row;
+
+.product_View {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  flex-direction: row;
 }
 
 
-@media only screen and (max-width: 1000px ) {
+@media only screen and (max-width: 1000px) {
   .image {
-      height: 200px;
-      width:400px;
+    height: 200px;
+    width: 400px;
   }
- .card-text1{
-  font-size: 12px;
- }
- .card-title1{
-  font-size: 15px;
- }
- #button{
-   font-size: 12px;
- }
+
+  .card-text1 {
+    font-size: 12px;
+  }
+
+  .card-title1 {
+    font-size: 15px;
+  }
+
+  #button {
+    font-size: 12px;
+  }
 }
 
-@media only screen and (max-width: 800px ) {
+@media only screen and (max-width: 800px) {
   .image {
-      height: 150px;
-      width:300px;
+    height: 150px;
+    width: 300px;
   }
- .card-text1{
-  font-size: 9px;
- }
- .card-title1{
-  font-size: 12px;
- }
- #button{
-  font-size: 9px;
-}
+
+  .card-text1 {
+    font-size: 9px;
+  }
+
+  .card-title1 {
+    font-size: 12px;
+  }
+
+  #button {
+    font-size: 9px;
+  }
 }
 
-@media only screen and (max-width: 560px ) {
+@media only screen and (max-width: 560px) {
   .image {
-      height: 140px;
-      width:200px;
+    height: 140px;
+    width: 200px;
   }
- .card-text1{
-  font-size: 8px;
- }
- .card-title1{
-  font-size: 9px;
- }
- #button{
-  font-size: 7px;
- }
+
+  .card-text1 {
+    font-size: 8px;
+  }
+
+  .card-title1 {
+    font-size: 9px;
+  }
+
+  #button {
+    font-size: 7px;
+  }
 }
-@media only screen and (max-width: 430px ) {
+
+@media only screen and (max-width: 430px) {
   .image {
-      height: 120px;
-      width:170px;
+    height: 120px;
+    width: 170px;
   }
- .card-text1{
-  font-size: 7px;
- }
- .card-title1{
-  font-size: 8px;
- }
- #button{
-  font-size: 6px;
- }
+
+  .card-text1 {
+    font-size: 7px;
+  }
+
+  .card-title1 {
+    font-size: 8px;
+  }
+
+  #button {
+    font-size: 6px;
+  }
 }
-@media only screen and (max-width: 380px ) {
+
+@media only screen and (max-width: 380px) {
   .image {
-      height: 100px;
-      width:150px;
+    height: 100px;
+    width: 150px;
   }
- .card-text1{
-  font-size: 6px;
- }
- .card-title1{
-  font-size: 7px;
- }
- #button{
-  font-size: 5px;
- }
+
+  .card-text1 {
+    font-size: 6px;
+  }
+
+  .card-title1 {
+    font-size: 7px;
+  }
+
+  #button {
+    font-size: 5px;
+  }
 }
-@media only screen and (max-width: 340px ) {
+
+@media only screen and (max-width: 340px) {
   .image {
-      height: 90px;
-      width:130px;
+    height: 90px;
+    width: 130px;
   }
- .card-text1{
-  font-size: 5px;
- }
- .card-title1{
-  font-size: 6px;
- }
- #button{
-  font-size: 4px;
- }
+
+  .card-text1 {
+    font-size: 5px;
+  }
+
+  .card-title1 {
+    font-size: 6px;
+  }
+
+  #button {
+    font-size: 4px;
+  }
 }

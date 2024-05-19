@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
+import { FaRegStar } from "react-icons/fa";
+import { FaStar } from "react-icons/fa6";
 import '../css/Reviews.css'
 import { usermethod } from '../redux/UserSlice'
 import Loader from './Loader';
@@ -29,7 +31,6 @@ export default function Reviews() {
   const [button, setbutton] = useState("Submit Feedback")
   const [disabled, setdisabled] = useState(false)
 
-
   useEffect(() => {
     if (userinfo === null || userinfo === undefined) {
       dispatch(usermethod.Logout_User())
@@ -42,20 +43,17 @@ export default function Reviews() {
   function findOrder_id() {
     fetch(`${api}/order/getById/${order_id}`, {
       headers: {
-        Authorization: `Bearer ${userinfo.accessToken}`
+        Authorization: `Bearer ${userinfo?.accessToken}`
       }
     }).then(responce => responce.json())
       .then((res) => {
         try {
-          if (res.statusCode == 201) {
+          if (res.statusCode === 201) {
             setorder(res.data)
           }
-          else if (res.statusCode == 498) {
+          else if (res.statusCode === 498) {
             dispatch(usermethod.Logout_User())
             history('/Signin')
-          }
-          else if (res.statusCode == 404 || res.statusCode == 500) {
-            history('*');
           }
           else {
             history("*")
@@ -68,15 +66,15 @@ export default function Reviews() {
   }
 
   function HandaleError(result) {
-    if (result.statusCode == 201) {
+    if (result.statusCode === 201) {
       setproduct(result.data)
       findOrder_id()
     }
-    else if (result.statusCode == 498) {
+    else if (result.statusCode === 498) {
       dispatch(usermethod.Logout_User())
       history('/Signin')
     }
-    else if (result.statusCode == 404 || result.statusCode == 500) {
+    else if (result.statusCode === 404 || result.statusCode === 500) {
       history('*');
     }
     else {
@@ -100,7 +98,7 @@ export default function Reviews() {
   }
 
   function checkreviews() {
-    if (reviews.length == 0) {
+    if (reviews.length === 0) {
       seterrorreviews(true)
       seterrormessreviews("*Please Type Something")
       return false
@@ -110,7 +108,7 @@ export default function Reviews() {
       seterrormessreviews("*Review is Vary Less")
       return false;
     }
-    else if (reviews.length > 60) {
+    else if (reviews.length > 70) {
       seterrorreviews(true)
       seterrormessreviews("*Review is Vary High")
       return false;
@@ -156,7 +154,7 @@ export default function Reviews() {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${userinfo.accessToken}`
+        Authorization: `Bearer ${userinfo?.accessToken}`
       },
       body: JSON.stringify({
         isfeedback: true
@@ -200,6 +198,34 @@ export default function Reviews() {
     }
   }
 
+  function setStarColor(firstColor, secondColor, thirdColor, fourthColor, fifthColor) {
+    let firststar = document.getElementById('star1')
+    let secondstar = document.getElementById('star2')
+    let thirdstar = document.getElementById('star3')
+    let fourthstar = document.getElementById('star4')
+    let fifthstar = document.getElementById('star5')
+    firststar.style.color = firstColor
+    secondstar.style.color = secondColor
+    thirdstar.style.color = thirdColor
+    fourthstar.style.color = fourthColor
+    fifthstar.style.color = fifthColor
+  }
+
+  function setColorAndRating(value) {
+    setrating(value)
+    if (value === 1) {
+      setStarColor('red', '', '', '', '')
+    } else if (value === 2) {
+      setStarColor('#E74C3C', '#E74C3C', '', '', '')
+    } else if (value === 3) {
+      setStarColor('#DC7633', '#DC7633', '#DC7633', '', '')
+    } else if (value === 4) {
+      setStarColor('#27AE60', '#27AE60', '#27AE60', '#27AE60', '')
+    } else if (value === 5) {
+      setStarColor('#186A3B', '#186A3B', '#186A3B', '#186A3B', '#186A3B')
+    }
+  }
+
   return (
     <>
       {
@@ -209,28 +235,26 @@ export default function Reviews() {
           <div>
             <div className="Reviewsform mt-3">
               <h5>Reviews Form</h5>
-
               <textarea
                 type="textarea"
                 className="Reviewformtextarea-control"
                 placeholder="Write Your Reviews"
                 value={reviews}
+                spellCheck='false'
                 onChange={(e) => setreviews(e.target.value)}
                 required
               />
               {errorreviews ? <label style={{ color: "red" }}>{errormessreviews}</label> : ""}
-
-              <select className="Reviewselectform-control" value={rating} onChange={(e) => setrating(e.target.value)}  >
-                <option>Over All Rating out of 5</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-              </select>
+              <div>
+                <FaStar onClick={() => setColorAndRating(1)} className='star' id='star1' />
+                <FaStar onClick={() => setColorAndRating(2)} className='star' id='star2' />
+                <FaStar onClick={() => setColorAndRating(3)} className='star' id='star3' />
+                <FaStar onClick={() => setColorAndRating(4)} className='star' id='star4' />
+                <FaStar onClick={() => setColorAndRating(5)} className='star' id='star5' />
+              </div>
               {errorrating ? <label style={{ color: "red" }}>{errormessrating}</label> : ""}
 
-              <button className="btn btn-info  mt-3 btn-sm" disabled={disabled} type="submit" onClick={submit}>
+              <button className="btn btn-info  mt-4 btn-sm" disabled={disabled} type="submit" onClick={submit}>
                 {button}
               </button>
 

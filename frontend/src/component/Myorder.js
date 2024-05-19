@@ -97,7 +97,7 @@ export default function Myorder() {
                     :
                     data != undefined && data.length != 0 ?
                         <>
-                            <table className="table" >
+                            <table className="table table-borderless" >
                                 <thead>
                                     <tr>
                                         <th className='text-center' scope="col">Product Name</th>
@@ -125,17 +125,17 @@ export default function Myorder() {
                                                     <td className='text-center'>₹{item.Total_rupess}</td>
                                                     <td className='text-center'>{item.Date}</td>
                                                     <td className='text-center' onClick={() => { showaddress(item.address) }}>
-                                                        <Button variant="contained" size="small" color="info">Show Address</Button>
+                                                        <Button variant="contained" size="small" color="info">Address</Button>
                                                     </td>
                                                     {
                                                         item.isfeedback ?
                                                             <td className='text-center'>
-                                                                <Button variant="contained" size="small" color="success" disabled>Already Given</Button>
+                                                                <Button variant="contained" size="small" color="success" disabled>Feedback</Button>
                                                             </td>
                                                             :
                                                             <td className='text-center'>
                                                                 <Link to={`/${item.id}/${item.product_id}/Reviews`}>
-                                                                    <Button variant="contained" size="small" color="success">Give Feedback</Button>
+                                                                    <Button variant="contained" size="small" color="success">Feedback</Button>
                                                                 </Link>
                                                             </td>
                                                     }

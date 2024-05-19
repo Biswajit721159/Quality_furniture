@@ -33,12 +33,14 @@ export default function Show() {
     let searchInput = useSelector((state) => state?.product?.searchproduct)
 
     let { product, lowerLimit, higherLimit, lowprice, highprice, selectcatagory, loadingproduct, previous_page, next_page, wishlistloader } = useSelector((state) => state?.product)
+    // console.log("usersection in Loadproduct file ",userinfo)
     useEffect(() => {
         if (userinfo === null || userinfo === undefined) {
             dispatch(usermethod.Logout_User())
             history('/Signin')
         }
         else if (userinfo?.user?.email && userinfo?.accessToken && product?.length === 0) {
+            // console.log("Loadproduct")
             dispatch(loadProduct({ lowprice, highprice, selectcatagory, searchInput, lowerLimit, higherLimit, userinfo }))
         }
     }, [])

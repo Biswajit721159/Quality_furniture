@@ -1,0 +1,25 @@
+.ReviewShow {
+    height: 150px;
+    max-height: 150px;
+}
+
+.LoaderiteminReviewProduct {
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+}
+
+.reviewtextitem {
+    text-align: center;
+    align-items: center;
+}
+
+.reviewtextitem {
+    font-size: 12px;
+}
+
+.col21item2 {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+}

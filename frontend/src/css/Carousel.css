@@ -110,8 +110,8 @@
 }
 @media only screen and (max-width: 435px ) {
     .imgs {
-        height:70px;
-        width:70px;
+        height:90px;
+        width:90px;
         margin: 2px;
     }
     .product_name{
@@ -127,8 +127,8 @@
 
 @media only screen and (max-width: 377px ) {
     .imgs {
-        height:60px;
-        width:60px;
+        height:80px;
+        width:80px;
         margin: 2px;
     }
     .product_name{

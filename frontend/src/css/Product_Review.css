@@ -1,24 +1,9 @@
-.LoaderiteminReviewProduct {
-  align-items: center;
-  margin-top: 100px;
-}
-
-.col21 {
-  border-radius: 10px;
-  padding: 10px;
-}
-.col21item2 {
-  margin-top: 10px;
-  display: flex;
-  justify-content: space-between;
-}
-
 .bar {
-  height: 12px;
+  height: 18px;
 }
 .side {
   float: left;
-  width: 12%;
+  width: 15%;
   margin-top: 5px;
 }
 
