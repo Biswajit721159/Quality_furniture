@@ -79,7 +79,7 @@ const Product_Review = (id) => {
 
     return (
         <>
-            <div>̉̉̉
+            <div>
                 {
                     loadrating === true ?
                         <Loader /> :
