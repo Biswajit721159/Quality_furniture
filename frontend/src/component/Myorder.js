@@ -17,7 +17,7 @@ export default function Myorder() {
     const [colormode, setcolormode] = useState(localStorage.getItem('colormode'));
 
     let [low, setlow] = useState(0);
-    let [high, sethigh] = useState(5);
+    let [high, sethigh] = useState(10);
     let [prev, setprev] = useState(false);
     let [next, setnext] = useState(false);
 
@@ -31,7 +31,7 @@ export default function Myorder() {
             history('/Signin')
         }
         else {
-            loadproduct(0, 5);
+            loadproduct(0, 10);
         }
     }, [])
 
@@ -78,15 +78,15 @@ export default function Myorder() {
     }
 
     function PrevPage() {
-        loadproduct(low - 5, high - 5);
-        setlow(low - 5);
-        sethigh(high - 5);
+        loadproduct(low - 10, high - 10);
+        setlow(low - 10);
+        sethigh(high - 10);
     }
 
     function NextPage() {
-        loadproduct(low + 5, high + 5);
-        setlow(low + 5);
-        sethigh(high + 5);
+        loadproduct(low + 10, high + 10);
+        setlow(low + 10);
+        sethigh(high + 10);
     }
 
     return (
