@@ -19,7 +19,7 @@ const BootstrapNavbar = () => {
     const isProductLogedin = useSelector((state) => state?.product?.isProductLogedin)
 
     // console.log("userinfo is ",userinfo,isCartLogedin,isProductLogedin)
-    
+
     useEffect(() => {
         if (userinfo === null || userinfo === undefined) {
             // console.log("firstcalled ")
@@ -123,7 +123,7 @@ const BootstrapNavbar = () => {
                                         {userinfo?.user?.name}
                                     </button>
                                     <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <Link className="dropdown-item" style={{ color: 'black' }} to="/Profile">Profile</Link>
+                                        <Link className="dropdown-item" style={{ color: 'black' }} to={`/Profile`}>Profile</Link>
                                         <Link className="dropdown-item" style={{ color: 'black' }} to="/Myorder">Myorder</Link>
                                         <Link className="dropdown-item" style={{ color: 'black' }} to={'/Signin'} onClick={logout}>Logout</Link>
                                     </div>

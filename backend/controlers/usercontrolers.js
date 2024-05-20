@@ -95,7 +95,7 @@ const loginUser = async (req, res) => {
   }
 
   const accessToken = await generateAccessAndRefereshTokens(user._id, res);
-  const loggedInUser = await User.findById(user._id).select("-password");
+  const loggedInUser = await User.findById(user._id).select(["-password", "-updatedAt", "-createdAt", "-__v"]);
 
   const options = {
     httpOnly: true,
@@ -145,61 +145,59 @@ const getinfromationById = async (req, res) => {
   }
 };
 
-const updateNameAddress=async(req,res)=>{
+const updateNameAddress = async (req, res) => {
   try {
     let result = await User.updateOne(
       { _id: new mongoose.mongo.BSON.ObjectId(req.params._id) },
       {
         $set: {
-          name:req.body.name,
-          address:req.body.address,
+          name: req.body.name,
+          address: req.body.address,
         },
       }
     );
     if (result.acknowledged) {
       res.status(201).json(new ApiResponse(201, result, "success"));
     } else {
-      res.status(500).json(new ApiResponse(500,null, "Some Error is Found"));
+      res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
     }
   } catch {
-    res.status(500).json(new ApiResponse(500,null, "Some Error is Found"));
-  }
-}
-
-let countNumberUser=async(req,res)=>{
-  try {
-    const result=await User.countDocuments({});
-    res.status(201).json(new ApiResponse(201, result, "success"));
-  }
-  catch{
     res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
   }
 }
 
-let getAlluser=async(req,res)=>{
+let countNumberUser = async (req, res) => {
+  try {
+    const result = await User.countDocuments({});
+    res.status(201).json(new ApiResponse(201, result, "success"));
+  }
+  catch {
+    res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
+  }
+}
+
+let getAlluser = async (req, res) => {
   try {
     let LowerLimit = req.params.LowerLimit;
     let HighLimit = req.params.HighLimit;
-    let Limit=HighLimit-LowerLimit;
-    let result=await User.find({}).select("-password").skip(LowerLimit).limit(Limit+1).exec();
+    let Limit = HighLimit - LowerLimit;
+    let result = await User.find({}).select("-password").skip(LowerLimit).limit(Limit + 1).exec();
     let hasNextPage = result.length > Limit;
-    let actualResult=hasNextPage ? result.slice(0, Limit) : result;
+    let actualResult = hasNextPage ? result.slice(0, Limit) : result;
     let hasPrevPage = LowerLimit > 0;
-    let pagination= {
+    let pagination = {
       'prev': hasPrevPage,
       'next': hasNextPage,
     }
-    if(actualResult.length) actualResult.push(pagination)
-    if (actualResult)
-    {
+    if (actualResult.length) actualResult.push(pagination)
+    if (actualResult) {
       res.status(201).json(new ApiResponse(201, actualResult, "success"));
-    } 
-    else
-    {
+    }
+    else {
       res.status(404).json(new ApiResponse(404, null, "Review does not exist"));
     }
   }
-  catch{
+  catch {
     res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
   }
 }

@@ -16,7 +16,7 @@ const Filter = () => {
     const [pricerange3000to4000, setpricerange3000to4000] = useState(false)
     const [pricerange4000toUp, setpricerange4000toUp] = useState(false)
 
-    let searchInput = useSelector((state) => state.Search_Name.search_Name)
+    let searchInput = useSelector((state) => state?.product?.searchproduct)
     const [ALL, setALL] = useState(false)
 
 

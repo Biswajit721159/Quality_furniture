@@ -4,7 +4,6 @@ import Login from "./component/Login";
 import Product from "./component/Product";
 import Show from "./component/Show";
 import Product_view from "./component/Product_view";
-import Profile from "./component/Profile";
 import Update_userdata from "./component/Update_userdata";
 import Error from "./component/Error";
 import WishList from "./component/Wishlist";
@@ -18,6 +17,8 @@ import BootstrapNavbar from "./component/BootstrapNavbar";
 import ForgotPassword from "./component/ForgotPassword";
 import Test from './component/Test'
 import './App.css'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function App() {
   return (
     <div className="App">
@@ -28,8 +29,7 @@ function App() {
           <Route path="/" element={<Product />}></Route>
           <Route path="/Product" element={<Show />}></Route>
           <Route path="/Product/:_id" element={<Product_view />}></Route>
-          <Route path="/Profile" element={<Profile />}></Route>
-          <Route path="/Profile/:_id" element={<Update_userdata />}></Route>
+          <Route path="/Profile" element={<Update_userdata />}></Route>
           <Route path="/wishlist" element={<WishList />}></Route>
           <Route path="/Cart" element={<Cart />}></Route>
           <Route path="Myorder" element={<Myorder />}></Route>
