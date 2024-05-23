@@ -15,7 +15,6 @@ import Carousel from './component/Carousel'
 import './css/Loader.css'
 import BootstrapNavbar from "./component/BootstrapNavbar";
 import ForgotPassword from "./component/ForgotPassword";
-import Test from './component/Test'
 import './App.css'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -25,7 +24,6 @@ function App() {
       <Router>
         <BootstrapNavbar />
         <Routes>
-          <Route path="/Test" element={<Test />}></Route>
           <Route path="/" element={<Product />}></Route>
           <Route path="/Product" element={<Show />}></Route>
           <Route path="/Product/:_id" element={<Product_view />}></Route>

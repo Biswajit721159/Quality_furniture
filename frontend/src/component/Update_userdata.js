@@ -114,7 +114,7 @@ export default function Update_userdata() {
 
     load === false ?
       <div className="Reviewsform mt-2">
-        <h5>Update User</h5>
+        <h5>Update Your Data</h5>
         <input type="email" value={email} onChange={(e) => { setemail(e.target.value) }} disabled className="inputreglog" placeholder="Enter Email Id" required />
         {wrongemail ? <label style={{ color: "red" }}>*Invalid Email address</label> : ""}
 

@@ -14,7 +14,6 @@ import { GiUsaFlag } from "react-icons/gi";
 import { SiIledefrancemobilites } from "react-icons/si";
 import { FaShoppingCart } from "react-icons/fa";
 import { GiRoyalLove } from "react-icons/gi";
-import { IoMdAddCircleOutline } from "react-icons/io";
 import { MdOutlineSell } from "react-icons/md";
 import { FaYoutube } from "react-icons/fa";
 import { IoMdReorder } from "react-icons/io";

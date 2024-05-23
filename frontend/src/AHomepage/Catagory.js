@@ -16,7 +16,7 @@ const Catagory = () => {
             dispatch(LoadCatagory())
     }, [])
     function GoToProduct(selectcatagory) {
-        dispatch(loadProduct({ lowprice, highprice, selectcatagory, searchInput, lowerLimit, higherLimit, userinfo }))
+        dispatch(loadProduct({ lowprice, highprice, selectcatagory, searchInput, lowerLimit: 0, higherLimit: 15, userinfo }))
     }
     return (
         <>

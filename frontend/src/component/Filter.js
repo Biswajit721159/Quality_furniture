@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import Button from '@mui/material/Button';
 import '../css/Filter.css'
 import { useNavigate } from 'react-router-dom';
 import { PulseLoader } from 'react-spinners';

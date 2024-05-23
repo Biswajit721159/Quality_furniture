@@ -56,7 +56,10 @@ export default function Show() {
     }
 
     function backTOHome() {
-        dispatch(productmethod.Addsearch({ searchinput: '', allproduct }));
+        if (allproduct?.length === 0) {
+            dispatch(loadProduct({ lowprice, highprice, selectcatagory, searchInput, lowerLimit, higherLimit, userinfo }))
+        }
+        else dispatch(productmethod.Addsearch({ searchinput: '', allproduct }));
     }
 
     function AddToCart(product_id) {
