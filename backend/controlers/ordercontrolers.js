@@ -5,8 +5,18 @@ const mongoose = require("mongoose");
 let { ApiResponse } = require("../utils/ApiResponse.js");
 let { get_product_by_ids } = require("../controlers/productcontrolers.js");
 
+let updateOrderStatus = async (req, res) => {
+  try {
+    let updatedproduct = await order.updateOne({ _id: req.params?._id }, { $set: { status: req.body?.status } })
+    if (updatedproduct && updatedproduct?.matchedCount === 1) {
+      res.status(200).json(new ApiResponse(200, null, "Order updated successfully."))
+    }
+  } catch {
+    res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
+  }
+}
 
-let sendorderintoemailId = async (req,product_data,order_data) => {
+let sendorderintoemailId = async (req, product_data, order_data) => {
   let { product_id, product_count, email, address, payment_method, Total_rupess, Date } = req.body
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -44,11 +54,11 @@ let orderInsert = async (req, res) => {
     if (product_data.total_number_of_product >= product_count) {
       let product_update = await product.updateOne(
         { _id: new mongoose.mongo.BSON.ObjectId(product_id) },
-        { $set: { total_number_of_product: product_data.total_number_of_product-product_count } }
+        { $set: { total_number_of_product: product_data.total_number_of_product - product_count } }
       );
       if (product_update.acknowledged) {
         let order_data = await order.create(req.body);
-        sendorderintoemailId(req,product_data,order_data)
+        sendorderintoemailId(req, product_data, order_data)
         if (order_data)
           res.status(201).json(new ApiResponse(201, order_data, "Product Order Successfully"));
         else res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
@@ -175,6 +185,7 @@ let getorderByLimit = async (req, res) => {
         product_name: "",
         newImage: [],
         isfeedback: result[i].isfeedback,
+        status:result[i].status
       };
       for (let j = 0; j < nums.length; j++) {
         let product_id = nums[j]._id.toString();
@@ -281,5 +292,6 @@ module.exports = {
   updateFeedback,
   getorderByLimit,
   countNumberOrder,
-  getAllOrder
+  getAllOrder,
+  updateOrderStatus
 };

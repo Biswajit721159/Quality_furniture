@@ -1,13 +1,13 @@
-let mongoose=require("mongoose");
-let {Schema} =require("mongoose")
+let mongoose = require("mongoose");
+let { Schema } = require("mongoose")
 const orders = new Schema(
     {
         email: {
-            type: String, 
+            type: String,
             required: true
         },
         address: {
-            type: String, 
+            type: String,
             required: true
         },
         product_id: {
@@ -15,30 +15,36 @@ const orders = new Schema(
             ref: "product"
         },
         product_count: {
-            type: Number, 
+            type: Number,
             required: true
         },
         payment_method: {
-            type: String, 
+            type: String,
             required: true
         },
         Total_rupess: {
-            type:Number,
+            type: Number,
             required: true
         },
         Date: {
             type: String,
             required: true
         },
-        isfeedback:{
-            type:Boolean,
-            default:false
-        }
-    }, 
+        isfeedback: {
+            type: Boolean,
+            default: false
+        },
+        status: {
+            type: String,
+            enum: ['pending', 'cancel', 'processing', 'done'],
+            default: 'pending',
+            required: true,
+        },
+    },
     {
         timestamps: true
     }
 )
-let order=mongoose.model("order", orders)
+let order = mongoose.model("order", orders)
 
-module.exports=order 
+module.exports = order 

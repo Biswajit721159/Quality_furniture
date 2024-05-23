@@ -8,16 +8,18 @@ let {
     getorderByLimit,
     countNumberOrder,
     getAllOrder,
+    updateOrderStatus
 } = require("../controlers/ordercontrolers");
 
 const router = Router();
 
-router.route("/").post( orderInsert);
+router.route("/updateOrderStatus/:_id").post(updateOrderStatus)
+router.route("/").post(orderInsert);
 router.route("/getByEmail/:email").get(verifytoken, orderGetByEmail);
 router.route("/getById/:_id").get(verifytoken, informationById);
-router.route('/updateFeedback/:_id').put(verifytoken,updateFeedback);
-router.route('/getorderByLimit/:lowerLimit/:upperLimit/:email').get(verifytoken,getorderByLimit);
-router.route('/Dashboard/countNumberOrder').get(verifytoken,countNumberOrder);
+router.route('/updateFeedback/:_id').put(verifytoken, updateFeedback);
+router.route('/getorderByLimit/:lowerLimit/:upperLimit/:email').get(verifytoken, getorderByLimit);
+router.route('/Dashboard/countNumberOrder').get(verifytoken, countNumberOrder);
 router.route('/getproductByLimit/:LowerLimit/:HighLimit').get(getAllOrder);
 
 module.exports = router;

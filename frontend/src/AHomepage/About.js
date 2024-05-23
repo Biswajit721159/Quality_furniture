@@ -11,7 +11,7 @@ const About = () => {
             <h3 className='headline1' style={{color:'green'}}>About us</h3>
             <h1 className='headline2' style={{color:'green'}} > WHY CHOOSE US? </h1>
             <div className='gradient-background'>
-                <div className="imageitem">
+                <div className="imageitem" >
                     <img src={Table3} className="imageitem" alt="Error" />
                 </div>
                 <div style={{ color: 'gray' }}>

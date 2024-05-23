@@ -4,6 +4,7 @@ import { BeatLoader, ClipLoader } from 'react-spinners';
 import { useDispatch, useSelector } from 'react-redux'
 import { GrAdd } from "react-icons/gr";
 import { GrSubtract } from "react-icons/gr";
+import Button from '@mui/material/Button';
 import swal from 'sweetalert'
 import '../css/cart.css'
 import Loader from './Loader'
@@ -181,7 +182,7 @@ export default function Cart() {
                             </div>
                         </>
                         : <div className='loader-container'>
-                            <Link to={'/Product'}><button className='btn btn-info'>  <h4>ADD PRODUCTS</h4>  </button></Link>
+                            <Link to={'/Product'}><Button variant="contained" size="small" color="info">  <h4>ADD PRODUCTS</h4>  </Button></Link>
                         </div>
             }
         </>

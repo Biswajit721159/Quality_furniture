@@ -101,9 +101,9 @@ export default function Myorder() {
                                 <thead>
                                     <tr>
                                         <th className='text-center' scope="col">Product Name</th>
-                                        <th className='text-center' scope="col">Total_rupess</th>
-                                        <th className='text-center' scope="col">Date</th>
+                                        <th className='text-center' scope="col">Booking Date</th>
                                         <th className='text-center' scope="col">Address</th>
+                                        <th className='text-center' scope='col'>Status</th>
                                         <th className='text-center' scope="col">Feedback</th>
                                     </tr>
                                 </thead>
@@ -118,15 +118,15 @@ export default function Myorder() {
                                                                 <img className="card-img-top1" src={item.newImage[0]} alt="Card image cap" />
                                                             </Link>
                                                             <Link to={`/Product/${item.product_id}`} style={{ textDecoration: 'none' }}>
-                                                                <p className='text-center mt-1' style={{ color: 'black' }}>{item.product_name} X {item.product_count}</p>
+                                                                <p className='text-center mt-1' style={{ color: 'black' }}>{item.product_name} X {item.product_count}=₹{item.Total_rupess}</p>
                                                             </Link>
                                                         </div>
                                                     </td>
-                                                    <td className='text-center'>₹{item.Total_rupess}</td>
                                                     <td className='text-center'>{item.Date}</td>
                                                     <td className='text-center' onClick={() => { showaddress(item.address) }}>
                                                         <Button variant="contained" size="small" color="info">Address</Button>
                                                     </td>
+                                                    <td className='text-center'><Button variant="contained" size="small" disabled={true}>{item?.status}</Button></td>
                                                     {
                                                         item.isfeedback ?
                                                             <td className='text-center'>
