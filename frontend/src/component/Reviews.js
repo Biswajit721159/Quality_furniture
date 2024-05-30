@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { FaRegStar } from "react-icons/fa";
 import { FaStar } from "react-icons/fa6";
+import Button from '@mui/material/Button';
 import '../css/Reviews.css'
 import { usermethod } from '../redux/UserSlice'
 import Loader from './Loader';
@@ -11,6 +12,7 @@ const api = process.env.REACT_APP_API
 
 
 export default function Reviews() {
+  let ReviewText = ["Very Bad!", "Bad!", "Good!", "Very Good!", "Excellent!"]
   const userinfo = useSelector((state) => state.user)?.user
   let order_id = useParams().id
   let product_id = useParams().product_id
@@ -234,7 +236,6 @@ export default function Reviews() {
           :
           <div>
             <div className="Reviewsform mt-3">
-              <h5>Reviews Form</h5>
               <textarea
                 type="textarea"
                 className="Reviewformtextarea-control"
@@ -245,18 +246,18 @@ export default function Reviews() {
                 required
               />
               {errorreviews ? <label style={{ color: "red" }}>{errormessreviews}</label> : ""}
-              <div>
-                <FaStar onClick={() => setColorAndRating(1)} className='star' id='star1' />
-                <FaStar onClick={() => setColorAndRating(2)} className='star' id='star2' />
-                <FaStar onClick={() => setColorAndRating(3)} className='star' id='star3' />
-                <FaStar onClick={() => setColorAndRating(4)} className='star' id='star4' />
-                <FaStar onClick={() => setColorAndRating(5)} className='star' id='star5' />
+              <div className='mt-3'>
+                <FaStar onClick={() => setColorAndRating(1)} className='star' data-toggle="tooltip" title={ReviewText[0]} id='star1' />
+                <FaStar onClick={() => setColorAndRating(2)} className='star' data-toggle="tooltip" title={ReviewText[1]} id='star2' />
+                <FaStar onClick={() => setColorAndRating(3)} className='star' data-toggle="tooltip" title={ReviewText[2]} id='star3' />
+                <FaStar onClick={() => setColorAndRating(4)} className='star' data-toggle="tooltip" title={ReviewText[3]} id='star4' />
+                <FaStar onClick={() => setColorAndRating(5)} className='star' data-toggle="tooltip" title={ReviewText[4]} id='star5' />
               </div>
               {errorrating ? <label style={{ color: "red" }}>{errormessrating}</label> : ""}
 
-              <button className="btn btn-info  mt-4 btn-sm" disabled={disabled} type="submit" onClick={submit}>
+              <Button variant="contained" size="small" color="success" className="btn btn-info  mt-4 btn-sm" disabled={disabled} type="submit" onClick={submit}>
                 {button}
-              </button>
+              </Button>
 
             </div>
           </div>

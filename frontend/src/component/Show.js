@@ -36,6 +36,7 @@ export default function Show() {
     // console.log("usersection in Loadproduct file ",userinfo)
     useEffect(() => {
         if (userinfo === null || userinfo === undefined) {
+            // console.log("Logout part")
             dispatch(usermethod.Logout_User())
             history('/Signin')
         }
@@ -112,7 +113,7 @@ export default function Show() {
                             <div className='product'>
                                 {
                                     product && product?.map((item, ind) => (
-                                        <Card key={ind} sx={{ width: 240 }} className='carditem'>
+                                        <Card key={ind} sx={{ width: 240 }} className='carditem gradient-background' >
                                             {
                                                 takeid === item._id ?
                                                     <Link to={`/Product/${item._id}`} onMouseLeave={handleMouseLeave} onMouseOver={() => handleMouseOver(item._id)}>

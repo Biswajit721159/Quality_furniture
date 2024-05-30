@@ -132,7 +132,7 @@ export default function Product_view() {
                                                 <p className="card-text1" style={{ color: "#D68910" }}>{product.offer}%OFF</p>
                                                 <h6 className="card-text1" style={{ color: 'gray' }}><s>₹{product.price}</s></h6>
                                                 <h5 className="card-text1" style={{ color: 'tomato' }}>Price - ₹{(product.price - ((product.price * product.offer) / 100)).toFixed(2)}</h5>
-                                                <h5 className="card-title1">{product.total_number_of_product} Left Only </h5>
+                                                <h5 className="card-text1">{product.total_number_of_product} Left Only </h5>
                                             </div>
                                         </div>
                                     </div>
