@@ -1,65 +1,59 @@
 import React, { useEffect, useState } from "react";
-import "../css/Main.css";
 import { Link, useNavigate } from "react-router-dom";
-import { PulseLoader ,BeatLoader ,ClipLoader} from 'react-spinners';
-import {usermethod} from '../redux/userslice'
-import {useDispatch} from 'react-redux'
+import { PulseLoader, BeatLoader, ClipLoader } from 'react-spinners';
+import { usermethod } from '../redux/userslice'
+import { useDispatch } from 'react-redux'
+import Loader from '../component/Loader'
 const api = process.env.REACT_APP_API
 const ReviewsDashboard = () => {
-  const dispatch=useDispatch()
-  const[load,setload]=useState(false)
-  const userinfo=JSON.parse(localStorage.getItem('user'));
-  const [productcount,setproductcount]=useState(0);
-  const [count,setcount]=useState(0)
-  const history=useNavigate()
-  
-  useEffect(()=>{
-      const intervalId = setInterval(() => {
-        if (count <= productcount) 
-        {
-          setcount((prevCount) => prevCount + 1);
-        } 
-        else 
-        {
-          clearInterval(intervalId);
-        }
-      }, 100);
-      return () => clearInterval(intervalId);
-  },[count])
+  const dispatch = useDispatch()
+  const [load, setload] = useState(false)
+  const userinfo = JSON.parse(localStorage.getItem('user'));
+  const [productcount, setproductcount] = useState(0);
+  const [count, setcount] = useState(0)
+  const history = useNavigate()
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (count <= productcount) {
+        setcount((prevCount) => prevCount + 1);
+      }
+      else {
+        clearInterval(intervalId);
+      }
+    }, 100);
+    return () => clearInterval(intervalId);
+  }, [count])
 
 
-  useEffect(()=>{
+  useEffect(() => {
     loadproduct();
-  },[])
+  }, [])
 
 
-  function loadproduct()
-  {
+  function loadproduct() {
     setload(true)
-    fetch(`${api}/Reviews/Dashboard/countNumberReviews`,{
-        headers:{
-            Authorization:`Bearer ${userinfo.accessToken}`
+    fetch(`${api}/Reviews/Dashboard/countNumberReviews`, {
+      headers: {
+        Authorization: `Bearer ${userinfo?.accessToken}`
+      }
+    }).then(responce => responce.json())
+      .then((res) => {
+        if (res.statusCode == 201) {
+          setproductcount(res.data)
+          setcount(0)
+          setload(false)
         }
-    }).then(responce=>responce.json())
-    .then((res)=>{
-        if(res.statusCode==201)
-        {
-            setproductcount(res.data)
-            setcount(0)
-            setload(false)
-        }
-        else if(res.statusCode==498)
-        {
+        else if (res.statusCode == 498) {
           dispatch(usermethod.LOGOUT())
           history('/')
         }
-        else
-        {
-            history('*');
+        else {
+          history('*');
         }
-    }).catch((error)=>{
-      history('*')
-    })
+      }).catch((error) => {
+        history('*')
+      })
   }
 
   return (
@@ -69,7 +63,7 @@ const ReviewsDashboard = () => {
           <div className="right-side">
             <div className="box-topic">Total Reviews</div>
             <div className="number">
-              {load==true?<PulseLoader color="#16A085"  />:count}
+              {load == true ? <PulseLoader color="#16A085" /> : count}
             </div>
             <div className="indicator"></div>
           </div>

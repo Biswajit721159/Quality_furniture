@@ -1,0 +1,43 @@
+
+.home-section{
+    position: relative;
+    min-height: 170vh;
+    width: calc(100% - 240px);
+    left: 240px;
+    transition: all 0.5s ease; 
+  }
+  
+  .home-section .home-content{
+    position: relative;
+    padding-top: 54px;
+  }
+  .home-content .overview-boxes{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 0 20px;
+    margin-bottom: 26px;
+  }
+  .overview-boxes .box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% / 4 - 15px);
+    background:#D7F9F9;
+    padding: 15px 14px;
+    border-radius: 12px;
+    box-shadow: 0 5px 10px #DADDDB ;
+  }
+  .overview-boxes .box-topic{
+    font-size: 15px;
+    font-weight: 500;
+    box-shadow: #BD0039;
+
+  }
+  .home-content .box .number{
+    display: inline-block;
+    font-size: 35px;
+    margin-top: -6px;
+    font-weight: 500;
+  }

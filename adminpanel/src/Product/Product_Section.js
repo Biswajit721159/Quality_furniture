@@ -6,6 +6,7 @@ import { productmethod } from "../redux/ProductSlice";
 import { PulseLoader ,BeatLoader ,ClipLoader} from 'react-spinners';
 import { useParams } from "react-router-dom";
 import Product_show from "./Product_show";
+import Loader from '../component/Loader'
 const api=process.env.REACT_APP_API
 
 const Product_Section=()=>{
@@ -52,9 +53,7 @@ const Product_Section=()=>{
         <>
         {
             load==true?
-            <div className="Loaderitem">
-               <PulseLoader color="#16A085"  />
-            </div>
+            <Loader/>
             :<Product_show/>
         }
         </>

@@ -67,7 +67,7 @@ const generateAccessAndRefereshTokens = async(userId) =>{
 let Login=async(req,res)=>{
     const { email, password } = req.body;
     if (!password && !email) {
-        res
+        return res
         .status(400)
         .json(new ApiResponse(400, null, "Password or email is required"));
     }
@@ -77,13 +77,12 @@ let Login=async(req,res)=>{
     });
 
     if (!user) {
-        res.status(404).json(new ApiResponse(404, null, "User does not exist"));
-        return;
+        return res.status(404).json(new ApiResponse(404, null, "User does not exist"));
     }
     const isPasswordValid = await user.isPasswordCorrect(password)
 
     if (!isPasswordValid) {
-         res.status(401).json(new ApiResponse(401,null,"Invalid user credentials"))
+         return res.status(401).json(new ApiResponse(401,null,"Invalid user credentials"))
     }
 
     const {accessToken, refreshToken} = await generateAccessAndRefereshTokens(user._id)
