@@ -266,6 +266,7 @@ let getAllOrder = async (req, res) => {
             isfeedback: orderarr[i].isfeedback,
             createdAt: orderarr[i].createdAt,
             updatedAt: orderarr[i].updatedAt,
+            status:orderarr[i]?.status
           }
           actualResult.push(obj)
           break;
