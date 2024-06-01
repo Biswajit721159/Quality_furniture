@@ -1,3 +1,20 @@
+:root {
+  --blue-teal-gradient: linear-gradient(249.06deg, #00C0F7 8.42%, #01DFCB 89.68%);
+}
+
+.gradient-background {
+  background: var(--blue-teal-gradient);
+  color: #fff;
+}
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-wrap: break-word;
+}
+
+html {
+  font-size: 90%;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
 * {
@@ -7,26 +24,24 @@
   font-family: "Poppins", sans-serif;
 }
 
-.container {
+.Container {
+  min-height: 100vh;
   display: flex;
-  justify-content: space-between;
-  height: 100vh;
 }
 
 .left {
   flex: 1.6;
   color: white;
-  border-right: 5px solid rgb(100, 100, 100);
-  margin-left: -50px;
+  border-right: 5px solid purple;
+  color: #fff;
+
 }
 
 .right {
   flex: 10.4;
   overflow-y: auto;
-  margin-right: -50px;
 }
 
 .left {
   display: flex;
-  flex-direction: column;
 }

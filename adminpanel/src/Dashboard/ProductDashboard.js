@@ -65,9 +65,9 @@ const ProductDashboard = () => {
   return (
     <>
       <div className="box">
-        <Link>
+        <Link className="custom-link">
           <div className="right-side">
-            <div className="box-topic">Total Product</div>
+            <div className="box-topic">Product</div>
             <div className="number">
               {load==true?<PulseLoader color="#16A085"  />:count}
             </div>

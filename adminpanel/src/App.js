@@ -19,7 +19,7 @@ function App() {
   return (
     <Router>
       {userinfo != null ?
-        <div className="container d-flex justify-content-between">
+        <div className="Container">
           <div className="left">
             <Sidebar />
           </div>

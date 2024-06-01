@@ -1,67 +1,86 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-// import './Product_show.css'
+import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+
 const Product_show = () => {
-    
-  
-  let page=parseInt(useParams().page);
-  
-  const Order = useSelector((state) => state.Order.Order);
-  const prev=useSelector((state)=>state.Order.prev)
-  const next=useSelector((state)=>state.Order.next)
-  const history=useNavigate()
+  let page = parseInt(useParams().page);
+  const Order = useSelector((state) => state?.Order?.Order);
+  const prev = useSelector((state) => state?.Order?.prev);
+  const next = useSelector((state) => state?.Order?.next);
+  const navigate = useNavigate();
 
-  function Shownextpage()
-  {
-    history(`/Order/page/${page+1}`)
+  function Shownextpage() {
+    navigate(`/Order/page/${page + 1}`);
   }
 
-  function View(data)
-  {
-    history(`/Product_view/${data._id}`)
+  function View(data) {
+    navigate(`/Product_view/${data?._id}`);
   }
 
-  function ShowPrevPage()
-  {
-    history(`/Order/page/${page-1}`)
+  function ShowPrevPage() {
+    navigate(`/Order/page/${page - 1}`);
   }
-  
+
   return (
-    <>
-      {Order != null && Order.length != 0 && (
-        <table  style={{margin:"10px"}}>
-          <tr>
-            <th>Order_id</th>
-            <th>Product_Name</th>
-            <th>product_count</th>
-            <th>email</th>
-            <th>address</th>
-            <th>payment_method</th>
-            <th>Total_rupess</th>
-            <th>Date</th>
-            <th>View</th>
-          </tr>
-          {Order.map((item, ind) => (
-            <tr key={ind}>
-              <td>{item._id}</td>
-              <td>{item.product_name}</td>
-              <td>{item.product_count}</td>
-              <td>{item.email}</td>
-              <td>{item.address}</td>
-              <td>{item.payment_method}</td>
-              <td>₹ {item.Total_rupess}</td>
-              <td>{item.Date}</td>
-              <td><button className="btn btn-primary btn-sm" onClick={()=>View(item)}>view</button></td>
-            </tr>
-          ))}
-        </table>
+    <Container maxWidth="lg">
+      {Order != null && Order?.length !== 0 && (
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell className="text-center">Order_id</TableCell>
+                <TableCell className="text-center">Product_Name</TableCell>
+                <TableCell className="text-center">Product_count</TableCell>
+                <TableCell className="text-center">Email</TableCell>
+                <TableCell className="text-center">Address</TableCell>
+                <TableCell className="text-center">Payment_method</TableCell>
+                <TableCell className="text-center">Total_rupess</TableCell>
+                <TableCell className="text-center">Status</TableCell>
+                <TableCell className="text-center">Date</TableCell>
+                <TableCell className="text-center">View</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {Order.map((item, ind) => (
+                <TableRow key={ind}>
+                  <TableCell>{item?._id}</TableCell>
+                  <TableCell>{item?.product_name}</TableCell>
+                  <TableCell>{item?.product_count}</TableCell>
+                  <TableCell>{item?.email}</TableCell>
+                  <TableCell>{item?.address}</TableCell>
+                  <TableCell>{item?.payment_method}</TableCell>
+                  <TableCell>₹ {item?.Total_rupess}</TableCell>
+                  <TableCell>{item?.status}</TableCell>
+                  <TableCell>{item?.Date}</TableCell>
+                  <TableCell>
+                    <Button variant="contained" size="small" color="info" onClick={() => View(item)}>
+                      View
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       )}
-      <div>
-        <button className="btn btn-primary btn-sm" onClick={ShowPrevPage} disabled={!prev}>prev</button>
-        <button className="btn btn-primary btn-sm mx-3" onClick={Shownextpage} disabled={!next}>next</button>
+      <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '20px' }}>
+        <Button variant="contained" size="small" color="success" onClick={ShowPrevPage} disabled={!prev}>
+          Prev
+        </Button>
+        <Button variant="contained" size="small" color="success" onClick={Shownextpage} disabled={!next}>
+          Next
+        </Button>
       </div>
-    </>
+    </Container>
   );
 };
 

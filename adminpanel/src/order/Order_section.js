@@ -16,7 +16,7 @@ const Order_Section = () => {
     let page = useParams().page;
     const LowerLimit = (page - 1) * 10;
     const UpperLimit = (page) * 10;
-    const userinfo = useSelector((state) => state.user.user);
+    const userinfo = useSelector((state) => state?.user?.user);
 
     useEffect(() => {
         loadproduct()
@@ -26,11 +26,11 @@ const Order_Section = () => {
         setload(true)
         fetch(`${api}/order/getproductByLimit/${LowerLimit}/${UpperLimit}`, {
             headers: {
-                Authorization: `Bearer ${userinfo.accessToken}`
+                Authorization: `Bearer ${userinfo?.accessToken}`
             }
         }).then((res) => res.json()).then((data) => {
             if (data.statusCode == 201) {
-                dispatch(ordermethod.ADD_ORDER(data.data))
+                dispatch(ordermethod.ADD_ORDER(data?.data))
                 setload(false)
             }
             else if (data.statusCode == 498) {
@@ -48,7 +48,7 @@ const Order_Section = () => {
     return (
         <>
             {
-                load == true ?
+                load === true ?
                     <Loader />
                     : <Usershow />
             }

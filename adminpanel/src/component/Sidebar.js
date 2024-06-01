@@ -45,13 +45,13 @@ const Sidebar = () => {
   return (
     <>
       <div className="sidebar">
-        <div>
+        {/* <div>
           {color == 'light' ?
             <button className='btn btn-light btn-sm' onClick={() => givecolortobody('dark')}><CiDark /></button>
             : <button className='btn btn-light btn-sm' onClick={() => givecolortobody('light')}><MdDarkMode /></button>
           }
-        </div>
-        <span className="logo_name mt-5" style={{ color: "green", alignItems: 'center' }}> welcome {userinfo?.user?.first_name}</span>
+        </div> */}
+        {/* <span className="logo_name mt-5" style={{ color: "green", alignItems: 'center' }}> welcome {userinfo?.user?.first_name}</span> */}
         <ul className="nav-links">
           <li>
             <Link to="/" className="active mt-4">

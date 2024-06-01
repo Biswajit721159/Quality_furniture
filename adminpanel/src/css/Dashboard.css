@@ -41,3 +41,8 @@
     margin-top: -6px;
     font-weight: 500;
   }
+  .home-section .home-content .overview-boxes .box .custom-link {
+    text-decoration: none;
+    color: black;
+  }
+  

@@ -60,9 +60,9 @@ const UserDashboard = () => {
   return (
     <>
       <div className="box">
-        <Link>
+        <Link className="custom-link">
           <div className="right-side">
-            <div className="box-topic">Total User</div>
+            <div className="box-topic">User</div>
             <div className="number">
               {load == true ? <PulseLoader color="#16A085" /> : count}
             </div>

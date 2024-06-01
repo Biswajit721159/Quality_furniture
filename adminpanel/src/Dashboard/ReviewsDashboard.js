@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { PulseLoader, BeatLoader, ClipLoader } from 'react-spinners';
 import { usermethod } from '../redux/userslice'
 import { useDispatch } from 'react-redux'
-import Loader from '../component/Loader'
 const api = process.env.REACT_APP_API
 const ReviewsDashboard = () => {
   const dispatch = useDispatch()
@@ -59,9 +58,9 @@ const ReviewsDashboard = () => {
   return (
     <>
       <div className="box">
-        <Link>
+        <Link className="custom-link">
           <div className="right-side">
-            <div className="box-topic">Total Reviews</div>
+            <div className="box-topic">Reviews</div>
             <div className="number">
               {load == true ? <PulseLoader color="#16A085" /> : count}
             </div>
