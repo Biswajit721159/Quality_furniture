@@ -5,6 +5,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState: {
     user: JSON.parse(localStorage.getItem('user')),
+    userLogin:true
   },
 
   reducers: {

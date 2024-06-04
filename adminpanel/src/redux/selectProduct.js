@@ -4,6 +4,7 @@ const selectProductSlice = createSlice({
   name: "selectproduct",
   initialState: {
     selectproduct: null,
+    selectProductLogin:true
   },
 
   reducers: {

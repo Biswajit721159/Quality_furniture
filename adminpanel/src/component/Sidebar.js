@@ -5,24 +5,35 @@ import { RxDashboard } from "react-icons/rx";
 import { RiShareBoxFill } from "react-icons/ri";
 import { usermethod } from '../redux/userslice'
 import { useDispatch, useSelector } from 'react-redux';
-import { CiDark } from "react-icons/ci";
-import { MdDarkMode } from "react-icons/md";
+import { Allusermethod } from '../redux/AllUserSlice';
+import { ordermethod } from '../redux/OrderSlice';
+import { productmethod } from '../redux/ProductSlice';
 import '../css/Sidebar.css'
 
 const Sidebar = () => {
-  const userinfo = useSelector((state) => state?.user?.user)
-  const dispatch = useDispatch()
+  const userinfo = useSelector((state) => state?.user?.user);
+  const dispatch = useDispatch();
   const history = useNavigate();
   const [color, setcolor] = useState(localStorage.getItem('colormode'))
+  const isUserLogin = useSelector((state) => state?.Alluser?.isUserLogin)
+  const isOrderLogin = useSelector((state) => state?.Order?.isOrderLogin)
+  const isProductLogin = useSelector((state) => state?.product?.isProductLogin)
+  const selectProductLogin = useSelector((state) => state?.selectProduct?.selectProductLogin)
+  const userLogin = useSelector((state) => state?.user?.userLogin)
+
+  console.log(isUserLogin, isOrderLogin, isProductLogin, selectProductLogin, userLogin)
 
   useEffect(() => {
-    if (localStorage.getItem('colormode') == null) {
+    if (!isUserLogin || !isOrderLogin || !isProductLogin || !selectProductLogin || !userLogin) {
+      logout()
+    }
+    if (localStorage.getItem('colormode') === null) {
       givecolortobody('light')
     }
     else {
       givecolortobody(localStorage.getItem('colormode'))
     }
-  }, [])
+  }, [isUserLogin, isOrderLogin, isOrderLogin, isProductLogin, selectProductLogin])
 
   function givecolortobody(color) {
     setcolor(color)
@@ -37,6 +48,9 @@ const Sidebar = () => {
   }
 
   function logout() {
+    dispatch(productmethod.Reset({ isProductLogin: true }))
+    dispatch(Allusermethod.Reset({ isUserLogin: true }))
+    dispatch(ordermethod.Reset({ isOrderLogin: true }))
     dispatch(usermethod.LOGOUT())
     history('/Logout')
   }
@@ -59,17 +73,17 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <Link to={`/User/page/${1}`} className="active">
+            <Link to={`/User`} className="active">
               <span className="links_name" ><RiShareBoxFill /> Manage User</span>
             </Link>
           </li>
           <li>
-            <Link to={`/Product/page/${1}`} className="active">
+            <Link to={`/Product`} className="active">
               <span className="links_name" ><RiShareBoxFill /> Manage Product</span>
             </Link>
           </li>
           <li>
-            <Link to={`/Order/page/${1}`} className="active">
+            <Link to={`/Order`} className="active">
               <span className="links_name" > <RiShareBoxFill /> Manage Order</span>
             </Link>
           </li>

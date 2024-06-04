@@ -6,8 +6,8 @@
   background: var(--blue-teal-gradient);
   color: #fff;
 }
+
 body {
-  font-family: Arial, Helvetica, sans-serif;
   overflow-wrap: break-word;
 }
 
@@ -32,7 +32,7 @@ html {
 .left {
   flex: 1.6;
   color: white;
-  border-right: 5px solid purple;
+  /* border-right: 5px solid purple; */
   color: #fff;
 
 }

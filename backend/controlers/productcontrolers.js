@@ -354,10 +354,17 @@ let countNumberProduct = async (req, res) => {
 
 let getproductByLimit = async (req, res) => {
   try {
-    let LowerLimit = req.params.LowerLimit;
-    let HighLimit = req.params.HighLimit;
+    let searchValue = req.params?.searchValue
+    if (searchValue === "undefined") searchValue = ''
+    let LowerLimit = req.params?.LowerLimit;
+    let HighLimit = req.params?.HighLimit;
     let Limit = HighLimit - LowerLimit;
-    let result = await product.find({}).skip(LowerLimit).limit(Limit + 1).exec();
+    let result = await product.find({
+      $or: [
+        { product_name: { $regex: searchValue } },
+        { product_type: { $regex: searchValue } },
+      ]
+    }).skip(LowerLimit).limit(Limit + 1).exec();
     let hasNextPage = result.length > Limit;
     let actualResult = hasNextPage ? result.slice(0, Limit) : result;
     let hasPrevPage = LowerLimit > 0;
@@ -367,10 +374,10 @@ let getproductByLimit = async (req, res) => {
     }
     if (actualResult.length) actualResult.push(pagination)
     if (actualResult) {
-      res.status(201).json(new ApiResponse(201, actualResult, "Product Successfully Updated"));
+      res.status(200).json(new ApiResponse(200, actualResult, `Total ${actualResult?.length - 1} product found!`));
     }
     else {
-      res.status(404).json(new ApiResponse(404, null, "Review does not exist"));
+      res.status(404).json(new ApiResponse(404, null, "Product does not exist"));
     }
   }
   catch {

@@ -26,12 +26,12 @@ function App() {
           <div className="right">
             <Routes>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/Product/page/:page" element={<Product_Section />} />
+              <Route path="/Product" element={<Product_Section />} />
               <Route path="/Product/AddProduct" element={<Addproduct />} />
               <Route path="/Product_view/:_id" element={<Product_View />} />
               <Route path="/Review/page/:page" element={<Reviews_Section />} />
-              <Route path="/Order/page/:page" element={<Order_section />} />
-              <Route path="/User/page/:page" element={<User_section />} />
+              <Route path="/Order" element={<Order_section />} />
+              <Route path="/User" element={<User_section />} />
               <Route path="*" element={<ErrorPage />} />
             </Routes>
           </div>

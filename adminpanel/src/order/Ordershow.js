@@ -1,6 +1,6 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,25 +10,24 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
+import Loading from '../component/Loading'
+import { loadOrder } from '../redux/OrderSlice'
 
 const Product_show = () => {
-  let page = parseInt(useParams().page);
-  const Order = useSelector((state) => state?.Order?.Order);
-  const prev = useSelector((state) => state?.Order?.prev);
-  const next = useSelector((state) => state?.Order?.next);
+  const userinfo = useSelector((state) => state?.user?.user);
+  const { Order, orderLoading, LowerLimit, UpperLimit, next, searchvalue } = useSelector((state) => state?.Order);
   const navigate = useNavigate();
-
-  function Shownextpage() {
-    navigate(`/Order/page/${page + 1}`);
-  }
+  const dispatch = useDispatch()
 
   function View(data) {
-    navigate(`/Product_view/${data?._id}`);
+    navigate(`/Order/${data?._id}`);
   }
 
-  function ShowPrevPage() {
-    navigate(`/Order/page/${page - 1}`);
-  }
+  const handleScroll = () => {
+    if (!orderLoading && next) {
+      dispatch(loadOrder({ LowerLimit, UpperLimit, searchvalue, userinfo }));
+    }
+  };
 
   return (
     <Container maxWidth="lg">
@@ -72,14 +71,11 @@ const Product_show = () => {
           </Table>
         </TableContainer>
       )}
-      <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '20px' }}>
-        <Button variant="contained" size="small" color="success" onClick={ShowPrevPage} disabled={!prev}>
-          Prev
+      {orderLoading ? <Loading /> : next &&
+        <Button variant="contained" color="secondary" style={{ marginTop: '10px', marginBottom: '10px', display: 'flex', marginLeft: '45%' }} onClick={handleScroll} >
+          Load More
         </Button>
-        <Button variant="contained" size="small" color="success" onClick={Shownextpage} disabled={!next}>
-          Next
-        </Button>
-      </div>
+      }
     </Container>
   );
 };

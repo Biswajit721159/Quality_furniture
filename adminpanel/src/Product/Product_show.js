@@ -1,6 +1,6 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,40 +9,36 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import { FaPlus } from "react-icons/fa6";
 import Container from '@mui/material/Container';
-
+import Loading from "../component/Loading";
+import { loadProduct } from "../redux/ProductSlice";
+import DataNotFoundPage from "../component/DataNotFoundPage"
+import { HiStar } from "react-icons/hi";
+import { FaRupeeSign } from "react-icons/fa";
 const Product_show = () => {
-  const page = parseInt(useParams().page);
-  const product = useSelector((state) => state.product.product);
-  const prev = useSelector((state) => state.product.prev);
-  const next = useSelector((state) => state.product.next);
+  const dispatch = useDispatch()
+  const userinfo = useSelector((state) => state?.user?.user);
+  const { product, productLoading, LowerLimit, UpperLimit, next, searchvalue } = useSelector((state) => state?.product);
   const navigate = useNavigate();
-
-  function Shownextpage() {
-    navigate(`/Product/page/${page + 1}`);
-  }
 
   function View(data) {
     navigate(`/Product_view/${data._id}`);
   }
 
-  function ShowPrevPage() {
-    navigate(`/Product/page/${page - 1}`);
-  }
+  const handleScroll = () => {
+    if (!productLoading && next) {
+      dispatch(loadProduct({ LowerLimit, UpperLimit, userinfo, searchvalue }));
+    }
+  };
 
   return (
     <Container maxWidth="lg">
-      <Link to={'/Product/AddProduct'} style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
-        <Button variant="contained" color="success" startIcon={<FaPlus />}>
-          Add
-        </Button>
-      </Link>
-      {product && product.length > 0 && (
+      {product && product?.length > 0 ? (
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="product table">
             <TableHead>
               <TableRow>
+                <TableCell>Photo</TableCell>
                 <TableCell >Product_id</TableCell>
                 <TableCell >Product_name</TableCell>
                 <TableCell >Offer</TableCell>
@@ -53,16 +49,25 @@ const Product_show = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {product.map((item) => (
-                <TableRow key={item._id}>
-                  <TableCell>{item._id}</TableCell>
-                  <TableCell>{item.product_name}</TableCell>
-                  <TableCell>{item.offer}</TableCell>
-                  <TableCell>{item.price}</TableCell>
-                  <TableCell>{item.product_type}</TableCell>
-                  <TableCell>{item.rating} ({item.number_of_people_give_rating})</TableCell>
+              {product?.map((item) => (
+                <TableRow key={item?._id}>
                   <TableCell>
-                    <Button variant="contained" size="small" color="primary" onClick={() => View(item)}>
+                    <img
+                      srcSet={`${item?.newImage?.[0]}`}
+                      src={`${item?.newImage?.[1]}`}
+                      alt='Error'
+                      loading="lazy"
+                      style={{ height: '60px', width: '60px', borderRadius: '10px' }}
+                    />
+                  </TableCell>
+                  <TableCell>{item?._id}</TableCell>
+                  <TableCell>{item?.product_name}</TableCell>
+                  <TableCell>{item?.offer}%</TableCell>
+                  <TableCell><FaRupeeSign style={{ marginTop: '-2px', fontSize: '12px' }} />{item?.price}</TableCell>
+                  <TableCell>{item?.product_type}</TableCell>
+                  <TableCell>{item?.rating}<HiStar style={{ marginTop: '-7px' }} /> ({item?.number_of_people_give_rating})</TableCell>
+                  <TableCell>
+                    <Button variant="contained" size="small" color="info" onClick={() => View(item)}>
                       View
                     </Button>
                   </TableCell>
@@ -71,15 +76,14 @@ const Product_show = () => {
             </TableBody>
           </Table>
         </TableContainer>
-      )}
-      <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '20px' }}>
-        <Button variant="contained" size="small" color="success" onClick={ShowPrevPage} disabled={!prev}>
-          Prev
+      ) :
+        <DataNotFoundPage />
+      }
+      {productLoading ? <Loading /> : next &&
+        <Button variant="contained" color="secondary" style={{ marginTop: '10px', marginBottom: '10px', display: 'flex', marginLeft: '45%' }} onClick={handleScroll} >
+          Load More
         </Button>
-        <Button variant="contained" size="small" color="success" onClick={Shownextpage} disabled={!next}>
-          Next
-        </Button>
-      </div>
+      }
     </Container>
   );
 };

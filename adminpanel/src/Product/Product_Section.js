@@ -1,61 +1,88 @@
-import React, { useEffect, useState } from "react";
-import {useNavigate} from 'react-router-dom'
-import {useDispatch, useSelector} from 'react-redux'
-import {usermethod} from '../redux/userslice'
-import { productmethod } from "../redux/ProductSlice";
-import { PulseLoader ,BeatLoader ,ClipLoader} from 'react-spinners';
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState, useCallback } from "react";
+import { useDispatch, useSelector } from 'react-redux'
 import Product_show from "./Product_show";
-import Loader from '../component/Loader'
-const api=process.env.REACT_APP_API
+import { TextField, Container } from '@mui/material';
+import _ from 'lodash';
+import { loadProduct } from "../redux/ProductSlice";
+import { Link } from "react-router-dom";
+import Button from '@mui/material/Button';
+import { FaPlus } from "react-icons/fa6";
+import Loading from "../component/Loading";
+import { productmethod } from "../redux/ProductSlice"
+import { IoMdRefresh } from "react-icons/io";
+const Product_Section = () => {
 
-const Product_Section=()=>{
-    const dispatch=useDispatch()
-    const [load,setload]=useState(false)
-    const history=useNavigate()
-    const page=parseInt(useParams().page);
-    const LowerLimit=(page-1)*12;
-    const UpperLimit=page*12;
-    const userinfo=useSelector((state)=>state.user.user);
-    
-    useEffect(()=>{
-        loadproduct()
-    },[page])
+    const dispatch = useDispatch();
+    const userinfo = useSelector((state) => state?.user?.user);
+    const { productLoading, LowerLimit, UpperLimit, product } = useSelector((state) => state?.product);
+    let searchvalue = useSelector((state) => state?.product?.searchvalue);
+    const [searchValue, setsearchValue] = useState(searchvalue);
 
-    function loadproduct()
-    {
-        setload(true)
-        fetch(`${api}/product/getproductByLimit/${LowerLimit}/${UpperLimit}`,{
-            headers:{
-                Authorization:`Bearer ${userinfo.accessToken}`
-            }
-        }).then((res)=>res.json()).then((data)=>{
-           if(data.statusCode==201)
-           {
-              dispatch(productmethod.ADD_PRODUCT(data.data))
-              setload(false)
-           }
-           else if(data.statusCode==498)
-           {
-              dispatch(usermethod.LOGOUT())
-              history('/')
-           }
-           else
-           {
-              history('*')
-           }
-        }).catch((error)=>{
-            history('*')
-        })
+    useEffect(() => {
+        if (product?.length === 0) loadproduct()
+    }, [])
+
+    function loadproduct() {
+        dispatch(loadProduct({ LowerLimit, UpperLimit, userinfo, searchvalue }))
     }
 
-    return(
+    const handleInputChange = (e) => {
+        setsearchValue(e.target.value);
+        dispatch(productmethod.ADD_SEARCH_VALUE(e.target.value));
+    };
+
+    const debouncedSearch = useCallback(
+        _.debounce(async (searchValue) => {
+            if (searchValue) {
+                dispatch(productmethod.SetLowerLimitHighLimit({ LowerLimit: 0, UpperLimit: 10 }))
+                dispatch(loadProduct({ LowerLimit: 0, UpperLimit: 10, userinfo, searchvalue: searchValue }))
+            }
+        }, 500),
+        []
+    );
+
+    useEffect(() => {
+        debouncedSearch(searchValue);
+        return () => {
+            debouncedSearch.cancel();
+        };
+    }, [searchValue])
+
+    function reset() {
+        setsearchValue('')
+        dispatch(productmethod.Reset({ product: [], LowerLimit: 0, UpperLimit: 10, prev: false, next: false, searchvalue: '', productLoading: false }))
+        dispatch(loadProduct({ LowerLimit: 0, UpperLimit: 10, userinfo, searchvalue: '' }))
+    }
+
+    return (
         <>
-        {
-            load==true?
-            <Loader/>
-            :<Product_show/>
-        }
+            <Container maxWidth="lg" style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '20px' }}>
+                <Link to={'/Product/AddProduct'} style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px', textDecoration: 'none' }}>
+                    <Button variant="contained" style={{ marginTop: '5px' }} color="success" startIcon={<FaPlus />}>
+                        Add
+                    </Button>
+                    <Link style={{ marginTop: '5px', marginLeft: '20px' }} onClick={() => reset()}>
+                        <Button variant="contained" color="warning" startIcon={<IoMdRefresh size={'20px'} />}>
+                            Refresh
+                        </Button>
+                    </Link>
+                </Link>
+                <TextField
+                    variant="outlined"
+                    value={searchValue}
+                    onChange={handleInputChange}
+                    placeholder="Enter Name or Type"
+                    size="small"
+                    style={{ marginTop: '5px' }}
+                    spellCheck='false'
+                />
+
+            </Container >
+            {
+                productLoading === true && product?.length === 0 ?
+                    <Loading />
+                    : <Product_show />
+            }
         </>
     )
 }

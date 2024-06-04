@@ -185,7 +185,7 @@ let getorderByLimit = async (req, res) => {
         product_name: "",
         newImage: [],
         isfeedback: result[i].isfeedback,
-        status:result[i].status
+        status: result[i].status
       };
       for (let j = 0; j < nums.length; j++) {
         let product_id = nums[j]._id.toString();
@@ -266,7 +266,7 @@ let getAllOrder = async (req, res) => {
             isfeedback: orderarr[i].isfeedback,
             createdAt: orderarr[i].createdAt,
             updatedAt: orderarr[i].updatedAt,
-            status:orderarr[i]?.status
+            status: orderarr[i]?.status
           }
           actualResult.push(obj)
           break;
@@ -286,7 +286,72 @@ let getAllOrder = async (req, res) => {
   }
 }
 
+let getorderByLimitAndSearchValue = async (req, res) => {
+  try {
+    let searchValue = req.params.searchValue
+    if (searchValue === "undefined") searchValue = ''
+    let lowerLimit = req.params.lowerLimit;
+    let upperLimit = req.params.upperLimit;
+    let limit = upperLimit - lowerLimit;
+    let result = await order.find({
+      $or: [
+        { email: { $regex: searchValue } },
+      ]
+    }).sort({ _id: -1 }).skip(lowerLimit).limit(limit + 1).exec();
+
+    let product_id_arr = [];
+    for (let i = 0; i < result.length; i++) {
+      product_id_arr.push(result[i].product_id);
+    }
+    let nums = await get_product_by_ids(product_id_arr);
+    let actualResult = [];
+    for (let i = 0; i < result.length; i++) {
+      let obj = {
+        _id: result[i]._id,
+        address: result[i].address,
+        email: result[i]?.email,
+        product_id: result[i].product_id,
+        product_count: result[i].product_count,
+        payment_method: result[i].payment_method,
+        Total_rupess: result[i].Total_rupess,
+        Date: result[i].Date,
+        product_name: "",
+        newImage: [],
+        isfeedback: result[i].isfeedback,
+        status: result[i].status
+      };
+      for (let j = 0; j < nums.length; j++) {
+        let product_id = nums[j]._id.toString();
+        let obj_id = obj.product_id.toString();
+        if (product_id === obj_id) {
+          obj.product_name = nums[j].product_name;
+          obj.newImage = nums[j].newImage;
+        }
+      }
+      actualResult.push(obj);
+    }
+
+    let hasNextPage = actualResult.length > limit;
+    let Result = hasNextPage ? actualResult.slice(0, limit) : actualResult;
+    let hasPrevPage = lowerLimit > 0;
+    let pagination = {
+      'prev': hasPrevPage,
+      'next': hasNextPage,
+    }
+    if (Result.length) Result.push(pagination)
+    if (Result) {
+      res.status(200).json(new ApiResponse(200, Result, `Total ${Result?.length - 1} Order found!`));
+    }
+    else {
+      res.status(404).json(new ApiResponse(404, null, "Order does not exist"));
+    }
+  } catch {
+    res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
+  }
+}
+
 module.exports = {
+  getorderByLimitAndSearchValue,
   orderInsert,
   orderGetByEmail,
   informationById,

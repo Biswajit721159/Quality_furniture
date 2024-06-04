@@ -1,6 +1,5 @@
 let Router = require("express");
 let verifytoken = require("../middlewares/verifiedToken");
-let upload = require("../middlewares/multermiddlemare");
 let {
   getFullProduct,
   productInsert,
@@ -33,7 +32,7 @@ router.route('/Catagory/getallCatagory').get(getallProductType);
 router.route('/getproductByType/:product_type').get(getproductByType);
 router.route('/TopOfferProduct/:numberofProduct').get(TopOfferProduct);
 router.route('/Dashboard/findcountNumberProduct').get(verifytoken, countNumberProduct);
-router.route('/getproductByLimit/:LowerLimit/:HighLimit').get(verifytoken, getproductByLimit);
+router.route('/getproductByLimit/:searchValue/:LowerLimit/:HighLimit').get(verifytoken, getproductByLimit);
 router.route("/uploads").post(verifytoken, productInsert);
 router.route('/ProductUpdate/:_id').put(ProductUpdate);
 

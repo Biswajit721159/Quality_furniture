@@ -3,6 +3,7 @@
   background: #34495e;
   height: 100%;
   color: white;
+  position: sticky;
 }
 
 .nav-links {
@@ -24,7 +25,8 @@
   border-radius: 4px;
 }
 
-.nav-links li a.active, .nav-links li a:hover {
+.nav-links li a.active,
+.nav-links li a:hover {
   background: #f39c12;
 }
 
@@ -32,8 +34,9 @@
   position: absolute;
   bottom: 0;
 }
+
 .nav-links li a .links_name {
-  margin-left: 10px;
+  /* margin-left: 10px; */
   font-weight: bold;
 }
 

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,57 +8,33 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
-import { TextField, Container } from '@mui/material';
+import Loading from "../component/Loading";
+import { loadUser } from '../redux/AllUserSlice'
+import DataNotFoundPage from "../component/DataNotFoundPage";
 
 const Usershow = () => {
-  let page = parseInt(useParams().page);
-  const user = useSelector((state) => state.Alluser.Alluser);
-  const prev = useSelector((state) => state.Alluser.prev);
-  const next = useSelector((state) => state.Alluser.next);
+  const dispatch = useDispatch()
+  const userinfo = useSelector((state) => state?.user?.user);
+  const { Alluser, userLoading, LowerLimit, UpperLimit, next, searchvalue } = useSelector((state) => state?.Alluser);
   const history = useNavigate();
-
-  function Shownextpage() {
-    history(`/User/page/${page + 1}`);
-  }
 
   function View(data) {
     history(`/User/${data._id}`);
   }
-
-  function ShowPrevPage() {
-    history(`/User/page/${page - 1}`);
-  }
-
-  const [name, setName] = useState('');
-
-  const handleInputChange = (e) => {
-    setName(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form submitted:', name);
+  const handleScroll = () => {
+    if (!userLoading && next) {
+      dispatch(loadUser({ LowerLimit, UpperLimit, userinfo, searchvalue }));
+    }
   };
 
   return (
     <>
-      {user != null && user.length !== 0 && (
-        <>
-          <Container maxWidth="lg" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '20px' }}>
-            <form onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-              <TextField
-                variant="outlined"
-                value={name}
-                onChange={handleInputChange}
-                placeholder="Enter Name"
-                size="small"
-                style={{ marginTop: '5px' }}
-              />
-            </form>
-          </Container>
+      {Alluser != null && Alluser?.length !== 0 ?
+        <Container maxWidth="lg">
           <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <Table sx={{ minWidth: 650 }} aria-label="user table">
               <TableHead>
                 <TableRow>
                   <TableCell>User_id</TableCell>
@@ -66,13 +42,13 @@ const Usershow = () => {
                   <TableCell align="right" className="text-center">Email</TableCell>
                   <TableCell align="right" className="text-center">Address</TableCell>
                   <TableCell align="right" className="text-center">Register Date</TableCell>
-                  <TableCell align="right" className="text-center">View</TableCell>
-                  <TableCell align="right" className="text-center">Update</TableCell>
-                  <TableCell align="right" className="text-center">Delete</TableCell>
+                  <TableCell align="right" className="text-center">Action-1</TableCell>
+                  <TableCell align="right" className="text-center">Action-2</TableCell>
+                  <TableCell align="right" className="text-center">Action-3</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {user.map((row) => (
+                {Alluser.map((row) => (
                   <TableRow key={row._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     <TableCell component="th" scope="row">
                       {row._id}
@@ -103,18 +79,16 @@ const Usershow = () => {
               </TableBody>
             </Table>
           </TableContainer>
-        </>
-      )}
-      <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '20px' }}>
-        <Button variant="contained" size="small" color="success" onClick={ShowPrevPage} disabled={!prev}>
-          Prev
+        </Container>
+        : <DataNotFoundPage />
+      }
+      {userLoading ? <Loading /> : next &&
+        <Button variant="contained" color="secondary" style={{ marginTop: '10px', marginBottom: '10px', display: 'flex', marginLeft: '45%' }} onClick={handleScroll} >
+          Load More
         </Button>
-        <Button variant="contained" size="small" color="success" onClick={Shownextpage} disabled={!next}>
-          Next
-        </Button>
-      </div>
+      }
     </>
   );
 };
 
-export default Usershow;
+export default React.memo(Usershow);

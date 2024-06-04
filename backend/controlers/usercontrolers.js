@@ -2,6 +2,39 @@ let User = require("../models/user_models");
 const mongoose = require("mongoose");
 let { ApiResponse } = require("../utils/ApiResponse.js");
 
+let searchNameAndEmail = async (req, res) => {
+  try {
+    let searchValue = req.params.searchValue;
+    let LowerLimit = req.params.LowerLimit;
+    let HighLimit = req.params.HighLimit;
+    let Limit = HighLimit - LowerLimit;
+    if (searchValue === "undefined") { searchValue = '' }
+    let result = await User.find({
+      $or: [
+        { email: { $regex: searchValue } },
+        { name: { $regex: searchValue } },
+      ]
+    }).select("-password").skip(LowerLimit).limit(Limit + 1).exec();
+    let hasNextPage = result.length > Limit;
+    let actualResult = hasNextPage ? result.slice(0, Limit) : result;
+    let hasPrevPage = LowerLimit > 0;
+    let pagination = {
+      'prev': hasPrevPage,
+      'next': hasNextPage,
+    }
+    if (actualResult.length) actualResult.push(pagination)
+    if (actualResult) {
+      res.status(200).json(new ApiResponse(200, actualResult, "success"));
+    }
+    else {
+      res.status(404).json(new ApiResponse(404, null, "User does not exist"));
+    }
+  }
+  catch {
+    return res.status(500).json(new ApiResponse(500, null, "Something went wrong while registering the user"));
+  }
+}
+
 let register = async (req, res) => {
   const { name, email, password, address } = req.body;
   if (
@@ -191,7 +224,7 @@ let getAlluser = async (req, res) => {
     }
     if (actualResult.length) actualResult.push(pagination)
     if (actualResult) {
-      res.status(201).json(new ApiResponse(201, actualResult, "success"));
+      res.status(200).json(new ApiResponse(200, actualResult, "success"));
     }
     else {
       res.status(404).json(new ApiResponse(404, null, "Review does not exist"));
@@ -203,6 +236,7 @@ let getAlluser = async (req, res) => {
 }
 
 module.exports = {
+  searchNameAndEmail,
   register,
   loginUser,
   getinfromationByEmail,

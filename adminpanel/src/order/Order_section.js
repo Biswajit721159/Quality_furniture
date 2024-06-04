@@ -1,55 +1,73 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from 'react-redux'
-import { usermethod } from '../redux/userslice'
-import { ordermethod } from "../redux/OrderSlice";
-import { useParams } from "react-router-dom";
 import Usershow from "./Ordershow";
-import Loader from '../component/Loader'
-const api = process.env.REACT_APP_API
-
+import Loading from '../component/Loading'
+import { loadOrder } from '../redux/OrderSlice'
+import { TextField, Container, Button } from '@mui/material';
+import { Link } from "react-router-dom";
+import _ from 'lodash';
+import { IoMdRefresh } from "react-icons/io";
+import { ordermethod } from "../redux/OrderSlice"
 const Order_Section = () => {
 
     const dispatch = useDispatch()
-    const [load, setload] = useState(false)
-    const history = useNavigate()
-    let page = useParams().page;
-    const LowerLimit = (page - 1) * 10;
-    const UpperLimit = (page) * 10;
     const userinfo = useSelector((state) => state?.user?.user);
+    const { orderLoading, LowerLimit, UpperLimit, searchvalue, Order } = useSelector((state) => state.Order);
+    let [searchValue, setsearchValue] = useState(searchvalue);
 
     useEffect(() => {
-        loadproduct()
-    }, [LowerLimit], [UpperLimit])
+        if (Order?.length === 0) dispatch(loadOrder({ LowerLimit, UpperLimit, searchvalue, userinfo }));
+    }, [])
 
-    function loadproduct() {
-        setload(true)
-        fetch(`${api}/order/getproductByLimit/${LowerLimit}/${UpperLimit}`, {
-            headers: {
-                Authorization: `Bearer ${userinfo?.accessToken}`
+    const debouncedSearch = useCallback(
+        _.debounce(async (searchValue) => {
+            if (searchValue) {
+                dispatch(ordermethod.SetLowerLimitHighLimit({ LowerLimit: 0, UpperLimit: 10 }))
+                dispatch(loadOrder({ LowerLimit: 0, UpperLimit: 10, userinfo, searchvalue: searchValue }))
             }
-        }).then((res) => res.json()).then((data) => {
-            if (data.statusCode == 201) {
-                dispatch(ordermethod.ADD_ORDER(data?.data))
-                setload(false)
-            }
-            else if (data.statusCode == 498) {
-                dispatch(usermethod.LOGOUT())
-                history('/')
-            }
-            else {
-                history('*')
-            }
-        }).catch((error) => {
-            history('*')
-        })
+        }, 500),
+        []
+    );
+
+    useEffect(() => {
+        debouncedSearch(searchValue);
+        return () => {
+            debouncedSearch.cancel();
+        };
+    }, [searchValue])
+
+    function reset() {
+        setsearchValue('')
+        dispatch(ordermethod.Reset({ Order: [], LowerLimit: 0, UpperLimit: 10, prev: false, next: false, searchvalue: '', orderLoading: false }))
+        dispatch(loadOrder({ LowerLimit: 0, UpperLimit: 10, userinfo, searchvalue: '' }))
     }
+
+    const handleInputChange = (e) => {
+        setsearchValue(e.target.value);
+        dispatch(ordermethod.ADD_SEARCH_VALUE(e.target.value));
+    };
 
     return (
         <>
+            <Container maxWidth="lg" style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '20px' }}>
+                <Link style={{ marginTop: '5px', marginLeft: '20px' }} onClick={() => reset()}>
+                    <Button variant="contained" color="warning" startIcon={<IoMdRefresh size={'20px'} />}>
+                        Refresh
+                    </Button>
+                </Link>
+                <TextField
+                    variant="outlined"
+                    value={searchValue}
+                    onChange={handleInputChange}
+                    placeholder="Enter Email.."
+                    size="small"
+                    style={{ marginTop: '5px' }}
+                    spellCheck='false'
+                />
+            </Container >
             {
-                load === true ?
-                    <Loader />
+                orderLoading === true && Order?.length === 0 ?
+                    <Loading />
                     : <Usershow />
             }
         </>
