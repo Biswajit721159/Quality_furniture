@@ -53,8 +53,7 @@ const Product_show = () => {
                 <TableRow key={item?._id}>
                   <TableCell>
                     <img
-                      srcSet={`${item?.newImage?.[0]}`}
-                      src={`${item?.newImage?.[1]}`}
+                      src={`${item?.newImage?.[0]}`}
                       alt='Error'
                       loading="lazy"
                       style={{ height: '60px', width: '60px', borderRadius: '10px' }}

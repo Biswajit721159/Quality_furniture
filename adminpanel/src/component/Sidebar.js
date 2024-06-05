@@ -21,7 +21,7 @@ const Sidebar = () => {
   const selectProductLogin = useSelector((state) => state?.selectProduct?.selectProductLogin)
   const userLogin = useSelector((state) => state?.user?.userLogin)
 
-  console.log(isUserLogin, isOrderLogin, isProductLogin, selectProductLogin, userLogin)
+  // console.log(isUserLogin, isOrderLogin, isProductLogin, selectProductLogin, userLogin)
 
   useEffect(() => {
     if (!isUserLogin || !isOrderLogin || !isProductLogin || !selectProductLogin || !userLogin) {
