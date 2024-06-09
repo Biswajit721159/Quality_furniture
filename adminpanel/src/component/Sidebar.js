@@ -88,7 +88,7 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <Link to={`/Review/page/${1}`} className="active">
+            <Link to={`/Review`} className="active">
               <span className="links_name" ><RiShareBoxFill /> Manage Reviews</span>
             </Link>
           </li>

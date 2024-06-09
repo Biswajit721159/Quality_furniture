@@ -153,6 +153,15 @@ let countNumberReviews = async (req, res) => {
   }
 }
 
+let AdminpanelReview = async (req, res) => {
+  try {
+    let lowerLimit = req.params.lowerLimit
+    let upperLimit = req.params.upperLimit
+    let limit = upperLimit - lowerLimit
+  } catch {
+    res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
+  }
+}
 
 module.exports = {
   informationById,
@@ -160,5 +169,6 @@ module.exports = {
   findReviewsBylowerAndUpperLimit,
   findRatingPersentageofProduct,
   countNumberReviews,
-  exitProduct_idAndOrder_id
+  exitProduct_idAndOrder_id,
+  AdminpanelReview
 };

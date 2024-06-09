@@ -53,7 +53,7 @@ const Reviews_Section = () => {
     return (
         <>
             {
-                load == true ?
+                load === true ?
                     <Loader />
                     :
                     <Reviews_show />

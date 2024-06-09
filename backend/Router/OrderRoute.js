@@ -9,7 +9,8 @@ let {
     countNumberOrder,
     getAllOrder,
     updateOrderStatus,
-    getorderByLimitAndSearchValue
+    getorderByLimitAndSearchValue,
+    updateOrder
 } = require("../controlers/ordercontrolers");
 
 const router = Router();
@@ -23,5 +24,6 @@ router.route('/getorderByLimit/:lowerLimit/:upperLimit/:email').get(verifytoken,
 router.route('/Dashboard/countNumberOrder').get(verifytoken, countNumberOrder);
 router.route('/getproductByLimit/:LowerLimit/:HighLimit').get(getAllOrder);
 router.route('/AdminpanelOrder/:lowerLimit/:upperLimit/:searchValue').get(verifytoken, getorderByLimitAndSearchValue)
+router.route('/updateOrder/:_id').put(verifytoken, updateOrder)
 
 module.exports = router;

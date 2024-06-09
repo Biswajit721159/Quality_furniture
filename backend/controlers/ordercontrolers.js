@@ -318,7 +318,9 @@ let getorderByLimitAndSearchValue = async (req, res) => {
         product_name: "",
         newImage: [],
         isfeedback: result[i].isfeedback,
-        status: result[i].status
+        status: result[i].status,
+        createdAt: result[i].createdAt,
+        updatedAt: result[i].updatedAt
       };
       for (let j = 0; j < nums.length; j++) {
         let product_id = nums[j]._id.toString();
@@ -350,6 +352,28 @@ let getorderByLimitAndSearchValue = async (req, res) => {
   }
 }
 
+let updateOrder = async (req, res) => {
+  try {
+    let _id = req.params._id
+    let status = req.body?.status
+    let address = req.body?.address
+    if (!status || !address) {
+      return res.status(404).json(ApiResponse(404, null, "status or address is missing"))
+    }
+    let result = await order.updateOne(
+      { _id: _id },
+      { $set: { status: status, address: address } }
+    )
+    if (result.matchedCount) {
+      return res.status(200).json(new ApiResponse(200, null, "Successfully updated!"))
+    } else {
+      return res.status(500).json(new ApiResponse(500, null, "some error is found while updating the order data"))
+    }
+  } catch {
+    return res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
+  }
+}
+
 module.exports = {
   getorderByLimitAndSearchValue,
   orderInsert,
@@ -359,5 +383,6 @@ module.exports = {
   getorderByLimit,
   countNumberOrder,
   getAllOrder,
-  updateOrderStatus
+  updateOrderStatus,
+  updateOrder
 };

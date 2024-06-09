@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Table from '@mui/material/Table';
@@ -12,6 +12,8 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Loading from '../component/Loading'
 import { loadOrder } from '../redux/OrderSlice'
+import { MenuItem, Select } from '@mui/material';
+import { ordermethod } from '../redux/OrderSlice';
 
 const Product_show = () => {
   const userinfo = useSelector((state) => state?.user?.user);
@@ -19,8 +21,12 @@ const Product_show = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    dispatch(ordermethod.setUpdatedOrderMessage(''))
+  }, [])
+
   function View(data) {
-    navigate(`/Order/${data?._id}`);
+    navigate(`/Order/${data?._id}`, { state: { data: data } });
   }
 
   const handleScroll = () => {
@@ -36,6 +42,7 @@ const Product_show = () => {
           <Table>
             <TableHead>
               <TableRow>
+                <TableCell className="text-center">Photo</TableCell>
                 <TableCell className="text-center">Order_id</TableCell>
                 <TableCell className="text-center">Product_Name</TableCell>
                 <TableCell className="text-center">Product_count</TableCell>
@@ -51,6 +58,14 @@ const Product_show = () => {
             <TableBody>
               {Order.map((item, ind) => (
                 <TableRow key={ind}>
+                  <TableCell>
+                    <img
+                      src={`${item?.newImage?.[0]}`}
+                      alt='Error'
+                      loading="lazy"
+                      style={{ height: '60px', width: '60px', borderRadius: '10px' }}
+                    />
+                  </TableCell>
                   <TableCell>{item?._id}</TableCell>
                   <TableCell>{item?.product_name}</TableCell>
                   <TableCell>{item?.product_count}</TableCell>
@@ -58,7 +73,14 @@ const Product_show = () => {
                   <TableCell>{item?.address}</TableCell>
                   <TableCell>{item?.payment_method}</TableCell>
                   <TableCell>₹ {item?.Total_rupess}</TableCell>
-                  <TableCell>{item?.status}</TableCell>
+                  <TableCell>
+                    <Select value={item?.status} size="small" disabled={true}>
+                      <MenuItem value="pending">pending</MenuItem>
+                      <MenuItem value="cancel">cancel</MenuItem>
+                      <MenuItem value="processing">processing</MenuItem>
+                      <MenuItem value="done">done</MenuItem>
+                    </Select>
+                  </TableCell>
                   <TableCell>{item?.Date}</TableCell>
                   <TableCell>
                     <Button variant="contained" size="small" color="info" onClick={() => View(item)}>

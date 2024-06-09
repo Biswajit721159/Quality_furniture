@@ -13,6 +13,7 @@ import Addproduct from './Product/Addproduct'
 import './css/Loader.css'
 import ErrorPage from "./component/ErrorPage";
 import Logout from "./component/Logout";
+import OrderView from "./order/OrderView";
 
 function App() {
   const userinfo = useSelector((state) => state.user.user);
@@ -29,8 +30,9 @@ function App() {
               <Route path="/Product" element={<Product_Section />} />
               <Route path="/Product/AddProduct" element={<Addproduct />} />
               <Route path="/Product_view/:_id" element={<Product_View />} />
-              <Route path="/Review/page/:page" element={<Reviews_Section />} />
+              <Route path="/Review" element={<Reviews_Section />} />
               <Route path="/Order" element={<Order_section />} />
+              <Route path="/Order/:_id" element={<OrderView />} />
               <Route path="/User" element={<User_section />} />
               <Route path="*" element={<ErrorPage />} />
             </Routes>
