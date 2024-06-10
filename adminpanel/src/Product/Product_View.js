@@ -6,7 +6,7 @@ import { selectProductmethod } from '../redux/selectProduct'
 import { PulseLoader, BeatLoader } from 'react-spinners';
 import swal from 'sweetalert'
 import { Box, Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-
+import { IoMdArrowBack } from "react-icons/io";
 const api = process.env.REACT_APP_API
 
 const Product_View = () => {
@@ -280,34 +280,39 @@ const Product_View = () => {
         }
     }
 
-
+    const Back = () => {
+        history('/Product')
+    }
     return (
         <>
             {
-                load == true ?
+                load === true ?
                     <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
                         <PulseLoader color="#16A085" />
                     </Box>
                     : product != null &&
                     <>
-                        <Box display="flex" justifyContent="space-around" flexWrap="wrap" marginBottom={5}>
+                        <Button size="small" type="submit" variant="contained" onClick={Back} color="info" sx={{ textAlign: 'center', mt: 1, mx: 5 }}>
+                            <IoMdArrowBack /> Back
+                        </Button>
+                        <Box display="flex" justifyContent="space-around" flexWrap="wrap" marginBottom={5} marginTop={1}>
                             <Box display="flex" flexDirection="column" alignItems="center">
-                                <img src={file1 ? image1 : product.newImage[0]} alt='Error to Load' style={{ width: '300px', height: '300px' }} />
-                                <Button variant="contained" size='small' component="label">
+                                <img src={file1 ? image1 : product.newImage[0]} alt='Error to Load' style={{ width: '300px', height: '300px', borderRadius: '10px' }} />
+                                <Button variant="contained" size='small' color='success' component="label">
                                     Update Image
                                     <input type="file" hidden onChange={handleFileUpload1} />
                                 </Button>
                             </Box>
                             <Box display="flex" flexDirection="column" alignItems="center">
-                                <img src={file2 ? image2 : product.newImage[1]} alt='Error to Load' style={{ width: '300px', height: '300px' }} />
-                                <Button variant="contained" size='small' component="label">
+                                <img src={file2 ? image2 : product.newImage[1]} alt='Error to Load' style={{ width: '300px', height: '300px', borderRadius: '10px' }} />
+                                <Button variant="contained" size='small' color='success' component="label">
                                     Update Image
                                     <input type="file" hidden onChange={handleFileUpload2} />
                                 </Button>
                             </Box>
                             <Box display="flex" flexDirection="column" alignItems="center">
-                                <img src={file3 ? image3 : product.newImage[2]} alt='Error to Load' style={{ width: '300px', height: '300px' }} />
-                                <Button variant="contained" size='small' component="label">
+                                <img src={file3 ? image3 : product.newImage[2]} alt='Error to Load' style={{ width: '300px', height: '300px', borderRadius: '10px' }} />
+                                <Button variant="contained" size='small' color='success' component="label">
                                     Update Image
                                     <input type="file" hidden onChange={handleFileUpload3} />
                                 </Button>

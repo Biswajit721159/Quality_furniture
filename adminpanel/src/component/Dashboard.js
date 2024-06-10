@@ -10,10 +10,10 @@ const Dashboard = () => {
       <section className="home-section">
         <div className="home-content">
           <div className="overview-boxes">
-            <ReviewsDashboard />
             <UserDashboard />
             <ProductDashboard />
             <OrderDashboard />
+            <ReviewsDashboard />
           </div>
         </div>
       </section>

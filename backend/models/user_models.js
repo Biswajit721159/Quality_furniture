@@ -1,6 +1,6 @@
-let mongoose, {Schema,model} =require("mongoose")
-let jwt =require("jsonwebtoken")
-let bcrypt =require("bcrypt")
+let mongoose, { Schema, model } = require("mongoose")
+let jwt = require("jsonwebtoken")
+let bcrypt = require("bcrypt")
 
 const userSchema = new Schema(
     {
@@ -9,12 +9,12 @@ const userSchema = new Schema(
             required: true,
             unique: true,
             lowecase: true,
-            trim: true, 
+            trim: true,
         },
         name: {
             type: String,
             required: true,
-            trim: true, 
+            trim: true,
             index: true
         },
         password: {
@@ -24,9 +24,13 @@ const userSchema = new Schema(
         address: {
             type: String,
             required: true,
-            trim: true, 
+            trim: true,
             index: true
         },
+        isBlackListUser: {
+            type: Boolean,
+            default: false
+        }
     },
     {
         timestamps: true
@@ -34,19 +38,19 @@ const userSchema = new Schema(
 )
 
 userSchema.pre("save", async function (next) {
-    if(!this.isModified("password")) return next();
+    if (!this.isModified("password")) return next();
     this.password = await bcrypt.hash(this.password, 10)
     next()
 })
 
-userSchema.methods.isPasswordCorrect = async function(password){
+userSchema.methods.isPasswordCorrect = async function (password) {
     return await bcrypt.compare(password, this.password)
 }
 
-userSchema.methods.generateAccessToken = function(){
-    let data=jwt.sign(
+userSchema.methods.generateAccessToken = function () {
+    let data = jwt.sign(
         {
-            _id:(this._id),
+            _id: (this._id),
             email: this.email,
             name: this.name
         },
@@ -73,5 +77,5 @@ userSchema.methods.generateAccessToken = function(){
 //     return refreshToken;
 // }
 
-let User=model("user", userSchema);
-module.exports=User;
+let User = model("user", userSchema);
+module.exports = User;

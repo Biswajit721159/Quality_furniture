@@ -2,6 +2,24 @@ let User = require("../models/user_models");
 const mongoose = require("mongoose");
 let { ApiResponse } = require("../utils/ApiResponse.js");
 
+let updateUserinfo = async (req, res) => {
+  try {
+    let name = req.body.name;
+    let address = req.body.address;
+    let isBlackListUser = req.body.isBlackListUser
+    let updateduser = await User.updateOne({ _id: req.params._id },
+      { $set: { name: name, address: address, isBlackListUser: isBlackListUser } }
+    )
+    if (updateduser?.acknowledged && updateduser?.matchedCount) {
+      return res.status(200).json(new ApiResponse(200, null, "user updated !"))
+    } else {
+      return res.status(400).json(new ApiResponse(400, null, "*user not updated try again!"))
+    }
+  } catch {
+    return res.status(500).json(new ApiResponse(500, null, "Something went wrong while updating the user"));
+  }
+}
+
 let searchNameAndEmail = async (req, res) => {
   try {
     let searchValue = req.params.searchValue;
@@ -202,7 +220,7 @@ const updateNameAddress = async (req, res) => {
 let countNumberUser = async (req, res) => {
   try {
     const result = await User.countDocuments({});
-    res.status(201).json(new ApiResponse(201, result, "success"));
+    res.status(200).json(new ApiResponse(200, result, "success"));
   }
   catch {
     res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
@@ -236,6 +254,7 @@ let getAlluser = async (req, res) => {
 }
 
 module.exports = {
+  updateUserinfo,
   searchNameAndEmail,
   register,
   loginUser,

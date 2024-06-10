@@ -22,12 +22,13 @@
   .overview-boxes .box{
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
     width: calc(100% / 4 - 15px);
     background:#D7F9F9;
     padding: 15px 14px;
     border-radius: 12px;
     box-shadow: 0 5px 10px #DADDDB ;
+    flex-wrap: wrap;
   }
   .overview-boxes .box-topic{
     font-size: 15px;

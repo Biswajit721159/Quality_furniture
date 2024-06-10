@@ -7,27 +7,28 @@ import {
     Typography,
     Container,
     Select,
-    MenuItem
+    MenuItem,
+    InputLabel
 } from '@mui/material';
 import { useNavigate } from "react-router-dom";
-import { updateOrder } from '../redux/OrderSlice'
+import { updateUser } from '../redux/AllUserSlice';
 import { useDispatch, useSelector } from "react-redux";
 import { IoMdArrowBack } from "react-icons/io";
 
-const OrderView = () => {
-    const history = useNavigate()
-    const dispatch = useDispatch()
+const UserView = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const location = useLocation();
     const { data } = location.state || {};
     const [formData, setFormData] = useState(data);
     const userinfo = useSelector((state) => state?.user?.user);
-    const { UpdatedOrderMessage, UpdatedOrderLoading } = useSelector((state) => state?.Order)
+    const { UpdatedUserMessage, UpdatedUserLoading } = useSelector((state) => state?.Alluser);
 
     const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
+        const { name, value } = e.target;
         setFormData({
             ...formData,
-            [name]: type === 'checkbox' ? checked : value,
+            [name]: value,
         });
     };
 
@@ -41,27 +42,27 @@ const OrderView = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(updateOrder({ formData, userinfo }))
+        dispatch(updateUser({ formData, userinfo }));
     };
 
-    const Back = () => {
-        history('/Order')
-    }
+    const handleBack = () => {
+        navigate('/User');
+    };
 
     return (
         <Container>
-            <Button size="small" type="submit" variant="contained" onClick={Back} color="info" sx={{ textAlign: 'center', mt: 1 }}>
+            <Button size="small" type="button" variant="contained" onClick={handleBack} color="info" sx={{ textAlign: 'center', mt: 1 }}>
                 <IoMdArrowBack /> Back
             </Button>
             <Typography variant="h6" sx={{ textAlign: 'center' }}>
-                Update Order
+                Update User
             </Typography>
 
             <form onSubmit={handleSubmit}>
                 <Grid container spacing={2} sx={{ mt: 1 }}>
                     <Grid item xs={4}>
                         <TextField
-                            label="Order Id"
+                            label="User ID"
                             name="_id"
                             value={formData._id}
                             onChange={handleChange}
@@ -72,7 +73,7 @@ const OrderView = () => {
                     </Grid>
                     <Grid item xs={4}>
                         <TextField
-                            label="createdAt"
+                            label="Created At"
                             name="createdAt"
                             value={formData.createdAt}
                             onChange={handleChange}
@@ -83,7 +84,7 @@ const OrderView = () => {
                     </Grid>
                     <Grid item xs={4}>
                         <TextField
-                            label="updatedAt"
+                            label="Updated At"
                             name="updatedAt"
                             value={formData.updatedAt}
                             onChange={handleChange}
@@ -96,44 +97,9 @@ const OrderView = () => {
                 <Grid container spacing={2} sx={{ mt: 1 }}>
                     <Grid item xs={4}>
                         <TextField
-                            label="Booking Date"
-                            name="Date"
-                            value={formData.Date}
-                            onChange={handleChange}
-                            fullWidth
-                            size="small"
-                            disabled
-                        />
-                    </Grid>
-                    <Grid item xs={4}>
-                        <TextField
-                            label="Total Rupess"
-                            name="Total_rupess"
-                            value={formData.Total_rupess}
-                            onChange={handleChange}
-                            fullWidth
-                            size="small"
-                            disabled
-                        />
-                    </Grid>
-                    <Grid item xs={4}>
-                        <TextField
                             label="Email"
                             name="email"
                             value={formData.email}
-                            onChange={handleChange}
-                            fullWidth
-                            size="small"
-                            disabled
-                        />
-                    </Grid>
-                </Grid>
-                <Grid container spacing={2} sx={{ mt: 1 }}>
-                    <Grid item xs={4}>
-                        <TextField
-                            label="Product Name"
-                            name="product_name"
-                            value={formData.product_name}
                             onChange={handleChange}
                             fullWidth
                             size="small"
@@ -142,53 +108,13 @@ const OrderView = () => {
                     </Grid>
                     <Grid item xs={4}>
                         <TextField
-                            label="Product Count"
-                            name="product_count"
-                            value={formData.product_count}
+                            label="Name"
+                            name="name"
+                            value={formData.name}
                             onChange={handleChange}
                             fullWidth
                             size="small"
-                            disabled
                         />
-                    </Grid>
-                    <Grid item xs={4}>
-                        <TextField
-                            label="Product ID"
-                            name="product_id"
-                            value={formData.product_id}
-                            onChange={handleChange}
-                            fullWidth
-                            size="small"
-                            disabled
-                        />
-                    </Grid>
-                </Grid>
-                <Grid container spacing={2} sx={{ mt: 1 }}>
-                    <Grid item xs={4}>
-                        <TextField
-                            label="Payment Method"
-                            name="payment_method"
-                            value={formData.payment_method}
-                            onChange={handleChange}
-                            fullWidth
-                            size="small"
-                            disabled
-                        />
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Select
-                            label="Status"
-                            name="status"
-                            value={formData.status}
-                            onChange={handleSelectChange}
-                            fullWidth
-                            size="small"
-                        >
-                            <MenuItem value="pending">pending</MenuItem>
-                            <MenuItem value="cancel">cancel</MenuItem>
-                            <MenuItem value="processing">processing</MenuItem>
-                            <MenuItem value="done">done</MenuItem>
-                        </Select>
                     </Grid>
                     <Grid item xs={4}>
                         <TextField
@@ -198,29 +124,46 @@ const OrderView = () => {
                             onChange={handleChange}
                             fullWidth
                             size="small"
-                            rows={2}
                             multiline
+                            rows={2}
                         />
+                    </Grid>
+                </Grid>
+                <Grid container spacing={2} >
+                    <Grid item xs={4}>
+                        <InputLabel id="isBlackListUser-label">Blacklisted</InputLabel>
+                        <Select
+                            labelId="isBlackListUser-label"
+                            label="Blacklisted"
+                            name="isBlackListUser"
+                            value={formData.isBlackListUser}
+                            onChange={handleSelectChange}
+                            fullWidth
+                            size="small"
+                        >
+                            <MenuItem value={false}>No</MenuItem>
+                            <MenuItem value={true}>Yes</MenuItem>
+                        </Select>
                     </Grid>
                 </Grid>
                 <Grid item xs={12} sx={{ mt: 2 }}>
                     {
-                        UpdatedOrderLoading === true ?
+                        UpdatedUserLoading === true ?
                             <Button type="submit" size="small" disabled={true} variant="contained" color="success">
-                                Please wait..
+                                Please wait...
                             </Button>
                             :
                             <Button type="submit" size="small" variant="contained" color="success">
-                                Update Order
+                                Update User
                             </Button>
                     }
                 </Grid>
             </form>
             <Typography variant="body1" sx={{ textAlign: 'center', color: 'red' }}>
-                {UpdatedOrderMessage}
+                {UpdatedUserMessage}
             </Typography>
         </Container>
     );
 };
 
-export default OrderView;
+export default UserView;

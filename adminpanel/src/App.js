@@ -14,6 +14,7 @@ import './css/Loader.css'
 import ErrorPage from "./component/ErrorPage";
 import Logout from "./component/Logout";
 import OrderView from "./order/OrderView";
+import UserView from "./user/UserView"
 
 function App() {
   const userinfo = useSelector((state) => state.user.user);
@@ -34,6 +35,7 @@ function App() {
               <Route path="/Order" element={<Order_section />} />
               <Route path="/Order/:_id" element={<OrderView />} />
               <Route path="/User" element={<User_section />} />
+              <Route path="/User/:_id" element={<UserView />}></Route>
               <Route path="*" element={<ErrorPage />} />
             </Routes>
           </div>

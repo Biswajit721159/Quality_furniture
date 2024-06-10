@@ -7,13 +7,15 @@ let {
   updateNameAddress,
   countNumberUser,
   getAlluser,
-  searchNameAndEmail
+  searchNameAndEmail,
+  updateUserinfo,
 } = require("../controlers/usercontrolers");
 
 let verifytoken = require('../middlewares/verifiedToken')
 
 const router = Router();
 
+router.route("/updateUserinfo/:_id").put(verifytoken, updateUserinfo)
 router.route("/searchNameAndEmail/:searchValue/:LowerLimit/:HighLimit").get(searchNameAndEmail);
 router.route("/register").post(register);
 router.route("/login").patch(loginUser);

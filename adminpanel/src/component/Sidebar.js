@@ -20,11 +20,12 @@ const Sidebar = () => {
   const isProductLogin = useSelector((state) => state?.product?.isProductLogin)
   const selectProductLogin = useSelector((state) => state?.selectProduct?.selectProductLogin)
   const userLogin = useSelector((state) => state?.user?.userLogin)
+  const isCountLogin = useSelector((state) => state?.count?.isCountLogin)
 
   // console.log(isUserLogin, isOrderLogin, isProductLogin, selectProductLogin, userLogin)
 
   useEffect(() => {
-    if (!isUserLogin || !isOrderLogin || !isProductLogin || !selectProductLogin || !userLogin) {
+    if (!isUserLogin || !isOrderLogin || !isProductLogin || !selectProductLogin || !userLogin || !isCountLogin) {
       logout()
     }
     if (localStorage.getItem('colormode') === null) {
@@ -33,7 +34,7 @@ const Sidebar = () => {
     else {
       givecolortobody(localStorage.getItem('colormode'))
     }
-  }, [isUserLogin, isOrderLogin, isOrderLogin, isProductLogin, selectProductLogin])
+  }, [isUserLogin, isOrderLogin, isOrderLogin, isProductLogin, selectProductLogin, isCountLogin])
 
   function givecolortobody(color) {
     setcolor(color)
@@ -67,6 +68,11 @@ const Sidebar = () => {
         </div> */}
         {/* <span className="logo_name mt-5" style={{ color: "green", alignItems: 'center' }}> welcome {userinfo?.user?.first_name}</span> */}
         <ul className="nav-links">
+          <li className="log_out">
+            <Link className="active">
+              <span className="links_name" onClick={logout} > <IoIosLogOut /> LogOut</span>
+            </Link>
+          </li>
           <li>
             <Link to="/" className="active mt-4">
               <span className="links_name" ><RxDashboard /> Dashboard</span>
@@ -90,11 +96,6 @@ const Sidebar = () => {
           <li>
             <Link to={`/Review`} className="active">
               <span className="links_name" ><RiShareBoxFill /> Manage Reviews</span>
-            </Link>
-          </li>
-          <li className="log_out">
-            <Link className="active">
-              <span className="links_name" onClick={logout} > <IoIosLogOut /> LogOut</span>
             </Link>
           </li>
         </ul>

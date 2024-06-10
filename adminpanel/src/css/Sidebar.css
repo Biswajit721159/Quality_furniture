@@ -30,16 +30,16 @@
   background: #f39c12;
 }
 
-.sidebar .nav-links .log_out {
+/* .sidebar .nav-links .log_out {
   position: absolute;
   bottom: 0;
-}
+} */
 
 .nav-links li a .links_name {
   /* margin-left: 10px; */
   font-weight: bold;
 }
 
-.log_out {
+/* .log_out {
   margin-top: auto;
-}
+} */

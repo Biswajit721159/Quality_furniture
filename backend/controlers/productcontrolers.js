@@ -345,7 +345,7 @@ let TopOfferProduct = async (req, res) => {
 let countNumberProduct = async (req, res) => {
   try {
     const result = await product.countDocuments({});
-    res.status(201).json(new ApiResponse(201, result, "success"));
+    res.status(200).json(new ApiResponse(200, result, "success"));
   }
   catch {
     res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));

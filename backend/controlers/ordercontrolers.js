@@ -220,7 +220,7 @@ let getorderByLimit = async (req, res) => {
 let countNumberOrder = async (req, res) => {
   try {
     const result = await order.countDocuments({});
-    res.status(201).json(new ApiResponse(201, result, "success"));
+    res.status(200).json(new ApiResponse(200, result, "success"));
   }
   catch {
     res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
@@ -365,7 +365,7 @@ let updateOrder = async (req, res) => {
       { $set: { status: status, address: address } }
     )
     if (result.matchedCount) {
-      return res.status(200).json(new ApiResponse(200, null, "Successfully updated!"))
+      return res.status(200).json(new ApiResponse(200, null, "successfully updated!"))
     } else {
       return res.status(500).json(new ApiResponse(500, null, "some error is found while updating the order data"))
     }
