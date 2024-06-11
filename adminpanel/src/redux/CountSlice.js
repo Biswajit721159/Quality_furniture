@@ -90,15 +90,16 @@ const countSlice = createSlice({
     reducers: {
         Reset: (state, action) => {
             let data = action?.payload;
-            if (data?.product !== undefined) state.product = data?.product;
-            if (data?.prev !== undefined) state.prev = data?.prev;
-            if (data?.next !== undefined) state.next = data?.next;
-            if (data?.searchvalue !== undefined) state.searchvalue = data?.searchvalue;
-            if (data?.LowerLimit !== undefined) state.LowerLimit = data?.LowerLimit;
-            if (data?.UpperLimit !== undefined) state.UpperLimit = data?.UpperLimit;
-            if (data?.productLoading !== undefined) state.productLoading = data?.productLoading;
-            if (data?.isProductLogin !== undefined) state.isProductLogin = data?.isProductLogin;
-            if (data?.error !== undefined) state.error = data?.error;
+            if (data?.userCount !== undefined) state.userCount = data?.userCount;
+            if (data?.productCount !== undefined) state.productCount = data?.productCount;
+            if (data?.orderCount !== undefined) state.orderCount = data?.orderCount;
+            if (data?.reviewCount !== undefined) state.reviewCount = data?.reviewCount;
+            if (data?.loadingUser !== undefined) state.loadingUser = data?.loadingUser;
+            if (data?.loadingProduct !== undefined) state.loadingProduct = data?.loadingProduct;
+            if (data?.loadingOrder !== undefined) state.loadingOrder = data?.loadingOrder;
+            if (data?.loadingReview !== undefined) state.loadingReview = data?.loadingReview;
+            if (data?.isCountLogin !== undefined) state.isCountLogin = data?.isCountLogin;
+            if (data?.errorMessage !== undefined) state.errorMessage = data?.errorMessage;
         }
     },
     extraReducers: (builder) => {

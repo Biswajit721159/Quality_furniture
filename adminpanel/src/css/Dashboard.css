@@ -24,6 +24,7 @@
     align-items: center;
     justify-content: space-evenly;
     width: calc(100% / 4 - 15px);
+    border-right: 5px solid purple;
     background:#D7F9F9;
     padding: 15px 14px;
     border-radius: 12px;

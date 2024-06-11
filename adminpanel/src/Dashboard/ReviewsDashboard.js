@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { PulseLoader } from 'react-spinners';
+import { ClipLoader } from 'react-spinners';
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from '@mui/material';
 import { IoMdRefresh } from "react-icons/io";
@@ -22,12 +22,12 @@ const ReviewsDashboard = () => {
   return (
     <>
       <div className="box">
-        <Link><Button size="small" color="info" onClick={loadreviews} startIcon={<IoMdRefresh size={'20px'} />}></Button></Link>
+        <Link><Button size="small" color="info" onClick={loadreviews} style={{ borderRight: '5px solid green' }} startIcon={<IoMdRefresh size={'20px'} />}></Button></Link>
         <Link className="custom-link" to={'/Review'}>
           <div className="right-side">
             <div className="box-topic">Reviews</div>
             <div className="number">
-              {loadingReview === true ? <PulseLoader color="#16A085" size={'10px'} /> : reviewCount}
+              {loadingReview === true ? <ClipLoader color="red" size={'20px'} /> : reviewCount}
             </div>
             <div className="indicator"></div>
           </div>

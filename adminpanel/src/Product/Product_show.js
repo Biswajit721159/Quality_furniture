@@ -15,6 +15,8 @@ import { loadProduct } from "../redux/ProductSlice";
 import DataNotFoundPage from "../component/DataNotFoundPage"
 import { HiStar } from "react-icons/hi";
 import { FaRupeeSign } from "react-icons/fa";
+import { SetRating } from "../Review/Reviews_show";
+
 const Product_show = () => {
   const dispatch = useDispatch()
   const userinfo = useSelector((state) => state?.user?.user);
@@ -64,7 +66,7 @@ const Product_show = () => {
                   <TableCell>{item?.offer}%</TableCell>
                   <TableCell><FaRupeeSign style={{ marginTop: '-2px', fontSize: '12px' }} />{item?.price}</TableCell>
                   <TableCell>{item?.product_type}</TableCell>
-                  <TableCell>{item?.rating}<HiStar style={{ marginTop: '-7px' }} /> ({item?.number_of_people_give_rating})</TableCell>
+                  <TableCell><SetRating rating={item?.rating} /> ({item?.number_of_people_give_rating})</TableCell>
                   <TableCell>
                     <Button variant="contained" size="small" color="info" onClick={() => View(item)}>
                       View

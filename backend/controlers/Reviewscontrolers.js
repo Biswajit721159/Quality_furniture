@@ -158,8 +158,24 @@ let AdminpanelReview = async (req, res) => {
     let lowerLimit = req.params.lowerLimit
     let upperLimit = req.params.upperLimit
     let limit = upperLimit - lowerLimit
+    let result = await Review.find({ product_id: req.params.product_id }).skip(lowerLimit).limit(limit + 1).exec();
+
+    let hasNextPage = result?.length > limit;
+    let actualResult = hasNextPage ? result?.slice(0, limit) : result;
+    let hasPrevPage = lowerLimit > 0;
+    let pagination = {
+      'prev': hasPrevPage,
+      'next': hasNextPage,
+    }
+    if (actualResult.length) actualResult.push(pagination)
+    if (actualResult) {
+      res.status(200).json(new ApiResponse(200, actualResult, "success"));
+    }
+    else {
+      res.status(404).json(new ApiResponse(404, null, "Review does not exist"));
+    }
   } catch {
-    res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
+    return res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
   }
 }
 

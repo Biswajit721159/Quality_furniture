@@ -8,10 +8,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Allusermethod } from '../redux/AllUserSlice';
 import { ordermethod } from '../redux/OrderSlice';
 import { productmethod } from '../redux/ProductSlice';
+import { countmethod } from '../redux/CountSlice';
+import { Reviewmethod } from '../redux/ReviewSlice'
 import '../css/Sidebar.css'
 
 const Sidebar = () => {
-  const userinfo = useSelector((state) => state?.user?.user);
   const dispatch = useDispatch();
   const history = useNavigate();
   const [color, setcolor] = useState(localStorage.getItem('colormode'))
@@ -21,11 +22,12 @@ const Sidebar = () => {
   const selectProductLogin = useSelector((state) => state?.selectProduct?.selectProductLogin)
   const userLogin = useSelector((state) => state?.user?.userLogin)
   const isCountLogin = useSelector((state) => state?.count?.isCountLogin)
+  const isReviewLogin = useSelector((state) => state?.review?.isReviewLogin)
 
   // console.log(isUserLogin, isOrderLogin, isProductLogin, selectProductLogin, userLogin)
 
   useEffect(() => {
-    if (!isUserLogin || !isOrderLogin || !isProductLogin || !selectProductLogin || !userLogin || !isCountLogin) {
+    if (!isUserLogin || !isOrderLogin || !isProductLogin || !selectProductLogin || !userLogin || !isCountLogin || !isReviewLogin) {
       logout()
     }
     if (localStorage.getItem('colormode') === null) {
@@ -34,7 +36,7 @@ const Sidebar = () => {
     else {
       givecolortobody(localStorage.getItem('colormode'))
     }
-  }, [isUserLogin, isOrderLogin, isOrderLogin, isProductLogin, selectProductLogin, isCountLogin])
+  }, [isUserLogin, isOrderLogin, isProductLogin, selectProductLogin, isCountLogin, isReviewLogin])
 
   function givecolortobody(color) {
     setcolor(color)
@@ -52,6 +54,8 @@ const Sidebar = () => {
     dispatch(productmethod.Reset({ isProductLogin: true }))
     dispatch(Allusermethod.Reset({ isUserLogin: true }))
     dispatch(ordermethod.Reset({ isOrderLogin: true }))
+    dispatch(countmethod.Reset({ isCountLogin: true }))
+    dispatch(Reviewmethod.Reset({ isReviewLogin: true }))
     dispatch(usermethod.LOGOUT())
     history('/Logout')
   }

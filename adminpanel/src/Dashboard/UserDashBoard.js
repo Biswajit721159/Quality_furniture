@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { PulseLoader } from 'react-spinners';
+import { ClipLoader } from 'react-spinners';
 import { useDispatch, useSelector } from 'react-redux'
 import { IoMdRefresh } from "react-icons/io";
 import { Button } from '@mui/material';
@@ -40,12 +40,12 @@ const UserDashboard = () => {
   return (
     <>
       <div className="box">
-        <Link><Button size="small" color="info" onClick={loadAgain} startIcon={<IoMdRefresh size={'20px'} />}></Button></Link>
+        <Link><Button size="small" color="info" onClick={loadAgain} style={{ borderRight: '5px solid green' }} startIcon={<IoMdRefresh size={'20px'} />}></Button></Link>
         <Link className="custom-link" to={'/User'}>
           <div className="right-side">
             <div className="box-topic">User</div>
             <div className="number">
-              {loadingUser === true ? <PulseLoader color="#16A085" size={'10px'} /> : userCount}
+              {loadingUser === true ? <ClipLoader color='red' size={'20px'} /> : userCount}
             </div>
             <div className="indicator"></div>
           </div>

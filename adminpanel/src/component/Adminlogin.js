@@ -12,8 +12,10 @@ const Adminlogin = () => {
   const [button, setButton] = useState("Login");
   const [disabled, setDisabled] = useState(false);
   const [wrongUser, setWrongUser] = useState(false);
+  const [wrongusermessage, setwrongusermessage] = useState('')
 
   const submit = () => {
+    setwrongusermessage('')
     setButton("wait a second ...");
     setDisabled(true);
     fetch(`${api}/adminpanel/Login`, {
@@ -24,22 +26,24 @@ const Adminlogin = () => {
       },
       body: JSON.stringify({ email, password })
     })
-    .then(response => response.json())
-    .then(result => {
-      if (result.statusCode === 200) {
-        dispatch(usermethod.LOGIN(result.data));
-        navigate('/'); 
-      } else {
+      .then(response => response.json())
+      .then(result => {
+        if (result.statusCode === 200) {
+          dispatch(usermethod.LOGIN(result.data));
+          navigate('/');
+        } else {
+          setButton("Login");
+          setDisabled(false);
+          setWrongUser(true);
+          setwrongusermessage(result?.message)
+        }
+      })
+      .catch(() => {
         setButton("Login");
         setDisabled(false);
         setWrongUser(true);
-      }
-    })
-    .catch(() => {
-      setButton("Login");
-      setDisabled(false);
-      setWrongUser(true);
-    });
+        wrongusermessage('server down!')
+      });
   }
 
   return (
@@ -71,7 +75,7 @@ const Adminlogin = () => {
               required
             />
           </div>
-          {wrongUser && <div className="text-danger mb-3">*Wrong username or password</div>}
+          {wrongUser && <div className="text-danger mb-3">{wrongusermessage}</div>}
           <button type="submit" className="btn btn-primary w-100" disabled={disabled}>{button}</button>
         </form>
       </div>

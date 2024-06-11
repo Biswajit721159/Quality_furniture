@@ -15,6 +15,8 @@ import ErrorPage from "./component/ErrorPage";
 import Logout from "./component/Logout";
 import OrderView from "./order/OrderView";
 import UserView from "./user/UserView"
+import View_Review from './Review/View_Review'
+import ViewRatingReview from "./Review/ViewRatingReview";
 
 function App() {
   const userinfo = useSelector((state) => state.user.user);
@@ -32,6 +34,8 @@ function App() {
               <Route path="/Product/AddProduct" element={<Addproduct />} />
               <Route path="/Product_view/:_id" element={<Product_View />} />
               <Route path="/Review" element={<Reviews_Section />} />
+              <Route path="/Review/:_id" element={<View_Review />}></Route>
+              <Route path="/Review/:_id/view" element={<ViewRatingReview />}></Route>
               <Route path="/Order" element={<Order_section />} />
               <Route path="/Order/:_id" element={<OrderView />} />
               <Route path="/User" element={<User_section />} />

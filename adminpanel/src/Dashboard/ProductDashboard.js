@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { PulseLoader } from 'react-spinners';
+import { ClipLoader } from 'react-spinners';
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from '@mui/material';
 import { IoMdRefresh } from "react-icons/io";
@@ -29,12 +29,12 @@ const ProductDashboard = () => {
   return (
     <>
       <div className="box">
-        <Link><Button size="small" color="info" onClick={loadAgain} startIcon={<IoMdRefresh size={'20px'} />}></Button></Link>
+        <Link><Button size="small" color="info" onClick={loadAgain} style={{ borderRight: '5px solid green' }} startIcon={<IoMdRefresh size={'20px'} />}></Button></Link>
         <Link className="custom-link" to={'/Product'}>
           <div className="right-side">
             <div className="box-topic">Product</div>
             <div className="number">
-              {loadingProduct === true ? <PulseLoader color="#16A085" size={'10px'} /> : productCount}
+              {loadingProduct === true ? <ClipLoader color="red" size={'20px'} /> : productCount}
             </div>
             <div className="indicator"></div>
           </div>
