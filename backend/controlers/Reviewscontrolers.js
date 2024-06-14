@@ -179,6 +179,25 @@ let AdminpanelReview = async (req, res) => {
   }
 }
 
+let AdminReviewUpdate = async (req, res) => {
+  try {
+    let review_id = req.params.review_id;
+    let review = req.body.review;
+    let updatedReview = await Review.updateOne(
+      { _id: review_id },
+      { $set: { review: review } }
+    )
+    if (updatedReview.acknowledged && updatedReview.matchedCount) {
+      return res.status(200).json(new ApiResponse(200, null, "successfully updated !"))
+    }
+    else {
+      return res.status(400).json(new ApiResponse(400, null, "unsuccessfull to updated !"))
+    }
+  } catch {
+    return res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
+  }
+}
+
 module.exports = {
   informationById,
   ReviewInsert,
@@ -186,5 +205,6 @@ module.exports = {
   findRatingPersentageofProduct,
   countNumberReviews,
   exitProduct_idAndOrder_id,
-  AdminpanelReview
+  AdminpanelReview,
+  AdminReviewUpdate
 };

@@ -1,20 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, Container } from '@mui/material';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Loading from "../component/Loading";
 import { SetRating } from "./Reviews_show";
 import { useNavigate } from "react-router-dom";
+import { Reviewmethod } from '../redux/ReviewSlice'
 const TableShowReview = () => {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch()
     const { Review, next, orderLoading } = useSelector((state) => state?.review);
+
+    useEffect(() => {
+        dispatch(Reviewmethod.setUpdatedOrderMessage(''))
+    }, [])
+
     function handleScroll() {
 
     }
-
     function View(data) {
         navigate(`View`, { state: { data: data } });
     }
+
     return (
         <>
             <Container>

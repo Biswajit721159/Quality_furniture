@@ -44,7 +44,7 @@ const Carousel = (props) => {
                         {ind >= low && ind <= high &&
                             <div>
                                 <Link to={`/Product/${item?._id}`} style={{ textDecoration: 'none' }}>
-                                    <Card sx={{ m: 0.5, maxHeight: '300px' }}  className="gradient-background">
+                                    <Card sx={{ m: 0.5, maxHeight: '300px' }} >
                                         <img src={item?.newImage?.[0]} className="imgs" alt="Error" />
                                         <p className="credit card-text">{item.product_name}</p>
                                         <div className="row mx-1">

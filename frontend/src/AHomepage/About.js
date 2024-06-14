@@ -7,10 +7,10 @@ import { RiEBikeFill } from "react-icons/ri";
 import '../css/About.css'
 const About = () => {
     return (
-        <div className=' mt-2 shadow-none p-3 mb-5 bg-light rounded gradient-background'>
+        <div className=' mt-2 shadow-none p-3 mb-5 bg-light rounded '>
             <h3 className='headline1' style={{color:'green'}}>About us</h3>
             <h1 className='headline2' style={{color:'green'}} > WHY CHOOSE US? </h1>
-            <div className='gradient-background'>
+            <div className=''>
                 <div className="imageitem" >
                     <img src={Table3} className="imageitem" alt="Error" />
                 </div>

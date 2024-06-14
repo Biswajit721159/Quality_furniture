@@ -94,8 +94,8 @@ export const SetRating = ({ rating }) => {
           rating > 0 && rating <= 1 ? <Rating rating={rating} color={'#FF0000'} /> :
             rating > 1 && rating <= 2 ? <Rating rating={rating} color={'#FF7F00'} /> :
               rating > 2 && rating <= 3 ? <Rating rating={rating} color={'#A4A42D'} /> :
-                rating > 3 && rating <= 4 ? <Rating rating={rating} color={'#7FFF00'} /> :
-                  <Rating rating={rating} color={'#00FF00'} />
+                rating > 3 && rating <= 4 ? <Rating rating={rating} color={'#82E0AA'} /> :
+                  <Rating rating={rating} color={'green'} />
       }
     </>
   )
@@ -104,7 +104,7 @@ export const SetRating = ({ rating }) => {
 export const Rating = ({ rating, color }) => {
   return (
     <>
-      <p style={{ color: color, fontSize: '17px' }}>{rating} < HiStar color={color} style={{ marginTop: '-7px' }} /></p>
+      <p style={{ color: color, fontSize:'15px' }}>{rating} < HiStar color={color} style={{ marginTop: '-7px' }} /></p>
     </>
   )
 }

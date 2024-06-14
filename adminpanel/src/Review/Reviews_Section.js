@@ -6,7 +6,6 @@ import Reviews_show from "./Reviews_show";
 import _ from 'lodash';
 import { loadProduct } from "../redux/ProductSlice";
 import { Link } from "react-router-dom";
-import { FaPlus } from "react-icons/fa6";
 import Loading from "../component/Loading";
 import { IoMdRefresh } from "react-icons/io";
 

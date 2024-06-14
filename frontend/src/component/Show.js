@@ -113,7 +113,7 @@ export default function Show() {
                             <div className='product'>
                                 {
                                     product && product?.map((item, ind) => (
-                                        <Card key={ind} sx={{ width: 240 }} className='carditem gradient-background' >
+                                        <Card key={ind} sx={{ width: 240 }} className='carditem' >
                                             {
                                                 takeid === item._id ?
                                                     <Link to={`/Product/${item._id}`} onMouseLeave={handleMouseLeave} onMouseOver={() => handleMouseOver(item._id)}>

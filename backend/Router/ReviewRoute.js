@@ -8,7 +8,8 @@ let {
   findRatingPersentageofProduct,
   countNumberReviews,
   exitProduct_idAndOrder_id,
-  AdminpanelReview
+  AdminpanelReview,
+  AdminReviewUpdate
 } = require("../controlers/Reviewscontrolers");
 
 const router = Router();
@@ -19,5 +20,6 @@ router.route('/:product_id/:lowerLimit/:upperLimit').get(verifytoken, findReview
 router.route('/findRatingPersentageofProduct/:product_id').get(verifytoken, findRatingPersentageofProduct);
 router.route('/Dashboard/countNumberReviews').get(verifytoken, countNumberReviews);
 router.route('/Adninpanel/:lowerLimit/:upperLimit/:product_id').get(verifytoken, AdminpanelReview);
+router.route('/AdminReviewUpdate/:review_id').put(verifytoken, AdminReviewUpdate)
 
 module.exports = router;
