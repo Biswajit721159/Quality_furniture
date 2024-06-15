@@ -1,29 +1,34 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 const api = process.env.REACT_APP_API;
 
+async function findProduct(parameter) {
+    let lowprice = parameter.lowprice
+    let highprice = parameter.highprice
+    let selectcatagory = parameter.selectcatagory
+    let searchproduct = parameter.searchInput
+    let lowerLimit = parameter.lowerLimit
+    let higherLimit = parameter.higherLimit
+    let userinfo = parameter.userinfo
+    if (searchproduct === null || searchproduct?.length === 0 || searchproduct === undefined) searchproduct = "none";
+
+    const response = await fetch(`${api}/product/getproductUponPriceProductTypeAndProductName/${lowprice}/${highprice}/${selectcatagory}/${searchproduct}/${lowerLimit}/${higherLimit}`, {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${userinfo?.accessToken}`
+        },
+        body: JSON.stringify({
+            'email': userinfo?.user?.email,
+        })
+    })
+    const data = await response.json();
+    return data;
+}
+
 export const loadProduct = createAsyncThunk(
     'product/loadProduct',
     async (parameter) => {
         try {
-            let lowprice = parameter.lowprice
-            let highprice = parameter.highprice
-            let selectcatagory = parameter.selectcatagory
-            let searchproduct = parameter.searchInput
-            let lowerLimit = parameter.lowerLimit
-            let higherLimit = parameter.higherLimit
-            let userinfo = parameter.userinfo
-            if (searchproduct === null || searchproduct?.length === 0) searchproduct = "none";
-
-            const response = await fetch(`${api}/product/getproductUponPriceProductTypeAndProductName/${lowprice}/${highprice}/${selectcatagory}/${searchproduct}/${lowerLimit}/${higherLimit}`, {
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${userinfo?.accessToken}`
-                },
-                body: JSON.stringify({
-                    'email': userinfo?.user?.email,
-                })
-            })
-            const data = await response.json();
+            let data = await findProduct(parameter)
             return data;
         } catch (error) {
             throw error;
@@ -84,6 +89,18 @@ export const LoadCatagory = createAsyncThunk(
     }
 );
 
+export const searchProduct = createAsyncThunk(
+    'product/searchProduct',
+    async (parameter) => {
+        try {
+            let data = await findProduct(parameter)
+            return data
+        } catch (error) {
+            throw error
+        }
+    }
+)
+
 const initialState = {
     product: [],
     allproduct: [],
@@ -119,9 +136,13 @@ const productSlice = createSlice({
             state.product = allproduct
             state.product = searchproduct(searchinput, allproduct)
         },
+        setSearchProduct: (state, action) => {
+            state.searchproduct = action.payload.searchproduct
+        }
     },
     extraReducers: (builder) => {
         builder
+
             .addCase(loadProduct.pending, (state) => {
                 state.loadingproduct = true;
                 state.error = null;
@@ -129,17 +150,32 @@ const productSlice = createSlice({
             .addCase(loadProduct.fulfilled, (state, action) => {
                 state.loadingproduct = false;
                 let n = action?.payload?.data?.length;
-                let data = action?.payload?.data
+                let data = action?.payload?.data;
                 if (action?.payload?.statusCode === 498) {
                     state.isProductLogedin = false
                     return;
                 }
-                if (n) {
-                    state.previous_page = data?.[n - 1]?.prev;
-                    state.next_page = data?.[n - 1]?.next;
+                else if (action?.payload?.statusCode === 200) {
+                    if (n) {
+                        state.previous_page = data?.[n - 1]?.prev;
+                        state.next_page = data?.[n - 1]?.next;
+                    }
+                    data = data?.slice?.(0, n - 1)
+                    let oldproduct = state.product
+                    let oldproductids = oldproduct?.map((item) => {
+                        return item._id
+                    })
+                    let flag = true
+                    let newproduct = data?.filter((item) => {
+                        if (oldproductids?.includes(item._id) === false) {
+                            return item;
+                        } else {
+                            flag = false
+                        }
+                    })
+                    state.product = [...state.product, ...newproduct];
+                    state.allproduct = [...state.product, ...newproduct];
                 }
-                state.product = data?.slice?.(0, n - 1);
-                state.allproduct = data?.slice?.(0, n - 1);
                 state.error = null
             })
             .addCase(loadProduct.rejected, (state, action) => {
@@ -147,6 +183,37 @@ const productSlice = createSlice({
                 state.error = action.error.message;
                 state.isProductLogedin = false
             })
+
+            .addCase(searchProduct.pending, (state) => {
+                state.loadingproduct = true;
+                state.error = null;
+            })
+            .addCase(searchProduct.fulfilled, (state, action) => {
+                state.loadingproduct = false;
+                let n = action?.payload?.data?.length;
+                let data = action?.payload?.data
+                if (action?.payload?.statusCode === 498) {
+                    state.isProductLogedin = false
+                    return;
+                }
+                else if (action?.payload?.statusCode === 200) {
+                    if (n) {
+                        state.previous_page = data?.[n - 1]?.prev;
+                        state.next_page = data?.[n - 1]?.next;
+                    }
+                    data = data?.slice?.(0, n - 1)
+                    state.product = data;
+                    state.allproduct = data;
+                }
+                state.error = null;
+            })
+            .addCase(searchProduct.rejected, (state, action) => {
+                state.loadingproduct = false;
+                state.error = action.error.message;
+                state.isProductLogedin = false
+            })
+
+
             .addCase(AddToWishList.pending, (state) => {
                 state.wishlistloader = true
                 state.error = null;
@@ -182,6 +249,8 @@ const productSlice = createSlice({
                 state.error = action.error.message;
                 state.isProductLogedin = false
             })
+
+
             .addCase(RemoveToWishList.pending, (state) => {
                 state.wishlistloader = true
                 state.error = null;
@@ -217,6 +286,8 @@ const productSlice = createSlice({
                 state.error = action.error.message;
                 state.isProductLogedin = false
             })
+
+
             .addCase(LoadCatagory.pending, (state) => {
                 state.catagoryloader = true
                 state.error = null;

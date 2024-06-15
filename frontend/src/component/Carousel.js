@@ -44,7 +44,7 @@ const Carousel = (props) => {
                         {ind >= low && ind <= high &&
                             <div>
                                 <Link to={`/Product/${item?._id}`} style={{ textDecoration: 'none' }}>
-                                    <Card sx={{ m: 0.5, maxHeight: '300px' }} >
+                                    <Card sx={{ m: 0.5, maxHeight: '310px' }} >
                                         <img src={item?.newImage?.[0]} className="imgs" alt="Error" />
                                         <p className="credit card-text">{item.product_name}</p>
                                         <div className="row mx-1">
@@ -56,7 +56,7 @@ const Carousel = (props) => {
                                             </div>
                                         </div>
 
-                                        <div className='row mx-1'>
+                                        <div className='row mx-1' style={{marginBottom:'50px'}}>
                                             <div className='col'>
                                                 {
                                                     parseInt(item.rating) == 0 ? <div className="card-text credit" style={{ color: "black" }}>{item.rating}<AiFillStar /></div>

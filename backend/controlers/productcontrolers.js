@@ -268,14 +268,24 @@ let getproductUponPriceProductTypeAndProductName = async (req, res) => {
     }
     if (actualResult.length) actualResult.push(pagination)
     if (actualResult) {
-      res.status(201).json(new ApiResponse(201, actualResult, "success"));
+      res.status(200).json(new ApiResponse(200, actualResult, "success"));
     }
     else {
-      res.status(404).json(new ApiResponse(404, null, "Review does not exist"));
+      let result = []
+      result.push({
+        'prev': false,
+        'next': false,
+      })
+      res.status(404).json(new ApiResponse(404, result, "Review does not exist"));
     }
 
   } catch {
-    res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
+    let result = []
+    result.push({
+      'prev': false,
+      'next': false,
+    })
+    res.status(500).json(new ApiResponse(500, result, "Some Error is Found"));
   }
 };
 

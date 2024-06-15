@@ -288,7 +288,7 @@ const Product_View = () => {
             {
                 load === true ?
                     <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-                        <PulseLoader color="#16A085" />
+                        <PulseLoader size={'10px'} color="#16A085" />
                     </Box>
                     : product != null &&
                     <>

@@ -5,7 +5,7 @@ import { Card } from "@mui/material";
 import '../css/Catagory.css'
 import CardMedia from '@mui/material/CardMedia';
 import { Link } from "react-router-dom";
-import { loadProduct } from '../redux/ProductSlice'
+import { searchProduct } from '../redux/ProductSlice'
 const Catagory = () => {
     const dispatch = useDispatch()
     const userinfo = useSelector((state) => state?.user)?.user
@@ -16,7 +16,7 @@ const Catagory = () => {
             dispatch(LoadCatagory())
     }, [])
     function GoToProduct(selectcatagory) {
-        dispatch(loadProduct({ lowprice, highprice, selectcatagory, searchInput, lowerLimit: 0, higherLimit: 15, userinfo }))
+        dispatch(searchProduct({ lowprice, highprice, selectcatagory, searchInput: '', lowerLimit: 0, higherLimit: 15, userinfo }))
     }
     return (
         <>

@@ -37,7 +37,8 @@
 .styleimage {
   height: 280px;
   widows: 150px;
-  border: 2px solid green;
+  border-radius: 5px;
+  border: 1px solid gray;
   border-radius: 10px;
 }
 

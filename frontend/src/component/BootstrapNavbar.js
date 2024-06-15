@@ -26,7 +26,7 @@ const BootstrapNavbar = () => {
             dispatch(usermethod.Logout_User())
             history('/Signin')
         }
-        else if (isCartLogedin === false || isProductLogedin === false) {
+         if (isCartLogedin === false || isProductLogedin === false) {
             // console.log("secondcalled ")
             dispatch(usermethod.Logout_User())
             history('/Signin')

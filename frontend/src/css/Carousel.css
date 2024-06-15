@@ -1,6 +1,7 @@
 
 .product_name{
     text-align: center;
+    color: gray;
 }
 .carousel{
     display: flex;

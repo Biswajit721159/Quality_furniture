@@ -40,14 +40,15 @@ const Product_show = () => {
           <Table sx={{ minWidth: 650 }} aria-label="product table">
             <TableHead>
               <TableRow>
-                <TableCell>Photo</TableCell>
-                <TableCell >Product_id</TableCell>
-                <TableCell >Product_name</TableCell>
-                <TableCell >Offer</TableCell>
-                <TableCell >Price</TableCell>
-                <TableCell >Product_type</TableCell>
-                <TableCell >Rating</TableCell>
-                <TableCell >View</TableCell>
+                <TableCell className="text-center">Photo</TableCell>
+                <TableCell  className="text-center">Product_id</TableCell>
+                <TableCell  className="text-center">Product_name</TableCell>
+                <TableCell  className="text-center">Offer</TableCell>
+                <TableCell  className="text-center">Price</TableCell>
+                <TableCell  className="text-center">Product Type</TableCell>
+                <TableCell className="text-center">Total Review</TableCell>
+                <TableCell  className="text-center">Avg Rating</TableCell>
+                <TableCell  className="text-center">View</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -61,13 +62,14 @@ const Product_show = () => {
                       style={{ height: '60px', width: '60px', borderRadius: '10px' }}
                     />
                   </TableCell>
-                  <TableCell>{item?._id}</TableCell>
-                  <TableCell>{item?.product_name}</TableCell>
-                  <TableCell>{item?.offer}%</TableCell>
-                  <TableCell><FaRupeeSign style={{ marginTop: '-2px', fontSize: '12px' }} />{item?.price}</TableCell>
-                  <TableCell>{item?.product_type}</TableCell>
-                  <TableCell><SetRating rating={item?.rating} /> ({item?.number_of_people_give_rating})</TableCell>
-                  <TableCell>
+                  <TableCell className="text-center">{item?._id}</TableCell>
+                  <TableCell className="text-center">{item?.product_name}</TableCell>
+                  <TableCell className="text-center">{item?.offer}%</TableCell>
+                  <TableCell className="text-center"><FaRupeeSign style={{ marginTop: '-2px', fontSize: '12px' }} />{item?.price}</TableCell>
+                  <TableCell className="text-center">{item?.product_type}</TableCell>
+                  <TableCell className="text-center">{item?.number_of_people_give_rating}</TableCell>
+                  <TableCell className="text-center"><SetRating rating={item?.rating} /> </TableCell>
+                  <TableCell className="text-center">
                     <Button variant="contained" size="small" color="info" onClick={() => View(item)}>
                       View
                     </Button>

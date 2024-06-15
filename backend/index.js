@@ -26,6 +26,7 @@ let adminpanel = require('./Router/AdminPanelRouter.js')
 let Verification = require('./Router/Verification_Router.js')
 let cart = require('./Router/cartRouter.js')
 let wishlist = require('./Router/WishlistRoute.js')
+let contact = require('./Router/ContactRoute.js')
 
 connectDB()
 
@@ -42,6 +43,7 @@ app.use('/adminpanel', adminpanel)
 app.use('/Verification', Verification)
 app.use('/cart', cart)
 app.use('/wishlist', wishlist)
+app.use('/contact', contact)
 
 app.listen(4000);
 

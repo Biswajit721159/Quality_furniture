@@ -13,7 +13,7 @@ export default function Product() {
       <Catagory />
       <SubComponent />
       <About />
-      {/* <Contact/> */}
+      <Contact />
       <Footer />
     </div>
   )

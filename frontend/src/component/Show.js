@@ -16,9 +16,11 @@ import CardMedia from '@mui/material/CardMedia';
 import CardActions from '@mui/material/CardActions';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Button from '@mui/material/Button';
-import Filter from './Filter';
 import Loader from './Loader';
 import { usermethod } from '../redux/UserSlice'
+import Loading from './Loading';
+import GoodToSee from './GoodToSee';
+import GoToMainPage from './GoToMainPage';
 
 export default function Show() {
 
@@ -26,13 +28,13 @@ export default function Show() {
     const history = useNavigate()
     const userinfo = useSelector((state) => state?.user)?.user
     const [wishlistid, setwishlistid] = useState(0)
-    let [load, setload] = useState(false)
     let cartproduct = useSelector((state) => state?.cartdata?.product)
     let allproduct = useSelector((state) => state?.product?.allproduct)
     let { loadingcart, loadingcartcount } = useSelector((state) => state.cartdata);
     let searchInput = useSelector((state) => state?.product?.searchproduct)
 
     let { product, lowerLimit, higherLimit, lowprice, highprice, selectcatagory, loadingproduct, previous_page, next_page, wishlistloader } = useSelector((state) => state?.product)
+    // console.log("useSelector((state) => state?.product) ", useSelector((state) => state?.product))
     // console.log("usersection in Loadproduct file ",userinfo)
     useEffect(() => {
         if (userinfo === null || userinfo === undefined) {
@@ -100,20 +102,22 @@ export default function Show() {
     }
 
 
-
     return (
         <>
-            {loadingproduct === true || load === true ?
+            {loadingproduct === true && product?.length === 0 ?
                 <Loader />
                 :
                 product?.length !== 0 ?
                     <>
-                        {/* <Filter /> */}
+                        {
+                            loadingproduct === true ? <Loading /> :
+                                <GoodToSee />
+                        }
                         <div className='allproduct'>
                             <div className='product'>
                                 {
                                     product && product?.map((item, ind) => (
-                                        <Card key={ind} sx={{ width: 240 }} className='carditem' >
+                                        <Card key={ind} sx={{ width: 240 }} className='carditem ' >
                                             {
                                                 takeid === item._id ?
                                                     <Link to={`/Product/${item._id}`} onMouseLeave={handleMouseLeave} onMouseOver={() => handleMouseOver(item._id)}>
@@ -217,19 +221,22 @@ export default function Show() {
                                 }
                             </div>
                         </div >
-                        <div className='PrevNext mt-5 mb-4'>
+                        {/* <div className='PrevNext mt-5 mb-4'>
                             <Button sx={{ m: 2 }} variant="contained" size="small" color="success" disabled={!previous_page} onClick={PrevPage}>Prev</Button>
                             <Button sx={{ m: 2 }} variant="contained" size="small" color="success" disabled={!next_page} onClick={NextPage}>Next</Button>
-                        </div>
+                        </div> */}
+                        {
+                            loadingproduct === true ?
+                                <Loading /> :
+                                next_page &&
+                                <div className='PrevNext mb-4'>
+                                    <Button sx={{ mt: 2 }} onClick={NextPage} variant="contained" size="small" color="success">Load more</Button>
+                                </div>
+                        }
                         <hr />
                         <Footer />
-                    </>
-                    :
-                    <div className='loader-container'>
-                        <h5>Product Not Found</h5>
-                        <Button variant="contained" size="small" color="success" sx={{ m: 3 }} onClick={backTOHome}>Back</Button>
-                    </div>
-
+                    </> :
+                    <GoToMainPage />
             }
         </>
     )

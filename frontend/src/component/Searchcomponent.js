@@ -3,7 +3,8 @@ import '../css/Searchcomponent.css'
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
-import { loadProduct } from '../redux/ProductSlice'
+import { searchProduct } from '../redux/ProductSlice'
+import { productmethod } from '../redux/ProductSlice';
 import _ from 'lodash';
 const Searchcomponent = () => {
 
@@ -17,13 +18,15 @@ const Searchcomponent = () => {
 
     function changesearch(e) {
         if (location.pathname != '/Product') history('/Product')
+        dispatch(productmethod.setSearchProduct({ searchproduct: e.target.value }))
         setsearch(e.target.value)
     }
 
     const debouncedSearch = useCallback(
         _.debounce(async (searchTerm) => {
             if (searchTerm) {
-                dispatch(loadProduct({ lowprice, highprice, selectcatagory, searchInput: searchTerm, lowerLimit, higherLimit, userinfo }))
+                dispatch(productmethod.AddEveryThing({ lowerLimit: 0, higherLimit: 15 }))
+                dispatch(searchProduct({ lowprice, highprice, selectcatagory, searchInput: searchTerm, lowerLimit: 0, higherLimit: 15, userinfo }))
             }
         }, 500),
         []
@@ -36,16 +39,24 @@ const Searchcomponent = () => {
         };
     }, [search])
 
+    function searchItem(e) {
+        e.preventDefault();
+        dispatch(productmethod.AddEveryThing({ lowerLimit: 0, higherLimit: 15 }))
+        dispatch(searchProduct({ lowprice, highprice, selectcatagory, searchInput: e.target.value, lowerLimit: 0, higherLimit: 15, userinfo }))
+    }
+
     return (
         <div className='Searchcomponent mt-1'>
             <div className='searchfrom'>
                 <div className="form-inline my-2 my-lg-0 mr-3">
-                    <input className="form-control1 mr-sm-2"
-                        spellCheck='false' type="search"
-                        placeholder="Search Furniture"
-                        value={search}
-                        onChange={(e) => changesearch(e)}
-                        aria-label="Search" />
+                    <form onSubmit={(e) => searchItem(e)}>
+                        <input className="form-control1 mr-sm-2"
+                            spellCheck='false' type="search"
+                            placeholder="Search Furniture"
+                            value={searchproduct}
+                            onChange={(e) => changesearch(e)}
+                            aria-label="Search" />
+                    </form>
                 </div>
             </div>
         </div>
