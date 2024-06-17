@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import '../css/Reviews.css'
 import { usermethod } from '../redux/UserSlice'
 import Loader from './Loader';
+import { Ordermethod } from '../redux/OrderSlice';
 const api = process.env.REACT_APP_API
 
 
@@ -162,7 +163,10 @@ export default function Reviews() {
         isfeedback: true
       })
     }).then(responce => responce.json()).then((result) => {
-      PushReviews()
+      if (result.statusCode === 200) {
+        dispatch(Ordermethod.markisfeedback({ id: order_id }))
+        PushReviews()
+      }
     })
   }
 
@@ -231,7 +235,7 @@ export default function Reviews() {
   return (
     <>
       {
-        load == true ?
+        load === true ?
           <Loader />
           :
           <div>

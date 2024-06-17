@@ -151,7 +151,7 @@ let updateFeedback = async (req, res) => {
       }
     );
     if (result.acknowledged) {
-      res.status(201).json(new ApiResponse(201, result, "success"));
+      res.status(200).json(new ApiResponse(200, result, "success"));
     } else {
       res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
     }

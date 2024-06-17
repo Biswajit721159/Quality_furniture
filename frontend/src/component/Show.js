@@ -221,16 +221,12 @@ export default function Show() {
                                 }
                             </div>
                         </div >
-                        {/* <div className='PrevNext mt-5 mb-4'>
-                            <Button sx={{ m: 2 }} variant="contained" size="small" color="success" disabled={!previous_page} onClick={PrevPage}>Prev</Button>
-                            <Button sx={{ m: 2 }} variant="contained" size="small" color="success" disabled={!next_page} onClick={NextPage}>Next</Button>
-                        </div> */}
                         {
                             loadingproduct === true ?
                                 <Loading /> :
                                 next_page &&
                                 <div className='PrevNext mb-4'>
-                                    <Button sx={{ mt: 2 }} onClick={NextPage} variant="contained" size="small" color="success">Load more</Button>
+                                    <Button sx={{ mt: 2 }} onClick={NextPage} variant="contained" size="small" color="warning">Load more</Button>
                                 </div>
                         }
                         <hr />

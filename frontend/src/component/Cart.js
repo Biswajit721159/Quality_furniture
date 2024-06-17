@@ -9,6 +9,7 @@ import swal from 'sweetalert'
 import '../css/cart.css'
 import Loader from './Loader'
 import { LoadCart, AddToCartDB, RemoveToDB } from '../redux/CartSlice'
+import { Ordermethod } from '../redux/OrderSlice';
 const api = process.env.REACT_APP_API
 export default function Cart() {
 
@@ -86,6 +87,7 @@ export default function Cart() {
         }).then(responce => responce.json())
             .then((res) => {
                 if (res.statusCode == 201) {
+                    dispatch(Ordermethod.clearOrder())
                     setbutton("Order SuccessFull")
                     let id = swal(res.message, '', "success");
                     id.then((res) => {

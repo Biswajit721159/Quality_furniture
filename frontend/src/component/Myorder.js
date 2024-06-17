@@ -1,101 +1,37 @@
-import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import swal from "sweetalert";
 import Button from '@mui/material/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import '../css/Myorder.css'
 import Loader from './Loader';
-import { usermethod } from '../redux/UserSlice'
-const api = process.env.REACT_APP_API
+import { LoadOrder } from '../redux/OrderSlice';
+import Loading from './Loading';
 export default function Myorder() {
 
     const dispatch = useDispatch()
     const userinfo = useSelector((state) => state.user)?.user
-    const [data, setdata] = useState([])
-    const history = useNavigate()
-    const [load, setload] = useState(true)
-    const [colormode, setcolormode] = useState(localStorage.getItem('colormode'));
-
-    let [low, setlow] = useState(0);
-    let [high, sethigh] = useState(10);
-    let [prev, setprev] = useState(false);
-    let [next, setnext] = useState(false);
+    const { Order, loadingOrder, LowerLimit, next, UpperLimit } = useSelector((state) => state?.Order)
 
     useEffect(() => {
-        if (colormode == null) {
-            setcolormode('white');
-            localStorage.setItem('colormode', 'white');
-        }
-        if (userinfo === null) {
-            dispatch(usermethod.Logout_User())
-            history('/Signin')
-        }
-        else {
-            loadproduct(0, 10);
-        }
+        if (Order?.length === 0) loadproduct();
     }, [])
 
-
-    function HandalError(order) {
-        setload(false)
-        if (order.statusCode == 201) {
-            if (order.data.length == 0) return;
-            let n = order.data.length;
-            setdata(order.data.slice(0, n - 1));
-            setprev(order.data[n - 1].prev);
-            setnext(order.data[n - 1].next);
-        }
-        else if (order.statusCode === 498) {
-            dispatch(usermethod.Logout_User())
-            history('/Signin')
-        }
-        else if (order.statusCode === 404) {
-            setdata([])
-        }
-        else {
-            history("*")
-        }
-    }
-
-    function loadproduct(low, high) {
-        setload(true)
-        fetch(`${api}/order/getorderByLimit/${low}/${high}/${userinfo?.user?.email}`, {
-            headers: {
-                Authorization: `Bearer ${userinfo?.accessToken}`
-            }
-        }).then(responce => responce.json()).then((order) => {
-            try {
-                HandalError(order)
-            }
-            catch {
-                history('*')
-            }
-        })
+    function loadproduct() {
+        dispatch(LoadOrder({ userinfo, LowerLimit, UpperLimit }))
     }
 
     function showaddress(data) {
         swal(data)
     }
 
-    function PrevPage() {
-        loadproduct(low - 10, high - 10);
-        setlow(low - 10);
-        sethigh(high - 10);
-    }
-
-    function NextPage() {
-        loadproduct(low + 10, high + 10);
-        setlow(low + 10);
-        sethigh(high + 10);
-    }
-
     return (
         <>
             {
-                load == true ?
+                loadingOrder === true && Order?.length === 0 ?
                     <Loader />
                     :
-                    data != undefined && data.length != 0 ?
+                    Order?.length != 0 ?
                         <>
                             <table className="table table-borderless" >
                                 <thead>
@@ -110,7 +46,7 @@ export default function Myorder() {
                                 {
                                     <tbody>
                                         {
-                                            data.map((item, ind) => (
+                                            Order?.map((item, ind) => (
                                                 <tr key={ind}>
                                                     <td className='text-center'>
                                                         <div className="card1234">
@@ -118,12 +54,12 @@ export default function Myorder() {
                                                                 <img className="card-img-top1" src={item.newImage[0]} alt="Card image cap" />
                                                             </Link>
                                                             <Link to={`/Product/${item.product_id}`} style={{ textDecoration: 'none' }}>
-                                                                <p className='text-center mt-1' style={{ color: 'black' }}>{item.product_name} X {item.product_count}=₹{item.Total_rupess}</p>
+                                                                <p className='product_name text-center mt-1' style={{ color: 'black' }}>{item?.product_name} X {item?.product_count}=₹{item?.Total_rupess}</p>
                                                             </Link>
                                                         </div>
                                                     </td>
-                                                    <td className='text-center'>{item.Date}</td>
-                                                    <td className='text-center' onClick={() => { showaddress(item.address) }}>
+                                                    <td className='text-center'>{item?.Date}</td>
+                                                    <td className='text-center' onClick={() => { showaddress(item?.address) }}>
                                                         <Button variant="contained" size="small" color="info">Address</Button>
                                                     </td>
                                                     <td className='text-center'><Button variant="contained" size="small" disabled={true}>{item?.status}</Button></td>
@@ -134,7 +70,7 @@ export default function Myorder() {
                                                             </td>
                                                             :
                                                             <td className='text-center'>
-                                                                <Link to={`/${item.id}/${item.product_id}/Reviews`}>
+                                                                <Link to={`/${item?.id}/${item?.product_id}/Reviews`}>
                                                                     <Button variant="contained" size="small" color="success">Feedback</Button>
                                                                 </Link>
                                                             </td>
@@ -145,14 +81,15 @@ export default function Myorder() {
                                     </tbody>
                                 }
                             </table>
-                            <div className='PrevNext mt-4 mb-4'>
-                                <Button variant="contained" size="small" color="success" sx={{ m: 2 }} disabled={!prev} onClick={PrevPage}>Prev</Button>
-                                <Button variant="contained" size="small" color="success" sx={{ m: 2 }} disabled={!next} onClick={NextPage}>Next</Button>
+                            <div className='PrevNext mb-4'>
+                                {
+                                    loadingOrder ? <Loading /> : next && <Button variant='contained' onClick={loadproduct} color='warning'>Load More</Button>
+                                }
                             </div>
                         </>
                         :
                         <div className='loader-container'>
-                            <Link to={'/Product'}><Button className='btn btn-info'><h4>ORDER PRODUCTS</h4></Button></Link>
+                            <Link to={'/Product'}><Button size='small' variant="contained" color='success'>ORDER PRODUCTS</Button></Link>
                         </div>
             }
         </>
