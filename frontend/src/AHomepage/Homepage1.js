@@ -17,7 +17,7 @@ const Homepage1 = () => {
     useEffect(() => {
         let x = setTimeout(() => {
             next()
-        }, 3000);
+        }, 5000);
         return () => {
             clearInterval(x);
         }

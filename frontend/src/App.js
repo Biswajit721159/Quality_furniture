@@ -11,12 +11,10 @@ import Cart from "./component/Cart";
 import Myorder from "./component/Myorder";
 import Reviews from "./component/Reviews";
 import Footer from "./component/Footer";
-import Carousel from './component/Carousel'
 import './css/Loader.css'
 import BootstrapNavbar from "./component/BootstrapNavbar";
 import ForgotPassword from "./component/ForgotPassword";
 import './App.css'
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 function App() {
   return (

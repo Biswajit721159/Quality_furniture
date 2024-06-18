@@ -124,6 +124,10 @@ const productSlice = createSlice({
     name: 'product',
     initialState,
     reducers: {
+        setLimit: (state) => {
+            state.lowerLimit = 0;
+            state.higherLimit = 15;
+        },
         clearAll: (state) => {
             state.product = [];
             state.allproduct = [];
@@ -174,21 +178,16 @@ const productSlice = createSlice({
                     return;
                 }
                 else if (action?.payload?.statusCode === 200) {
-                    if (n) {
-                        state.previous_page = data?.[n - 1]?.prev;
-                        state.next_page = data?.[n - 1]?.next;
-                    }
+                    state.previous_page = data?.[n - 1]?.prev === undefined ? false : data?.[n - 1]?.prev;
+                    state.next_page = data?.[n - 1]?.next === undefined ? false : data?.[n - 1]?.next;
                     data = data?.slice?.(0, n - 1)
                     let oldproduct = state.product
                     let oldproductids = oldproduct?.map((item) => {
                         return item._id
                     })
-                    let flag = true
                     let newproduct = data?.filter((item) => {
                         if (oldproductids?.includes(item._id) === false) {
                             return item;
-                        } else {
-                            flag = false
                         }
                     })
                     state.product = [...state.product, ...newproduct];

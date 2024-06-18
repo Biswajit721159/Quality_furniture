@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { LoadCatagory } from "../redux/ProductSlice";
+import { LoadCatagory, productmethod } from "../redux/ProductSlice";
 import { useDispatch, useSelector } from 'react-redux'
 import { Card } from "@mui/material";
 import '../css/Catagory.css'
@@ -16,6 +16,7 @@ const Catagory = () => {
             dispatch(LoadCatagory())
     }, [])
     function GoToProduct(selectcatagory) {
+        dispatch(productmethod.setLimit({ lowerLimit: 0, higherLimit: 15 }));
         dispatch(searchProduct({ lowprice, highprice, selectcatagory, searchInput: '', lowerLimit: 0, higherLimit: 15, userinfo }))
     }
     return (

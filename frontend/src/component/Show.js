@@ -66,8 +66,8 @@ export default function Show() {
     }
 
     function NextPage() {
-        lowerLimit += 12
-        higherLimit += 12
+        lowerLimit += 15
+        higherLimit += 15
         dispatch(productmethod.AddEveryThing({ lowerLimit: lowerLimit, higherLimit: higherLimit }))
         dispatch(loadProduct({ lowprice, highprice, selectcatagory, searchInput, lowerLimit, higherLimit, userinfo }))
     }

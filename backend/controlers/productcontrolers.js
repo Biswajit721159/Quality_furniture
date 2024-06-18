@@ -313,6 +313,15 @@ let getallProductType = async (req, res) => {
         }
       }
     ]);
+    let totalproduct = result.reduce((total, curr) => {
+      total += curr?.count
+      return total;
+    }, 0)
+    result.push({
+      firstImage: 'https://images.pexels.com/photos/271816/pexels-photo-271816.jpeg?cs=srgb&dl=pexels-pixabay-271816.jpg&fm=jpg',
+      count: totalproduct,
+      product_type: 'ALL'
+    })
     if (result) res.status(200).json(new ApiResponse(200, result, "success"));
     else
       res

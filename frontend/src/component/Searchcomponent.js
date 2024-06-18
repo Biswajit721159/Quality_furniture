@@ -42,7 +42,7 @@ const Searchcomponent = () => {
     function searchItem(e) {
         e.preventDefault();
         dispatch(productmethod.AddEveryThing({ lowerLimit: 0, higherLimit: 15 }))
-        dispatch(searchProduct({ lowprice, highprice, selectcatagory, searchInput: e.target.value, lowerLimit: 0, higherLimit: 15, userinfo }))
+        dispatch(searchProduct({ lowprice, highprice, selectcatagory, searchInput: searchproduct, lowerLimit: 0, higherLimit: 15, userinfo }))
     }
 
     return (
