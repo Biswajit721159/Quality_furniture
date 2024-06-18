@@ -124,6 +124,24 @@ const productSlice = createSlice({
     name: 'product',
     initialState,
     reducers: {
+        clearAll: (state) => {
+            state.product = [];
+            state.allproduct = [];
+            state.Catagory = [];
+            state.lowerLimit = 0;
+            state.higherLimit = 15;
+            state.lowprice = 0;
+            state.highprice = 1000000;
+            state.selectcatagory = 'ALL';
+            state.searchproduct = '';
+            state.previous_page = false;
+            state.next_page = false;
+            state.loadingproduct = false;
+            state.wishlistloader = false;
+            state.catagoryloader = false;
+            state.isProductLogedin = true;
+            state.error = null;
+        },
         AddEveryThing: (state, action) => {
             let data = action.payload
             state.lowerLimit = data.lowerLimit

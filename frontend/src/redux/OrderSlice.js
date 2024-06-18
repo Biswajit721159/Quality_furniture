@@ -34,6 +34,16 @@ const OrderSlice = createSlice({
     name: "Orderstore",
     initialState,
     reducers: {
+        clearAll: (state, action) => {
+            state.Order = [];
+            state.loadingOrder = false;
+            state.prev = false;
+            state.next = false;
+            state.LowerLimit = 0;
+            state.UpperLimit = 10;
+            state.error = null;
+            state.isOrderLogedin = true;
+        },
         clearOrder: (state, action) => {
             state.Order = [];
             state.prev = false;

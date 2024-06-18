@@ -23,15 +23,13 @@ export default function Product_view() {
     const userinfo = useSelector((state) => state?.user)?.user
 
     let [load, setload] = useState(true)
-    let cart = useSelector((state) => state?.cartdata);
     const [relatedProduct, setrelatedProduct] = useState(null)
     const [removebutton, setremovebutton] = useState(false)
     let cartproduct = useSelector((state) => state?.cartdata?.product)
-    let { loadingcart, loadingcartcount } = useSelector((state) => state?.cartdata);
 
     useEffect(() => {
         if (userinfo === null) {
-            history('/Register')
+            history('/Signin')
         }
         else {
             loadproduct();
@@ -40,7 +38,7 @@ export default function Product_view() {
 
     useEffect(() => {
         if (userinfo == null) {
-            history('/Register')
+            history('/Signin')
         }
         else {
             loadproduct();
@@ -97,7 +95,7 @@ export default function Product_view() {
     return (
         <>
             {
-                load == true ?
+                load === true ?
                     <Loader />
                     :
                     product !== null ?
@@ -118,10 +116,10 @@ export default function Product_view() {
                                                 </div>
                                             </div>
                                             <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                                                <FcPrevious style={{ backgroundColor: "black", borderRadius: "10px", fontSize: '20px', cursor: 'pointer' }} />
+                                                <FcPrevious style={{ backgroundColor: "black", borderRadius: "10px", fontSize: '15px', cursor: 'pointer' }} />
                                             </a>
                                             <a className="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                                                <FcNext style={{ backgroundColor: "black", borderRadius: "10px", fontSize: '20px', cursor: 'pointer' }} />
+                                                <FcNext style={{ backgroundColor: "black", borderRadius: "10px", fontSize: '15px', cursor: 'pointer' }} />
                                             </a>
                                         </div>
                                     </div>
@@ -132,7 +130,7 @@ export default function Product_view() {
                                                 <p className="card-text1" style={{ color: "#D68910" }}>{product.offer}%OFF</p>
                                                 <h6 className="card-text1" style={{ color: 'gray' }}><s>₹{product.price}</s></h6>
                                                 <h5 className="card-text1" style={{ color: 'tomato' }}>Price - ₹{(product.price - ((product.price * product.offer) / 100)).toFixed(2)}</h5>
-                                                <h5 className="card-text1">{product.total_number_of_product} Left Only </h5>
+                                                <h5 className="card-text1">{product.total_number_of_product} Left </h5>
                                             </div>
                                         </div>
                                     </div>
@@ -146,13 +144,10 @@ export default function Product_view() {
                                             : <button id='button' className='btn btn-primary  btn-sm' disabled={!product.total_number_of_product} onClick={Add_TO_CART} >Add To Cart </button>}
                                     </div>
                                 </div>
-
                                 <hr />
-                                {/* <div className='item'> */}
                                 <Product_Review _id={_id} />
-                                {/* </div> */}
-                                <hr />
-                                <div>
+                                <div style={{ marginTop: '20px' }}>
+                                    <hr />
                                     {relatedProduct && <Carousel data={relatedProduct} message='Related Product' />}
                                 </div>
                             </div>

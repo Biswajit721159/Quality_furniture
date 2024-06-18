@@ -31,10 +31,10 @@ const Homepage1 = () => {
                             <div className="carousel-item active" key={ind}>
                                 <img className="d-block w-100" id="image" src={item} alt="" />
                                 <a className="carousel-control-prev" onClick={prev} role="button" data-slide="prev">
-                                    <FcPrevious style={{ backgroundColor: "black", borderRadius: "10px", fontSize: '20px', cursor: 'pointer' }} />
+                                    <FcPrevious style={{ backgroundColor: "black", borderRadius: "10px", fontSize: '15px', cursor: 'pointer' }} />
                                 </a>
                                 <a className="carousel-control-next" onClick={next} role="button" data-slide="next">
-                                    <FcNext style={{ backgroundColor: "black", borderRadius: "10px", fontSize: '20px', cursor: 'pointer' }} />
+                                    <FcNext style={{ backgroundColor: "black", borderRadius: "10px", fontSize: '15px', cursor: 'pointer' }} />
                                 </a>
                             </div>
                             : ""

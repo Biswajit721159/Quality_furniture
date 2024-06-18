@@ -79,6 +79,16 @@ const initialState = {
 const cartSlice = createSlice({
   name: "cartstore",
   initialState,
+  reducers: {
+    clearAll: (state, action) => {
+      state.product = {};
+      state.loadingcart = false;
+      state.loadingcartcount = false;
+      state.product_Price = 0;
+      state.error = null;
+      state.isCartLogedin = true;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(LoadCart.pending, (state) => {
@@ -140,7 +150,7 @@ const cartSlice = createSlice({
       .addCase(RemoveToDB.rejected, (state, action) => {
         state.loadingcart = false;
         state.error = action.error.message;
-        state.isCartLogedin=false
+        state.isCartLogedin = false
       })
   }
 });

@@ -133,7 +133,7 @@ let findReviewsBylowerAndUpperLimit = async (req, res) => {
     }
     if (actualResult.length) actualResult.push(pagination)
     if (actualResult) {
-      res.status(201).json(new ApiResponse(201, actualResult, "success"));
+      res.status(200).json(new ApiResponse(200, actualResult, "success"));
     }
     else {
       res.status(404).json(new ApiResponse(404, null, "Review does not exist"));

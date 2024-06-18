@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import '../css/Main_page.css'
-import { AiFillStar } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
 import { useDispatch, useSelector } from 'react-redux'
@@ -17,10 +16,10 @@ import CardActions from '@mui/material/CardActions';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Button from '@mui/material/Button';
 import Loader from './Loader';
-import { usermethod } from '../redux/UserSlice'
 import Loading from './Loading';
 import GoodToSee from './GoodToSee';
 import GoToMainPage from './GoToMainPage';
+import { SetRating } from '../constant/Rating'
 
 export default function Show() {
 
@@ -28,22 +27,17 @@ export default function Show() {
     const history = useNavigate()
     const userinfo = useSelector((state) => state?.user)?.user
     const [wishlistid, setwishlistid] = useState(0)
+
     let cartproduct = useSelector((state) => state?.cartdata?.product)
-    let allproduct = useSelector((state) => state?.product?.allproduct)
-    let { loadingcart, loadingcartcount } = useSelector((state) => state.cartdata);
     let searchInput = useSelector((state) => state?.product?.searchproduct)
 
-    let { product, lowerLimit, higherLimit, lowprice, highprice, selectcatagory, loadingproduct, previous_page, next_page, wishlistloader } = useSelector((state) => state?.product)
-    // console.log("useSelector((state) => state?.product) ", useSelector((state) => state?.product))
-    // console.log("usersection in Loadproduct file ",userinfo)
+    let { product, lowerLimit, higherLimit, lowprice, highprice, selectcatagory, loadingproduct, next_page, wishlistloader } = useSelector((state) => state?.product)
+
     useEffect(() => {
         if (userinfo === null || userinfo === undefined) {
-            // console.log("Logout part")
-            dispatch(usermethod.Logout_User())
             history('/Signin')
         }
         else if (userinfo?.user?.email && userinfo?.accessToken && product?.length === 0) {
-            // console.log("Loadproduct")
             dispatch(loadProduct({ lowprice, highprice, selectcatagory, searchInput, lowerLimit, higherLimit, userinfo }))
         }
     }, [])
@@ -56,13 +50,6 @@ export default function Show() {
     function removeToWishlist(product_id) {
         setwishlistid(product_id)
         dispatch(RemoveToWishList({ userinfo, product_id }))
-    }
-
-    function backTOHome() {
-        if (allproduct?.length === 0) {
-            dispatch(loadProduct({ lowprice, highprice, selectcatagory, searchInput, lowerLimit, higherLimit, userinfo }))
-        }
-        else dispatch(productmethod.Addsearch({ searchinput: '', allproduct }));
     }
 
     function AddToCart(product_id) {
@@ -81,13 +68,6 @@ export default function Show() {
     function NextPage() {
         lowerLimit += 12
         higherLimit += 12
-        dispatch(productmethod.AddEveryThing({ lowerLimit: lowerLimit, higherLimit: higherLimit }))
-        dispatch(loadProduct({ lowprice, highprice, selectcatagory, searchInput, lowerLimit, higherLimit, userinfo }))
-    }
-
-    function PrevPage() {
-        lowerLimit -= 12
-        higherLimit -= 12
         dispatch(productmethod.AddEveryThing({ lowerLimit: lowerLimit, higherLimit: higherLimit }))
         dispatch(loadProduct({ lowprice, highprice, selectcatagory, searchInput, lowerLimit, higherLimit, userinfo }))
     }
@@ -144,20 +124,7 @@ export default function Show() {
                                                 </div>
                                                 <div className='row'>
                                                     <div className='col'>
-                                                        {
-                                                            parseInt(item.rating) == 0 ? <div className="card-text" style={{ color: "black" }}>{item.rating}<AiFillStar /></div>
-                                                                :
-                                                                parseInt(item.rating) == 1 ? <div className="card-text" style={{ color: "tomato" }}>{item.rating}<AiFillStar /></div>
-                                                                    :
-                                                                    parseInt(item.rating) == 2 ? <div className="card-text" style={{ color: "red" }}>{item.rating}<AiFillStar /></div>
-                                                                        :
-                                                                        parseInt(item.rating) == 3 ? <div className="card-text" style={{ color: "#DC7633" }}>{item.rating}<AiFillStar /></div>
-                                                                            :
-                                                                            parseInt(item.rating) == 4 ? <div className="card-text" style={{ color: "#28B463" }}>{item.rating}<AiFillStar /></div>
-                                                                                :
-                                                                                parseInt(item.rating) == 5 ? <div className="card-text" style={{ color: "green" }}>{item.rating}<AiFillStar /></div>
-                                                                                    : ""
-                                                        }
+                                                        <SetRating rating={item.rating} />
                                                     </div>
                                                     <div className=" col">
                                                         <h6 className="card-text" style={{ color: 'tomato' }}>₹{(item.price - ((item.price * item.offer) / 100)).toFixed(2)}</h6>

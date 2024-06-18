@@ -1,6 +1,8 @@
-.ReviewShow {
-    height: 150px;
-    max-height: 150px;
+.Rating {
+    margin-left: 5%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .LoaderiteminReviewProduct {
@@ -12,9 +14,6 @@
 .reviewtextitem {
     text-align: center;
     align-items: center;
-}
-
-.reviewtextitem {
     font-size: 12px;
 }
 

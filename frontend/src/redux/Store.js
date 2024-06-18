@@ -4,6 +4,7 @@ import cartReducer from '../redux/CartSlice'
 import Product from '../redux/ProductSlice'
 import FrontPageProductSliceReducer from '../redux/TopProductSlice'
 import OrderReducer from "./OrderSlice";
+import ReviewReducer from "./ProductReview";
 export default configureStore({
 
   reducer: {
@@ -12,6 +13,7 @@ export default configureStore({
     cartdata: cartReducer,
     FrontPageProduct: FrontPageProductSliceReducer,
     Order: OrderReducer,
+    Review: ReviewReducer
   },
 
 

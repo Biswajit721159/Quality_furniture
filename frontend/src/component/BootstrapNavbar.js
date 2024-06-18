@@ -4,10 +4,14 @@ import { MdOutlineDarkMode } from 'react-icons/md';
 import { FaShoppingCart } from "react-icons/fa";
 import { FaHeart } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux'
-import { LoadCart } from '../redux/CartSlice'
+import { LoadCart, cartmethod } from '../redux/CartSlice'
 import '../css/BootstrapNavbar.css'
 import Searchcomponent from './Searchcomponent';
 import { usermethod } from '../redux/UserSlice'
+import { Ordermethod } from '../redux/OrderSlice';
+import { productmethod } from '../redux/ProductSlice';
+import { Reviewmethod } from '../redux/ProductReview';
+
 const BootstrapNavbar = () => {
     const dispatch = useDispatch();
     const history = useNavigate();
@@ -15,28 +19,24 @@ const BootstrapNavbar = () => {
     const [mode, setmode] = useState(localStorage.getItem('mode'));
     const cost = useSelector((state) => state?.cartdata?.product_Price)
     const product = useSelector((state) => state?.cartdata?.product)
+
+
     const isCartLogedin = useSelector((state) => state?.cartdata?.isCartLogedin)
     const isProductLogedin = useSelector((state) => state?.product?.isProductLogedin)
+    const isOrderLogedin = useSelector((state) => state?.Order?.isOrderLogedin)
+    const isReviewLogin = useSelector((state) => state?.Review?.isReviewLogin)
 
-    // console.log("userinfo is ",userinfo,isCartLogedin,isProductLogedin)
+    // console.log(userinfo, isCartLogedin, isProductLogedin, isOrderLogedin, isReviewLogin)
 
     useEffect(() => {
-        if (userinfo === null || userinfo === undefined) {
-            // console.log("firstcalled ")
-            dispatch(usermethod.Logout_User())
-            history('/Signin')
-        }
-         if (isCartLogedin === false || isProductLogedin === false) {
-            // console.log("secondcalled ")
-            dispatch(usermethod.Logout_User())
-            history('/Signin')
+        if (userinfo === null || userinfo === undefined || isCartLogedin === false || isProductLogedin === false || isOrderLogedin === false || isReviewLogin === false) {
+            logout()
         }
         else if (userinfo?.user?.email && userinfo?.accessToken) {
-            // console.log("thirdcalled ")
             if (Object?.keys(product)?.length === 0) dispatch(LoadCart(userinfo))
         }
         givecolor(localStorage.getItem('mode'));
-    }, [userinfo, isCartLogedin, isProductLogedin])
+    }, [userinfo, isCartLogedin, isProductLogedin, isOrderLogedin, isReviewLogin])
 
     function givecolor(color) {
         if (color == null) {
@@ -71,6 +71,10 @@ const BootstrapNavbar = () => {
     }
 
     function logout() {
+        dispatch(cartmethod.clearAll())
+        dispatch(Ordermethod.clearAll())
+        dispatch(productmethod.clearAll())
+        dispatch(Reviewmethod.clearAll())
         dispatch(usermethod.Logout_User())
         history('/Signin')
     }

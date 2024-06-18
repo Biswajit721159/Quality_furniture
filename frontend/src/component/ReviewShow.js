@@ -1,103 +1,70 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { PulseLoader } from 'react-spinners';
-import { MdStar } from "react-icons/md";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { usermethod } from '../redux/UserSlice'
-import { AiFillStar } from "react-icons/ai";
 import { GoDotFill } from "react-icons/go";
 import '../css/ReviewShow.css'
-const api = process.env.REACT_APP_API
-const ReviewShow = (id) => {
+import Button from '@mui/material/Button';
+import { Reviewmethod, loadReview } from "../redux/ProductReview";
+import Loading from '../component/Loading';
+import { SetRating } from '../constant/Rating';
 
+const ReviewShow = (id) => {
     const _id = id._id
-    const dispatch = useDispatch()
-    const [prev, setprev] = useState(false)
-    const [next, setnext] = useState(false)
-    const [low, setlow] = useState(0)
-    const [high, sethigh] = useState(5)
-    const userinfo = useSelector((state) => state.user)?.user
-    const [loadreview, setloadreview] = useState(false)
-    const [reviews_data_show, setreviews_data_show] = useState([])
-    const history = useNavigate()
+    const dispatch = useDispatch();
+    const userinfo = useSelector((state) => state.user)?.user;
+    const history = useNavigate();
+
+    const { ProductReview, loadingReview, next, LowerLimit, UpperLimit, product_id } = useSelector((state) => state.Review);
 
     useEffect(() => {
         if (userinfo === null) {
             history('/Signin')
         }
         else {
-            loadReview(0, 5);
+            if (product_id === _id) {
+                if (ProductReview?.length === 0) {
+                    loadReview(0, 5);
+                }
+            } else {
+                dispatch(Reviewmethod.clearOrder())
+                loadreview(0, 5);
+            }
         }
     }, [])
 
-    function loadReview(low, high) {
-        setloadreview(true)
-        fetch(`${api}/Reviews/${_id}/${low}/${high}`, {
-            headers:
-            {
-                Authorization: `Bearer ${userinfo?.accessToken}`
-            }
-        }).then((responce => responce.json())).then((res) => {
-            if (res.statusCode = 201) {
-                let n = res?.data?.length;
-
-                if (n < 5) setreviews_data_show(res?.data?.slice?.(0, n - 1));
-                else setreviews_data_show(res?.data?.slice?.(0, 5));
-                if (n) {
-                    setprev(res?.data?.[n - 1]?.prev);
-                    setnext(res?.data?.[n - 1]?.next);
-                }
-                setloadreview(false);
-            }
-            else if (res.statusCode === 498) {
-                dispatch(usermethod.Logout_User())
-                history('/Signin')
-            }
-            else {
-                history('*');
-            }
-        })
-    }
-
-    function prevpage() {
-        setlow(low - 5);
-        sethigh(high - 5);
-        loadReview(low - 5, high - 5);
-    }
-
-    function nextpage() {
-        setlow(high);
-        sethigh(high + 5);
-        loadReview(high, high + 5);
+    function loadreview(low, high) {
+        dispatch(loadReview({ userinfo, product_id: _id, LowerLimit: low, UpperLimit: high }));
     }
 
     return (
         <div className="ReviewShow">
             {
-                loadreview === true ?
+                loadingReview === true && ProductReview?.length === 0 ?
                     <div className="LoaderiteminReviewProduct">
                         <PulseLoader color="#16A085" size={'7px'} />
                     </div>
                     :
                     <div className='mt-5'>
-                        <ul >
-                            {
-                                reviews_data_show !== undefined && reviews_data_show?.length !== 0 ?
-                                    reviews_data_show.map((data, ind) => (
-                                        <li key={ind} style={{ margin: '2px' }} className="reviewtextitem text-center">
-                                            <GoDotFill color="green" />{data?.rating} <AiFillStar /> {data?.review}
-                                        </li>
-                                    ))
-                                    : <h4 className="col-md-12 text-center" style={{ marginTop: "100px", color: "#808B96" }}>Review is not Posted</h4>
-                            }
-                            {
-                                reviews_data_show !== undefined && reviews_data_show.length !== 0 &&
-                                (prev || next) && (<div className="col21item2">
-                                    <button className="btn btn-primary btn-sm" disabled={!prev} onClick={prevpage}>Prev</button>
-                                    <button className="btn btn-primary btn-sm" disabled={!next} onClick={nextpage}>Next</button>
-                                </div>)
-                            }
-                        </ul>
+                        {
+                            ProductReview?.length !== 0 ?
+                                ProductReview?.map((data, ind) => (
+                                    <p key={ind} style={{ margin: '2px' }} className="ReviewText">
+                                        <div className="Rating">
+                                            <GoDotFill size={'7px'} style={{ marginTop: '5px' }} />
+                                            <SetRating rating={data?.rating} />
+                                            - {data?.review}
+                                        </div>
+                                    </p>
+                                ))
+                                : <h4 className="col-md-12 text-center" style={{ marginTop: "40px", color: "#808B96" }}>Review is not Posted</h4>
+                        }
+                        {
+                            loadingReview === true ? <Loading /> :
+                                next && <div className="col21item2">
+                                    <Button size='small' variant="contained" color="warning" onClick={() => loadreview(LowerLimit, UpperLimit)}>Load More</Button>
+                                </div>
+                        }
                     </div>
             }
         </div>

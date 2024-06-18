@@ -13,7 +13,6 @@ import Container from '@mui/material/Container';
 import Loading from "../component/Loading";
 import { loadProduct } from "../redux/ProductSlice";
 import DataNotFoundPage from "../component/DataNotFoundPage"
-import { HiStar } from "react-icons/hi";
 import { FaRupeeSign } from "react-icons/fa";
 import { SetRating } from "../Review/Reviews_show";
 

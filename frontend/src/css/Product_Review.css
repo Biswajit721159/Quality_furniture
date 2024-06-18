@@ -39,34 +39,34 @@
 
 @media only screen and (max-width: 785px) {
   .reviewtextitem {
-    font-size: 8px;
+    font-size: 10px;
   }
   .bar {
-    height: 8px;
+    height: 16px;
   }
 }
 @media only screen and (max-width: 400px) {
   .reviewtextitem {
-    font-size: 7px;
+    font-size: 8px;
   }
   .bar {
-    height: 7px;
+    height: 12px;
   }
 }
 
 @media only screen and (max-width: 355px) {
   .reviewtextitem {
-    font-size: 6px;
+    font-size: 7px;
   }
   .bar {
-    height: 6px;
+    height: 10px;
   }
 }
 @media only screen and (max-width: 350px) {
   .reviewtextitem {
-    font-size: 5px;
+    font-size: 6px;
   }
   .bar {
-    height: 5px;
+    height: 9px;
   }
 }
