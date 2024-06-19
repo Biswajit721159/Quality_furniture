@@ -18,18 +18,13 @@ const ReviewShow = (id) => {
     const { ProductReview, loadingReview, next, LowerLimit, UpperLimit, product_id } = useSelector((state) => state.Review);
 
     useEffect(() => {
-        if (userinfo === null) {
-            history('/Signin')
-        }
-        else {
-            if (product_id === _id) {
-                if (ProductReview?.length === 0) {
-                    loadReview(0, 5);
-                }
-            } else {
-                dispatch(Reviewmethod.clearOrder())
-                loadreview(0, 5);
+        if (product_id === _id) {
+            if (ProductReview?.length === 0) {
+                loadReview(0, 5);
             }
+        } else {
+            dispatch(Reviewmethod.clearOrder());
+            loadreview(0, 5);
         }
     }, [])
 

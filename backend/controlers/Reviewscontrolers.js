@@ -106,7 +106,7 @@ let findRatingPersentageofProduct = async (req, res) => {
     actualResult.push({ persentage_4_star, number_4_star });
     actualResult.push({ persentage_5_star, number_5_star });
     actualResult.push({ overall_rating, total });
-    res.status(201).json(new ApiResponse(201, actualResult, "success"));
+    res.status(200).json(new ApiResponse(200, actualResult, "success"));
   } catch {
     res.status(500).json(new ApiResponse(500, null, "Some Error is Found"));
   }

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
-import { usermethod } from '../redux/UserSlice'
 import '../css/Product_Review.css'
 import Loader from "./Loader";
 import ReviewShow from "./ReviewShow";
@@ -31,23 +30,13 @@ const Product_Review = (id) => {
 
 
     useEffect(() => {
-        if (userinfo === null) {
-            history('/Signin')
-        }
-        else {
-            loadRating();
-        }
+        loadRating();
     }, [_id])
 
     function loadRating() {
         setloadrating(true)
-        fetch(`${api}/Reviews/findRatingPersentageofProduct/${_id}`, {
-            headers:
-            {
-                Authorization: `Bearer ${userinfo?.accessToken}`
-            }
-        }).then((responce => responce.json())).then((res) => {
-            if (res.statusCode = 201) {
+        fetch(`${api}/Reviews/findRatingPersentageofProduct/${_id}`).then((responce => responce.json())).then((res) => {
+            if (res.statusCode = 200) {
                 let result = res?.data;
                 setpersentage_1_star(result[0].persentage_1_star);
                 setnumber_1_star(result[0].number_1_star);
@@ -66,10 +55,6 @@ const Product_Review = (id) => {
                 setoverall_rating(result[5].overall_rating);
                 settotal(result[5].total);
                 setloadrating(false);
-            }
-            else if (res?.statusCode == 498) {
-                dispatch(usermethod.Logout_User())
-                history('/Signin')
             }
             else {
                 history('*');

@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { BeatLoader } from 'react-spinners';
 import '../css/Product_view.css'
 import { useDispatch, useSelector } from 'react-redux'
-import { usermethod } from '../redux/UserSlice'
 import Carousel from "./Carousel";
 import Product_Review from './Product_Review';
 import Footer from '../component/Footer'
@@ -28,40 +27,17 @@ export default function Product_view() {
     let cartproduct = useSelector((state) => state?.cartdata?.product)
 
     useEffect(() => {
-        if (userinfo === null) {
-            history('/Signin')
-        }
-        else {
-            loadproduct();
-        }
-    }, [])
-
-    useEffect(() => {
-        if (userinfo == null) {
-            history('/Signin')
-        }
-        else {
-            loadproduct();
-        }
+        loadproduct();
     }, [_id])
 
     function loadproduct() {
         setload(true)
-        fetch(`${api}/product/${_id}`, {
-            headers:
-            {
-                Authorization: `Bearer ${userinfo?.accessToken}`
-            }
-        }).then(response => response.json()).
+        fetch(`${api}/product/${_id}`).then(response => response.json()).
             then((data) => {
                 if (data.statusCode === 201) {
                     setproduct(data?.data)
                     findrelatedproduct(data?.data);
                     setload(false)
-                }
-                else if (data.statusCode === 498) {
-                    dispatch(usermethod.Logout_User())
-                    history('/Signin')
                 }
                 else {
                     history('*')

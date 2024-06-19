@@ -9,15 +9,17 @@ import { searchProduct } from '../redux/ProductSlice'
 const Catagory = () => {
     const dispatch = useDispatch()
     const userinfo = useSelector((state) => state?.user)?.user
-    const { Catagory, catagoryloader, lowprice, highprice, lowerLimit, higherLimit } = useSelector((state) => state.product)
-    let searchInput = useSelector((state) => state?.product?.searchproduct)
+    const { Catagory, lowprice, highprice } = useSelector((state) => state.product)
     useEffect(() => {
         if (Catagory?.length === 0)
             dispatch(LoadCatagory())
     }, [])
+
     function GoToProduct(selectcatagory) {
+        dispatch(productmethod.setCatagory(selectcatagory))
         dispatch(productmethod.setLimit({ lowerLimit: 0, higherLimit: 15 }));
-        dispatch(searchProduct({ lowprice, highprice, selectcatagory, searchInput: '', lowerLimit: 0, higherLimit: 15, userinfo }))
+        dispatch(productmethod.clearSearch(''))
+        dispatch(searchProduct({ lowprice, highprice, selectcatagory: selectcatagory, searchInput: '', lowerLimit: 0, higherLimit: 15, userinfo }))
     }
     return (
         <>

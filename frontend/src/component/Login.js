@@ -6,6 +6,7 @@ import '../css/Auth.css'
 import swal from 'sweetalert'
 import { usermethod } from '../redux/UserSlice'
 import { useDispatch } from "react-redux";
+import { productmethod } from "../redux/ProductSlice";
 export default function Login() {
 
   const dispatch = useDispatch()
@@ -214,6 +215,7 @@ export default function Login() {
           let x = swal(result.message)
           x.then((res) => {
             dispatch(usermethod.Add_User(result?.data))
+            dispatch(productmethod.clearAll())
             history('/Product')
           })
         }

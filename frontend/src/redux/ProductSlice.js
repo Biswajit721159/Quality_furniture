@@ -14,10 +14,11 @@ async function findProduct(parameter) {
     const response = await fetch(`${api}/product/getproductUponPriceProductTypeAndProductName/${lowprice}/${highprice}/${selectcatagory}/${searchproduct}/${lowerLimit}/${higherLimit}`, {
         method: 'POST',
         headers: {
-            Authorization: `Bearer ${userinfo?.accessToken}`
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            'email': userinfo?.user?.email,
+            email: userinfo?.user?.email,
         })
     })
     const data = await response.json();
@@ -124,6 +125,12 @@ const productSlice = createSlice({
     name: 'product',
     initialState,
     reducers: {
+        setCatagory: (state, action) => {
+            state.selectcatagory = action.payload;
+        },
+        clearSearch: (state, action) => {
+            state.searchproduct = action.payload
+        },
         setLimit: (state) => {
             state.lowerLimit = 0;
             state.higherLimit = 15;
@@ -156,7 +163,6 @@ const productSlice = createSlice({
             let allproduct = action?.payload?.allproduct
             state.searchinput = searchinput
             state.product = allproduct
-            state.product = searchproduct(searchinput, allproduct)
         },
         setSearchProduct: (state, action) => {
             state.searchproduct = action.payload.searchproduct
@@ -183,7 +189,7 @@ const productSlice = createSlice({
                     data = data?.slice?.(0, n - 1)
                     let oldproduct = state.product
                     let oldproductids = oldproduct?.map((item) => {
-                        return item._id
+                        return item._id;
                     })
                     let newproduct = data?.filter((item) => {
                         if (oldproductids?.includes(item._id) === false) {
@@ -323,79 +329,6 @@ const productSlice = createSlice({
             })
     }
 })
-
-function searchproduct(searchinput, product) {
-    if (searchinput.length === 0) {
-        return product
-    }
-    else {
-        searchinput = searchinput.toLowerCase();
-        let newproduct = [];
-        for (let i = 0; i < product.length; i++) {
-            let s = product[i]?.product_name;
-            s = s?.toLowerCase();
-            let product_type = product[i]?.product_type
-            product_type = product_type?.toLowerCase()
-            if (KMP(searchinput, s) === true || check_All_Charcter(searchinput, s)
-                || KMP(searchinput, product_type) || check_All_Charcter(searchinput, product_type)) {
-                newproduct.push(product[i]);
-            }
-        }
-        return newproduct
-    }
-}
-
-function KMP(searchproduct, product_name) {
-    let patt = solve1(searchproduct);
-    let original = solve2(product_name);
-    let n = patt.length;
-    for (let i = 0; i < original.length - n + 1; i++) {
-        let generate = original.substring(i, i + n);
-        if (generate === patt) return true;
-    }
-    return false;
-}
-
-function check_All_Charcter(searchproduct, product_name) {
-    let s = product_name;
-    let patt = searchproduct;
-    let i = 0;
-    let j = 0;
-    let n = s.length;
-    let m = patt.length;
-    while (i < n && j < m) {
-        if (patt[j] === s[i]) {
-            i++; j++;
-        }
-        else {
-            i++;
-        }
-    }
-    if (j === m) {
-        return true;
-    }
-    return false;
-}
-
-function solve1(s) {
-    let res = "";
-    for (let i = 0; i < s.length; i++) {
-        if (s[i] >= 'a' && s[i] < 'z') {
-            res += s[i];
-        }
-    }
-    return res;
-}
-
-function solve2(s) {
-    let res = "";
-    for (let i = 0; i < s.length; i++) {
-        if (s[i] >= 'a' && s[i] < 'z') {
-            res += s[i];
-        }
-    }
-    return res;
-}
 
 export const productmethod = productSlice.actions;
 export default productSlice.reducer;

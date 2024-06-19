@@ -233,7 +233,7 @@ let getproductUponPriceProductTypeAndProductName = async (req, res) => {
       }
     }
 
-    let email = req?.user?.email
+    let email = req?.body?.email
     let Wishlistproduct = await Wishlist.find({ 'email': email })
     let WishlistproductIds = Wishlistproduct?.map((data) => { return data?.product_id?.toString() })
     let ans = []
@@ -258,9 +258,8 @@ let getproductUponPriceProductTypeAndProductName = async (req, res) => {
     }
     result = ans
 
-
     let hasNextPage = result.length > Limit;
-    let actualResult = hasNextPage ? result.slice(0, Limit) : result;
+    let actualResult = hasNextPage ? result?.slice(0, Limit) : result;
     let hasPrevPage = LowerLimit > 0;
     let pagination = {
       'prev': hasPrevPage,
@@ -276,7 +275,7 @@ let getproductUponPriceProductTypeAndProductName = async (req, res) => {
         'prev': false,
         'next': false,
       })
-      res.status(404).json(new ApiResponse(404, result, "Review does not exist"));
+      res.status(404).json(new ApiResponse(404, result, "product does not exist"));
     }
 
   } catch {

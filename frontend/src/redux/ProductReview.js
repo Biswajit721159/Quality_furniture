@@ -6,11 +6,7 @@ export const loadReview = createAsyncThunk(
     async (parameter) => {
         try {
             let { userinfo, LowerLimit, UpperLimit, product_id } = parameter
-            let response = await fetch(`${api}/Reviews/${product_id}/${LowerLimit}/${UpperLimit}`, {
-                headers: {
-                    Authorization: `Bearer ${userinfo?.accessToken}`
-                }
-            })
+            let response = await fetch(`${api}/Reviews/${product_id}/${LowerLimit}/${UpperLimit}`)
             const data = await response.json();
             return { data: data, product_id: product_id };
         } catch (error) {

@@ -34,25 +34,34 @@ export default function Show() {
     let { product, lowerLimit, higherLimit, lowprice, highprice, selectcatagory, loadingproduct, next_page, wishlistloader } = useSelector((state) => state?.product)
 
     useEffect(() => {
-        if (userinfo === null || userinfo === undefined) {
-            history('/Signin')
-        }
-        else if (userinfo?.user?.email && userinfo?.accessToken && product?.length === 0) {
+        if (product?.length === 0) {
             dispatch(loadProduct({ lowprice, highprice, selectcatagory, searchInput, lowerLimit, higherLimit, userinfo }))
         }
     }, [])
 
     function addToWishlist(product_id) {
+        if (checkLogin()) {
+            history('/Signin')
+            return;
+        }
         setwishlistid(product_id)
         dispatch(AddToWishList({ userinfo, product_id }))
     }
 
     function removeToWishlist(product_id) {
+        if (checkLogin()) {
+            history('/Signin')
+            return;
+        }
         setwishlistid(product_id)
         dispatch(RemoveToWishList({ userinfo, product_id }))
     }
 
     function AddToCart(product_id) {
+        if (checkLogin()) {
+            history('/Signin')
+            return;
+        }
         if (cartproduct?.product_id === product_id) {
             dispatch(AddToCartDB({ userinfo: userinfo, product_id: product?.product_id, product_count: product?.product_count + 1, product: cartproduct }))
         }
@@ -62,6 +71,10 @@ export default function Show() {
     }
 
     function removeTocart() {
+        if (checkLogin()) {
+            history('/Signin')
+            return;
+        }
         dispatch(RemoveToDB({ userinfo: userinfo, product_id: cartproduct?.product_id, product_count: cartproduct?.product_count, product: cartproduct }))
     }
 
@@ -79,6 +92,14 @@ export default function Show() {
 
     function handleMouseLeave() {
         settakeid(0)
+    }
+
+    function checkLogin() {
+        if (userinfo?.accessToken) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 

@@ -29,7 +29,7 @@ const BootstrapNavbar = () => {
     // console.log(userinfo, isCartLogedin, isProductLogedin, isOrderLogedin, isReviewLogin)
 
     useEffect(() => {
-        if (userinfo === null || userinfo === undefined || isCartLogedin === false || isProductLogedin === false || isOrderLogedin === false || isReviewLogin === false) {
+        if (isCartLogedin === false || isProductLogedin === false || isOrderLogedin === false || isReviewLogin === false) {
             logout()
         }
         else if (userinfo?.user?.email && userinfo?.accessToken) {
@@ -84,34 +84,35 @@ const BootstrapNavbar = () => {
         <nav className="navbar navbar-expand-lg navbar navbar-dark bg-dark ">
             <Link to={'/Product'}><img src='https://t3.ftcdn.net/jpg/05/93/29/50/360_F_593295067_2SvEv1yO5R5JZPtnE4AHAun5js3MrTnp.jpg' style={{ height: '45px', width: '45px', borderRadius: '50%' }} alt='Error' /></Link>
             <Link className="navbar-brand mx-2" to="/">QUFurniture</Link>
+            <ul className="navbar-nav mr-auto">
+                <li className="nav-item active">
+                    <Link className="nav-link" to="/Product">Home <span className="sr-only">(current)</span></Link>
+                </li>
+            </ul>
+
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
+
             <div className="collapse navbar-collapse" id="navbarText">
+                <ul className="navbar-nav mr-auto">
+                </ul>
+                <span>
+                    <Searchcomponent />
+                </span>
                 {
                     userinfo === null || userinfo === undefined ?
                         <>
-                            <ul className="navbar-nav mr-auto">
-                            </ul>
                             <span className="navbar-text">
-                                <Link to='/Register'><button className='btn btn-info btn-sm'>Register</button></Link>
+                                <Link to='/Register'><button className='btn btn-info btn-md'>Register</button></Link>
                             </span>
                             <span className="navbar-text mx-3">
-                                <Link to='/Signin'><button className='btn btn-info btn-sm' >Login</button></Link>
+                                <Link to='/Signin'><button className='btn btn-info btn-md' >Login</button></Link>
                             </span>
                         </>
                         : userinfo &&
                         <>
-                            <ul className="navbar-nav mr-auto">
-                                <li className="nav-item active">
-                                    <Link className="nav-link" to="/Product">Home <span className="sr-only">(current)</span></Link>
-                                </li>
-                            </ul>
-                            <span>
-                                <Searchcomponent />
-                            </span>
                             <span className="navbar-text mx-2">
-                                {/* <span className="cart-value" >{numberOfWishlistProduct}</span> */}
                                 <Link style={{ color: 'tomato' }} className='carticon' to={'/Wishlist'}><FaHeart /></Link>
                             </span>
                             <span className="navbar-text mr-5 mx-2">
