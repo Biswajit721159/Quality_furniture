@@ -57,6 +57,21 @@ const ReviewSlice = createSlice({
         UpdatedReviewLoading: false
     },
     reducers: {
+        clearALL: (state, action) => {
+            state.product_id = '';
+            state.Review = [];
+            state.reviewLoading = false;
+            state.error = '';
+            state.prev = false;
+            state.next = false;
+            state.isReviewLogin = true;
+            state.searchvalue = '';
+            state.LowerLimit = 0;
+            state.UpperLimit = 10;
+            state.UpdatedReviewMessage = '';
+            state.UpdatedReviewLoading = false;
+          },
+          
         setProductID: (state, action) => {
             state.product_id = action?.payload
         },

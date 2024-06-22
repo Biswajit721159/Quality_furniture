@@ -61,6 +61,19 @@ const AlluserSlice = createSlice({
   },
 
   reducers: {
+    clearALL: (state, action) => {
+      state.Alluser = [];
+      state.userLoading = false;
+      state.LowerLimit = 0;
+      state.UpperLimit = 10;
+      state.searchvalue = '';
+      state.error = '';
+      state.prev = false;
+      state.next = false;
+      state.isUserLogin = true;
+      state.UpdatedUserMessage = '';
+      state.UpdatedUserLoading = false;
+    },
     ADD_USER: (state, action) => {
       let data = action.payload;
       let n = data.length;

@@ -51,11 +51,11 @@ const Sidebar = () => {
   }
 
   function logout() {
-    dispatch(productmethod.Reset({ isProductLogin: true }))
-    dispatch(Allusermethod.Reset({ isUserLogin: true }))
-    dispatch(ordermethod.Reset({ isOrderLogin: true }))
-    dispatch(countmethod.Reset({ isCountLogin: true }))
-    dispatch(Reviewmethod.Reset({ isReviewLogin: true }))
+    dispatch(productmethod.clearALL())
+    dispatch(Allusermethod.clearALL())
+    dispatch(ordermethod.clearALL())
+    dispatch(countmethod.clearALL())
+    dispatch(Reviewmethod.clearALL())
     dispatch(usermethod.LOGOUT())
     history('/Logout')
   }

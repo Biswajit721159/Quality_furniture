@@ -34,6 +34,18 @@ const productSlice = createSlice({
     error: ''
   },
   reducers: {
+    clearALL: (state, action) => {
+      state.product = [];
+      state.prev = false;
+      state.next = false;
+      state.searchvalue = '';
+      state.LowerLimit = 0;
+      state.UpperLimit = 10;
+      state.productLoading = false;
+      state.isProductLogin = true;
+      state.error = '';
+    },
+    
     ADD_SEARCH_VALUE: (state, action) => {
       state.searchvalue = action?.payload;
     },

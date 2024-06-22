@@ -88,6 +88,19 @@ const countSlice = createSlice({
         errorMessage: ''
     },
     reducers: {
+        clearALL: (state, action) => {
+            state.userCount = 0;
+            state.productCount = 0;
+            state.orderCount = 0;
+            state.reviewCount = 0;
+            state.loadingUser = false;
+            state.loadingProduct = false;
+            state.loadingOrder = false;
+            state.loadingReview = false;
+            state.isCountLogin = true;
+            state.errorMessage = '';
+          },
+          
         Reset: (state, action) => {
             let data = action?.payload;
             if (data?.userCount !== undefined) state.userCount = data?.userCount;

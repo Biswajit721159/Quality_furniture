@@ -53,9 +53,23 @@ const OrderSlice = createSlice({
     LowerLimit: 0,
     UpperLimit: 10,
     UpdatedOrderMessage: '',
-    UpdatedOrderLoading: ''
+    UpdatedOrderLoading: false
   },
   reducers: {
+    clearALL: (state, action) => {
+      state.Order = [];
+      state.orderLoading = false;
+      state.error = '';
+      state.prev = false;
+      state.next = false;
+      state.isOrderLogin = true;
+      state.searchvalue = '';
+      state.LowerLimit = 0;
+      state.UpperLimit = 10;
+      state.UpdatedOrderMessage = '';
+      state.UpdatedOrderLoading = false;
+    },
+    
     ADD_ORDER: (state, action) => {
       let data = action.payload;
       let n = data.length;
