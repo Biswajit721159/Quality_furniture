@@ -1,11 +1,11 @@
-let mongoose=require("mongoose");
-let {Schema} =require("mongoose")
+let mongoose = require("mongoose");
+let { Schema } = require("mongoose")
 
 
 const Reviews = new Schema(
     {
         email: {
-            type: String, 
+            type: String,
             required: true
         },
         product_id: {
@@ -17,19 +17,31 @@ const Reviews = new Schema(
             ref: "order"
         },
         rating: {
-            type: Number, 
+            type: Number,
             required: true
         },
         review: {
-            type: String, 
+            type: String,
             required: true
         },
-    }, 
+        like: { // this is for count of the like 
+            type: Number,
+            default: 0
+        },
+        dislike: { // this is for count of the dislike
+            type: Number,
+            default: 0
+        },
+        islike: {
+            type: Number,
+            default: 0 // -1 mean dislike and 1 mean like
+        }
+    },
     {
         timestamps: true
     }
 )
 
-let Review= mongoose.model("Review", Reviews)
+let Review = mongoose.model("Review", Reviews)
 
-module.exports=Review 
+module.exports = Review 

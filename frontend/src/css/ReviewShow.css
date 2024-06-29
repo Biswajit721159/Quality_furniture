@@ -1,5 +1,24 @@
+.like {
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.dislike {
+    cursor: pointer;
+    font-size: 15px;
+    margin-left: 2.5%;
+}
+
 .Rating {
     margin-left: 5%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.likeDislikebutton {
+    margin-left: 7%;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;

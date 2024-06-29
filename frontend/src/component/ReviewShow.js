@@ -1,21 +1,21 @@
 import React, { useEffect } from "react";
 import { PulseLoader } from 'react-spinners';
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { GoDotFill } from "react-icons/go";
 import '../css/ReviewShow.css'
 import Button from '@mui/material/Button';
-import { Reviewmethod, loadReview } from "../redux/ProductReview";
+import { Reviewmethod, loadReview, updatelikeAnddisLike } from "../redux/ProductReview";
 import Loading from '../component/Loading';
 import { SetRating } from '../constant/Rating';
+import { AiFillLike } from "react-icons/ai";
+import { AiFillDislike } from "react-icons/ai";
+import { ClipLoader } from 'react-spinners';
 
 const ReviewShow = (id) => {
     const _id = id._id
     const dispatch = useDispatch();
     const userinfo = useSelector((state) => state.user)?.user;
-    const history = useNavigate();
-
-    const { ProductReview, loadingReview, next, LowerLimit, UpperLimit, product_id } = useSelector((state) => state.Review);
+    const { ProductReview, loadingReview, next, LowerLimit, UpperLimit, product_id, updateLikeAndDisLike, review_id } = useSelector((state) => state.Review);
 
     useEffect(() => {
         if (product_id === _id) {
@@ -30,6 +30,19 @@ const ReviewShow = (id) => {
 
     function loadreview(low, high) {
         dispatch(loadReview({ userinfo, product_id: _id, LowerLimit: low, UpperLimit: high }));
+    }
+
+    function likepost(review_id, option) {
+        if (updateLikeAndDisLike === false) {
+            dispatch(Reviewmethod.setReviewid(review_id));
+            dispatch(updatelikeAnddisLike({ review_id, option, userinfo }))
+        }
+    }
+    function dislikepost(review_id, option) {
+        if (updateLikeAndDisLike === false) {
+            dispatch(Reviewmethod.setReviewid(review_id));
+            dispatch(updatelikeAnddisLike({ review_id, option, userinfo }))
+        }
     }
 
     return (
@@ -48,7 +61,19 @@ const ReviewShow = (id) => {
                                         <div className="Rating">
                                             <GoDotFill size={'7px'} style={{ marginTop: '5px' }} />
                                             <SetRating rating={data?.rating} />
-                                            - {data?.review}
+                                            ({data?.review})
+                                        </div>
+                                        <div className="likeDislikebutton">
+                                            {
+                                                updateLikeAndDisLike === true && review_id === data?._id ?
+                                                    <ClipLoader size={'21px'} />
+                                                    : <><AiFillLike onClick={() => likepost(data._id, "like")} style={data.islike === 1 && { color: "green" }} className="like" />{data?.like}</>
+                                            }
+                                            {
+                                                updateLikeAndDisLike === true && review_id === data?._id ?
+                                                    <ClipLoader size={'12px'} style={{ marginLeft: '7%' }} />
+                                                    : <> <AiFillDislike onClick={() => dislikepost(data._id, "dislike")} style={data.islike === -1 && { color: "red" }} className="dislike" />{data?.dislike}</>
+                                            }
                                         </div>
                                     </p>
                                 ))
