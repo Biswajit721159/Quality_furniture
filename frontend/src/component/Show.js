@@ -130,6 +130,7 @@ export default function Show() {
                                                             height="194"
                                                             image={item?.newImage[0]}
                                                             alt="wait"
+                                                            style={{ marginTop: '2px' }}
                                                         />
                                                     </Link>
                                             }

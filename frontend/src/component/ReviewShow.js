@@ -10,11 +10,13 @@ import { SetRating } from '../constant/Rating';
 import { AiFillLike } from "react-icons/ai";
 import { AiFillDislike } from "react-icons/ai";
 import { ClipLoader } from 'react-spinners';
+import { useNavigate } from "react-router-dom";
 
 const ReviewShow = (id) => {
     const _id = id._id
     const dispatch = useDispatch();
     const userinfo = useSelector((state) => state.user)?.user;
+    const history = useNavigate();
     const { ProductReview, loadingReview, next, LowerLimit, UpperLimit, product_id, updateLikeAndDisLike, review_id } = useSelector((state) => state.Review);
 
     useEffect(() => {
@@ -33,17 +35,34 @@ const ReviewShow = (id) => {
     }
 
     function likepost(review_id, option) {
+        if (checkLogin()) {
+            history('/Signin')
+            return;
+        }
         if (updateLikeAndDisLike === false) {
             dispatch(Reviewmethod.setReviewid(review_id));
             dispatch(updatelikeAnddisLike({ review_id, option, userinfo }))
         }
     }
     function dislikepost(review_id, option) {
+        if (checkLogin()) {
+            history('/Signin')
+            return;
+        }
         if (updateLikeAndDisLike === false) {
             dispatch(Reviewmethod.setReviewid(review_id));
             dispatch(updatelikeAnddisLike({ review_id, option, userinfo }))
         }
     }
+
+    function checkLogin() {
+        if (userinfo?.accessToken) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 
     return (
         <div className="ReviewShow">

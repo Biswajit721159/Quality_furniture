@@ -81,7 +81,7 @@ const BootstrapNavbar = () => {
 
 
     return (
-        <nav className="navbar navbar-expand-lg navbar navbar-dark bg-dark ">
+        <nav className="navbar navbar-expand-lg navbar navbar-light bg-light ">
             <Link to={'/Product'}><img src='https://t3.ftcdn.net/jpg/05/93/29/50/360_F_593295067_2SvEv1yO5R5JZPtnE4AHAun5js3MrTnp.jpg' style={{ height: '45px', width: '45px', borderRadius: '50%' }} alt='Error' /></Link>
             <Link className="navbar-brand mx-2" to="/">QUFurniture</Link>
             <ul className="navbar-nav mr-auto">

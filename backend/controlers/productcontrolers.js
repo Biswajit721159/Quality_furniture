@@ -4,6 +4,39 @@ const mongoose = require("mongoose");
 let { ApiResponse } = require("../utils/ApiResponse.js");
 let { uploadOnCloudinary } = require("../utils/cloudenary");
 
+const getProductName = async (req, res) => {
+  try {
+    let productNames = await product.find({}).select(["product_name", "newImage"]);
+    let filterProductName = [];
+    let seen = new Set(); // To keep track of seen product names
+
+    productNames.forEach((data) => {
+      // Check if product_name is not already in seen set
+      if (!seen.has(data.product_name)) {
+        seen.add(data.product_name);
+        let obj = {
+          photo: data.newImage[0], // Assuming newImage is an array and taking the first item
+          product_name: data.product_name
+        }
+        filterProductName.push(obj);
+      }
+    });
+
+    res.status(200).json({
+      status: 200,
+      data: filterProductName,
+      message: "Product names successfully fetched"
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: 500,
+      data: null,
+      message: "Error occurred while fetching product names"
+    });
+  }
+}
+
 let ProductUpdate = async (req, res) => {
   try {
     let result = await product.updateOne(
@@ -404,6 +437,7 @@ let getproductByLimit = async (req, res) => {
 }
 
 module.exports = {
+  getProductName,
   get_product_by_ids,
   getFullProduct,
   productInsert,

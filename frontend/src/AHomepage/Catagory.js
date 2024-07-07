@@ -23,7 +23,7 @@ const Catagory = () => {
     }
     return (
         <>
-            {Catagory?.length !== 0 && <h5 className="product_name" >Catagory</h5>}
+            {Catagory?.length !== 0 && <h5 className="product_name mt-3" >Catagory</h5>}
             <div className="catagory  mt-2" style={{ backgroundColor: `rgba(var(--color-foreground), 0.2)` }}>
                 {
                     Catagory && Catagory?.map((data, ind) => (

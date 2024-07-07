@@ -16,11 +16,13 @@ let {
   countNumberProduct,
   getproductByLimit,
   ProductUpdate,
+  getProductName,
 } = require("../controlers/productcontrolers");
 
 const router = Router();
 
 router.route("/").get(getFullProduct);
+router.route("/getProductName").get(getProductName);
 router.route("/:_id").get( informationById);
 router.route("/search/:key").get(verifytoken, searchProduct);
 router.route("/total_number_of_product/:_id").put(verifytoken, Update_total_number_of_product);

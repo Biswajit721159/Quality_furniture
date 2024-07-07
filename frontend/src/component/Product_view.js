@@ -80,15 +80,15 @@ export default function Product_view() {
                                 <div className='item'>
                                     <div className='col12'>
                                         <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
-                                            <div className="carousel-inner" style={{ border: '2px solid green', borderRadius: 10 }}>
+                                            <div className="carousel-inner" style={{ border: '1px solid gray', borderRadius: 20 }}>
                                                 <div className="carousel-item active">
-                                                    <img className="d-block image" src={product.newImage[0]} alt="First slide" />
+                                                    <img className="d-block image" src={product?.newImage[0]} alt="First slide" />
                                                 </div>
                                                 <div className="carousel-item">
-                                                    <img className="d-block image" src={product.newImage[1]} alt="Second slide" />
+                                                    <img className="d-block image" src={product?.newImage[1]} alt="Second slide" />
                                                 </div>
                                                 <div className="carousel-item">
-                                                    <img className="d-block image" src={product.newImage[2]} alt="Third slide" />
+                                                    <img className="d-block image" src={product?.newImage[2]} alt="Third slide" />
                                                 </div>
                                             </div>
                                             <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -102,11 +102,11 @@ export default function Product_view() {
                                     <div className='col3'>
                                         <div className="card123" >
                                             <div className="card-body">
-                                                <h5 className="card-title1">{product.product_name}</h5>
-                                                <p className="card-text1" style={{ color: "#D68910" }}>{product.offer}%OFF</p>
+                                                <h6 className="card-title1">{product.product_name}</h6>
+                                                <p className="card-text1" style={{ color: "#D68910" }}>{product.offer}% OFF</p>
                                                 <h6 className="card-text1" style={{ color: 'gray' }}><s>₹{product.price}</s></h6>
-                                                <h5 className="card-text1" style={{ color: 'tomato' }}>Price - ₹{(product.price - ((product.price * product.offer) / 100)).toFixed(2)}</h5>
-                                                <h5 className="card-text1">{product.total_number_of_product} Left </h5>
+                                                <h6 className="card-text1" style={{ color: 'green' }}>Price - ₹{(product.price - ((product.price * product.offer) / 100)).toFixed(2)}</h6>
+                                                <h6 className="card-text1">{product.total_number_of_product} Left </h6>
                                             </div>
                                         </div>
                                     </div>

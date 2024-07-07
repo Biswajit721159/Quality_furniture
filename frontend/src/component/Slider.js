@@ -15,10 +15,14 @@ const Slider = (data) => {
             {
                 item.map((data, index) => (
                     <div key={index}>
-                        {index == imageindex && <CardMedia component="img"
-                            height="194"
-                            image={data}
-                            alt="wait" />}
+                        {index == imageindex &&
+                            <CardMedia component="img"
+                                height="194"
+                                image={data}
+                                alt="wait"
+                                style={{ marginTop: '2px' }}
+                            />
+                        }
                     </div>
                 ))
             }

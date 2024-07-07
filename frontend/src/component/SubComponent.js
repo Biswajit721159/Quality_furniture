@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Carousel from "./Carousel";
 import { useDispatch, useSelector } from "react-redux";
 import { loadTopproduct, loadTopOfferProduct } from '../redux/TopProductSlice'
-const api = process.env.REACT_APP_API
 const SubComponent = () => {
 
     const dispatch = useDispatch()
