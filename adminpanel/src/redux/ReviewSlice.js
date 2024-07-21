@@ -6,6 +6,7 @@ export const loadReview = createAsyncThunk(
     async (parameter) => {
         try {
             let { LowerLimit, UpperLimit, userinfo, product_id } = parameter;
+            console.log("hghghg");
             const response = await fetch(`${api}/Reviews/Adninpanel/${LowerLimit}/${UpperLimit}/${product_id}`, {
                 headers: {
                     Authorization: `Bearer ${userinfo?.accessToken}`
