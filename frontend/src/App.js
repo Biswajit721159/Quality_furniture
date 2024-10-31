@@ -15,6 +15,7 @@ import './css/Loader.css'
 import BootstrapNavbar from "./component/BootstrapNavbar";
 import ForgotPassword from "./component/ForgotPassword";
 import './App.css'
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
         </Routes>
         {/* <Footer /> */}
       </Router>
+      <ToastContainer />
     </div>
   );
 }

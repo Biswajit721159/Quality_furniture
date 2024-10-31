@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { AiFillStar } from "react-icons/ai";
-import swal from 'sweetalert'
 import { useDispatch } from 'react-redux'
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
@@ -11,6 +10,7 @@ import { useSelector } from 'react-redux';
 import { AddToCartDB } from '../redux/CartSlice'
 import { usermethod } from '../redux/UserSlice';
 import Loader from './Loader';
+import { toast } from 'react-toastify'
 
 const api = process.env.REACT_APP_API
 export default function WishList() {
@@ -46,7 +46,7 @@ export default function WishList() {
         setload(false)
       }
       catch {
-        swal("we are find Some Error")
+        toast.warn("we are find Some Error")
       }
     })
   }

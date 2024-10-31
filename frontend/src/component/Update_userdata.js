@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { usermethod } from '../redux/UserSlice';
 import Loader from './Loader';
-import swal from 'sweetalert';
 const api = process.env.REACT_APP_API
 
 export default function Update_userdata() {
@@ -86,8 +85,7 @@ export default function Update_userdata() {
           if (res.statusCode == 201) {
             setbutton("Submit")
             setdisabled(false)
-            toast("user successfully updated!")
-            swal("user successfully updated!")
+            toast.success("user successfully updated!")
             let user = {
               user: {
                 _id: userinfo?.user?._id,

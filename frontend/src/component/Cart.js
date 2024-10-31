@@ -5,11 +5,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { GrAdd } from "react-icons/gr";
 import { GrSubtract } from "react-icons/gr";
 import Button from '@mui/material/Button';
-import swal from 'sweetalert'
 import '../css/cart.css'
 import Loader from './Loader'
 import { LoadCart, AddToCartDB, RemoveToDB } from '../redux/CartSlice'
 import { Ordermethod } from '../redux/OrderSlice';
+import { toast } from 'react-toastify'
 const api = process.env.REACT_APP_API
 export default function Cart() {
 
@@ -36,10 +36,10 @@ export default function Cart() {
 
     function Add_TO_CART() {
         if (product?.product_count >= product?.total_number_of_product) {
-            swal(`Sorry, in our stock, ${product?.total_number_of_product} products are Available.`)
+            toast.warn(`Sorry, in our stock, ${product?.total_number_of_product} products are Available.`)
         }
         else if (product?.product_count >= 5) {
-            swal("Sorry, your cart already has 5 products.")
+            toast.warn("Sorry, your cart already has 5 products.")
         }
         else {
             dispatch(AddToCartDB({ userinfo: userinfo, product_id: product?.product_id, product_count: product?.product_count + 1, product: product }))
@@ -48,7 +48,7 @@ export default function Cart() {
 
     function SUB_TO_CART() {
         if (product?.product_count <= 0) {
-            swal("If you want to remove the product, there is a 'Remove' button available .")
+            toast.warn("If you want to remove the product, there is a 'Remove' button available .")
         }
         else {
             dispatch(AddToCartDB({ userinfo: userinfo, product_id: product?.product_id, product_count: product?.product_count - 1, product: product }))
@@ -62,7 +62,7 @@ export default function Cart() {
         let year = date.getFullYear();
         let currentDate = `${day}-${month}-${year}`;
         if (product?.product_count == 0) {
-            swal("Please Select Atleast One Product .")
+            toast.warn("Please Select Atleast One Product .")
             return;
         }
         setdisabled(true)
@@ -89,20 +89,17 @@ export default function Cart() {
                 if (res.statusCode == 201) {
                     dispatch(Ordermethod.clearOrder())
                     setbutton("Order SuccessFull")
-                    let id = swal(res.message, '', "success");
-                    id.then((res) => {
-                        if (res === true) {
-                            history('/Myorder')
-                            removeTocart()
-                        }
-                    })
+                    let message = (res.message, '', "success");
+                    toast.success(message);
+                    history('/Myorder')
+                    removeTocart()
                 }
                 else if (res.statusCode == 498) {
                     localStorage.removeItem('user');
                     history('/Login')
                 }
                 else {
-                    swal(res.message)
+                    toast.warn(res.message)
                     setdisabled(false)
                     setbutton("PLACE ORDER")
                 }

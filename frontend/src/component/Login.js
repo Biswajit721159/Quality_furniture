@@ -3,10 +3,11 @@ import { GoXCircleFill } from "react-icons/go";
 import { HiCheckCircle } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
 import '../css/Auth.css'
-import swal from 'sweetalert'
 import { usermethod } from '../redux/UserSlice'
 import { useDispatch } from "react-redux";
 import { productmethod } from "../redux/ProductSlice";
+import { toast } from 'react-toastify'
+import { containsUppercase, containsLowercase, containsDigit, containsSpecialCharacter } from "../helpers/user";
 export default function Login() {
 
   const dispatch = useDispatch()
@@ -51,21 +52,6 @@ export default function Login() {
   }, [])
 
   //password check
-  function containsUppercase(str) {
-    return /[A-Z]/.test(str);
-  }
-
-  function containsLowercase(str) {
-    return /[a-z]/.test(str);
-  }
-
-  function containsDigit(str) {
-    return /\d/.test(str);
-  }
-
-  function containsSpecialCharacter(str) {
-    return /[^\w\d]/.test(str);
-  }
 
   function checkpassword(s) {
     setwronguser(false)
@@ -188,7 +174,7 @@ export default function Login() {
 
   function OTPVerified() {
     if (checkAllInputfield() == false || otp.otpFromdata == 0) {
-      swal("Please Fill Input Form")
+      toast.warn("Please Fill Input Form");
       return;
     }
     setresent(true)
@@ -212,12 +198,10 @@ export default function Login() {
       .then(response => response.json())
       .then((result) => {
         if (result.statusCode == 200) {
-          let x = swal(result.message)
-          x.then((res) => {
-            dispatch(usermethod.Add_User(result?.data))
-            dispatch(productmethod.clearAll())
-            history('/Product')
-          })
+          toast.success(result.message);
+          dispatch(usermethod.Add_User(result?.data))
+          dispatch(productmethod.clearAll())
+          history('/Product')
         }
         else {
           setotp((prevUserData) => ({
@@ -289,7 +273,7 @@ export default function Login() {
         .then((result) => {
           if (result.statusCode == 200) {
             setregisterandloginlink(false)
-            swal(result.message)
+            toast.success(result.message);
             setotp((prevUserData) => ({
               ...prevUserData,
               showOtpfrom: true,
@@ -312,7 +296,7 @@ export default function Login() {
 
     }
     else {
-      swal("Please Fill All the filed using description")
+      toast.warn("Please Fill All the filed using description");
     }
   }
 
