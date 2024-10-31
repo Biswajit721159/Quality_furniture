@@ -1,7 +1,6 @@
 import { Link, json, useNavigate, useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import '../App.css';
-import swal from 'sweetalert'
 import { PulseLoader, BeatLoader, ClipLoader } from 'react-spinners';
 const api = process.env.REACT_APP_API
 export default function Addproduct() {
@@ -144,12 +143,8 @@ export default function Addproduct() {
         })
       }).then(responce => responce.json()).then((res) => {
         if (res.statusCode == 201) {
-          let data = swal(res.message)
-          data.then((result) => {
-            history('/Product')
-          }).catch((error) => {
-            history('*')
-          })
+          toast.success(res.message);
+          history(-1);
         }
         else if (res.statusCode == 498) {
           localStorage.removeItem('user');
@@ -194,7 +189,7 @@ export default function Addproduct() {
 
 
   return (
-    <div className='App' style={{ display:'flex',justifyContent:'center' }}>
+    <div className='App' style={{ display: 'flex', justifyContent: 'center' }}>
       <form onSubmit={handleSubmit} className='grid' >
 
         <div className="col mt-3">

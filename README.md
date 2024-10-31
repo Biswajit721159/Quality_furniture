@@ -1,5 +1,7 @@
 # Project Description
-This project is a MERN stack e-commerce app.
+• This is an e-commerce website for furniture where users can buy furniture. The project includes features such as Login,
+register, Cart, Wishlist, my orders, user profile, recent views, etc. Additionally, there is an admin panel where users can
+perform CRUD operations.
 
 # Backend
 The backend is written in Node.js.
