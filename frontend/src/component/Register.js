@@ -58,13 +58,8 @@ const Register = () => {
   })
 
   const [addresscontorl, setaddresscontrol] = useState({
-    street: false,
-    city: false,
-    pin: false,
-    state: false,
     specialCharacters: false,
     len: false,
-    mobile: false,
     numaricNumer: false,
     showaddressfrom: false,
     show_address_error_text: false
@@ -376,78 +371,13 @@ const Register = () => {
     if (s.length == 0) {
       setaddresscontrol((prevUserData) => ({
         ...prevUserData,
-        street: false,
-        city: false,
-        pin: false,
-        state: false,
         specialCharacters: false,
         len: false
       }));
       return
     }
 
-    let searchString = "street";
-    if (s.includes(searchString)) {
-      setaddresscontrol((prevUserData) => ({
-        ...prevUserData,
-        street: true,
-      }));
-    } else {
-      setaddresscontrol((prevUserData) => ({
-        ...prevUserData,
-        street: false,
-      }));
-    }
-    searchString = "city";
-    if (s.includes(searchString)) {
-      setaddresscontrol((prevUserData) => ({
-        ...prevUserData,
-        city: true,
-      }));
-    } else {
-      setaddresscontrol((prevUserData) => ({
-        ...prevUserData,
-        city: false,
-      }));
-    }
-    searchString = "pin";
-    if (s.includes(searchString)) {
-      setaddresscontrol((prevUserData) => ({
-        ...prevUserData,
-        pin: true,
-      }));
-    } else {
-      setaddresscontrol((prevUserData) => ({
-        ...prevUserData,
-        pin: false,
-      }));
-    }
-    searchString = "state";
-    if (s.includes(searchString)) {
-      setaddresscontrol((prevUserData) => ({
-        ...prevUserData,
-        state: true,
-      }));
-    } else {
-      setaddresscontrol((prevUserData) => ({
-        ...prevUserData,
-        state: false,
-      }));
-    }
-    searchString = "mobile";
-    if (s.includes(searchString)) {
-      setaddresscontrol((prevUserData) => ({
-        ...prevUserData,
-        mobile: true,
-      }));
-    } else {
-      setaddresscontrol((prevUserData) => ({
-        ...prevUserData,
-        mobile: false,
-      }));
-    }
-
-    if (s.length >= 45 && s.length <= 100) {
+    if (s.length >=30 && s.length <= 200) {
       setaddresscontrol((prevUserData) => ({
         ...prevUserData,
         len: true,
@@ -481,7 +411,7 @@ const Register = () => {
       }
     }
 
-    if (digitcount <= 22) {
+    if (digitcount <= 40) {
       setaddresscontrol((prevUserData) => ({
         ...prevUserData,
         numaricNumer: true,
@@ -494,7 +424,7 @@ const Register = () => {
       }));
     }
 
-    if (count == 0 && specialCharacterscount <= 10) {
+    if (count == 0 && specialCharacterscount <= 20) {
       setaddresscontrol((prevUserData) => ({
         ...prevUserData,
         specialCharacters: true,
@@ -504,18 +434,6 @@ const Register = () => {
       setaddresscontrol((prevUserData) => ({
         ...prevUserData,
         specialCharacters: false,
-      }));
-    }
-
-    if (extractMobileNumber(s)) {
-      setaddresscontrol((prevUserData) => ({
-        ...prevUserData,
-        mobile: true,
-      }));
-    } else {
-      setaddresscontrol((prevUserData) => ({
-        ...prevUserData,
-        mobile: false,
       }));
     }
 
@@ -568,7 +486,8 @@ const Register = () => {
   function checkAllInputfield() {
     return (namecontrol.charcter && namecontrol.word && namecontrol.lenWord && namecontrol.len && namecontrol.specialCharacters
       && emailcontrol.wrongemail && passwordcontrol.uppercase && passwordcontrol.lowercase && passwordcontrol.digit && passwordcontrol.len && passwordcontrol.specialCharacters &&
-      addresscontorl.street && addresscontorl.city && addresscontorl.pin && addresscontorl.state && addresscontorl.specialCharacters && addresscontorl.len && confirmpasswordcontrol.isPasswordandconfirmPasswordIsSame)
+      addresscontorl.specialCharacters && addresscontorl.len
+      && confirmpasswordcontrol.isPasswordandconfirmPasswordIsSame)
 
   }
 
@@ -800,20 +719,15 @@ const Register = () => {
 
       <div className="">
         <textarea type="text" value={address} onChange={(e) => { checkaddress(e.target.value) }} disabled={addresscontorl.showaddressfrom} style={{ height: '60px' }} className="inputreglog" placeholder="Enter Full Address" required />
-        {addresscontorl.street && addresscontorl.city && addresscontorl.pin && addresscontorl.state && addresscontorl.specialCharacters && addresscontorl.len && addresscontorl.mobile && addresscontorl.numaricNumer && <HiCheckCircle style={{ color: 'green' }} />}
+        {addresscontorl.specialCharacters && addresscontorl.len &&  addresscontorl.numaricNumer && <HiCheckCircle style={{ color: 'green' }} />}
       </div>
       {addresscontorl.show_address_error_text == true &&
         <div>
           <div className="authform">
             <>
-              <label className="wrongtext">{addresscontorl.street == false ? <GoXCircleFill style={{ color: 'red' }} /> : <HiCheckCircle style={{ color: 'green' }} />} Address must be a string containing  'street' name</label>
-              <label className="wrongtext">{addresscontorl.city == false ? <GoXCircleFill style={{ color: 'red' }} /> : <HiCheckCircle style={{ color: 'green' }} />}  Address must be a string containing  'city' name</label>
-              <label className="wrongtext">{addresscontorl.pin == false ? <GoXCircleFill style={{ color: 'red' }} /> : <HiCheckCircle style={{ color: 'green' }} />}  Address must be a string containing  'pin' name</label>
-              <label className="wrongtext">{addresscontorl.state == false ? <GoXCircleFill style={{ color: 'red' }} /> : <HiCheckCircle style={{ color: 'green' }} />}Address must be a string containing  'state' name</label>
-              <label className="wrongtext">{addresscontorl.mobile == false ? <GoXCircleFill style={{ color: 'red' }} /> : <HiCheckCircle style={{ color: 'green' }} />}Address must be a string containing  'mobile' Number</label>
-              <label className="wrongtext">{addresscontorl.numaricNumer == false ? <GoXCircleFill style={{ color: 'red' }} /> : <HiCheckCircle style={{ color: 'green' }} />}Address must be contain at Max 22 numaric Number</label>
-              <label className="wrongtext">{addresscontorl.specialCharacters == false ? <GoXCircleFill style={{ color: 'red' }} /> : <HiCheckCircle style={{ color: 'green' }} />}Address Maximum 9 Special charcter Accept That are <strong> ,-. </strong></label>
-              <label className="wrongtext">{addresscontorl.len == false ? <GoXCircleFill style={{ color: 'red' }} /> : <HiCheckCircle style={{ color: 'green' }} />}  Length of Address in Between 45 to 100 Character</label>
+              <label className="wrongtext">{addresscontorl.numaricNumer == false ? <GoXCircleFill style={{ color: 'red' }} /> : <HiCheckCircle style={{ color: 'green' }} />}Address must be contain at Max 40 numaric Number</label>
+              <label className="wrongtext">{addresscontorl.specialCharacters == false ? <GoXCircleFill style={{ color: 'red' }} /> : <HiCheckCircle style={{ color: 'green' }} />}Address Maximum 20 Special charcter Accept That are <strong> ,-. </strong></label>
+              <label className="wrongtext">{addresscontorl.len == false ? <GoXCircleFill style={{ color: 'red' }} /> : <HiCheckCircle style={{ color: 'green' }} />}  Length of Address in Between 30 to 200 Character</label>
             </>
           </div>
         </div>
