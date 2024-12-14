@@ -1,34 +1,66 @@
+import axios from "axios";
+const api = process.env.REACT_APP_API;
+const login = async (body) => {
+	try {
+		const response = await axios.post(`${api}/authUser/login`, body);
+		return response.data;
+	} catch (e) {
+		throw new Error(e?.response?.data?.message || e?.message);
+	}
+};
 
-const api = process.env.REACT_APP_API
-const login = () => {
+const register = async (body = {}) => {
+	try {
+		const response = await axios.post(`${api}/authUser/register`, body);
+		return response.data;
+	} catch (e) {
+		throw new Error(e?.response?.data?.message || e?.message);
+	}
+};
 
-}
-const register = () => {
+const forgotPassword = async (body = {}) => {
+	try {
+		const response = await axios.post(`${api}/authUser/forgotPassword`, body);
+		return response.data;
+	} catch (e) {
+		throw new Error(e?.response?.data?.message || e?.message);
+	}
+};
 
-}
-const verifyOTP = async (email, otpFromdata, password) => {
-    try {
-        let response = await fetch(`${api}/Verification/VerifyOTP`, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: email,
-                otp: otpFromdata,
-                password: password
-            })
-        })
-        response = await response.json();
-        return response;
-    } catch (e) {
+const checkTokenData = async (token) => {
+	try {
+		const response = await axios.get(`${api}/authUser/getResetData/${token}`);
+		return response.data;
+	} catch (e) {
+		throw new Error(e?.response?.data?.message || e?.message);
+	}
+};
 
-    }
-}
+const savePassword = async (body = {}) => {
+	try {
+		const response = await axios.post(`${api}/authUser/savePassword`, body);
+		return response.data;
+	} catch (e) {
+		throw new Error(e?.response?.data?.message || e?.message);
+	}
+};
 
-const forgotPassword = () => {
+const verifyOTP = async (body = {}) => {
+	try {
+		const response = await axios.post(`${api}/Verification/VerifyOTP`, body);
+		return response.data;
+	} catch (e) {
+		throw new Error(e?.response?.data?.message || e?.message);
+	}
+};
 
-}
+const sendOTP = async (email) => {
+	try {
+		const response = await axios.post(`${api}/authUser/sendOTP`, { email });
+		return response.data;
+	} catch (e) {
+		throw new Error(e?.response?.data?.message || e?.message);
+	}
+};
 
-export { login, register, verifyOTP, forgotPassword }
+export { verifyOTP, login, register, forgotPassword, checkTokenData, savePassword, sendOTP };

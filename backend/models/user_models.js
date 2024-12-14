@@ -1,66 +1,79 @@
-let mongoose, { Schema, model } = require("mongoose")
-let jwt = require("jsonwebtoken")
-let bcrypt = require("bcrypt")
+let mongoose,
+	{ Schema, model } = require("mongoose");
+let jwt = require("jsonwebtoken");
+let bcrypt = require("bcrypt");
 
 const userSchema = new Schema(
-    {
-        email: {
-            type: String,
-            required: true,
-            unique: true,
-            lowecase: true,
-            trim: true,
-        },
-        name: {
-            type: String,
-            required: true,
-            trim: true,
-            index: true
-        },
-        password: {
-            type: String,
-            required: [true, 'Password is required']
-        },
-        address: {
-            type: String,
-            required: true,
-            trim: true,
-            index: true
-        },
-        isBlackListUser: {
-            type: Boolean,
-            default: false
-        }
-    },
-    {
-        timestamps: true
-    }
-)
+	{
+		email: {
+			type: String,
+			required: true,
+			unique: true,
+			lowecase: true,
+			trim: true,
+		},
+		name: {
+			type: String,
+			required: true,
+			trim: true,
+			index: true,
+		},
+		password: {
+			type: String,
+			required: [true, "Password is required"],
+		},
+		address: {
+			type: String,
+			required: true,
+			trim: true,
+			index: true,
+		},
+		passwordResetToken: {
+			type: String,
+			default: "",
+		},
+		isBlackListUser: {
+			type: Boolean,
+			default: false,
+		},
+		OTP: {
+			type: String,
+			default: "",
+		},
+		otpSaveTime: {
+			type: Date,
+			default: "",
+		},
+	},
+	{
+		timestamps: true,
+	}
+);
 
 userSchema.pre("save", async function (next) {
-    if (!this.isModified("password")) return next();
-    this.password = await bcrypt.hash(this.password, 10)
-    next()
-})
+	if (!this.isModified("password")) return next();
+	this.password = await bcrypt.hash(this.password, 10);
+	next();
+});
 
 userSchema.methods.isPasswordCorrect = async function (password) {
-    return await bcrypt.compare(password, this.password)
-}
+	return await bcrypt.compare(password, this.password);
+};
 
 userSchema.methods.generateAccessToken = function () {
-    let data = jwt.sign(
-        {
-            _id: (this._id),
-            email: this.email,
-            name: this.name
-        },
-        process.env.ACCESS_TOKEN_SECRET,
-        {
-            expiresIn: process.env.ACCESS_TOKEN_EXPIRY
-        }
-    )
-    return data;
-}
+	let data = jwt.sign(
+		{
+			_id: this._id,
+			email: this.email,
+			name: this.name,
+		},
+		process.env.ACCESS_TOKEN_SECRET,
+		{
+			expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
+		}
+	);
+	return data;
+};
 
 // userSchema.methods.generateRefreshToken = function(){
 //     const refreshTokenPayload = {
@@ -76,6 +89,16 @@ userSchema.methods.generateAccessToken = function () {
 //     console.log("Refresh Token Value:", refreshToken);
 //     return refreshToken;
 // }
+
+userSchema.pre("save", async function (next) {
+	if (!this.isModified("OTP")) return next();
+	this.OTP = await bcrypt.hash(this.OTP, 10);
+	next();
+});
+
+userSchema.methods.isOTPCorrect = async function (OTP) {
+	return await bcrypt.compare(OTP, this.OTP);
+};
 
 let User = model("user", userSchema);
 module.exports = User;

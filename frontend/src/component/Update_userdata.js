@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { usermethod } from '../redux/UserSlice';
 import Loader from './Loader';
+import "../css/Auth.css";
 const api = process.env.REACT_APP_API
 
 export default function Update_userdata() {
