@@ -2,6 +2,7 @@ import { Link, json, useNavigate, useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import '../App.css';
 import { PulseLoader, BeatLoader, ClipLoader } from 'react-spinners';
+import {toast} from 'react-toastify';
 const api = process.env.REACT_APP_API
 export default function Addproduct() {
 

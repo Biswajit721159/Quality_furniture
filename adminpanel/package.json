@@ -24,6 +24,7 @@
     "react-router-dom": "^6.21.1",
     "react-scripts": "^5.0.1",
     "react-spinners": "^0.13.8",
+    "react-toastify": "^10.0.6",
     "redux": "^5.0.1",
     "styled-components": "^6.1.11",
     "sweetalert": "^2.1.2",
@@ -52,5 +53,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.16"
   }
 }
