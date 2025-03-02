@@ -144,16 +144,6 @@ const sendOTP = async (req, res) => {
 	}
 };
 
-const verifyUserAndRegister = (req, res) => {
-	try {
-		if (!email || !otp) {
-			return res.status(400).json({ message: "Both Email and Password is required" });
-		}
-	} catch {
-		res.status(500).json({ message: "server down" });
-	}
-};
-
 module.exports = {
 	register,
 	login,
