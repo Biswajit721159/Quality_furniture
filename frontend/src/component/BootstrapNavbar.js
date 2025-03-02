@@ -133,11 +133,11 @@ const BootstrapNavbar = () => {
 					) : (
 						userinfo && (
 							<>
-								<span className="navbar-text mx-2">
+								{/* <span className="navbar-text mx-2">
 									<Link style={{ color: "tomato" }} className="carticon" to={"/Wishlist"}>
 										<FaHeart />
 									</Link>
-								</span>
+								</span> */}
 								<span className="navbar-text mr-5 mx-2">
 									<Link className="carticon" to={"/Cart"}>
 										<span className="cart-value">
@@ -164,6 +164,9 @@ const BootstrapNavbar = () => {
 										<div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
 											<Link className="dropdown-item" style={{ color: "black" }} to={`/Profile`}>
 												Profile
+											</Link>
+											<Link className="dropdown-item" style={{ color: "black" }} to="/wishlist">
+												Wishlist
 											</Link>
 											<Link className="dropdown-item" style={{ color: "black" }} to="/Myorder">
 												Myorder
