@@ -3,11 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { BeatLoader } from "react-spinners";
 import { useDispatch, useSelector } from "react-redux";
 import Carousel from "./Carousel";
-import Product_Review from "./Product_Review";
+import ProductReview from "./Product_Review";
 import Footer from "../component/Footer";
 import Loader from "./Loader";
 import { FcPrevious, FcNext } from "react-icons/fc";
-import { AiFillStar } from "react-icons/ai";
+import { SetRating } from "../constant/Rating";
 import { FaShoppingCart, FaTrash } from "react-icons/fa";
 import { MdLocalOffer } from "react-icons/md";
 import { AddToCartDB, RemoveToDB } from "../redux/CartSlice";
@@ -21,12 +21,13 @@ export default function Product_view() {
     const userinfo = useSelector((state) => state?.user)?.user;
     let [load, setload] = useState(true);
     const [relatedProduct, setrelatedProduct] = useState(null);
-    const [removebutton, setremovebutton] = useState(false);
+    const [removebutton] = useState(false);
     let cartproduct = useSelector((state) => state?.cartdata?.product);
     const [activeImg, setActiveImg] = useState(0);
 
     useEffect(() => {
         loadproduct();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [_id]);
 
     function loadproduct() {
@@ -67,13 +68,6 @@ export default function Product_view() {
         : 0;
 
     const savings = product ? (product.price - discountedPrice).toFixed(2) : 0;
-
-    const getRatingColor = (r) => {
-        const n = parseInt(r);
-        if (n >= 4) return 'text-green-600';
-        if (n >= 3) return 'text-amber-500';
-        return 'text-red-500';
-    };
 
     return (
         <>
@@ -145,12 +139,9 @@ export default function Product_view() {
                                     </div>
 
                                     {/* Rating */}
-                                    <div className="flex items-center gap-2 mb-4 pb-4 border-b border-stone-100">
-                                        <div className={`flex items-center gap-1 font-bold text-sm ${getRatingColor(product?.rating)}`}>
-                                            <AiFillStar />
-                                            <span>{product?.rating}</span>
-                                        </div>
-                                        <span className="text-stone-400 text-sm">Rating</span>
+                                    <div className="flex items-center gap-4 mb-4 pb-4 border-b border-stone-100">
+                                        <SetRating rating={product?.rating} />
+                                        <span className="text-stone-400 text-sm font-bold tracking-tight">{product?.rating} Out of 5</span>
                                     </div>
 
                                     {/* Pricing */}
@@ -230,7 +221,7 @@ export default function Product_view() {
 
                         {/* Reviews */}
                         <div className="mt-8 bg-white rounded-2xl shadow-card border border-stone-100 p-6">
-                            <Product_Review _id={_id} />
+                            <ProductReview _id={_id} />
                         </div>
 
                         {/* Related Products */}

@@ -196,9 +196,7 @@ const productSlice = createSlice({
                         return item._id;
                     })
                     let newproduct = data?.filter((item) => {
-                        if (oldproductids?.includes(item._id) === false) {
-                            return item;
-                        }
+                        return oldproductids?.includes(item._id) === false;
                     })
                     state.product = [...state.product, ...newproduct];
                     state.allproduct = [...state.product, ...newproduct];
