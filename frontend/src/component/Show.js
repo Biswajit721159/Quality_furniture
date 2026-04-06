@@ -9,7 +9,6 @@ import { loadProduct, searchProduct, AddToWishList, RemoveToWishList } from '../
 import { productmethod } from '../redux/ProductSlice'
 import { AddToCartDB, RemoveToDB } from '../redux/CartSlice'
 import { FaHeart } from 'react-icons/fa';
-import { AiFillStar } from 'react-icons/ai';
 
 import Loader from './Loader';
 import Loading from './Loading';
@@ -26,8 +25,9 @@ export default function Show() {
     const userinfo = useSelector((state) => state?.user)?.user
     const [wishlistid, setwishlistid] = useState(0)
     const [sortOption, setSortOption] = useState('none')
+    const [cartLoadingId, setCartLoadingId] = useState(null)
 
-    let cartproduct = useSelector((state) => state?.cartdata?.product)
+    const { product: cartproduct, loadingcart, loadingcartcount } = useSelector((state) => state?.cartdata)
     
     const urlSearchQuery = searchParams.get('search') || '';
 
@@ -69,15 +69,17 @@ export default function Show() {
 
     function AddToCart(product_id) {
         if (checkLogin()) { history('/Signin'); return; }
+        setCartLoadingId(product_id)
         if (cartproduct?.product_id === product_id) {
-            dispatch(AddToCartDB({ userinfo, product_id: product?.product_id, product_count: product?.product_count + 1, product: cartproduct }))
+            dispatch(AddToCartDB({ userinfo, product_id: cartproduct?.product_id, product_count: cartproduct?.product_count + 1, product: cartproduct }))
         } else {
             dispatch(AddToCartDB({ userinfo, product_id, product_count: 1, product: cartproduct }))
         }
     }
 
-    function removeTocart() {
+    function removeTocart(product_id) {
         if (checkLogin()) { history('/Signin'); return; }
+        setCartLoadingId(product_id)
         dispatch(RemoveToDB({ userinfo, product_id: cartproduct?.product_id, product_count: cartproduct?.product_count, product: cartproduct }))
     }
 
@@ -167,7 +169,7 @@ export default function Show() {
                                             </span>
                                         )}
                                         {/* Wishlist Heart */}
-                                        <button className="absolute top-2 right-2 p-1.5 rounded-full bg-white shadow-md hover:scale-110 transition-transform">
+                                <button className="absolute top-2 right-2 p-1.5 rounded-full bg-white shadow-md hover:scale-110 transition-transform outline-none border-none">
                                             {wishlistloader === true && wishlistid === item._id ? (
                                                 <ClipLoader color="#7C4B2A" size={14} />
                                             ) : item.islove === false ? (
@@ -199,7 +201,7 @@ export default function Show() {
 
                                         {/* Stock */}
                                         <div className="mb-3">
-                                            {item.total_number_of_product == 0 ? (
+                                            {item.total_number_of_product === 0 ? (
                                                 <span className="text-xs text-red-500 font-medium">Out of Stock</span>
                                             ) : (
                                                 <span className="text-xs text-green-600 font-medium">
@@ -210,23 +212,29 @@ export default function Show() {
 
                                         {/* Add to Cart Button */}
                                         <div className="mt-auto">
-                                            {item.total_number_of_product == 0 ? (
-                                                <button className="w-full py-1.5 text-xs bg-stone-100 text-stone-400 rounded-lg cursor-not-allowed font-medium" disabled>
+                                            {item.total_number_of_product === 0 ? (
+                                                <button className="w-full py-1.5 text-xs bg-stone-100 text-stone-400 rounded-lg cursor-not-allowed font-medium outline-none border-none" disabled>
                                                     Out of Stock
                                                 </button>
                                             ) : item?._id === cartproduct?.product_id ? (
                                                 <button
                                                     onClick={() => removeTocart(item._id)}
-                                                    className="w-full py-1.5 text-xs bg-red-50 text-red-600 border border-red-200 rounded-lg hover:bg-red-100 transition-all font-semibold"
+                                                    disabled={loadingcart && cartLoadingId === item._id}
+                                                    className="w-full py-1.5 text-xs bg-red-50 text-red-600 border-none rounded-lg hover:bg-red-100 transition-all font-semibold outline-none flex items-center justify-center gap-2"
                                                 >
-                                                    Remove from Cart
+                                                    {loadingcart && cartLoadingId === item._id ? (
+                                                        <ClipLoader color="#EF4444" size={12} />
+                                                    ) : "Remove from Cart"}
                                                 </button>
                                             ) : (
                                                 <button
                                                     onClick={() => AddToCart(item._id)}
-                                                    className="w-full py-1.5 text-xs bg-brand text-white rounded-lg hover:bg-brand-light transition-all font-semibold"
+                                                    disabled={loadingcartcount && cartLoadingId === item._id}
+                                                    className="w-full py-1.5 text-xs bg-brand text-white border-none rounded-lg hover:bg-brand-light transition-all font-semibold outline-none flex items-center justify-center gap-2"
                                                 >
-                                                    Add to Cart
+                                                    {loadingcartcount && cartLoadingId === item._id ? (
+                                                        <ClipLoader color="#ffffff" size={12} />
+                                                    ) : "Add to Cart"}
                                                 </button>
                                             )}
                                         </div>
@@ -242,7 +250,7 @@ export default function Show() {
                             <div className="flex justify-center pb-8 border-t border-stone-200 pt-6">
                                 <button
                                     onClick={NextPage}
-                                    className="px-8 py-2.5 bg-brand text-white rounded-xl hover:bg-brand-light transition-all font-semibold shadow-md hover:shadow-lg"
+                                    className="px-8 py-2.5 bg-brand text-white rounded-xl hover:bg-brand-light transition-all font-semibold shadow-md hover:shadow-lg outline-none border-none"
                                 >
                                     Load More Products
                                 </button>

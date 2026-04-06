@@ -208,7 +208,7 @@ let findReviewsBylowerAndUpperLimit = async (req, res) => {
     let lowerLimit = req.params.lowerLimit;
     let upperLimit = req.params.upperLimit;
     let limit = upperLimit - lowerLimit;
-    const excludedFields = ["email", "product_id", "order_id", "createdAt", "updatedAt", "__v"];
+    const excludedFields = ["product_id", "order_id", "__v"];
     const projection = excludedFields.reduce((acc, field) => {
       acc[field] = 0;
       return acc;

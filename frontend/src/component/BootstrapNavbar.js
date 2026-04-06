@@ -33,6 +33,7 @@ const BootstrapNavbar = () => {
         }
         // Ensure body matches the brand light background on mount
         document.body.style.backgroundColor = "#F5F0EB";
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userinfo, isCartLogedin, isProductLogedin, isOrderLogedin, isReviewLogin])
 
     useEffect(() => {
@@ -78,7 +79,7 @@ const BootstrapNavbar = () => {
                             to="/Product"
                             className="hidden md:block ml-4 text-stone-600 hover:text-brand text-sm font-bold px-4 py-2 rounded-xl hover:bg-amber-50 transition-all"
                         >
-                            Home
+                            Product
                         </Link>
                     </div>
 
@@ -202,7 +203,7 @@ const BootstrapNavbar = () => {
 
                         <Link to="/Product" onClick={() => setMenuOpen(false)}
                             className="block py-2.5 px-4 text-stone-600 font-bold hover:text-brand hover:bg-amber-50 rounded-xl transition-all text-sm">
-                            Home
+                            Product
                         </Link>
 
                         {userinfo === null || userinfo === undefined ? (
