@@ -128,8 +128,12 @@ const productSlice = createSlice({
         setCatagory: (state, action) => {
             state.selectcatagory = action.payload;
         },
+        setPriceRange: (state, action) => {
+            state.lowprice = action.payload.lowprice;
+            state.highprice = action.payload.highprice;
+        },
         clearSearch: (state, action) => {
-            state.searchproduct = action.payload
+            state.searchproduct = action.payload;
         },
         setLimit: (state) => {
             state.lowerLimit = 0;

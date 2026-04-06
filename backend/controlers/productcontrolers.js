@@ -37,6 +37,54 @@ const getProductName = async (req, res) => {
   }
 }
 
+const getProductNameSuggestion = async (req, res) => {
+  try {
+    let key = req.params.key;
+    if (!key || key.trim() === '') {
+      return res.status(200).json({ status: 200, data: [], message: "Empty query" });
+    }
+    
+    const result = await product.aggregate([
+      {
+        $match: {
+          $or: [
+            { product_name: { $regex: new RegExp(key, 'i') } },
+            { product_type: { $regex: new RegExp(key, 'i') } }
+          ],
+          isdeleted: false
+        }
+      },
+      {
+         $group: {
+           _id: "$product_name",
+           photo: { $first: { $arrayElemAt: ["$newImage", 0] } }
+         }
+      },
+      {
+        $project: {
+           _id: 0,
+           product_name: "$_id",
+           photo: 1
+        }
+      },
+      { $limit: 8 }
+    ]);
+
+    res.status(200).json({
+      status: 200,
+      data: result,
+      message: "Product suggestions successfully fetched"
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: 500,
+      data: null,
+      message: "Error occurred while fetching suggestions"
+    });
+  }
+};
+
 let ProductUpdate = async (req, res) => {
   try {
     let result = await product.updateOne(
@@ -438,6 +486,7 @@ let getproductByLimit = async (req, res) => {
 
 module.exports = {
   getProductName,
+  getProductNameSuggestion,
   get_product_by_ids,
   getFullProduct,
   productInsert,

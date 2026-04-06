@@ -1,33 +1,20 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
-import '../css/Product_Review.css'
 import Loader from "./Loader";
 import ReviewShow from "./ReviewShow";
 import { SetRating } from "../constant/Rating";
-const api = process.env.REACT_APP_API
-const Product_Review = (id) => {
+import { FaStar } from "react-icons/fa";
 
+const api = process.env.REACT_APP_API
+
+const Product_Review = (id) => {
     const userinfo = useSelector((state) => state.user)?.user
     const dispatch = useDispatch()
     const _id = id._id
     const history = useNavigate()
     const [loadrating, setloadrating] = useState(false);
-
-    let [persentage_5_star, setpersentage_5_star] = useState(0);
-    let [persentage_4_star, setpersentage_4_star] = useState(0);
-    let [persentage_3_star, setpersentage_3_star] = useState(0);
-    let [persentage_2_star, setpersentage_2_star] = useState(0);
-    let [persentage_1_star, setpersentage_1_star] = useState(0);
-
-    let [number_5_star, setnumber_5_star] = useState(0);
-    let [number_4_star, setnumber_4_star] = useState(0);
-    let [number_3_star, setnumber_3_star] = useState(0);
-    let [number_2_star, setnumber_2_star] = useState(0);
-    let [number_1_star, setnumber_1_star] = useState(0);
-    let [total, settotal] = useState(0);
-    let [overall_rating, setoverall_rating] = useState(0);
-
+    const [stats, setStats] = useState(null)
 
     useEffect(() => {
         loadRating();
@@ -35,115 +22,91 @@ const Product_Review = (id) => {
 
     function loadRating() {
         setloadrating(true)
-        fetch(`${api}/Reviews/findRatingPersentageofProduct/${_id}`).then((responce => responce.json())).then((res) => {
-            if (res.statusCode = 200) {
-                let result = res?.data;
-                setpersentage_1_star(result[0].persentage_1_star);
-                setnumber_1_star(result[0].number_1_star);
-
-                setpersentage_2_star(result[1].persentage_2_star);
-                setnumber_2_star(result[1].number_2_star);
-
-                setpersentage_3_star(result[2].persentage_3_star);
-                setnumber_3_star(result[2].number_3_star);
-
-                setpersentage_4_star(result[3].persentage_4_star);
-                setnumber_4_star(result[3].number_4_star);
-
-                setpersentage_5_star(result[4].persentage_5_star);
-                setnumber_5_star(result[4].number_5_star);
-                setoverall_rating(result[5].overall_rating);
-                settotal(result[5].total);
-                setloadrating(false);
-            }
-            else {
-                history('*');
-            }
-        })
+        fetch(`${api}/Reviews/findRatingPersentageofProduct/${_id}`)
+            .then(res => res.json())
+            .then((res) => {
+                if (res.statusCode === 200) {
+                    setStats(res.data)
+                    setloadrating(false);
+                } else {
+                    history('*');
+                }
+            })
     }
 
+    if (loadrating || !stats) return <Loader />
+
+    const overallRating = stats[5].overall_rating
+    const totalReviews = stats[5].total
+
+    // Colors matching the original logic but using Tailwind hex equivalents
+    const colors = [
+        "bg-green-600",    // 5 star
+        "bg-green-500",    // 4 star 
+        "bg-yellow-500",   // 3 star
+        "bg-orange-500",   // 2 star
+        "bg-red-500"       // 1 star
+    ]
+
     return (
-        <>
-            <div>
-                {
-                    loadrating === true ?
-                        <Loader /> :
-                        <div className='col12'>
-                            <p className='text-center' style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                                <SetRating rating={overall_rating} />
-                                <div>
-                                    Average based on
-                                    <strong style={{ fontSize: '15px', marginBottom: '-0.5px', margin: '5px' }}> ({total}) </strong>
-                                    reviews.
-                                </div>
-                            </p>
-                            <div className="row">
-                                <div className="side">
-                                    <div className="reviewtextitem" ><SetRating rating={5} /></div>
-                                </div>
-                                <div className="middle">
-                                    <div className="bar-container">
-                                        <div className="bar" style={{ width: `${persentage_5_star}%`, backgroundColor: "green" }}></div>
-                                    </div>
-                                </div>
-                                <div className="side right">
-                                    <div className="reviewtextitem" >{number_5_star}</div>
-                                </div>
-                                <div className="side">
-                                    <div className="reviewtextitem" ><SetRating rating={4} /></div>
-                                </div>
-                                <div className="middle">
-                                    <div className="bar-container">
-                                        <div className="bar" style={{ width: `${persentage_4_star}%`, backgroundColor: "#27AE60" }}></div>
-                                    </div>
-                                </div>
-                                <div className="side right">
-                                    <div className="reviewtextitem" >{number_4_star}</div>
-                                </div>
-                                <div className="side">
-                                    <div className="reviewtextitem" ><SetRating rating={3} /></div>
-                                </div>
-                                <div className="middle">
-                                    <div className="bar-container">
-                                        <div className="bar" style={{ width: `${persentage_3_star}%`, backgroundColor: "#A4A42D" }}></div>
-                                    </div>
-                                </div>
-                                <div className="side right">
-                                    <div className="reviewtextitem" >{number_3_star}</div>
-                                </div>
-                                <div className="side">
-                                    <div className="reviewtextitem" ><SetRating rating={2} /></div>
-                                </div>
-                                <div className="middle">
-                                    <div className="bar-container">
-                                        <div className="bar" style={{ width: `${persentage_2_star}%`, backgroundColor: "#FF7F00" }}></div>
-                                    </div>
-                                </div>
-                                <div className="side right">
-                                    <div className="reviewtextitem" >{number_2_star}</div>
-                                </div>
-                                <div className="side">
-                                    <div className="reviewtextitem" ><SetRating rating={1} /></div>
-                                </div>
-                                <div className="middle">
-                                    <div className="bar-container">
-                                        <div className="bar" style={{ width: `${persentage_1_star}%`, backgroundColor: "#FF0000" }}></div>
-                                    </div>
-                                </div>
-                                <div className="side right">
-                                    <div className="reviewtextitem" >{number_1_star}</div>
-                                </div>
-                            </div>
+        <div className="flex flex-col md:flex-row gap-8">
+            {/* Rating Summary (Left Side) */}
+            <div className="w-full md:w-1/3">
+                <h3 className="text-lg font-bold text-stone-800 mb-4">Customer Reviews</h3>
+
+                {/* Overall Rating */}
+                <div className="flex items-center gap-4 mb-6">
+                    <div className="text-4xl font-bold text-stone-900">{overallRating}</div>
+                    <div>
+                        <div className="flex mb-1">
+                            <SetRating rating={overallRating} />
                         </div>
-                }
-            </div >
-            <hr />
-            <div>
-                <ReviewShow _id={_id} />
+                        <p className="text-sm text-stone-500">Based on {totalReviews} reviews</p>
+                    </div>
+                </div>
+
+                {/* Rating Bars */}
+                <div className="space-y-3">
+                    {[5, 4, 3, 2, 1].map((star, maxInd) => {
+                        // Original API returns array where index matches the loop logic in old code:
+                        // 0: 1_star, 1: 2_star... 4: 5_star. Wait, old code accessed it inverted.
+                        // Let's abstract the mapping cleanly based on the old logic index.
+                        // stats[4] -> 5star
+                        // stats[3] -> 4star
+                        // stats[2] -> 3star
+                        // stats[1] -> 2star
+                        // stats[0] -> 1star
+                        const statIndex = star - 1;
+                        const percentage = stats[statIndex][`persentage_${star}_star`]
+                        const count = stats[statIndex][`number_${star}_star`]
+
+                        return (
+                            <div key={star} className="flex items-center gap-3 text-sm">
+                                <div className="flex items-center gap-1 w-12 font-medium text-stone-600">
+                                    {star} <FaStar className="text-amber-400" size={12} />
+                                </div>
+                                <div className="flex-1 h-2.5 bg-stone-100 rounded-full overflow-hidden">
+                                    <div
+                                        className={`h-full rounded-full ${colors[5 - star]}`}
+                                        style={{ width: `${percentage}%` }}
+                                    ></div>
+                                </div>
+                                <div className="w-8 text-right text-stone-500 text-xs">{count}</div>
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
 
-        </>
+            {/* divider on mobile, left border on desktop */}
+            <div className="hidden md:block w-px bg-stone-100 self-stretch mx-4"></div>
+            <div className="md:hidden h-px bg-stone-100 w-full my-2"></div>
 
+            {/* Review List (Right Side) */}
+            <div className="w-full md:w-2/3">
+                <ReviewShow _id={_id} />
+            </div>
+        </div>
     )
 }
 export default Product_Review

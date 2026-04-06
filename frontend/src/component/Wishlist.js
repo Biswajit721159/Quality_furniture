@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { AiFillStar } from "react-icons/ai";
+import { FaHeart, FaShoppingCart, FaTrash } from 'react-icons/fa';
 import { useDispatch } from 'react-redux'
-import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
 import { RemoveToWishList } from '../redux/ProductSlice'
 import { useSelector } from 'react-redux';
 import { AddToCartDB } from '../redux/CartSlice'
@@ -31,22 +29,19 @@ export default function WishList() {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${userinfo?.accessToken}`
       },
-    }).then(responce => responce.json()).then((res) => {
+    }).then(r => r.json()).then((res) => {
       try {
         if (res.statusCode === 200 || res.statusCode === 404) {
           setdata(res.data);
-        }
-        else if (res.statusCode === 498) {
+        } else if (res.statusCode === 498) {
           dispatch(usermethod.Logout_User())
           history('/Signin')
-        }
-        else {
+        } else {
           history('*');
         }
         setload(false)
-      }
-      catch {
-        toast.warn("we are find Some Error")
+      } catch {
+        toast.warn("Something went wrong. Please try again.")
       }
     })
   }
@@ -54,108 +49,147 @@ export default function WishList() {
   useEffect(() => {
     if (userinfo === null) {
       history('/Signin')
-    }
-    else {
+    } else {
       loadproduct();
     }
   }, [])
 
   function removeToWishlist(product_id) {
     dispatch(RemoveToWishList({ userinfo, product_id }))
-    let product = data.filter((item) => { return item?._id !== product_id })
-    setdata(product)
+    setdata(data.filter(item => item?._id !== product_id))
   }
 
   function AddToCart(product_id) {
-    dispatch(AddToCartDB({ userinfo: userinfo, product_id: product_id, product_count: 1, product: cartproduct }))
+    dispatch(AddToCartDB({ userinfo, product_id, product_count: 1, product: cartproduct }))
   }
 
+  const getRatingInfo = (r) => {
+    const n = parseInt(r);
+    if (n >= 4) return { color: 'text-green-600', bg: 'bg-green-50' };
+    if (n >= 3) return { color: 'text-amber-500', bg: 'bg-amber-50' };
+    return { color: 'text-red-500', bg: 'bg-red-50' };
+  };
 
   return (
     <>
-      {
-        load === true ?
-          <Loader />
-          :
-          (data && data?.length !== 0) ?
-            <div className='product'>
-              {data?.map((item, ind) => (
-                <Card key={ind} sx={{ width: 250 }} className='carditem'>
-                  <Link to={`/Product/${item?._id}`}>
-                    <CardMedia
-                      component="img"
-                      height="194"
-                      image={item?.newImage?.[0]}
-                      alt="wait"
-                    />
-                  </Link>
-                  <div className="card-body">
-                    <p className="card-title">{item?.product_name}</p>
-                    <div className="row">
-                      <div className="container col">
-                        <h6 className="card-text" style={{ color: 'orange' }}>{item?.offer}% OFF</h6>
-                      </div>
-                      <div className="container col">
-                        <h6 className="card-text" style={{ color: 'gray' }}><s>₹{item?.price}</s></h6>
-                      </div>
+      {load === true ? (
+        <Loader />
+      ) : (data && data?.length !== 0) ? (
+        <div className="min-h-screen bg-page py-8 px-4">
+          <div className="max-w-6xl mx-auto">
+            <h1 className="text-2xl font-bold text-stone-800 mb-6 flex items-center gap-2">
+              <FaHeart className="text-red-500" />
+              My Wishlist
+              <span className="text-sm font-normal text-stone-400 ml-1">({data.length} items)</span>
+            </h1>
+
+            <div className="flex flex-wrap justify-center gap-5">
+              {data?.map((item, ind) => {
+                const rating = getRatingInfo(item.rating);
+                const discountedPrice = (item?.price - ((item?.price * item?.offer) / 100)).toFixed(2);
+                return (
+                  <div
+                    key={ind}
+                    className="bg-white rounded-2xl shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 border border-stone-100 w-56 flex flex-col overflow-hidden"
+                  >
+                    {/* Image */}
+                    <div className="relative overflow-hidden group">
+                      <Link to={`/Product/${item?._id}`}>
+                        <img
+                          src={item?.newImage?.[0]}
+                          alt={item?.product_name}
+                          className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </Link>
+                      {/* Offer badge */}
+                      {item.offer > 0 && (
+                        <span className="absolute top-2 left-2 bg-amber-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                          {item.offer}% OFF
+                        </span>
+                      )}
+                      {/* Remove heart */}
+                      <button
+                        onClick={() => removeToWishlist(item._id)}
+                        className="absolute top-2 right-2 p-1.5 bg-white rounded-full shadow-md hover:bg-red-50 transition-all group/btn"
+                        title="Remove from wishlist"
+                      >
+                        <FaHeart className="text-red-500 group-hover/btn:scale-110 transition-transform text-sm" />
+                      </button>
                     </div>
-                    <div className='row'>
-                      <div className='col'>
-                        {
-                          parseInt(item.rating) === 0 ? <div className="card-text" style={{ color: "black" }}>{item.rating}<AiFillStar /></div>
-                            :
-                            parseInt(item.rating) === 1 ? <div className="card-text" style={{ color: "tomato" }}>{item.rating}<AiFillStar /></div>
-                              :
-                              parseInt(item.rating) === 2 ? <div className="card-text" style={{ color: "red" }}>{item.rating}<AiFillStar /></div>
-                                :
-                                parseInt(item.rating) === 3 ? <div className="card-text" style={{ color: "#DC7633" }}>{item.rating}<AiFillStar /></div>
-                                  :
-                                  parseInt(item.rating) === 4 ? <div className="card-text" style={{ color: "#28B463" }}>{item.rating}<AiFillStar /></div>
-                                    :
-                                    parseInt(item.rating) === 5 ? <div className="card-text" style={{ color: "green" }}>{item.rating}<AiFillStar /></div>
-                                      : ""
-                        }
+
+                    {/* Info */}
+                    <div className="p-3 flex flex-col flex-1">
+                      <Link to={`/Product/${item?._id}`}>
+                        <h3 className="text-sm font-semibold text-stone-800 line-clamp-2 mb-2 leading-snug hover:text-brand transition-colors">
+                          {item?.product_name}
+                        </h3>
+                      </Link>
+
+                      {/* Rating */}
+                      <div className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold mb-2 w-fit ${rating.bg} ${rating.color}`}>
+                        <AiFillStar size={11} />
+                        {item.rating}
                       </div>
-                      <div className=" col">
-                        <h6 className="card-text" style={{ color: 'tomato' }}>₹{(item?.price - ((item?.price * item?.offer) / 100)).toFixed(2)}</h6>
+
+                      {/* Price */}
+                      <div className="flex items-baseline gap-2 mb-1">
+                        <span className="text-base font-bold text-brand">₹{discountedPrice}</span>
+                        <span className="text-xs text-stone-400 line-through">₹{item?.price}</span>
                       </div>
-                    </div>
-                    {
-                      item?.total_number_of_product === 0 ?
-                        <div className=" row">
-                          <div className="col">
-                            <h6 className="card-text" style={{ color: 'tomato' }}>closed</h6>
-                          </div>
-                          <div className='col'>
-                            <h6 className="card-text">{item?.total_number_of_product} left</h6>
-                          </div>
-                        </div>
-                        :
-                        <div className="row">
-                          <div className=" col">
-                            <h6 className="card-text" style={{ color: 'green' }}>Available</h6>
-                          </div>
-                          <div className='col'>
-                            {
-                              item?.total_number_of_product !== 0 ? <h6 className="card-text">{item?.total_number_of_product} left</h6> : <h6 className="card-text" style={{ color: "#E2E2F4" }}>{item.total_number_of_product} left</h6>
-                            }
-                          </div>
-                        </div>
-                    }
-                    <div className='row'>
-                      <div className='col'><Button variant="contained" size="small" color="error" onClick={() => removeToWishlist(item._id)}>Delete</Button></div>
-                      <div className='col'><Button variant="contained" size="small" disabled={!item?.total_number_of_product} onClick={() => AddToCart(item._id)} >Add</Button></div>
+
+                      {/* Stock */}
+                      <div className="mb-3">
+                        {item?.total_number_of_product === 0 ? (
+                          <span className="text-xs text-red-500 font-medium">Out of Stock</span>
+                        ) : (
+                          <span className="text-xs text-green-600 font-medium">
+                            In Stock · {item?.total_number_of_product} left
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Actions */}
+                      <div className="mt-auto flex gap-2">
+                        <button
+                          onClick={() => removeToWishlist(item._id)}
+                          className="flex-shrink-0 p-2 border border-red-200 text-red-500 rounded-lg hover:bg-red-50 transition-all"
+                          title="Remove"
+                        >
+                          <FaTrash size={12} />
+                        </button>
+                        <button
+                          onClick={() => AddToCart(item._id)}
+                          disabled={!item?.total_number_of_product}
+                          className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 text-xs font-semibold rounded-lg transition-all
+                            ${!item?.total_number_of_product
+                              ? 'bg-stone-100 text-stone-400 cursor-not-allowed'
+                              : 'bg-brand text-white hover:bg-brand-light'}`}
+                        >
+                          <FaShoppingCart size={11} />
+                          Add to Cart
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </Card>
-              ))
-              }
+                )
+              })}
             </div>
-            :
-            <div className='loader-container'>
-              <Link to={'/Product'}><Button variant="contained" size="small" color="info">  <h4>ADD PRODUCTS</h4>  </Button></Link>
-            </div>
-      }
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center min-h-screen gap-6 bg-page">
+          <div className="text-6xl">🤍</div>
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-stone-700 mb-2">Your Wishlist is Empty</h2>
+            <p className="text-stone-400 text-sm mb-6">Save items you love to revisit them later</p>
+          </div>
+          <Link to="/Product">
+            <button className="px-8 py-3 bg-brand text-white font-semibold rounded-xl hover:bg-brand-light transition-all shadow-md">
+              Discover Products
+            </button>
+          </Link>
+        </div>
+      )}
     </>
   )
 }

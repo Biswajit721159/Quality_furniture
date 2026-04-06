@@ -1,15 +1,10 @@
 import React, { useEffect } from "react";
-import { PulseLoader } from 'react-spinners';
+import { PulseLoader, ClipLoader } from 'react-spinners';
 import { useSelector, useDispatch } from "react-redux";
-import { GoDotFill } from "react-icons/go";
-import '../css/ReviewShow.css'
-import Button from '@mui/material/Button';
 import { Reviewmethod, loadReview, updatelikeAnddisLike } from "../redux/ProductReview";
 import Loading from '../component/Loading';
 import { SetRating } from '../constant/Rating';
-import { AiFillLike } from "react-icons/ai";
-import { AiFillDislike } from "react-icons/ai";
-import { ClipLoader } from 'react-spinners';
+import { AiFillLike, AiOutlineLike, AiFillDislike, AiOutlineDislike } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 
 const ReviewShow = (id) => {
@@ -22,90 +17,112 @@ const ReviewShow = (id) => {
     useEffect(() => {
         if (product_id === _id) {
             if (ProductReview?.length === 0) {
-                loadReview(0, 5);
+                dispatch(loadReview({ userinfo, product_id: _id, LowerLimit: 0, UpperLimit: 5 }));
             }
         } else {
             dispatch(Reviewmethod.clearOrder());
-            loadreview(0, 5);
+            dispatch(loadReview({ userinfo, product_id: _id, LowerLimit: 0, UpperLimit: 5 }));
         }
     }, [])
 
-    function loadreview(low, high) {
-        dispatch(loadReview({ userinfo, product_id: _id, LowerLimit: low, UpperLimit: high }));
-    }
-
-    function likepost(review_id, option) {
-        if (checkLogin()) {
-            history('/Signin')
-            return;
-        }
-        if (updateLikeAndDisLike === false) {
-            dispatch(Reviewmethod.setReviewid(review_id));
-            dispatch(updatelikeAnddisLike({ review_id, option, userinfo }))
-        }
-    }
-    function dislikepost(review_id, option) {
-        if (checkLogin()) {
-            history('/Signin')
-            return;
-        }
-        if (updateLikeAndDisLike === false) {
-            dispatch(Reviewmethod.setReviewid(review_id));
-            dispatch(updatelikeAnddisLike({ review_id, option, userinfo }))
-        }
+    function loadMoreReviews() {
+        dispatch(loadReview({ userinfo, product_id: _id, LowerLimit: LowerLimit, UpperLimit: UpperLimit }));
     }
 
     function checkLogin() {
-        if (userinfo?.accessToken) {
-            return false;
-        } else {
-            return true;
+        return !userinfo?.accessToken;
+    }
+
+    function likepost(reviewId, option) {
+        if (checkLogin()) { history('/Signin'); return; }
+        if (!updateLikeAndDisLike) {
+            dispatch(Reviewmethod.setReviewid(reviewId));
+            dispatch(updatelikeAnddisLike({ review_id: reviewId, option, userinfo }))
         }
     }
 
+    function dislikepost(reviewId, option) {
+        if (checkLogin()) { history('/Signin'); return; }
+        if (!updateLikeAndDisLike) {
+            dispatch(Reviewmethod.setReviewid(reviewId));
+            dispatch(updatelikeAnddisLike({ review_id: reviewId, option, userinfo }))
+        }
+    }
 
     return (
-        <div className="ReviewShow">
-            {
-                loadingReview === true && ProductReview?.length === 0 ?
-                    <div className="LoaderiteminReviewProduct">
-                        <PulseLoader color="#16A085" size={'7px'} />
-                    </div>
-                    :
-                    <div className='mt-5'>
-                        {
-                            ProductReview?.length !== 0 ?
-                                ProductReview?.map((data, ind) => (
-                                    <p key={ind} style={{ margin: '2px' }} className="ReviewText">
-                                        <div className="Rating">
-                                            <GoDotFill size={'7px'} style={{ marginTop: '5px' }} />
-                                            <SetRating rating={data?.rating} />
-                                            ({data?.review})
-                                        </div>
-                                        <div className="likeDislikebutton">
-                                            {
-                                                updateLikeAndDisLike === true && review_id === data?._id ?
-                                                    <ClipLoader size={'21px'} />
-                                                    : <><AiFillLike onClick={() => likepost(data._id, "like")} style={data.islike === 1 && { color: "green" }} className="like" />{data?.like}</>
-                                            }
-                                            {
-                                                updateLikeAndDisLike === true && review_id === data?._id ?
-                                                    <ClipLoader size={'12px'} style={{ marginLeft: '7%' }} />
-                                                    : <> <AiFillDislike onClick={() => dislikepost(data._id, "dislike")} style={data.islike === -1 && { color: "red" }} className="dislike" />{data?.dislike}</>
-                                            }
-                                        </div>
-                                    </p>
-                                ))
-                                : <h4 className="col-md-12 text-center" style={{ marginTop: "40px", color: "#808B96" }}>Review is not Posted</h4>
-                        }
-                        {
-                            loadingReview === true ? <Loading /> :
-                                next && <div className="col21item2">
-                                    <Button size='small' variant="contained" color="warning" onClick={() => loadreview(LowerLimit, UpperLimit)}>Load More</Button>
+        <div className="flex flex-col gap-4">
+            {loadingReview && ProductReview?.length === 0 ? (
+                <div className="flex justify-center py-6">
+                    <PulseLoader color="#7C4B2A" size={8} />
+                </div>
+            ) : ProductReview?.length > 0 ? (
+                <>
+                    <div className="space-y-4">
+                        {ProductReview.map((data, ind) => (
+                            <div key={ind} className="bg-stone-50 rounded-xl p-4 border border-stone-100 flex flex-col gap-2">
+                                <div className="flex items-center gap-2">
+                                    <SetRating rating={data?.rating} />
+                                    {/* We don't have the user's name saved in review in this schema, so just show rating line */}
                                 </div>
-                        }
+                                <p className="text-sm text-stone-700 leading-relaxed italic">
+                                    "{data?.review}"
+                                </p>
+
+                                {/* Like/Dislike Actions */}
+                                <div className="flex items-center gap-4 mt-2 pt-3 border-t border-stone-200/60">
+                                    <button
+                                        onClick={() => likepost(data._id, "like")}
+                                        className="flex items-center gap-1.5 text-xs font-semibold text-stone-500 hover:text-green-600 transition-colors"
+                                    >
+                                        {updateLikeAndDisLike && review_id === data?._id ? (
+                                            <ClipLoader size={14} color="#16a34a" />
+                                        ) : data.islike === 1 ? (
+                                            <AiFillLike className="text-green-600" size={16} />
+                                        ) : (
+                                            <AiOutlineLike size={16} />
+                                        )}
+                                        <span className={data.islike === 1 ? 'text-green-600' : ''}>{data?.like}</span>
+                                    </button>
+
+                                    <button
+                                        onClick={() => dislikepost(data._id, "dislike")}
+                                        className="flex items-center gap-1.5 text-xs font-semibold text-stone-500 hover:text-red-500 transition-colors"
+                                    >
+                                        {updateLikeAndDisLike && review_id === data?._id ? (
+                                            <ClipLoader size={12} color="#ef4444" />
+                                        ) : data.islike === -1 ? (
+                                            <AiFillDislike className="text-red-500" size={16} />
+                                        ) : (
+                                            <AiOutlineDislike size={16} />
+                                        )}
+                                        <span className={data.islike === -1 ? 'text-red-500' : ''}>{data?.dislike}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
                     </div>
-            }
+
+                    {/* Load More Button */}
+                    {next && (
+                        <div className="flex justify-center mt-4">
+                            {loadingReview ? (
+                                <PulseLoader color="#7C4B2A" size={8} />
+                            ) : (
+                                <button
+                                    onClick={loadMoreReviews}
+                                    className="px-6 py-2 text-sm font-semibold text-brand border border-brand bg-amber-50/50 rounded-xl hover:bg-amber-50 transition-colors"
+                                >
+                                    Load More Reviews
+                                </button>
+                            )}
+                        </div>
+                    )}
+                </>
+            ) : (
+                <div className="text-center py-8 bg-stone-50 rounded-xl border border-stone-100 border-dashed">
+                    <p className="text-stone-500 text-sm">No reviews yet. Be the first to review this product!</p>
+                </div>
+            )}
         </div>
     )
 }

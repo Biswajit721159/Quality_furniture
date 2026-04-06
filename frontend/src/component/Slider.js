@@ -1,33 +1,25 @@
 import React, { useState, useEffect } from "react";
-import CardMedia from '@mui/material/CardMedia';
-const Slider = (data) => {
 
-    const [imageindex, setimageindex] = useState(0)
-    let item = data.data
+const Slider = ({ data }) => {
+    const [imageIndex, setImageIndex] = useState(0);
+
     useEffect(() => {
-        let id = setInterval(() => {
-            setimageindex((imageindex + 1) % item.length)
-        }, 800)
-        return () => clearInterval(id)
-    }, [imageindex])
-    return (
-        <>
-            {
-                item.map((data, index) => (
-                    <div key={index}>
-                        {index == imageindex &&
-                            <CardMedia component="img"
-                                height="194"
-                                image={data}
-                                alt="wait"
-                                style={{ marginTop: '2px' }}
-                            />
-                        }
-                    </div>
-                ))
-            }
-        </>
-    )
-}
+        if (!data || data.length <= 1) return;
+        const id = setInterval(() => {
+            setImageIndex((prev) => (prev + 1) % data.length);
+        }, 1200);
+        return () => clearInterval(id);
+    }, [data]);
 
-export default Slider
+    if (!data || data.length === 0) return null;
+
+    return (
+        <img
+            src={data[imageIndex]}
+            alt="Product view"
+            className="w-full h-44 object-cover hover:scale-105 transition-transform duration-300"
+        />
+    );
+};
+
+export default Slider;
