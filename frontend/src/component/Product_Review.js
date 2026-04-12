@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux";
 import Loader from "./Loader";
 import ReviewShow from "./ReviewShow";
 import { SetRating } from "../constant/Rating";
@@ -9,8 +8,6 @@ import { FaStar } from "react-icons/fa";
 const api = process.env.REACT_APP_API
 
 const Product_Review = (id) => {
-    const userinfo = useSelector((state) => state.user)?.user
-    const dispatch = useDispatch()
     const _id = id._id
     const history = useNavigate()
     const [loadrating, setloadrating] = useState(false);
@@ -18,6 +15,7 @@ const Product_Review = (id) => {
 
     useEffect(() => {
         loadRating();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [_id])
 
     function loadRating() {

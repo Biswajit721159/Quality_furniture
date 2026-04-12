@@ -37,6 +37,7 @@ export default function Reviews() {
         } else {
             loadproduct()
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     function findOrder_id() {

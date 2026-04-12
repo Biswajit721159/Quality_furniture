@@ -24,7 +24,6 @@ const Register = () => {
     address: "",
   });
   const navigate = useNavigate();
-  const history = useNavigate();
   const user = useSelector((state) => state.user.user);
   const [submitLoading, setSubmitLoading] = useState(false);
   const [resentLoading, setResentLoading] = useState(false);
@@ -35,6 +34,7 @@ const Register = () => {
 
   useEffect(() => {
     if (user) navigate("/");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const handleChange = (e) => {
@@ -82,7 +82,7 @@ const Register = () => {
       setSubmitLoading(true);
       const response = await verifyOTP({ ...formData, otp });
       toast.success(response.message);
-      history("/Signin");
+      navigate("/Signin");
     } catch (error) {
       toast.warn(error?.message);
     } finally {

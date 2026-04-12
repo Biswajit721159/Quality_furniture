@@ -11,6 +11,7 @@ const Catagory = () => {
     useEffect(() => {
         if (categoryList?.length === 0 || !categoryList)
             dispatch(LoadCatagory())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     function GoToProduct(selectcatagory) {

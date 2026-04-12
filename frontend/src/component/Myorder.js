@@ -14,6 +14,7 @@ export default function Myorder() {
 
     useEffect(() => {
         if (Order?.length === 0) loadproduct();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     function loadproduct() {
@@ -36,7 +37,7 @@ export default function Myorder() {
         <>
             {loadingOrder === true && Order?.length === 0 ? (
                 <Loader />
-            ) : Order?.length != 0 ? (
+            ) : Order?.length !== 0 ? (
                 <div className="min-h-screen bg-page py-8 px-4">
                     <div className="max-w-5xl mx-auto">
                         <h1 className="text-2xl font-bold text-stone-800 mb-6 flex items-center gap-2">

@@ -28,7 +28,9 @@ const PasswordReset = () => {
     }
   };
 
-  useEffect(() => { fetchTokenData(); }, []);
+  useEffect(() => { fetchTokenData(); 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
