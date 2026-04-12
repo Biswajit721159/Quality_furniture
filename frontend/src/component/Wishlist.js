@@ -52,6 +52,7 @@ export default function WishList() {
     } else {
       loadproduct();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function removeToWishlist(product_id) {

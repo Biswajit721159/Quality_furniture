@@ -88,7 +88,7 @@ const Footer = () => {
                                 { Icon: FaYoutube, label: 'YouTube', color: 'hover:text-red-400' },
                             ].map(({ Icon, label, color }) => (
                                 <li key={label}>
-                                    <a href="#" className={`flex items-center gap-2 text-stone-400 ${color} transition-colors text-sm py-0.5`}>
+                                    <a href="/" className={`flex items-center gap-2 text-stone-400 ${color} transition-colors text-sm py-0.5`}>
                                         <Icon size={14} /> {label}
                                     </a>
                                 </li>

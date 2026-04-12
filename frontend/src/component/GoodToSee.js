@@ -5,7 +5,7 @@ import { loadProduct, productmethod } from "../redux/ProductSlice";
 const GoodToSee = () => {
     const userinfo = useSelector((state) => state?.user)?.user
     const dispatch = useDispatch()
-    let { lowerLimit, higherLimit, lowprice, highprice, selectcatagory, searchproduct } = useSelector((state) => state?.product)
+    let { lowerLimit, higherLimit, lowprice, highprice, selectcatagory } = useSelector((state) => state?.product)
 
     function backTOHome() {
         dispatch(productmethod.setSearchProduct({ searchproduct: '' }))

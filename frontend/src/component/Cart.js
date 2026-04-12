@@ -29,6 +29,7 @@ export default function Cart() {
                 dispatch(LoadCart(userinfo))
             }
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     function Add_TO_CART() {
@@ -52,7 +53,7 @@ export default function Cart() {
     function submit() {
         const date = new Date();
         let currentDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
-        if (product?.product_count == 0) {
+        if (product?.product_count === 0) {
             toast.warn("Please select at least 1 product.")
             return;
         }
@@ -77,13 +78,13 @@ export default function Cart() {
             })
         }).then(r => r.json())
             .then((res) => {
-                if (res.statusCode == 201) {
+                if (res.statusCode === 201) {
                     dispatch(Ordermethod.clearOrder())
                     setbutton("Order Placed!")
                     toast.success(res.message)
                     history('/Myorder')
                     removeTocart()
-                } else if (res.statusCode == 498) {
+                } else if (res.statusCode === 498) {
                     localStorage.removeItem('user');
                     history('/Login')
                 } else {
@@ -103,7 +104,7 @@ export default function Cart() {
 
     return (
         <>
-            {loadingcart == true ? (
+            {loadingcart === true ? (
                 <Loader />
             ) : Object?.keys(product)?.length !== 0 ? (
                 <div className="min-h-screen bg-page py-6 px-4">
@@ -168,7 +169,7 @@ export default function Cart() {
                                                 <GrSubtract size={14} />
                                             </button>
                                             <span className="px-4 py-2 font-bold text-stone-800 min-w-[40px] text-center">
-                                                {loadingcartcount == true ? <ClipLoader size={14} color="#7C4B2A" /> : product?.product_count}
+                                                {loadingcartcount === true ? <ClipLoader size={14} color="#7C4B2A" /> : product?.product_count}
                                             </span>
                                             <button
                                                 onClick={Add_TO_CART}

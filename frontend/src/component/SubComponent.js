@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Carousel from "./Carousel";
 import { useDispatch, useSelector } from "react-redux";
 import { loadTopproduct, loadTopOfferProduct } from '../redux/TopProductSlice'
@@ -11,6 +11,7 @@ const SubComponent = () => {
     useEffect(() => {
         if (topproduct?.length === 0 || topproduct === null) dispatch(loadTopproduct());
         if (topOfferproduct?.length === 0 || topOfferproduct === null) dispatch(loadTopOfferProduct());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (

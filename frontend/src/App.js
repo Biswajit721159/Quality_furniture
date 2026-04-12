@@ -15,7 +15,7 @@ import "./css/Loader.css";
 import BootstrapNavbar from "./component/BootstrapNavbar";
 // import ForgotPassword from "./component/ForgotPassword";
 import "./App.css";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Register from "./component/auth/Register";
 import Login from "./component/auth/Login";
@@ -29,7 +29,9 @@ function App() {
 				<Routes>
 					<Route path="/" element={<Product />}></Route>
 					<Route path="/Product" element={<Show />}></Route>
+					{/* eslint-disable-next-line react/jsx-pascal-case */}
 					<Route path="/Product/:_id" element={<Product_view />}></Route>
+					{/* eslint-disable-next-line react/jsx-pascal-case */}
 					<Route path="/Profile" element={<Update_userdata />}></Route>
 					<Route path="/wishlist" element={<WishList />}></Route>
 					<Route path="/Cart" element={<Cart />}></Route>

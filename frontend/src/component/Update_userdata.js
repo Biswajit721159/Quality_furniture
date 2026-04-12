@@ -24,7 +24,7 @@ export default function Update_userdata() {
   const userinfo = useSelector((state) => state?.user)?.user
   const [button, setbutton] = useState("Save Changes")
   const [disabled, setdisabled] = useState(false)
-  const [load, setload] = useState(false)
+  const [load, setload] = useState(false) // eslint-disable-line no-unused-vars
 
   useEffect(() => {
     if (userinfo === null) {
@@ -36,12 +36,13 @@ export default function Update_userdata() {
       setemail(userinfo?.user?.email)
       setaddress(userinfo?.user?.address)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function checkforname(s) {
     var regex = /^[a-zA-Z ]{2,30}$/;
     let a = regex.test(s);
-    if (a == false) {
+    if (a === false) {
       setwrongname(true)
       setmessname("Name must only contain letters (2-30 characters)")
     }
@@ -72,7 +73,7 @@ export default function Update_userdata() {
         },
         body: JSON.stringify({ _id, name, email, address })
       }).then(r => r.json()).then((res) => {
-        if (res.statusCode == 201) {
+        if (res.statusCode === 201) {
           setbutton("Save Changes")
           setdisabled(false)
           toast.success("Profile updated successfully!")
@@ -80,7 +81,7 @@ export default function Update_userdata() {
             user: { _id: userinfo?.user?._id, email: userinfo?.user?.email, address, name },
             accessToken: userinfo?.accessToken
           }))
-        } else if (res.statusCode == 498) {
+        } else if (res.statusCode === 498) {
           dispatch(usermethod.Logout_User())
           history('/Signin')
         } else {

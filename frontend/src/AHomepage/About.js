@@ -1,7 +1,7 @@
 import React from 'react';
 import Table3 from '../images/Table-3.png'
 import { AiFillPhone } from "react-icons/ai";
-import { FaRupeeSign, FaShieldAlt, FaTruck } from "react-icons/fa";
+import { FaShieldAlt, FaTruck } from "react-icons/fa";
 
 const About = () => {
     return (
