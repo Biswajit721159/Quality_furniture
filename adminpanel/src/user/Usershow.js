@@ -34,6 +34,7 @@ const Usershow = () => {
 
   useEffect(() => {
     dispatch(Allusermethod.setUpdatedOrderMessage(''));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleScroll = () => {

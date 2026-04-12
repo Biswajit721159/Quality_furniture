@@ -27,8 +27,6 @@ export default function Addproduct() {
   const [errorpricemess, seterrorpricemess]                 = useState("")
   const [erroroffer, seterroroffer]                         = useState(false)
   const [erroroffermess, seterroroffermess]                 = useState("")
-  const [errorproduct_type, seterrorproduct_type]           = useState(false)
-  const [errorproduct_typemess, seterrorproduct_typemess]   = useState("")
   const [errorNumberOfProduct, seterrorNumberOfProduct]     = useState(false)
   const [errorNumberOfProductmess, seterrorNumberOfProductmess] = useState("")
   const [Description, setDescription] = useState('')
@@ -38,6 +36,7 @@ export default function Addproduct() {
 
   useEffect(() => {
     if (userinfo == null) history('/Signin')
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function forproduct_name(s) {
@@ -45,7 +44,7 @@ export default function Addproduct() {
     return true
   }
   function forproduct_type(s) {
-    if (s.length < 3) { seterrorproduct_type(true); seterrorproduct_typemess("Invalid Product Type"); return false }
+    if (s.length < 3) { return false }
     return true
   }
   function forprice(s) {
@@ -84,7 +83,7 @@ export default function Addproduct() {
       );
       const res = await response.json();
       arr.push(res.secure_url)
-      if (arr.length == 3) submitproductdetail(arr)
+      if (arr.length === 3) submitproductdetail(arr)
       setarr([...arr])
     } catch (error) { return null }
   };
@@ -101,10 +100,10 @@ export default function Addproduct() {
         headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', Authorization: `Bearer ${userinfo.accessToken}` },
         body: JSON.stringify({ arr, product_name, price, offer, product_type, total_number_of_product, rating: 0, number_of_people_give_rating: 0, isdeleted: false, Description })
       }).then(r => r.json()).then((res) => {
-        if (res.statusCode == 201) {
+        if (res.statusCode === 201) {
           toast.success(res.message);
           history(-1);
-        } else if (res.statusCode == 498) {
+        } else if (res.statusCode === 498) {
           localStorage.removeItem('user'); history('/Signin');
         } else { history('*') }
       }).catch(() => history('*'))

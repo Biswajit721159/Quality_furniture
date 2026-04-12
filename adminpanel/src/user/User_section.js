@@ -15,6 +15,7 @@ const User_Section = () => {
 
   useEffect(() => {
     if (Alluser?.length === 0) loaduser()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function loaduser() {
@@ -26,6 +27,7 @@ const User_Section = () => {
     dispatch(Allusermethod.setSearchValue(e.target.value))
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSearch = useCallback(
     _.debounce(async (searchValue) => {
       if (searchValue) {
@@ -33,12 +35,14 @@ const User_Section = () => {
         dispatch(loadUser({ LowerLimit: 0, UpperLimit: 10, userinfo, searchvalue: searchValue }))
       }
     }, 500),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
   useEffect(() => {
     debouncedSearch(searchValue);
     return () => { debouncedSearch.cancel(); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue])
 
   function reset() {

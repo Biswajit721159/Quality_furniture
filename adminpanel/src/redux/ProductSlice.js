@@ -93,7 +93,7 @@ const productSlice = createSlice({
           let flag = true
           let filterProducts = newProducts.filter((data) => {
             if (product_ids.includes(data?._id) === false) return data;
-            else flag = false
+            else { flag = false; return null; }
           })
           state.product = [...state.product, ...filterProducts];
           if (flag) {

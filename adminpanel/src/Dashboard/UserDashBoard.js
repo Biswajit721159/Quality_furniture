@@ -12,6 +12,7 @@ const UserDashboard = () => {
 
   useEffect(() => {
     if (userCount === 0) dispatch(userDashboard({ userinfo }))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function loadAgain() {

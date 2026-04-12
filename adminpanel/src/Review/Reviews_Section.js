@@ -16,6 +16,7 @@ const Reviews_Section = () => {
 
   useEffect(() => {
     if (product?.length === 0) loadproduct()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function loadproduct() {
@@ -27,6 +28,7 @@ const Reviews_Section = () => {
     dispatch(productmethod.ADD_SEARCH_VALUE(e.target.value));
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSearch = useCallback(
     _.debounce(async (searchValue) => {
       if (searchValue) {
@@ -34,12 +36,14 @@ const Reviews_Section = () => {
         dispatch(loadProduct({ LowerLimit: 0, UpperLimit: 10, userinfo, searchvalue: searchValue }))
       }
     }, 500),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
   useEffect(() => {
     debouncedSearch(searchValue);
     return () => { debouncedSearch.cancel(); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue])
 
   function reset() {
@@ -84,6 +88,7 @@ const Reviews_Section = () => {
       </div>
 
       {/* Content */}
+      {/* eslint-disable-next-line react/jsx-pascal-case */}
       {productLoading === true && product?.length === 0 ? <Loading /> : <Reviews_show />}
     </div>
   )

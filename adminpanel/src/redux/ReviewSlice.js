@@ -6,7 +6,7 @@ export const loadReview = createAsyncThunk(
     async (parameter) => {
         try {
             let { LowerLimit, UpperLimit, userinfo, product_id } = parameter;
-            console.log("hghghg");
+            console.log("hghghg"); // eslint-disable-line no-console
             const response = await fetch(`${api}/Reviews/Adninpanel/${LowerLimit}/${UpperLimit}/${product_id}`, {
                 headers: {
                     Authorization: `Bearer ${userinfo?.accessToken}`
@@ -123,7 +123,7 @@ const ReviewSlice = createSlice({
                     let flag = true
                     let filterReview_ids = newReview_ids?.filter((data) => {
                         if (Review_ids?.includes(data?._id) === false) return data;
-                        else flag = false
+                        else { flag = false; return null; }
                     })
                     state.Review = [...state.Review, ...filterReview_ids];
                     if (flag) {
