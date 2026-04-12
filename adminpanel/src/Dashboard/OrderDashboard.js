@@ -12,6 +12,7 @@ const OrderDashboard = () => {
 
   useEffect(() => {
     if (orderCount === 0) dispatch(orderDashboard({ userinfo }))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function loadorder() {

@@ -130,7 +130,7 @@ const OrderSlice = createSlice({
           let flag = true
           let filterOrders = newOrders?.filter((data) => {
             if (Order_ids?.includes(data?._id) === false) return data;
-            else flag = false
+            else { flag = false; return null; }
           })
           state.Order = [...state.Order, ...filterOrders];
           if (flag) {

@@ -12,6 +12,7 @@ const ReviewsDashboard = () => {
 
   useEffect(() => {
     if (reviewCount === 0) dispatch(reviewDashboard({ userinfo }))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function loadreviews() {

@@ -12,6 +12,7 @@ const ProductDashboard = () => {
 
   useEffect(() => {
     if (productCount === 0) dispatch(productDashboard({ userinfo }))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function loadAgain() {

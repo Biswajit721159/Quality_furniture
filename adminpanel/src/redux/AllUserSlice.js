@@ -135,7 +135,7 @@ const AlluserSlice = createSlice({
           let flag = true
           let filterAllusers = newAllusers.filter((data) => {
             if (Alluser_ids.includes(data?._id) === false) return data;
-            else flag = false;
+            else { flag = false; return null; }
           })
           state.Alluser = [...state.Alluser, ...filterAllusers];
           if (flag) {

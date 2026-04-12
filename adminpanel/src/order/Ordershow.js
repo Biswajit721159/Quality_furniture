@@ -43,6 +43,7 @@ const Ordershow = () => {
 
   useEffect(() => {
     dispatch(ordermethod.setUpdatedOrderMessage(''));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function View(data) {

@@ -43,6 +43,7 @@ const Sidebar = () => {
     if (!isUserLogin || !isOrderLogin || !isProductLogin || !selectProductLogin || !userLogin || !isCountLogin || !isReviewLogin) {
       logout()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserLogin, isOrderLogin, isProductLogin, selectProductLogin, isCountLogin, isReviewLogin])
 
   function logout() {

@@ -19,6 +19,7 @@ const View_Review = () => {
       dispatch(Reviewmethod.setLimit({ LowerLimit: 0, UpperLimit: 10 }))
       loadreview()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function loadreview() {

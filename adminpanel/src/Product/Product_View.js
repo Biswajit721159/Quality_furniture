@@ -35,8 +35,6 @@ const Product_View = () => {
   const [errorpricemess, seterrorpricemess]                 = useState("")
   const [erroroffer, seterroroffer]                         = useState(false)
   const [erroroffermess, seterroroffermess]                 = useState("")
-  const [errorproduct_type, seterrorproduct_type]           = useState(false)
-  const [errorproduct_typemess, seterrorproduct_typemess]   = useState("")
   const [errorNumberOfProduct, seterrorNumberOfProduct]     = useState(false)
   const [errorNumberOfProductmess, seterrorNumberOfProductmess] = useState("")
   const [button, setbutton]   = useState("Save Changes")
@@ -50,20 +48,22 @@ const Product_View = () => {
 
   const history = useNavigate()
 
-  useEffect(() => { loadproduct(); }, [])
+  useEffect(() => { loadproduct(); 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   function loadproduct() {
     setload(true)
     fetch(`${api}/product/${_id}`, {
       headers: { Authorization: `Bearer ${userinfo.accessToken}` }
     }).then(r => r.json()).then((data) => {
-      if (data.statusCode == 201) {
+      if (data.statusCode === 201) {
         arr = data.data.newImage
         setarr([...arr])
         dispatch(selectProductmethod.ADD_PRODUCT(data.data))
         setProduct(data.data)
         setload(false)
-      } else if (data.statusCode == 498) {
+      } else if (data.statusCode === 498) {
         dispatch(usermethod.LOGOUT())
         history('/')
       } else {
@@ -99,7 +99,7 @@ const Product_View = () => {
     return true
   }
   function forproduct_type(s) {
-    if (s.length < 3) { seterrorproduct_type(true); seterrorproduct_typemess("Invalid Product Type"); return false }
+    if (s.length < 3) { return false }
     return true
   }
   function forprice(s) {
@@ -128,7 +128,7 @@ const Product_View = () => {
         count++;
         arr[index] = res.secure_url
         setarr([...arr])
-        if (count == 3) FinalUpdate(arr)
+        if (count === 3) FinalUpdate(arr)
       })
     } catch (error) { return null }
   };
@@ -139,11 +139,11 @@ const Product_View = () => {
       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', Authorization: `Bearer ${userinfo.accessToken}` },
       body: JSON.stringify({ arr, product_name, price, offer, product_type, total_number_of_product, rating, number_of_people_give_rating, isdeleted, Description })
     }).then(r => r.json()).then((res) => {
-      if (res.statusCode == 200) {
+      if (res.statusCode === 200) {
         setdisable(false)
         setbutton("Save Changes")
         swal(res.message).then(() => loadproduct()).catch(() => history('*'))
-      } else if (res.statusCode == 498) {
+      } else if (res.statusCode === 498) {
         localStorage.removeItem('user'); history('/Signin');
       } else { history('*') }
     }).catch(() => history('*'))
@@ -158,10 +158,10 @@ const Product_View = () => {
     if (a && b && c && d && e) {
       setdisable(true)
       setbutton(<BeatLoader color="#fff" size={'8px'} />)
-      if (file1 != null) { await uploadImage(file1, 0) } else { count++ }
-      if (file2 != null) { await uploadImage(file2, 1) } else { count++ }
-      if (file3 != null) { await uploadImage(file3, 2) } else { count++ }
-      if (file1 == null && file2 == null && file3 == null) FinalUpdate(arr)
+      if (file1 !== null) { await uploadImage(file1, 0) } else { count++ }
+      if (file2 !== null) { await uploadImage(file2, 1) } else { count++ }
+      if (file3 !== null) { await uploadImage(file3, 2) } else { count++ }
+      if (file1 === null && file2 === null && file3 === null) FinalUpdate(arr)
     } else {
       setdisable(false)
       setbutton("Save Changes")
