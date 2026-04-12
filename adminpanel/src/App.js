@@ -10,46 +10,50 @@ import Sidebar from "./component/Sidebar";
 import Adminlogin from "./component/Adminlogin";
 import Product_View from './Product/Product_View'
 import Addproduct from './Product/Addproduct'
-import './css/Loader.css'
 import ErrorPage from "./component/ErrorPage";
 import Logout from "./component/Logout";
 import OrderView from "./order/OrderView";
 import UserView from "./user/UserView"
 import View_Review from './Review/View_Review'
 import ViewRatingReview from "./Review/ViewRatingReview";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const userinfo = useSelector((state) => state.user.user);
   return (
     <Router>
-      {userinfo != null ?
-        <div className="Container">
-          <div className="left">
-            <Sidebar />
-          </div>
-          <div className="right">
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/Product" element={<Product_Section />} />
-              <Route path="/Product/AddProduct" element={<Addproduct />} />
-              <Route path="/Product_view/:_id" element={<Product_View />} />
-              <Route path="/Review" element={<Reviews_Section />} />
-              <Route path="/Review/:_id" element={<View_Review />}></Route>
-              <Route path="/Review/:_id/view" element={<ViewRatingReview />}></Route>
-              <Route path="/Order" element={<Order_section />} />
-              <Route path="/Order/:_id" element={<OrderView />} />
-              <Route path="/User" element={<User_section />} />
-              <Route path="/User/:_id" element={<UserView />}></Route>
-              <Route path="*" element={<ErrorPage />} />
-            </Routes>
+      {userinfo != null ? (
+        <div className="flex min-h-screen bg-slate-100">
+          {/* Fixed Sidebar */}
+          <Sidebar />
+          {/* Main content area offset by sidebar width */}
+          <div className="flex-1 ml-64 min-h-screen overflow-x-hidden">
+            <div className="p-6">
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/Product" element={<Product_Section />} />
+                <Route path="/Product/AddProduct" element={<Addproduct />} />
+                <Route path="/Product_view/:_id" element={<Product_View />} />
+                <Route path="/Review" element={<Reviews_Section />} />
+                <Route path="/Review/:_id" element={<View_Review />} />
+                <Route path="/Review/:_id/view" element={<ViewRatingReview />} />
+                <Route path="/Order" element={<Order_section />} />
+                <Route path="/Order/:_id" element={<OrderView />} />
+                <Route path="/User" element={<User_section />} />
+                <Route path="/User/:_id" element={<UserView />} />
+                <Route path="*" element={<ErrorPage />} />
+              </Routes>
+            </div>
           </div>
         </div>
-        :
+      ) : (
         <Routes>
           <Route path="/" element={<Adminlogin />} />
           <Route path="*" element={<Logout />} />
         </Routes>
-      }
+      )}
+      <ToastContainer position="top-right" autoClose={3000} />
     </Router>
   );
 }

@@ -1,7 +1,1 @@
-.Loaderitem {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; 
-  }
-  
+/* Loader styles are now handled by Tailwind CSS */
